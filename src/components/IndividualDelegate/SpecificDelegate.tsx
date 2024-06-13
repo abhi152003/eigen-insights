@@ -2,11 +2,11 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import user from "@/assets/images/daos/profile.png";
-import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
+import { FaXTwitter, FaDiscord } from "react-icons/fa6";
+import { FiExternalLink } from "react-icons/fi";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { IoCopy } from "react-icons/io5";
 import DelegateInfo from "./DelegateInfo";
-import DelegateVotes from "./DelegateVotes";
 import DelegateSessions from "./DelegateSessions";
 import DelegateOfficeHrs from "./DelegateOfficeHrs";
 import copy from "copy-to-clipboard";
@@ -22,9 +22,9 @@ import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit";
 import { useNetwork } from "wagmi";
-import OPLogo from "@/assets/images/daos/op.png";
-import ArbLogo from "@/assets/images/daos/arbCir.png";
-import ccLogo from "@/assets/images/daos/CC.png";
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
+import EILogo from "@/assets/images/daos/EI.png";
 import { Oval } from "react-loader-spinner";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
@@ -32,6 +32,23 @@ import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 interface Type {
   daoDelegates: string;
   individualDelegate: string;
+}
+
+interface Result {
+  _id: string;
+  address: string;
+  metadataName: string;
+  metadataDescription: string;
+  metadataDiscord: string | null;
+  metadataLogo: string;
+  metadataTelegram: string | null;
+  metadataWebsite: string;
+  metadataX: string;
+  tags: string[];
+  shares: any[];
+  totalOperators: number;
+  totalStakers: number;
+  tvl: any;
 }
 
 function SpecificDelegate({ props }: { props: Type }) {
@@ -55,97 +72,99 @@ function SpecificDelegate({ props }: { props: Type }) {
   // const provider = new ethers.BrowserProvider(window?.ethereum);
   const [displayEnsName, setDisplayEnsName] = useState<string>();
 
-  const [karmaSocials, setKarmaSocials] = useState({
-    twitter: "",
-    discord: "",
-    discourse: "",
-    github: "",
-  });
-
   const [socials, setSocials] = useState({
     twitter: "",
     discord: "",
-    discourse: "",
-    github: "",
+    telegram: "",
+    website: "",
   });
 
   useEffect(() => {
     console.log("Network", chain?.network);
     const fetchData = async () => {
       setIsPageLoading(true);
-      try {
-        const res = await fetch(
-          `https://api.karmahq.xyz/api/dao/find-delegate?dao=${props.daoDelegates}&user=${props.individualDelegate}`
-        );
-        const details = await res.json();
-        console.log("Socials: ", details.data.delegate);
-        setDelegateInfo(details.data.delegate);
-        if (
-          addressFromUrl.toLowerCase() ===
-          details.data.delegate.publicAddress.toLowerCase()
-        ) {
-          setIsDelegate(true);
+  
+      let details: Result | undefined;
+  
+      try {   
+        const fetchDetails = async (query: string, prop: string) => {
+          try {
+            const res = await fetch(`/api/get-search-data?q=${query}&prop=${prop}`);
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status}`);
+            }
+            const data: Result[] | { message: string } = await res.json();
+            if (Array.isArray(data)) {
+              return data[0];
+            } else {
+              console.error(data.message);
+              return undefined;
+            }
+          } catch (error) {
+            console.error('Search error:', error);
+            return undefined;
+          }
+        };
+  
+        if (props.daoDelegates === 'operators' || props.daoDelegates === 'avss') {
+          details = await fetchDetails(props.individualDelegate, props.daoDelegates);
+          setDelegateInfo(details);
         }
-
-        setKarmaSocials({
-          twitter: details.data.delegate.twitterHandle
-            ? details.data.delegate.twitterHandle
-            : "",
-          discourse: details.data.delegate.discourseHandle
-            ? details.data.delegate.discourseHandle
-            : "",
-          discord: details.data.delegate.discordHandle
-            ? details.data.delegate.discordHandle
-            : "",
-          github: details.data.delegate.githubHandle
-            ? details.data.delegate.githubHandle
-            : "",
-        });
-
+  
+        if (details) {
+          if (addressFromUrl.toLowerCase() === details.address.toLowerCase()) {
+            setIsDelegate(true);
+          }
+  
+          setSocials({
+            twitter: details.metadataX || "",
+            telegram: details.metadataTelegram || "",
+            discord: details.metadataDiscord || "",
+            website: details.metadataWebsite || "",
+          });
+        }
+  
         setIsPageLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsPageLoading(false);
       }
     };
-
+  
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const checkDelegateStatus = async () => {
-      setIsPageLoading(true);
-      //   const addr = await walletClient.getAddresses();
-      //   const address1 = addr[0];
-      let delegateTxAddr = "";
-      const contractAddress =
-        chain?.name === "Optimism"
-          ? "0x4200000000000000000000000000000000000042"
-          : chain?.name === "Arbitrum One"
-          ? "0x912CE59144191C1204E64559FE8253a0e49E6548"
-          : "";
-      try {
-        const delegateTx = await publicClient.readContract({
-          address: contractAddress,
-          abi: dao_abi.abi,
-          functionName: "delegates",
-          args: [addressFromUrl],
-          // account: address1,
-        });
-        console.log("Delegate tx", delegateTx);
-        delegateTxAddr = delegateTx;
-        if (delegateTxAddr.toLowerCase() === addressFromUrl?.toLowerCase()) {
-          console.log("Delegate comparison: ", delegateTx, addressFromUrl);
-          setSelfDelegate(true);
-        }
-        setIsPageLoading(false);
-      } catch (error) {
-        console.error("Error in reading contract", error);
-        setIsPageLoading(false);
-      }
-    };
-    checkDelegateStatus();
-  }, []);
+  // useEffect(() => {
+  //   const checkDelegateStatus = async () => {
+  //     setIsPageLoading(true);
+  //     //   const addr = await walletClient.getAddresses();
+  //     //   const address1 = addr[0];
+  //     let delegateTxAddr = "";
+  //     const contractAddress = ""
+  //     try {
+  //       const delegateTx = await publicClient.readContract({
+  //         address: contractAddress,
+  //         abi: dao_abi.abi,
+  //         functionName: "delegates",
+  //         args: [addressFromUrl],
+  //         // account: address1,
+  //       });
+  //       console.log("Delegate tx", delegateTx);
+  //       delegateTxAddr = delegateTx;
+  //       if (delegateTxAddr.toLowerCase() === addressFromUrl?.toLowerCase()) {
+  //         console.log("Delegate comparison: ", delegateTx, addressFromUrl);
+  //         setSelfDelegate(true);
+  //       }
+  //       setIsPageLoading(false);
+  //     } catch (error) {
+  //       console.error("Error in reading contract", error);
+  //       setIsPageLoading(false);
+  //     }
+  //   };
+  //   checkDelegateStatus();
+  // }, []);
+
+  
 
   // if (isPageLoading) {
   //   return null;
@@ -192,13 +211,6 @@ function SpecificDelegate({ props }: { props: Type }) {
     console.log(address1);
 
     let chainAddress;
-    if (chain?.name === "Optimism") {
-      chainAddress = "0x4200000000000000000000000000000000000042";
-    } else if (chain?.name === "Arbitrum One") {
-      chainAddress = "0x912CE59144191C1204E64559FE8253a0e49E6548";
-    } else {
-      return;
-    }
 
     console.log("walletClient?.chain?.network", walletClient?.chain?.network);
 
@@ -225,88 +237,88 @@ function SpecificDelegate({ props }: { props: Type }) {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch data from your backend API to check if the address exists
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Fetch data from your backend API to check if the address exists
 
-        console.log("Fetching from DB");
-        // const dbResponse = await axios.get(`/api/profile/${address}`);
+  //       console.log("Fetching from DB");
+  //       // const dbResponse = await axios.get(`/api/profile/${address}`);
 
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+  //       const myHeaders = new Headers();
+  //       myHeaders.append("Content-Type", "application/json");
 
-        const raw = JSON.stringify({
-          address: props.individualDelegate,
-          daoName: props.daoDelegates,
-        });
+  //       const raw = JSON.stringify({
+  //         address: props.individualDelegate,
+  //         daoName: props.daoDelegates,
+  //       });
 
-        const requestOptions: any = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          redirect: "follow",
-        };
-        const res = await fetch(
-          `/api/profile/${props.individualDelegate}`,
-          requestOptions
-        );
+  //       const requestOptions: any = {
+  //         method: "POST",
+  //         headers: myHeaders,
+  //         body: raw,
+  //         redirect: "follow",
+  //       };
+  //       const res = await fetch(
+  //         `/api/profile/${props.individualDelegate}`,
+  //         requestOptions
+  //       );
 
-        const dbResponse = await res.json();
-        console.log("db Response", dbResponse);
-        if (
-          dbResponse &&
-          Array.isArray(dbResponse.data) &&
-          dbResponse.data.length > 0
-        ) {
-          // Iterate over each item in the response data array
-          for (const item of dbResponse.data) {
-            // Check if address and daoName match
-            // console.log("Item: ", item);
+  //       const dbResponse = await res.json();
+  //       console.log("db Response", dbResponse);
+  //       if (
+  //         dbResponse &&
+  //         Array.isArray(dbResponse.data) &&
+  //         dbResponse.data.length > 0
+  //       ) {
+  //         // Iterate over each item in the response data array
+  //         for (const item of dbResponse.data) {
+  //           // Check if address and daoName match
+  //           // console.log("Item: ", item);
 
-            // if (
-            //   item.daoName === dao &&
-            //   item.address === props.individualDelegate
-            // ) {
-            // console.log("Data found in the database", item);
-            // Data found in the database, set the state accordingly
-            // setResponseFromDB(true);
-            setDisplayImage(item.image);
-            setDescription(item.description);
-            setDisplayName(item.displayName);
-            // setEmailId(item.emailId);
+  //           // if (
+  //           //   item.daoName === dao &&
+  //           //   item.address === props.individualDelegate
+  //           // ) {
+  //           // console.log("Data found in the database", item);
+  //           // Data found in the database, set the state accordingly
+  //           // setResponseFromDB(true);
+  //           setDisplayImage(item.image);
+  //           setDescription(item.description);
+  //           setDisplayName(item.displayName);
+  //           // setEmailId(item.emailId);
 
-            setSocials({
-              twitter: item.socialHandles.twitter,
-              discord: item.socialHandles.discord,
-              discourse: item.socialHandles.discourse,
-              github: item.socialHandles.github,
-            });
-            // Exit the loop since we found a match
-            //   break;
-            // }
-          }
-        } else {
-          console.log(
-            "Data not found in the database, fetching from third-party API"
-          );
-          // Data not found in the database, fetch data from the third-party API
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  //           setSocials({
+  //             twitter: item.socialHandles.twitter,
+  //             discord: item.socialHandles.discord,
+  //             discourse: item.socialHandles.discourse,
+  //             website: item.socialHandles.website,
+  //           });
+  //           // Exit the loop since we found a match
+  //           //   break;
+  //           // }
+  //         }
+  //       } else {
+  //         console.log(
+  //           "Data not found in the database, fetching from third-party API"
+  //         );
+  //         // Data not found in the database, fetch data from the third-party API
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, [chain, props.individualDelegate]);
+  //   fetchData();
+  // }, [chain, props.individualDelegate]);
 
-  useEffect(() => {
-    const fetchEnsName = async () => {
-      const ensName = await getEnsNameOfUser(props.individualDelegate);
-      setDisplayEnsName(ensName);
-    };
-    fetchEnsName();
-  }, [chain, props.individualDelegate]);
+  // useEffect(() => {
+  //   const fetchEnsName = async () => {
+  //     const ensName = await getEnsNameOfUser(props.individualDelegate);
+  //     setDisplayEnsName(ensName);
+  //   };
+  //   fetchEnsName();
+  // }, [chain, props.individualDelegate]);
 
   return (
     <>
@@ -346,18 +358,18 @@ function SpecificDelegate({ props }: { props: Type }) {
                       src={
                         displayImage
                           ? `https://gateway.lighthouse.storage/ipfs/${displayImage}`
-                          : delegateInfo?.profilePicture ||
-                            (props.daoDelegates === "optimism"
-                              ? OPLogo
-                              : props.daoDelegates === "arbitrum"
-                              ? ArbLogo
-                              : ccLogo)
+                          : delegateInfo?.metadataLogo ||
+                            (props.daoDelegates === "operators"
+                              ? NOLogo
+                              : props.daoDelegates === "avss"
+                              ? AVSLogo
+                              : EILogo)
                       }
                       alt="user"
                       width={256}
                       height={256}
                       className={
-                        displayImage || delegateInfo?.profilePicture
+                        displayImage || delegateInfo?.metadataLogo
                           ? "w-40 h-40 rounded-3xl"
                           : "w-20 h-20 rounded-3xl"
                       }
@@ -365,8 +377,8 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
 
                   <Image
-                    src={ccLogo}
-                    alt="ChoraClub Logo"
+                    src={EILogo}
+                    alt="EigenInsights Logo"
                     className="absolute top-0 right-0"
                     style={{
                       width: "30px",
@@ -380,7 +392,7 @@ function SpecificDelegate({ props }: { props: Type }) {
               <div className="px-4">
                 <div className=" flex items-center py-1">
                   <div className="font-bold text-lg pr-4">
-                    {delegateInfo?.ensName || displayEnsName || displayName || (
+                    {delegateInfo?.metadataName || delegateInfo.metadataName || displayName || (
                       <>
                         {props.individualDelegate.slice(0, 6)}...
                         {props.individualDelegate.slice(-4)}
@@ -388,15 +400,13 @@ function SpecificDelegate({ props }: { props: Type }) {
                     )}
                   </div>
                   <div className="flex gap-3">
-                    {/* {socials.discord + socials.discourse + socials.github + socials.twitter} */}
+                    {/* {socials.discord + socials.discourse + socials.website + socials.twitter} */}
                     <Link
                       href={
                         socials.twitter
-                          ? `https://twitter.com/${socials.twitter}`
-                          : karmaSocials.twitter
                       }
                       className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
-                        socials.twitter == "" && karmaSocials.twitter == ""
+                        socials.twitter == ""
                           ? "hidden"
                           : ""
                       }`}
@@ -407,16 +417,10 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </Link>
                     <Link
                       href={
-                        socials.discourse
-                          ? props.daoDelegates === "optimism"
-                            ? `https://gov.optimism.io/u/${socials.discourse}`
-                            : props.daoDelegates === "arbitrum"
-                            ? `https://forum.arbitrum.foundation/u/${socials.discourse}`
-                            : ""
-                          : karmaSocials.discourse
+                        socials.telegram
                       }
                       className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1  ${
-                        socials.discourse == "" && karmaSocials.discourse == ""
+                        socials.telegram == ""
                           ? "hidden"
                           : ""
                       }`}
@@ -428,11 +432,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                     <Link
                       href={
                         socials.discord
-                          ? `https://discord.com/${socials.discord}`
-                          : karmaSocials.discord
                       }
                       className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
-                        socials.discord == "" && karmaSocials.discord == ""
+                        socials.discord == "" 
                           ? "hidden"
                           : ""
                       }`}
@@ -443,19 +445,17 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </Link>
                     <Link
                       href={
-                        socials.github
-                          ? `https://github.com/${socials.github}`
-                          : karmaSocials.github
+                        socials.website
                       }
                       className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
-                        socials.github == "" && karmaSocials.github == ""
+                        socials.website == ""
                           ? "hidden"
                           : ""
                       }`}
                       style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
                       target="_blank"
                     >
-                      <FaGithub color="#7C7C7C" size={12} />
+                      <FiExternalLink color="#7C7C7C" size={12} />
                     </Link>
                   </div>
                 </div>
@@ -497,23 +497,23 @@ function SpecificDelegate({ props }: { props: Type }) {
                 <div className="flex gap-4 py-1">
                   <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                     <span className="text-blue-shade-200 font-semibold">
-                      {delegateInfo?.delegatedVotes
-                        ? formatNumber(Number(delegateInfo?.delegatedVotes))
+                      {delegateInfo?.totalStakers
+                        ? Number(delegateInfo?.totalStakers)
                         : 0}
                       &nbsp;
                     </span>
-                    delegated tokens
+                    total stakers
                   </div>
                   <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    Delegated from
+                    Total
                     <span className="text-blue-shade-200 font-semibold">
                       &nbsp;
-                      {delegateInfo?.delegatorCount
-                        ? formatNumber(delegateInfo?.delegatorCount)
+                      {delegateInfo?.tvl.tvl
+                        ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
                         : 0}
                       &nbsp;
                     </span>
-                    Addresses
+                    ETH Staked
                   </div>
                 </div>
 
@@ -583,10 +583,7 @@ function SpecificDelegate({ props }: { props: Type }) {
 
           <div className="py-6 ps-16">
             {searchParams.get("active") === "info" && (
-              <DelegateInfo props={props} desc={description} />
-            )}
-            {searchParams.get("active") === "pastVotes" && (
-              <DelegateVotes props={props} />
+              <DelegateInfo props={props} delegateInfo={delegateInfo} desc={delegateInfo.metadataDescription} />
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />

@@ -81,7 +81,7 @@ export async function PUT(
           try {
             await sendMail({
               to: emailId,
-              name: "Chora Club",
+              name: "Eigen Insights",
               subject: "Session Booked",
               body: compileBookedSessionTemplate(
                 "Your Session has been Approved.",
@@ -95,7 +95,7 @@ export async function PUT(
           try {
             await sendMail({
               to: emailId,
-              name: "Chora Club",
+              name: "Eigen Insights",
               subject: "Session Rejected",
               body: `The session you have booked has been rejected by the delegate due to following reason: ${rejectionReason}`,
             });

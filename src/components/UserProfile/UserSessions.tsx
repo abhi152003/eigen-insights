@@ -57,16 +57,6 @@ function UserSessions({
   let dao_name = "";
   const getUserMeetingData = async () => {
     try {
-      // setDataLoading(true);
-      // console.log("DAO NAMEEEEEEEEE", daoName);
-      //   const response = await fetch(`/api/get-dao-sessions`, {
-      // if (chain?.name === "Optimism") {
-      //   // dao_name = "optimism";
-      //   setDaoName("optimism");
-      // } else if (chain?.name === "Arbitrum One") {
-      //   // dao_name = "arbitrum";
-      //   setDaoName("arbitrum");
-      // }
       try {
         // setDataLoading(true);
         const response = await fetch(`/api/get-sessions`, {

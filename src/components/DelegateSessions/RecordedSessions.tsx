@@ -2,9 +2,8 @@ import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import search from "@/assets/images/daos/search.png";
 import texture1 from "@/assets/images/daos/texture1.png";
-import oplogo from "@/assets/images/daos/op.png";
-import arblogo from "@/assets/images/daos/arbitrum.jpg";
-import arbcir from "@/assets/images/daos/arbCir.png";
+import NOLogo from "@/assets/images/daos/operators.png"
+import AVSLogo from "@/assets/images/daos/avss.png"
 import user from "@/assets/images/daos/user3.png";
 import { Tooltip } from "@nextui-org/react";
 import { IoCopy } from "react-icons/io5";
@@ -48,7 +47,6 @@ function RecordedSessions() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [meetingData, setMeetingData] = useState<any>([]);
-  const [karmaImage, setKarmaImage] = useState<any>();
   const [displayIFrame, setDisplayIFrame] = useState<number | null>(null);
   const router = useRouter();
   const [hoveredVideo, setHoveredVideo] = useState<number | null>(null); // Track which video is hovered
@@ -332,25 +330,25 @@ function RecordedSessions() {
             </button>
             <button
               className={`border border-[#CCCCCC] px-4 py-1  rounded-lg text-lg flex items-center gap-1.5 ${
-                activeButton === "optimism"
+                activeButton === "operators"
                   ? "bg-[#8E8E8E] text-white"
                   : "bg-[#F5F5F5] text-[#3E3D3D]"
               }`}
-              onClick={() => handleFilters("optimism")}
+              onClick={() => handleFilters("operators")}
             >
-              <Image src={oplogo} alt="optimism" width={23} className="" />
-              Optimism
+              <Image src={NOLogo} alt="operators" width={23} className="" />
+              Operators
             </button>
             <button
               className={`border border-[#CCCCCC] px-4 py-1 rounded-lg text-lg flex items-center gap-1.5 ${
-                activeButton === "arbitrum"
+                activeButton === "avss"
                   ? "bg-[#8E8E8E] text-white"
                   : "bg-[#F5F5F5] text-[#3E3D3D]"
               }`}
-              onClick={() => handleFilters("arbitrum")}
+              onClick={() => handleFilters("avss")}
             >
-              <Image src={arbcir} alt="arbitrum" width={23} className="" />
-              Arbitrum
+              <Image src={AVSLogo} alt="avss" width={23} className="" />
+              AVSs
             </button>
           </div>
         </div>
@@ -428,16 +426,16 @@ function RecordedSessions() {
                   <div className="flex text-sm gap-3 py-1">
                     <div className="bg-[#F5F5F5] flex items-center py-1 px-3 rounded-md gap-2">
                       <div>
-                        {data.session.dao_name === "optimism" ? (
+                        {data.session.dao_name === "operators" ? (
                           <Image
-                            src={oplogo}
+                            src={NOLogo}
                             alt="image"
                             width={20}
                             className="rounded-full"
                           />
-                        ) : data.session.dao_name === "arbitrum" ? (
+                        ) : data.session.dao_name === "avss" ? (
                           <Image
-                            src={arblogo}
+                            src={AVSLogo}
                             alt="image"
                             width={20}
                             className="rounded-full"

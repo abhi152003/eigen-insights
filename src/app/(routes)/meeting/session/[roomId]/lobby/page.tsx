@@ -250,15 +250,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
   }, [params.roomId, isAllowToEnter, notAllowedMessage, meetingStatus]);
 
   useEffect(() => {
-    let dao = "";
-    if (chain && chain?.name === "Optimism") {
-      dao = "optimism";
-    } else if (chain && chain?.name === "Arbitrum One") {
-      dao = "arbitrum";
-    } else {
-      return;
-    }
-
+  
     const fetchData = async () => {
       try {
         const myHeaders = new Headers();
@@ -266,7 +258,6 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
 
         const raw = JSON.stringify({
           address: address,
-          daoName: dao,
         });
 
         const requestOptions: any = {
@@ -281,7 +272,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
 
         if (Array.isArray(resultData)) {
           const filtered: any = resultData.filter((data) => {
-            return data.daoName === dao && data.displayName !== "";
+            return data.displayName !== "";
           });
           console.log("filtered profile: ", filtered);
           setProfileDetails(filtered[0]);
@@ -294,9 +285,6 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
         }
 
         if (resultData.length === 0) {
-          const res = await fetch(
-            `https://api.karmahq.xyz/api/dao/find-delegate?dao=${dao}&user=${address}`
-          );
           const result = await response.json();
           const resultData = await result.data.delegate;
 

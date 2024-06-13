@@ -477,14 +477,6 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
     setShowGetMailModal(false);
   };
 
-  // useEffect(() => {
-  //   if (chain && chain?.name === "Optimism") {
-  //     setDaoName("optimism");
-  //   } else if (chain && chain?.name === "Arbitrum One") {
-  //     setDaoName("arbitrum");
-  //   }
-  // }, [chain, chain?.name]);
-
   return (
     <>
       <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-20 p-4">

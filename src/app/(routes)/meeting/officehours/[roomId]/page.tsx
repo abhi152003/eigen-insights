@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 
 // Components
-import BottomBar from "@/components/BottomBar/BottomBar";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import GridLayout from "@/components/GridLayout/GridLayout";
 import Prompts from "@/components/common/Prompts";
@@ -230,8 +229,6 @@ const Home = ({ params }: { params: { roomId: string } }) => {
             </div>
             {isChatOpen && <Chat />}
           </div>
-
-          <BottomBar />
           <Prompts />
           {modalOpen && (
             <AttestationModal isOpen={modalOpen} onClose={handleModalClose} />

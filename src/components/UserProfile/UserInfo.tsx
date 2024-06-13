@@ -10,7 +10,6 @@ interface userInfoProps {
   onSaveButtonClick: (description?: string) => Promise<void>;
   isLoading: boolean;
   descAvailable: boolean;
-  karmaDesc: string;
   isDelegate: boolean;
   isSelfDelegate: boolean;
   daoName: string;
@@ -23,7 +22,6 @@ function UserInfo({
   descAvailable,
   isDelegate,
   isSelfDelegate,
-  karmaDesc,
   daoName,
 }: userInfoProps) {
   const { address } = useAccount();
@@ -65,12 +63,6 @@ function UserInfo({
     setSessionAttendedLoading(true);
     setOfficeHoursHostedLoading(true);
     setOfficeHoursAttendedLoading(true);
-
-    if (chain?.name === "Optimism") {
-      dao_name = "optimism";
-    } else if (chain?.name === "Arbitrum One") {
-      dao_name = "arbitrum";
-    }
 
     const host_uid_key =
       buttonType === "onchain" ? "onchain_host_uid" : "uid_host";
@@ -333,7 +325,7 @@ function UserInfo({
           readOnly={!isEditing}
           className="outline-none min-h-48"
           onChange={handleDescChange}
-          value={isEditing ? tempDesc : description || karmaDesc}
+          value={isEditing ? tempDesc : description}
           placeholder={"Type your description here..."}
           // style={{height:"200px",width:"250px"}}
         />

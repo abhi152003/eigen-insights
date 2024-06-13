@@ -8,23 +8,23 @@ function ClaimNFTs() {
     {
       img: text1,
       title:
-        "Recorded Optimism Open Forum: Governance, Applications, and Beyond",
-      dao: "Optimism",
+        "Recorded Operators Open Forum: Governance, Applications, and Beyond",
+      dao: "Operators",
       participant: 12,
       attendee: "olimpio.eth",
       host: "lindaxie.eth",
       started: "08/09/2023 01:00 PM EST",
-      desc: "Join the conversation about the future of Optimism. Discuss governance proposals, dApp adoption, and technical developments.",
+      desc: "Join the conversation about the future of Operators. Discuss governance proposals, dApp adoption, and technical developments.",
     },
     {
       img: text2,
       title: "Open Forum: Governance, Applications, and Beyond",
-      dao: "Optimism",
+      dao: "Operators",
       participant: 5,
       attendee: "olimpio.eth",
       host: "hexagon.eth",
       started: "07/09/2023 12:10 PM EST",
-      desc: "Join the conversation about the future of Optimism. Discuss governance proposals, dApp adoption, and technical developments.",
+      desc: "Join the conversation about the future of Operators. Discuss governance proposals, dApp adoption, and technical developments.",
     },
   ];
 

@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://app.chora.club/"),
-  title: "Chora Club",
+  title: "Eigen Insights",
   description: "Discover. Learn. Engage.",
   openGraph: {
     title: "Available Delegates",
     description:
       "Explore available delegates by DAO, date, and time to book sessions and unlock Web3 opportunities.",
     url: "https://app.chora.club/available-delegates",
-    siteName: "Chora Club",
+    siteName: "Eigen Insights",
     images: [
       {
         url: "https://gateway.lighthouse.storage/ipfs/QmUEoQqvoYbfp9ZD3AHzDNBYTmwovDifVBxWByzr8mMKnT",

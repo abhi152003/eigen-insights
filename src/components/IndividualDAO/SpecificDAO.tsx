@@ -7,26 +7,32 @@ import OfficeHours from "./OfficeHours";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import OPLogo from "@/assets/images/daos/op.png";
-import ARBLogo from "@/assets/images/daos/arbitrum.jpg";
+import operators_logo from "@/assets/images/daos/operators.png";
+import avss_logo from "@/assets/images/daos/avss.png";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-
-const desc = dao_details;
 
 function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
   const router = useRouter();
   const path = usePathname();
-  const dao_name = path.slice(1);
+  let dao_name: string;
+
+  if (path.slice(1) === 'operators') {
+    dao_name = 'Operators'
+  } else {
+    dao_name = 'AVSs'
+  }
+
+  console.log(dao_name)
   const searchParams = useSearchParams();
 
   const logoMapping: any = {
-    optimism: OPLogo,
-    arbitrum: ARBLogo,
+    operators: operators_logo,
+    avss: avss_logo,
     // Add more mappings as needed
   };
 
-  const selectedLogo = logoMapping[dao_name] || OPLogo;
+  const selectedLogo = logoMapping[dao_name] || operators_logo;
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
@@ -36,8 +42,8 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
   });
 
   const options = [
-    { value: "optimism", label: "optimism", image: OPLogo },
-    { value: "arbitrum", label: "arbitrum", image: ARBLogo },
+    { value: "Operators", label: "Operators", image: operators_logo },
+    { value: "AVSs", label: "AVSs", image: avss_logo },
   ];
 
   const handleMouseEnter = () => {
@@ -61,9 +67,15 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
       JSON.stringify({ ...localData, [formatted]: [formatted, option.image] })
     );
 
-    router.push(`/${name}?active=delegatesList`);
+    if (formatted === 'operators') {
+      router.push(`/${formatted}?active=operatorsList`);
+    } else {
+      router.push(`/${formatted}?active=avsList`);
+    }
   };
 
+  console.log(selectedOption)
+  console.log('paramssssssss',searchParams.get("active") === "operatorsList")
   return (
     <div className="font-poppins py-6" id="secondSection">
       <div className="pr-8 pb-5 pl-16">
@@ -132,37 +144,66 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           </div>
         </div>
         <div className="py-5 pr-8">
-          {props.daoDelegates === "optimism"
-            ? desc.optimism.description
-            : props.daoDelegates === "arbitrum"
-            ? desc.arbitrum.description
+          {props.daoDelegates === "operators"
+            ? dao_details.operators.description
+            : props.daoDelegates === "avss"
+            ? dao_details.avss.description
             : null}
         </div>
       </div>
 
       <div className="flex gap-12 bg-[#D9D9D945] pl-16">
-        <button
-          className={`border-b-2 py-4 px-2 ${
-            searchParams.get("active") === "delegatesList"
-              ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
-              : "border-transparent"
-          }`}
-          onClick={() => router.push(path + "?active=delegatesList")}
-        >
-          Delegates List
-        </button>
-        <button
-          className={`border-b-2 py-4 px-2 ${
-            searchParams.get("active") === "delegatesSession"
-              ? "text-blue-shade-200 font-semibold border-blue-shade-200"
-              : "border-transparent"
-          }`}
-          onClick={() =>
-            router.push(path + "?active=delegatesSession&session=recorded")
+        {dao_name === 'Operators' ? 
+          <button
+            className={`border-b-2 py-4 px-2 ${
+              searchParams.get("active") === "operatorsList"
+                ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
+                : "border-transparent"
+            }`}
+            onClick={() => router.push(path +"?active=operatorsList")}
+          >
+            Operators List
+          </button> : 
+          <button
+            className={`border-b-2 py-4 px-2 ${
+              searchParams.get("active") === "avsList"
+                ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
+                : "border-transparent"
+            }`}
+            onClick={() => router.push(path +"?active=avsList")}
+          >
+            AVSs List
+          </button>
+        } 
+
+        {dao_name === 'Operators' ? 
+          <button
+            className={`border-b-2 py-4 px-2 ${
+              searchParams.get("active") === "operatorsSession"
+                ? "text-blue-shade-200 font-semibold border-blue-shade-200"
+                : "border-transparent"
+            }`}
+            onClick={() =>
+              router.push(path + "?active=operatorsSession&session=recorded")
           }
-        >
-          Delegates Sessions
-        </button>
+          >
+            Operators Sessions
+          </button> :
+          <button
+            className={`border-b-2 py-4 px-2 ${
+              searchParams.get("active") === "avsSession"
+                ? "text-blue-shade-200 font-semibold border-blue-shade-200"
+                : "border-transparent"
+            }`}
+            onClick={() =>
+              router.push(path + "?active=avsSession&session=recorded")
+          }
+          >
+            AVSs Sessions
+          </button>
+        }
+        
+        
         <button
           className={`border-b-2 py-4 px-2 ${
             searchParams.get("active") === "officeHours"
@@ -178,21 +219,15 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
       </div>
 
       <div className="py-6 ps-16">
-        {searchParams.get("active") === "delegatesList" ? (
-          <DelegatesList props={props.daoDelegates} />
-        ) : (
-          ""
-        )}
-        {searchParams.get("active") === "delegatesSession" ? (
-          <DelegatesSession props={props.daoDelegates} />
-        ) : (
-          ""
-        )}
-        {searchParams.get("active") === "officeHours" ? (
-          <OfficeHours props={props.daoDelegates} />
-        ) : (
-          ""
-        )}
+      {searchParams.get("active") === "operatorsList" || searchParams.get("active") === "avsList" ? (
+        <DelegatesList props={props.daoDelegates} />
+      ) : searchParams.get("active") === "operatorsSession" || searchParams.get("active") === "avsSession" ? (
+        <DelegatesSession props={props.daoDelegates} />
+      ) : searchParams.get("active") === "officeHours" ? (
+        <OfficeHours props={props.daoDelegates} />
+      ) : (
+        ""
+      )}
       </div>
     </div>
   );

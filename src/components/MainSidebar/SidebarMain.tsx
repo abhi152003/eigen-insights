@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import logo from "@/assets/images/sidebar/favicon.png";
+import logo from "@/assets/images/daos/EI.png";
 import rocket from "@/assets/images/sidebar/rocket.png";
 import sessionIcn from "@/assets/images/sidebar/office.png";
 import office from "@/assets/images/sidebar/Office hour (1).png";
@@ -87,7 +87,7 @@ function Sidebar() {
               className="xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
             ></Image>
             <Tooltip
-              content="DAOs"
+              content="Explore"
               placement="right"
               className="rounded-md bg-opacity-90"
               closeDelay={1}
@@ -169,12 +169,12 @@ function Sidebar() {
                       onClick={() => handleBadgeClick(data[0])}
                     >
                       <Tooltip
-                        content={<div className="capitalize">{data[0]}</div>}
+                        content={<div className="capitalize">{data[0] === 'operators' ? 'Operators' : 'AVSs'}</div>}
                         placement="right"
                         className="rounded-md bg-opacity-90"
                         closeDelay={1}
                       >
-                        <Link href={`/${data[0]}?active=delegatesList`}>
+                        <Link href={data[0] === 'operators' ? `/${data[0]}?active=operatorsList`: `/${data[0]}?active=avsList`}>
                           <Image
                             key={index}
                             src={data[1]}

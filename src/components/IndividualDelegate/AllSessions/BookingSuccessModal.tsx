@@ -20,9 +20,9 @@ function BookingSuccessModal({
       `https://app.chora.club/available-delegates`
     );
     const text = encodeURIComponent(
-      `Hello Geeks! 🎉\nJust booked my session on @ChoraClub and can't wait to learn more about the #Web3 ecosystem from the experienced Delegate!🌐\n👉 ${decodeURIComponent(
+      `Hello Geeks! 🎉\nJust booked my session on @EigenInsights and can't wait to learn more about the #Web3 ecosystem from the experienced Delegate!🌐\n👉 ${decodeURIComponent(
         url
-      )}\n\n#choraclub #session #growth`
+      )}\n\n#eigeninsights #session #growth`
     );
 
     // Twitter share URL

@@ -14,7 +14,7 @@ const WatchVideoRecommendation = () => {
     {
       img: video,
       title: "The Future of Governance: Exploring the Potential of DAOs",
-      daoName: "Optimism",
+      daoName: "Operators",
       time: "3 days ago",
       emoji: emojiVideo,
       slotTime: "57:21",
@@ -23,8 +23,8 @@ const WatchVideoRecommendation = () => {
     },
     {
       img: video,
-      title: "Empowering Communities: The Role of Arbitrum in DAO Development",
-      daoName: "Arbitrum",
+      title: "Empowering Communities: The Role of AVSs in DAO Development",
+      daoName: "AVSs",
       time: "7 days ago",
       emoji: emojiVideo,
       slotTime: "01:59:51",
@@ -33,8 +33,8 @@ const WatchVideoRecommendation = () => {
     },
     {
       img: video,
-      title: "Optimism Open Forum: Governance, Applications, and Beyond",
-      daoName: "Optimism",
+      title: "Operators Open Forum: Governance, Applications, and Beyond",
+      daoName: "Operators",
       time: "1 month ago",
       emoji: emojiVideo,
       slotTime: "35:56",

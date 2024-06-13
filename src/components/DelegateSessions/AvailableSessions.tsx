@@ -9,15 +9,13 @@ import { Oval } from "react-loader-spinner";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
-import opImg from "@/assets/images/daos/op.png";
-import arbImg from "@/assets/images/daos/arbitrum.jpg";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Tooltip } from "@nextui-org/react";
 import text1 from "@/assets/images/daos/texture1.png";
 import clockIcn from "@/assets/images/daos/icon_clock.png";
-import ccLogo from "@/assets/images/daos/CC.png";
-import OPLogo from "@/assets/images/daos/op.png";
-import ArbLogo from "@/assets/images/daos/arbCir.png";
+import EILogo from "@/assets/images/daos/EI.png";
+import NOLogo from "@/assets/images/daos/operators.png"
+import AVSLogo from "@/assets/images/daos/avss.png"
 import "@/components/DelegateSessions/DelegateSessionsMain.module.css";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 
@@ -170,7 +168,7 @@ function AvailableSessions() {
     const selected = e.target.value;
     // setSelectedDao(selected);
     let filtered: any;
-    if (selected === "All-DAOS") {
+    if (selected === "ALL-SESSIONS") {
       // setDaoInfo(APIData);
       setSelectedDao(null);
     } else {
@@ -318,9 +316,9 @@ function AvailableSessions() {
               onChange={handleDaoChange}
               className="px-3 py-2 rounded-md shadow"
             >
-              <option value="All-DAOS">All DAOS</option>
-              <option value="optimism">Optimism</option>
-              <option value="arbitrum">Arbitrum</option>
+              <option value="All-SESSIONS">All sessions</option>
+              <option value="operators">Operators</option>
+              <option value="avss">AVSs</option>
             </select>
           </Tooltip>
         </div>
@@ -433,11 +431,11 @@ function AvailableSessions() {
                           src={
                             daos.userInfo[0].image
                               ? `https://gateway.lighthouse.storage/ipfs/${daos.userInfo[0].image}`
-                              : daos.session.dao_name === "optimism"
-                              ? OPLogo
-                              : daos.session.dao_name === "arbitrum"
-                              ? ArbLogo
-                              : ccLogo
+                              : daos.session.dao_name === "operators"
+                              ? NOLogo
+                              : daos.session.dao_name === "avss"
+                              ? AVSLogo
+                              : EILogo
                           }
                           alt="user"
                           width={256}
@@ -451,8 +449,8 @@ function AvailableSessions() {
                       </div>
 
                       <Image
-                        src={ccLogo}
-                        alt="ChoraClub Logo"
+                        src={EILogo}
+                        alt="EigenInsights Logo"
                         className="absolute top-0 right-0"
                         style={{
                           width: "30px",

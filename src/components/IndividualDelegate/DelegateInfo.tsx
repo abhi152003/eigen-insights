@@ -9,14 +9,24 @@ import {
   ThreeDots,
 } from "react-loader-spinner";
 
+import { Bar, Pie, Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+
+// Register ChartJS modules
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
+
 interface Type {
   daoDelegates: string;
   individualDelegate: string;
 }
 
-function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
-  const [karmaDescription, setKarmaDescription] = useState<string>();
-  const [opAgoraDescription, setOpAgoraDescription] = useState<string>();
+function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string, delegateInfo: any }) {
+
   const [loading, setLoading] = useState(true);
   const [isDataLoading, setDataLoading] = useState(true);
   const router = useRouter();
@@ -31,8 +41,7 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
   const [isOfficeHoursAttendedLoading, setOfficeHoursAttendedLoading] =
     useState(true);
   const [activeButton, setActiveButton] = useState("onchain");
-  const [loadingOpAgora, setLoadingOpAgora] = useState(true);
-  const [loadingKarma, setLoadingKarma] = useState(true);
+  
 
   useEffect(() => {
     if (activeButton === "onchain") {
@@ -229,7 +238,6 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setLoadingOpAgora(true);
         console.log(props.individualDelegate);
         const res = await fetch(
           `/api/get-statement?individualDelegate=${props.individualDelegate}`,
@@ -249,12 +257,9 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
         const data = await res.json();
         const statement = data.statement.payload.delegateStatement;
         console.log("statement", statement);
-        setOpAgoraDescription(statement);
-        setLoadingOpAgora(false);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoadingOpAgora(false);
         setLoading(false);
       }
     };
@@ -272,32 +277,55 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
       ));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoadingKarma(true);
-        setLoading(true);
-        const res = await fetch(
-          `https://api.karmahq.xyz/api/forum-user/${props.daoDelegates}/delegate-pitch/${props.individualDelegate}`
-        );
-        const details = await res.json();
-        console.log("Desc: ", details.data.delegatePitch.customFields[1].value);
-        setKarmaDescription(details.data.delegatePitch.customFields[1].value);
-        setLoadingKarma(false);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoadingKarma(false);
-        setLoading(false);
+
+  const filteredData = Object.entries(delegateInfo.tvl.tvlStrategies).filter(([key, value]) => value !== 0 && key !== "Eigen");
+
+  // Create labels and data arrays
+  const labels = filteredData.map(([key, value]) => key);
+  const dataValues = filteredData.map(([key, value]) => value);
+
+  // Define the data for the Pie chart
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'TVL Strategies',
+        data: dataValues,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(199, 199, 199, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(83, 102, 255, 0.6)',
+          'rgba(132, 206, 86, 0.6)',
+          'rgba(192, 192, 75, 0.6)',
+          'rgba(199, 83, 64, 0.6)',
+          'rgba(102, 153, 255, 0.6)',
+          'rgba(255, 83, 64, 0.6)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(153, 102, 255, 0.6)',
+          'rgba(199, 199, 199, 0.6)',
+          'rgba(255, 159, 64, 0.6)',
+          'rgba(83, 102, 255, 0.6)',
+          'rgba(132, 206, 86, 0.6)',
+          'rgba(192, 192, 75, 0.6)',
+          'rgba(199, 83, 64, 0.6)',
+          'rgba(102, 153, 255, 0.6)',
+          'rgba(255, 83, 64, 0.6)',
+        ],     
+        borderWidth: 2
       }
-      setLoading(false);
-    };
+    ]
+  };
 
-    fetchData();
-  }, []);
-
-  console.log("desc from karma: ", karmaDescription);
-  console.log("desc from db: ", desc);
 
   return (
     <div>
@@ -356,13 +384,23 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
         )}
       </div>
 
+      <div className="flex justify-center mt-5">
+        {filteredData.length > 0 ? (
+          <div className="w-96 h-96">
+            <Doughnut data={data} />
+          </div>
+        ) : (
+          <p>No ETH stacked</p>
+        )}
+      </div>
+
       <div
         style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
         className={`rounded-xl my-7 me-32 py-6 px-7 text-sm ${
-          desc && opAgoraDescription && karmaDescription ? "" : "min-h-52"
+          desc ? "" : "min-h-52"
         }`}
       >
-        {loadingOpAgora || loadingKarma || loading ? (
+        {loading ? (
           <div className="flex pt-6 justify-center">
             <ThreeDots
               visible={true}
@@ -374,13 +412,9 @@ function DelegateInfo({ props, desc }: { props: Type; desc: string }) {
           </div>
         ) : desc !== "" ? (
           desc
-        ) :props.daoDelegates === 'optimism' && opAgoraDescription ? ( // Check for opAgoraDescription
-          renderParagraphs(opAgoraDescription)
-        ) : karmaDescription ? (
-          karmaDescription
         ) : (
           <div className="font-semibold text-base flex justify-center">
-            Delegate has not provided a description
+            Descrption has not been provided
           </div>
         )}
       </div>

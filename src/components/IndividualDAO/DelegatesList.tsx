@@ -3,9 +3,9 @@
 import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useState } from "react";
 import search from "@/assets/images/daos/search.png";
-import OPLogo from "@/assets/images/daos/op.png";
-import ARBLogo from "@/assets/images/daos/arbitrum.jpg";
-import ccLogo from "@/assets/images/daos/CC.png";
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
+import EILogo from "@/assets/images/daos/EI.png";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import { Button, Dropdown, Pagination, Tooltip } from "@nextui-org/react";
@@ -20,6 +20,22 @@ import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 
+interface Result {
+  _id: string;
+  address: string;
+  metadataName: string;
+  metadataDescription: string;
+  metadataDiscord: string | null;
+  metadataLogo: string;
+  metadataTelegram: string | null;
+  metadataWebsite: string;
+  metadataX: string;
+  tags: string[];
+  shares: any[];
+  totalOperators: number;
+  totalStakers: number;
+  tvl: any;
+}
 
 function DelegatesList({ props }: { props: string }) {
   const [delegateData, setDelegateData] = useState<any>({ delegates: [] });
@@ -41,33 +57,79 @@ function DelegatesList({ props }: { props: string }) {
   // const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
   // const [clickedTileIndex,setClickedTileIndex]=useState(null);
 
-  const handleClose = () => {
-    setIsShowing(false);
-    sessionStorage.setItem("KarmaCreditClosed", JSON.stringify(true));
-  };
-
-  useEffect(() => {
-    const KarmaCreditClosed = JSON.parse(
-      sessionStorage.getItem("KarmaCreditClosed") || "false"
-    );
-    setIsShowing(!KarmaCreditClosed);
-  }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         setDataLoading(true);
         // console.log("Current page: ", currentPage);
-        const res = await fetch(
-          `https://api.karmahq.xyz/api/dao/delegates?name=${props}&offset=${currentPage}&order=desc&field=delegatedVotes&period=lifetime&pageSize=20&statuses=active,inactive,withdrawn,recognized`
-        );
-        const daoInfo = await res.json().then((delegates) => delegates.data);
-        setDelegateData((prevData: any) => ({
-          delegates: [...prevData.delegates, ...daoInfo.delegates],
-        }));
-        setTempData((prevData: any) => ({
-          delegates: [...prevData.delegates, ...daoInfo.delegates],
-        }));
+
+        // try {
+        //   const res = await fetch(`/api/get-eigen-data?query=operators&skip=${currentPage}&limit=25`);
+        //   if (!res.ok) {
+        //     throw new Error(`Error: ${res.status}`);
+        //   }
+        //   const data: Result[] | { message: string } = await res.json();
+        //   if (Array.isArray(data)) {
+        //     console.log("databaseeeeeeeeeeee", data)
+        //     const delegates = data;
+        //     setDelegateData((prevData: { delegates: any; }) => ({
+        //       delegates: [...prevData.delegates, ...delegates],
+        //     }));
+        //     setTempData((prevData: { delegates: any; }) => ({
+        //       delegates: [...prevData.delegates, ...delegates],
+        //     }));
+        //   } else {
+        //     console.error(data.message);
+        //   }
+        // } catch (error) {
+        //   console.log(error)
+        // }
+
+        if(props === 'operators'){
+          try {
+            const res = await fetch(`/api/get-eigen-data?query=${props}&skip=${currentPage}&limit=25`);
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status}`);
+            }
+            const data: Result[] | { message: string } = await res.json();
+            if (Array.isArray(data)) {
+              // console.log("databaseeeeeeeeeeee", data)
+              const delegates = data;
+              setDelegateData((prevData: { delegates: any; }) => ({
+                delegates: [...prevData.delegates, ...delegates],
+              }));
+              setTempData((prevData: { delegates: any; }) => ({
+                delegates: [...prevData.delegates, ...delegates],
+              }));
+            } else {
+              console.error(data.message);
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        } else if (props = 'avss') {
+          try {
+            const res = await fetch(`/api/get-eigen-data?query=${props}&skip=${currentPage}&limit=25`);
+            if (!res.ok) {
+              throw new Error(`Error: ${res.status}`);
+            }
+            const data: Result[] | { message: string } = await res.json();
+            if (Array.isArray(data)) {
+              // console.log("databaseeeeeeeeeeee", data)
+              const delegates = data;
+              setDelegateData((prevData: { delegates: any; }) => ({
+                delegates: [...prevData.delegates, ...delegates],
+              }));
+              setTempData((prevData: { delegates: any; }) => ({
+                delegates: [...prevData.delegates, ...delegates],
+              }));
+            } else {
+              console.error(data.message);
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }
         setDataLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,7 +143,7 @@ function DelegatesList({ props }: { props: string }) {
 
   const handleSearchChange = async (query: string) => {
     // console.log("query: ", query.length);
-
+    // console.log("queryyyyyyyy",query)
     setSearchQuery(query);
     setPageLoading(true);
 
@@ -90,14 +152,22 @@ function DelegatesList({ props }: { props: string }) {
       // console.log(delegateData);
       setIsSearching(true);
       window.removeEventListener("scroll", handleScroll);
-
-      const res = await fetch(
-        `https://api.karmahq.xyz/api/dao/search-delegate?user=${query}&pageSize=10&offset=0&period=lifetime&order=desc&dao=${props}`
-      );
-      const filtered = await res.json().then((delegates) => delegates.data);
-
-      // console.log("Filtered Data: ", query, filtered);
-      setDelegateData({ delegates: filtered.delegates });
+      
+      try {
+        const res = await fetch(`/api/get-search-data?q=${query}&prop=${props}`);
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
+        }
+        const data: Result[] | { message: string } = await res.json();
+        if (Array.isArray(data)) {
+          setDelegateData({ delegates: data });;
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+      }
+      
       setPageLoading(false);
     } else {
       // console.log("in else");
@@ -115,7 +185,7 @@ function DelegatesList({ props }: { props: string }) {
       !isDataLoading &&
       scrollTop + clientHeight >= scrollHeight - threshold
     ) {
-      setCurrentPage((prev) => prev + 1);
+      setCurrentPage((prev) => prev + 25);
     }
   };
 
@@ -162,9 +232,9 @@ function DelegatesList({ props }: { props: string }) {
     let chainAddress;
     console.log(delegateData.delegates[0].daoName);
 
-    if (delegateData.delegates[0].daoName === "optimism") {
+    if (delegateData.delegates[0].daoName === "operators") {
       chainAddress = "0x4200000000000000000000000000000000000042";
-    } else if (delegateData.delegates[0].daoName === "arbitrum") {
+    } else if (delegateData.delegates[0].daoName === "avss") {
       chainAddress = "0x912CE59144191C1204E64559FE8253a0e49E6548";
     } else {
       return;
@@ -208,9 +278,7 @@ function DelegatesList({ props }: { props: string }) {
     const selectedValue = event.target.value;
     if (
       selectedValue === "Random" ||
-      selectedValue === "Most delegators" ||
-      selectedValue === "Karma score" ||
-      selectedValue === "Most active"
+      selectedValue === "Most stakers"
     ) {
       toast("Coming Soon 🚀");
     }
@@ -251,32 +319,6 @@ function DelegatesList({ props }: { props: string }) {
 
   return (
     <div>
-      {isShowing && (
-        <div
-          className="bg-yellow-200 border border-gray-300 rounded-md shadow-md text-gray-700 flex items-center p-3 w-70 mb-4"
-          style={{ width: "80%" }}
-        >
-          <span>
-            Data of the Delegates is retrieved from Karma API. Find out how they
-            empower communities.
-          </span>{" "}
-          &nbsp;
-          <a
-            href="http://karmahq.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 font-medium hover:underline"
-          >
-            Click Here!🚀
-          </a>
-          <button
-            className="flex ml-auto items-center justify-center p-1 text-gray-500 hover:text-red-500 bg-white border border-gray-300 rounded-md"
-            onClick={handleClose}
-          >
-            Close
-          </button>
-        </div>
-      )}
       <div className="flex items-center justify-between pe-10">
         <div
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
@@ -300,11 +342,8 @@ function DelegatesList({ props }: { props: string }) {
             className="rounded-full py-2 px-4 outline-none cursor-pointer"
             onChange={handleSelectChange}
           >
-            <option>Most voting power</option>
+            <option>Most stakers</option>
             <option>Random</option>
-            <option>Most delegators</option>
-            <option>Karma score</option>
-            <option>Most active</option>
           </select>
         </div>
       </div>
@@ -328,7 +367,7 @@ function DelegatesList({ props }: { props: string }) {
                 <div
                   onClick={(event) =>{
                     // handleMouseMove(event,index);
-                    router.push(`/${props}/${daos.publicAddress}?active=info  `)
+                    router.push(`/${props}/${daos.address}?active=info  `)
                   }}
                   key={index}
                   style={{
@@ -353,23 +392,25 @@ function DelegatesList({ props }: { props: string }) {
                     <div className="flex justify-center relative">
                       <Image
                         src={
-                          daos.profilePicture == null
-                            ? props == "optimism"
-                              ? OPLogo
-                              : props == "arbitrum"
-                              ? ARBLogo
+                          daos.metadataLogo == null
+                            ? props == "operators"
+                              ? NOLogo
+                              : props == "avss"
+                              ? AVSLogo
                               : ""
-                            : daos.profilePicture
+                            : daos.metadataLogo
                         }
                         alt="Image not found"
                         width={80}
                         height={80}
+                        // layout="fixed"
                         className="rounded-full"
+                        style={{ width: '80px', height: '80px' }} 
                       ></Image>
 
                       <Image
-                        src={ccLogo}
-                        alt="ChoraClub Logo"
+                        src={EILogo}
+                        alt="EigenInsights Logo"
                         className="absolute top-0 right-0"
                         style={{
                           width: "35px",
@@ -384,24 +425,24 @@ function DelegatesList({ props }: { props: string }) {
                         <div
                           className={`font-semibold overflow-hidden ${styles.desc}`}
                         >
-                          {daos.ensName == null ? (
+                          {daos.metadataName == null ? (
                             <span>
-                              {daos.publicAddress.slice(0, 6) +
+                              {daos.address.slice(0, 6) +
                                 "..." +
-                                daos.publicAddress.slice(-4)}
+                                daos.address.slice(-4)}
                             </span>
                           ) : (
                             <span>
-                              {daos.ensName.length > 15
-                                ? daos.ensName.slice(0, 15) + "..."
-                                : daos.ensName}
+                              {daos.metadataName.length > 15
+                                ? daos.metadataName.slice(0, 15) + "..."
+                                : daos.metadataName}
                             </span>
                           )}
                         </div>
                         <div className="flex justify-center items-center gap-2 pb-2 pt-1">
-                          {daos.publicAddress.slice(0, 6) +
+                          {daos.address.slice(0, 6) +
                             "..." +
-                            daos.publicAddress.slice(-4)}
+                            daos.address.slice(-4)}
                           <Tooltip
                             content="Copy"
                             placement="right"
@@ -412,7 +453,7 @@ function DelegatesList({ props }: { props: string }) {
                               <IoCopy
                                 onClick={(event) => {
                                   event.stopPropagation();
-                                  handleCopy(daos.publicAddress);
+                                  handleCopy(daos.address);
                                 }}
                               />
                             </span>
@@ -420,9 +461,9 @@ function DelegatesList({ props }: { props: string }) {
                         </div>
                         <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
                           <span className="text-blue-shade-200 font-semibold">
-                            {formatNumber(daos.delegatedVotes)}&nbsp;
+                            {daos.totalStakers}&nbsp;
                           </span>
-                          delegated tokens
+                          total stakers
                         </div>
                       </div>
                     </div>
@@ -433,7 +474,7 @@ function DelegatesList({ props }: { props: string }) {
                         className="bg-blue-shade-100 text-white font-poppins w-full rounded-[4px] text-sm py-1 font-medium"
                         onClick={(event) => {
                           event.stopPropagation(); // Prevent event propagation to parent container
-                          WalletOpen(daos.publicAddress);
+                          WalletOpen(daos.address);
                         }}
                       >
                         Delegate

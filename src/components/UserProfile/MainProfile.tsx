@@ -9,7 +9,6 @@ import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { IoCopy } from "react-icons/io5";
 import UserInfo from "./UserInfo";
-import UserVotes from "./UserVotes";
 import UserSessions from "./UserSessions";
 import UserOfficeHours from "./UserOfficeHours";
 import ClaimNFTs from "./ClaimNFTs";
@@ -18,9 +17,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import OPLogo from "@/assets/images/daos/op.png";
-import ArbLogo from "@/assets/images/daos/arbCir.png";
-import ccLogo from "@/assets/images/daos/CC.png";
+import NOLogo from "@/assets/images/daos/operators.png"
+import AVSLogo from "@/assets/images/daos/avss.png"
+import EILogo from "@/assets/images/daos/EI.png";
 import {
   Modal,
   ModalContent,
@@ -43,9 +42,25 @@ import { useSession } from "next-auth/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 
+interface Result {
+  _id: string;
+  address: string;
+  metadataName: string;
+  metadataDescription: string;
+  metadataDiscord: string | null;
+  metadataLogo: string;
+  metadataTelegram: string | null;
+  metadataWebsite: string;
+  metadataX: string;
+  tags: string[];
+  shares: any[];
+  totalOperators: number;
+  totalStakers: number;
+}
+
 function MainProfile() {
-  const { isConnected, address } = useAccount();
-  // const address = "0x5e349eca2dc61abcd9dd99ce94d04136151a09ee";
+  const { isConnected } = useAccount();
+  const address = "0x04850b6b12fe4eda95df9371be81e1595716b7ef";
   const { data: session, status } = useSession();
   const { openConnectModal } = useConnectModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
@@ -65,39 +80,23 @@ function MainProfile() {
   const [discourse, setDiscourse] = useState("");
   const [github, setGithub] = useState("");
   const [description, setDescription] = useState("");
+  const [website, setWebsite] = useState("");
   const [isDelegate, setIsDelegate] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [responseFromDB, setResponseFromDB] = useState<boolean>(false);
-  const [karmaImage, setKarmaImage] = useState<any>();
   const [ensName, setEnsName] = useState("");
-  const [karmaDesc, setKarmaDesc] = useState("");
   const [votes, setVotes] = useState<any>();
   const [descAvailable, setDescAvailable] = useState<boolean>(true);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [selfDelegate, setSelfDelegate] = useState(false);
-  const [daoName, setDaoName] = useState("optimism");
+  const [daoName, setDaoName] = useState("operators");
+  const [profileData, setProfileData] = useState<any>();
 
   interface ProgressData {
     total: any;
     uploaded: any;
   }
-
-  // useEffect(() => {
-  //   if (chain?.name === "Optimism") {
-  //     setDaoName("optimism");
-  //   } else if (chain?.name === "Arbitrum One") {
-  //     setDaoName("arbitrum");
-  //   }
-  //   console.log("daoName", daoName);
-  // }, [chain, daoName]);
-  useEffect(() => {
-    if (chain && chain?.name === "Optimism") {
-      setDaoName("optimism");
-    } else if (chain && chain?.name === "Arbitrum One") {
-      setDaoName("arbitrum");
-    }
-  }, [chain, chain?.name]);
-
+  
   useEffect(() => {
     // console.log("path", path);
     if (isConnected && session && path.includes("profile/undefined")) {
@@ -168,45 +167,36 @@ function MainProfile() {
   };
 
   useEffect(() => {
-    const checkDelegateStatus = async () => {
-      const addr = await walletClient.getAddresses();
-      const address1 = addr[0];
-      let delegateTxAddr = "";
-      // const contractAddress =
-      //   daoName === "optimism"
-      //     ? "0x4200000000000000000000000000000000000042"
-      //     : daoName === "arbitrum"
-      //     ? "0x912CE59144191C1204E64559FE8253a0e49E6548"
-      //     : "";
-      const contractAddress =
-        chain?.name === "Optimism"
-          ? "0x4200000000000000000000000000000000000042"
-          : chain?.name === "Arbitrum One"
-          ? "0x912CE59144191C1204E64559FE8253a0e49E6548"
-          : "";
-      console.log(walletClient);
-      let delegateTx;
-      if (address) {
-        delegateTx = await publicClient.readContract({
-          address: contractAddress,
-          abi: dao_abi.abi,
-          functionName: "delegates",
-          args: [address],
-          // account: address1,
-        });
-        console.log("Delegate tx", delegateTx);
-        delegateTxAddr = delegateTx;
+    const checkDelegateStatus = async() => {
+      try {
+        const res = await fetch(`/api/get-search-data?q=${address}&prop=operators`);
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
+        }
+        const data: Result[] | { message: string } = await res.json();
+        if (Array.isArray(data)) {
+          console.log("dataaaaaaaa", data[0])
+          setProfileData(data[0])
+          setWebsite(data[0].metadataWebsite)
+          setDisplayImage(data[0].metadataLogo);
+          setDescription(data[0].metadataDescription);
+          setDisplayName(data[0].metadataName);
+          setTwitter(data[0].metadataX);
+          setDiscord(data[0].metadataDiscord ?? "");
+          if (data.length > 0) {
+            setSelfDelegate(true);
+          } else {
+            setSelfDelegate(false);
+          }
+        }
+      } catch (error) {
+        console.log(error)
       }
+    }
 
-      if (delegateTxAddr.toLowerCase() === address?.toLowerCase()) {
-        console.log("Delegate comparison: ", delegateTx, address);
-        setSelfDelegate(true);
-      } else {
-        setSelfDelegate(false);
-      }
-    };
-    checkDelegateStatus();
-  }, [address, daoName, selfDelegate]);
+    checkDelegateStatus()
+  }, [address, selfDelegate])
+
 
   // Pass the address of whom you want to delegate the voting power to
   const handleDelegateVotes = async (to: string) => {
@@ -214,17 +204,7 @@ function MainProfile() {
       const addr = await walletClient.getAddresses();
       const address1 = addr[0];
 
-      const contractAddress =
-        // daoName === "optimism"
-        //   ? "0x4200000000000000000000000000000000000042"
-        //   : daoName === "arbitrum"
-        //   ? "0x912CE59144191C1204E64559FE8253a0e49E6548"
-        //   : "";
-        chain?.name === "Optimism"
-          ? "0x4200000000000000000000000000000000000042"
-          : chain?.name === "Arbitrum One"
-          ? "0x912CE59144191C1204E64559FE8253a0e49E6548"
-          : "";
+      const contractAddress = ""
       console.log("Contract", contractAddress);
       console.log("Wallet Client", walletClient);
       const delegateTx = await walletClient.writeContract({
@@ -302,12 +282,6 @@ function MainProfile() {
       try {
         // Fetch data from your backend API to check if the address exists
         // let dao = daoName;
-        let dao =
-          chain?.name === "Optimism"
-            ? "optimism"
-            : chain?.name === "Arbitrum One"
-            ? "arbitrum"
-            : "";
         console.log("Fetching from DB");
         // const dbResponse = await axios.get(`/api/profile/${address}`);
 
@@ -316,7 +290,6 @@ function MainProfile() {
 
         const raw = JSON.stringify({
           address: address,
-          daoName: dao,
         });
 
         const requestOptions: any = {
@@ -347,21 +320,6 @@ function MainProfile() {
               setEmailId(item.emailId);
               setTwitter(item.socialHandles.twitter);
               setDiscord(item.socialHandles.discord);
-
-              const matchingNetwork = item.networks.find(
-                (network: any) => network.dao_name === dao
-              );
-
-              // If a matching network is found, set the discourse ID
-              if (matchingNetwork) {
-                setDiscourse(matchingNetwork.discourse);
-              } else {
-                // Handle the case where no matching network is found
-                console.log(
-                  "No matching network found for the specified dao_name"
-                );
-              }
-
               setGithub(item.socialHandles.github);
               // Exit the loop since we found a match
               break;
@@ -372,15 +330,6 @@ function MainProfile() {
             "Data not found in the database, fetching from third-party API"
           );
           // Data not found in the database, fetch data from the third-party API
-          let dao =
-            chain?.name === "Optimism"
-              ? "optimism"
-              : chain?.name === "Arbitrum One"
-              ? "arbitrum"
-              : "";
-          const res = await fetch(
-            `https://api.karmahq.xyz/api/dao/find-delegate?dao=${dao}&user=${address}`
-          );
           if (responseFromDB === false && description == "") {
             setDescAvailable(false);
           }
@@ -391,7 +340,6 @@ function MainProfile() {
             console.log("Response Success----");
             if (details && details.data && details.data.delegate) {
               // If delegate data is present, set isDelegate to true
-              console.log("Setting Up Karma's Data---");
               setIsDelegate(true);
               setProfileDetails(details.data.delegate);
               setDescription(
@@ -400,16 +348,6 @@ function MainProfile() {
               setDescAvailable(true);
               if (details.data.delegate.twitterHandle != null) {
                 setTwitter(`${details.data.delegate.twitterHandle}`);
-              }
-
-              if (details.data.delegate.discourseHandle != null) {
-                if (dao === "optimism") {
-                  setDiscourse(`${details.data.delegate.discourseHandle}`);
-                  console.log("Discourse", discourse);
-                }
-                if (dao === "arbitrum") {
-                  setDiscourse(`${details.data.delegate.discourseHandle}`);
-                }
               }
 
               if (details.data.delegate.discordHandle != null) {
@@ -484,14 +422,6 @@ function MainProfile() {
   const checkDelegateExists = async (address: any) => {
     try {
       // Make a request to your backend API to check if the address exists
-      let dao =
-        chain?.name === "Optimism"
-          ? "optimism"
-          : chain?.name === "Arbitrum One"
-          ? "arbitrum"
-          : "";
-      console.log("Checking");
-
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -531,13 +461,6 @@ function MainProfile() {
   const handleAdd = async (newDescription?: string) => {
     try {
       // Call the POST API function for adding a new delegate
-      let dao =
-        chain?.name === "Optimism"
-          ? "optimism"
-          : chain?.name === "Arbitrum One"
-          ? "arbitrum"
-          : "";
-      console.log("Adding the delegate..");
       const response = await axios.post("/api/profile", {
         address: address,
         image: displayImage,
@@ -581,13 +504,6 @@ function MainProfile() {
   const handleUpdate = async (newDescription?: string) => {
     try {
       // Call the PUT API function for updating an existing delegate
-
-      let dao =
-        chain?.name === "Optimism"
-          ? "optimism"
-          : chain?.name === "Arbitrum One"
-          ? "arbitrum"
-          : "";
       console.log("Updating");
       console.log("Inside Updating Description", newDescription);
       const response: any = await axios.put("/api/profile", {
@@ -631,46 +547,8 @@ function MainProfile() {
     const fetchData = async () => {
       console.log("Description", description);
       try {
-        let dao =
-          chain?.name === "Optimism"
-            ? "optimism"
-            : chain?.name === "Arbitrum One"
-            ? "arbitrum"
-            : "";
-        console.log("Fetching Data...");
-        const res = await fetch(
-          `https://api.karmahq.xyz/api/dao/find-delegate?dao=${dao}&user=${address}`
-        );
-        console.log("Response", res);
 
         // console.log("Desc.", description)
-        if (res.ok) {
-          const details = await res.json();
-          console.log("Data Fetched...", details.data.delegate.ensName);
-          setEnsName(details.data.delegate.ensName);
-          setKarmaImage(details.data.delegate.profilePicture);
-          setKarmaDesc(
-            details.data.delegate.delegatePitch.customFields[1].value
-          );
-          setVotes(details.data.delegate);
-          console.log("Votes", votes);
-          // setProfileDetails(details.data.delegate);
-
-          // Check if delegate data is present in the response
-          if (details && details.data && details.data.delegate) {
-            // If delegate data is present, set isDelegate to true
-            setIsDelegate(true);
-          } else {
-            // If delegate data is not present, set isDelegate to false
-            setIsDelegate(false);
-          }
-        } else if (res.status === 404) {
-          // If response status is 404, set isDelegate to false
-          setIsDelegate(false);
-        } else {
-          // Handle other error cases
-          setIsDelegate(false);
-        }
       } catch (err) {
         console.error("Error fetching data:", err);
       }
@@ -698,19 +576,19 @@ function MainProfile() {
                     <Image
                       src={
                         (displayImage
-                          ? `https://gateway.lighthouse.storage/ipfs/${displayImage}`
-                          : karmaImage) ||
-                        (daoName === "optimism"
-                          ? OPLogo
-                          : daoName === "arbitrum"
-                          ? ArbLogo
-                          : ccLogo)
+                          ? displayImage
+                          : "") ||
+                        (daoName === "operators"
+                          ? NOLogo
+                          : daoName === "avss"
+                          ? AVSLogo
+                          : EILogo)
                       }
                       alt="user"
                       width={256}
                       height={256}
                       className={
-                        displayImage
+                        profileData
                           ? "w-40 h-40 rounded-3xl"
                           : "w-20 h-20 rounded-3xl"
                       }
@@ -718,8 +596,8 @@ function MainProfile() {
                   </div>
 
                   <Image
-                    src={ccLogo}
-                    alt="ChoraClub Logo"
+                    src={EILogo}
+                    alt="EigenInsights Logo"
                     className="absolute top-0 right-0"
                     style={{
                       width: "30px",
@@ -734,8 +612,8 @@ function MainProfile() {
               <div className="px-4">
                 <div className=" flex items-center py-1">
                   <div className="font-bold text-lg pr-4">
-                    {ensName || profileDetails?.ensName ? (
-                      ensName || profileDetails?.ensName
+                    {profileData ? (
+                      profileData.metadataName
                     ) : displayName ? (
                       displayName
                     ) : (
@@ -747,28 +625,13 @@ function MainProfile() {
                   </div>
                   <div className="flex gap-3">
                     <Link
-                      href={`https://twitter.com/${twitter}`}
+                      href={twitter}
                       className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
                         twitter == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
                       target="_blank">
                       <FaXTwitter color="#7C7C7C" size={12} />
-                    </Link>
-                    <Link
-                      href={
-                        daoName === "optimism"
-                          ? `https://gov.optimism.io/u/${discourse}`
-                          : daoName == "arbitrum"
-                          ? `https://forum.arbitrum.foundation/u/${discourse}`
-                          : ""
-                      }
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1  ${
-                        discourse == "" ? "hidden" : ""
-                      }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
-                      target="_blank">
-                      <BiSolidMessageRoundedDetail color="#7C7C7C" size={12} />
                     </Link>
                     <Link
                       href={`https://discord.com/${discord}`}
@@ -975,21 +838,6 @@ function MainProfile() {
                       onClick={() => handleDelegateVotes(`${address}`)}>
                       Become Delegate
                     </button>
-
-                    {/* <div className="">
-                      <select
-                        value={daoName}
-                        onChange={(e) => setDaoName(e.target.value)}
-                        className="outline-none border border-blue-shade-200 text-blue-shade-200 rounded-full py-2 px-3"
-                      >
-                        <option value="optimism" className="text-gray-700">
-                          Optimism
-                        </option>
-                        <option value="arbitrum" className="text-gray-700">
-                          Arbitrum
-                        </option>
-                      </select>
-                    </div> */}
                   </div>
                 ) : null}
               </div>
@@ -1069,7 +917,6 @@ function MainProfile() {
           <div className="py-6 ps-16">
             {searchParams.get("active") === "info" ? (
               <UserInfo
-                karmaDesc={karmaDesc}
                 description={description}
                 isDelegate={isDelegate}
                 isSelfDelegate={selfDelegate}
@@ -1080,11 +927,6 @@ function MainProfile() {
                 isLoading={isLoading}
                 daoName={daoName}
               />
-            ) : (
-              ""
-            )}
-            {selfDelegate === true && searchParams.get("active") === "votes" ? (
-              <UserVotes daoName={daoName} />
             ) : (
               ""
             )}

@@ -4,19 +4,17 @@ import React from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 
 const metadataConfig: any = {
-  optimism: {
-    title: "Optimism DAO",
+  operators: {
+    title: "Operators",
     description:
-      "Explore Optimism DAO's delegates list on Chora Club. Connect with experienced Web3 delegates on the Optimism network, book sessions, and grow your knowledge in the decentralized ecosystem.",
-    image:
-      "https://gateway.lighthouse.storage/ipfs/QmcgZPNuhxxfxgrB78cLb4nYCJhYpSPFsJKvj3Z5AY5kKe",
+      "Operators are entities that help run AVS software built on EigenLayer. They register in EigenLayer and allow stakers to delegate to them, then opt in to provide various services (AVSs) built on top of EigenLayer.",
+    image:"",
   },
-  arbitrum: {
-    title: "Arbitrum DAO",
+  avss: {
+    title: "AVSs",
     description:
-      "Explore Arbitrum DAO's delegates list on Chora Club. Connect with experienced Web3 delegates on the Arbitrum network, book sessions, and grow your knowledge in the decentralized ecosystem.",
-    image:
-      "https://gateway.lighthouse.storage/ipfs/QmPE5oSYhm2e5hDCG6Bdgb6ACp2iYwLhTq2Xdd4divRyJJ",
+      "Actively Validated Services (AVSs) are services built on the EigenLayer protocol that leverage Ethereum's shared security.Operators perform validation tasks for AVSs, contributing to the security and integrity of the network.AVSs deliver services to users (AVS Consumers) and the broader Web3 ecosystem.",
+    image:"",
   },
 };
 
@@ -29,38 +27,16 @@ export async function generateMetadata(
 
   return {
     metadataBase: new URL("https://app.chora.club/"),
-    title: "Chora Club",
+    title: "Eigen Insights",
     description: "Discover. Learn. Engage.",
-    openGraph: {
-      title: delegateMetadata.title,
-      description: delegateMetadata.description,
-      url: `https://app.chora.club/${daoDelegates}`,
-      siteName: "Chora Club",
-      images: [
-        {
-          url: delegateMetadata.image,
-          width: 800,
-          height: 600,
-          alt: "img",
-        },
-        {
-          url: delegateMetadata.image,
-          width: 1800,
-          height: 1600,
-          alt: "img",
-        },
-      ],
-      locale: "en_US",
-      type: "website",
-    },
   };
 }
 
 function page({ params }: { params: { daoDelegates: string } }) {
   return (
     <div>
-      {params.daoDelegates === "optimism" ||
-      params.daoDelegates === "arbitrum" ? (
+      {params.daoDelegates === "operators" ||
+      params.daoDelegates === "avss" ? (
         <IndividualDAO props={params} />
       ) : (
         <PageNotFound />

@@ -1,5 +1,5 @@
 import { createWalletClient, createPublicClient, custom } from "viem";
-import { optimism, arbitrum } from "viem/chains";
+import { mainnet } from "viem/chains";
 import { useNetwork } from "wagmi";
 import { defineChain } from "viem";
 
@@ -9,37 +9,6 @@ declare global {
     // Add other properties if needed
   }
 }
-const optimismSepolia = defineChain({
-  id: 11155420,
-  name: "OptimismSepolia",
-  nativeCurrency: {
-    decimals: 18,
-    name: "Ether",
-    symbol: "ETH",
-  },
-  rpcUrls: {
-    default: {
-      http: [
-        "https://opt-sepolia.g.alchemy.com/v2/BZr3W1fqQEy2wnrcDQf1z4hiGCOhcHfp",
-      ],
-      webSocket: [
-        "wss://opt-sepolia.g.alchemy.com/v2/BZr3W1fqQEy2wnrcDQf1z4hiGCOhcHfp",
-      ],
-    },
-    public: {
-      http: [
-        "https://opt-sepolia.g.alchemy.com/v2/BZr3W1fqQEy2wnrcDQf1z4hiGCOhcHfp",
-      ],
-      webSocket: [
-        "wss://opt-sepolia.g.alchemy.com/v2/BZr3W1fqQEy2wnrcDQf1z4hiGCOhcHfp",
-      ],
-    }
-  },
-  blockExplorers: {
-    default: { name: "Explorer", url: "https://explorer.zora.energy" },
-  },
-  network: ""
-});
 
 const WalletAndPublicClient = () => {
   let publicClient: any;
@@ -48,12 +17,10 @@ const WalletAndPublicClient = () => {
   const { chain } = useNetwork();
   let chainName: any;
   console.log("the chain", chain?.name);
-  if (chain?.name === "Optimism") {
-    chainName = optimism;
-  } else if (chain?.name === "Arbitrum One") {
-    chainName = arbitrum;
-  } else if (chain?.name === "Optimism Sepolia") {
-    chainName = optimismSepolia;
+  if (chain?.name === "Ethereum") {
+    chainName = mainnet;
+  } else if (chain?.name === "Ethereum") {
+    chainName = mainnet;
   } else {
     chainName = "";
   }

@@ -83,18 +83,6 @@ const WatchSocialLinks = ({
 
   const socialLinks = [
     {
-      img: discourse,
-      socialMedia: "Discourse",
-      handles:
-        data.dao_name === "optimism" &&
-        data.hostProfileInfo?.socialHandles?.discourse
-          ? `https://gov.optimism.io/${data.hostProfileInfo?.socialHandles?.discourse}`
-          : data.dao_name === "arbitrum" &&
-            data.hostProfileInfo?.socialHandles?.discourse
-          ? `https://forum.arbitrum.foundation/${data.hostProfileInfo?.socialHandles?.discourse}`
-          : "",
-    },
-    {
       img: twitter,
       socialMedia: "Twitter",
       handles: data.hostProfileInfo?.socialHandles?.twitter

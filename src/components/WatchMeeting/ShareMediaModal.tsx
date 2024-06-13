@@ -62,7 +62,7 @@ function ShareMediaModal({
     const text = encodeURIComponent(
       `${data.title} ${decodeURIComponent(
         url
-      )} via @ChoraClub\n\n#choraclub #session #growth`
+      )} via @EigenInsights\n\n#eigeninsights #session #growth`
     );
 
     // Twitter share URL

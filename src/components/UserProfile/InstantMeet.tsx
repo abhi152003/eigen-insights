@@ -126,14 +126,6 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
     });
   };
 
-  // useEffect(() => {
-  //   if (chain?.name === "Optimism") {
-  //     setDaoName("optimism");
-  //   } else if (chain?.name === "Arbitrum One") {
-  //     setDaoName("arbitrum");
-  //   }
-  // }, [chain]);
-
   const block = [
     {
       image: connectImg,

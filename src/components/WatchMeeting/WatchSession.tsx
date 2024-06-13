@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import user from "@/assets/images/daos/user3.png";
 import view from "@/assets/images/daos/view.png";
 import Image from "next/image";
-import oplogo from "@/assets/images/daos/op.png";
-import arblogo from "@/assets/images/daos/arbitrum.jpg";
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
 import time from "@/assets/images/daos/time.png";
 import { PiFlagFill } from "react-icons/pi";
 import { BiSolidShare } from "react-icons/bi";
@@ -224,16 +224,16 @@ function WatchSession({
               </div>
 
               <div className="flex items-center gap-1">
-                {data.dao_name === "optimism" ? (
+                {data.dao_name === "operators" ? (
                   <Image
-                    src={oplogo}
+                    src={NOLogo}
                     alt="image"
                     width={20}
                     className="rounded-full"
                   />
-                ) : data.dao_name === "arbitrum" ? (
+                ) : data.dao_name === "avss" ? (
                   <Image
-                    src={arblogo}
+                    src={AVSLogo}
                     alt="image"
                     width={20}
                     className="rounded-full"

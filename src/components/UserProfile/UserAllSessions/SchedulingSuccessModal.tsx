@@ -26,9 +26,9 @@ function SchedulingSuccessModal({
       `https://app.chora.club/${dao_name}/${userAddress}?active=delegatesSession&session=book`
     );
     const text = encodeURIComponent(
-      `Hello Web3 Enthusiasts!🎉\nI've opened up some time slots for sessions on @ChoraClub!📅\nDon't miss out – book your session now to learn more about Web3 ecosystem! 📝\n👉 ${decodeURIComponent(
+      `Hello Web3 Enthusiasts!🎉\nI've opened up some time slots for sessions on @EigenInsights!📅\nDon't miss out – book your session now to learn more about Web3 ecosystem! 📝\n👉 ${decodeURIComponent(
         url
-      )}\n\n#choraclub #sessionbooking`
+      )}\n\n#eigeninsights #sessionbooking`
     );
 
     // Twitter share URL

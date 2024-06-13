@@ -128,7 +128,7 @@ const WatchFreeCollect = () => {
                   className="my-2"
                 />
                 <div className="flex flex-col justify-center items-start">
-                  <p className="font-normal text-xs">Optimism</p>
+                  <p className="font-normal text-xs">Operators</p>
                   <p className="font-normal text-[10px] text-black-shade-100">
                     0.0002314
                   </p>
