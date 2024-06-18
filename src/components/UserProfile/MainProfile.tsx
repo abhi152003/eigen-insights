@@ -19,7 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import NOLogo from "@/assets/images/daos/operators.png"
 import AVSLogo from "@/assets/images/daos/avss.png"
-import EILogo from "@/assets/images/daos/EI.png";
+import EILogo from "@/assets/images/daos/Eigen circle logo.png";
 import {
   Modal,
   ModalContent,
@@ -609,7 +609,7 @@ function MainProfile() {
                 </div>
               </div>
 
-              <div className="px-4">
+            <div className="px-4 text-white">
                 <div className=" flex items-center py-1">
                   <div className="font-bold text-lg pr-4">
                     {profileData ? (
@@ -626,28 +626,28 @@ function MainProfile() {
                   <div className="flex gap-3">
                     <Link
                       href={twitter}
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         twitter == "" ? "hidden" : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "white" }}
                       target="_blank">
                       <FaXTwitter color="#7C7C7C" size={12} />
                     </Link>
                     <Link
                       href={`https://discord.com/${discord}`}
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         discord == "" ? "hidden" : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "white" }}
                       target="_blank">
                       <FaDiscord color="#7C7C7C" size={12} />
                     </Link>
                     <Link
                       href={`https://github.com/${github}`}
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         github == "" ? "hidden" : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "white" }}
                       target="_blank">
                       <FaGithub color="#7C7C7C" size={12} />
                     </Link>
@@ -656,8 +656,8 @@ function MainProfile() {
                       placement="right"
                       showArrow>
                       <span
-                        className="border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 cursor-pointer"
-                        style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                        className="border-[0.5px] border-white rounded-full h-fit p-1 cursor-pointer"
+                        style={{ backgroundColor: "white" }}
                         onClick={onOpen}>
                         <FaPencil color="#3e3d3d" size={12} />
                       </span>
@@ -847,11 +847,11 @@ function MainProfile() {
             </div>
           </div>
 
-          <div className="flex gap-12 bg-[#D9D9D945] pl-16">
+          <div className="flex gap-12 bg-[#D9D9D945] pl-16 text-white">
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "info"
-                  ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                   : "border-transparent"
               }`}
               onClick={() => router.push(path + "?active=info")}>
@@ -861,7 +861,7 @@ function MainProfile() {
               <button
                 className={`border-b-2 py-4 px-2 outline-none ${
                   searchParams.get("active") === "votes"
-                    ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+                    ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
                     : "border-transparent"
                 }`}
                 onClick={() => router.push(path + "?active=votes")}>
@@ -871,7 +871,7 @@ function MainProfile() {
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "sessions"
-                  ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+                  ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
                   : "border-transparent"
               }`}
               onClick={() =>
@@ -882,7 +882,7 @@ function MainProfile() {
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "officeHours"
-                  ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+                  ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
                   : "border-transparent"
               }`}
               onClick={() =>
@@ -895,7 +895,7 @@ function MainProfile() {
               <button
                 className={`border-b-2 py-4 px-2 outline-none ${
                   searchParams.get("active") === "instant-meet"
-                    ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+                    ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
                     : "border-transparent"
                 }`}
                 onClick={() => router.push(path + "?active=instant-meet")}>

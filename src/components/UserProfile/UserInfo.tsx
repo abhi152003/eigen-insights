@@ -253,12 +253,12 @@ function UserInfo({
 
   return (
     <div className="pt-4">
-      <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm mb-6">
+      <div className="flex w-fit gap-16 border-3 border-white px-6 rounded-xl text-sm mb-6">
         <button
           className={`py-2 ${
             activeButton === "onchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
+              ? "text-light-cyan"
+              : "text-white font-bold"
           } `}
           onClick={() => fetchAttestation("onchain")}
         >
@@ -267,8 +267,8 @@ function UserInfo({
         <button
           className={`py-2 ${
             activeButton === "offchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
+              ? "text-light-cyan"
+              : "text-white font-bold"
           }`}
           onClick={() => fetchAttestation("offchain")}
         >
@@ -280,7 +280,7 @@ function UserInfo({
           blocks.map((key, index) => (
             <div
               key={index}
-              className={`bg-[#3E3D3D] text-white rounded-2xl px-3 py-7 ${
+              className={`bg-[#11334D] text-white rounded-2xl px-3 py-7 ${
                 isDelegate === true || isSelfDelegate === true
                   ? "cursor-pointer"
                   : ""
@@ -317,7 +317,7 @@ function UserInfo({
       </div>
 
       <div
-        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
+        style={{ boxShadow: "0px 3px 7px 3px #A7DBF2", backgroundColor: '#214965' }}
         className={`flex flex-col justify-between min-h-48 rounded-xl my-7 me-32 p-3 
         ${isEditing ? "outline" : ""}`}
       >
@@ -327,13 +327,13 @@ function UserInfo({
           onChange={handleDescChange}
           value={isEditing ? tempDesc : description}
           placeholder={"Type your description here..."}
-          // style={{height:"200px",width:"250px"}}
+          style={{backgroundColor: '#214965', color: 'white', borderRadius: '6px', padding: '16px'}}
         />
 
         <div className="flex justify-end">
           {isEditing && (
             <button
-              className="bg-blue-shade-100 text-white text-sm py-1 px-3 rounded-full font-semibold"
+              className="bg-light-blue text-white text-sm py-1 px-3 rounded-full font-semibold"
               onClick={handleSaveClick}
             >
               {loading ? "Saving" : "Save"}
@@ -342,7 +342,7 @@ function UserInfo({
 
           {!isEditing && (
             <button
-              className="bg-blue-shade-100 text-white text-sm py-1 px-4 mt-3 rounded-full font-semibold"
+              className="bg-light-blue text-white text-sm py-1 px-4 mt-3 rounded-full font-semibold"
               onClick={() => setEditing(true)}
             >
               Edit

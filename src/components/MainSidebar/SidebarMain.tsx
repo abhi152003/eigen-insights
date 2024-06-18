@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import logo from "@/assets/images/daos/EI.png";
+import logo from "@/assets/images/daos/Eigen circle logo.png";
 import rocket from "@/assets/images/sidebar/rocket.png";
 import sessionIcn from "@/assets/images/sidebar/office.png";
 import office from "@/assets/images/sidebar/Office hour (1).png";
@@ -86,6 +86,7 @@ function Sidebar() {
               width={40}
               className="xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
             ></Image>
+
             <Tooltip
               content="Explore"
               placement="right"
@@ -102,7 +103,7 @@ function Sidebar() {
                     pathname.endsWith(`/`)
                       ? "border-white border-2 rounded-full"
                       : ""
-                  }`}
+                  } ${styles.image_hover}`}
                 ></Image>
               </Link>
             </Tooltip>
@@ -150,7 +151,7 @@ function Sidebar() {
           </div>
           <div className="h-full">
             <div
-              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-blue-shade-300 rounded-2xl overflow-y-auto ${styles.scrollbar}`}
+              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#376380] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
             >
               {storedDao ? (
                 storedDao.map((data, index) => (

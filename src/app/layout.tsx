@@ -35,7 +35,7 @@ const quanty = localFonts({
 // };
 export const metadata: Metadata = {
   metadataBase: new URL("https://app.chora.club/"),
-  title: "Eigen Insights",
+  title: "EigenInsight",
   description: "Discover. Learn. Engage.",
   icons: {
     icon: ["/favicon.png"],
@@ -79,7 +79,7 @@ export default function RootLayout({
           <RootProviders>
             <HuddleContextProvider>
               <div className="flex">
-                <div className="fixed w-[6%] bg-blue-shade-100 h-screen">
+                <div className="fixed w-[6%] bg-[#11334D] h-screen">
                   <SidebarMain />
                 </div>
                 <div className="w-[94%] ml-auto">

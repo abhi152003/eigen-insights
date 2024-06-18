@@ -12,9 +12,9 @@ const config: Config = {
     extend: {
       screens: {
         "2.5xl": "2100px",
-        "1.5xl":"1350px",
-        "1.7xl":"1450px",
-        "1.5lg":"1200px",
+        "1.5xl": "1350px",
+        "1.7xl": "1450px",
+        "1.5lg": "1200px",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -40,7 +40,16 @@ const config: Config = {
         "black-shade-900": "#B9B9B9",
         "green-shade-100": "#00CE78",
         "green-shade-200": "#25d366",
-
+        "dark-blue": "#00172B",
+        "light-blue": "#5E9CBF",
+        "deep-blue": "#214965",
+        "medium-blue": "#427FA3",
+        "navy-blue": "#05223B",
+        "light-cyan": "#A7DBF2",
+        "slate-blue": "#376380",
+        "midnight-blue": "#11334D",
+        "sky-blue": "#8AB3C9",
+        "grayish-blue": "#718391",
       },
       fontFamily: {
         quanty: ["var(--font-quanty)"],
