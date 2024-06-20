@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Title, Tooltip} from 'chart.js';
 import { formatEther } from 'ethers';
+import { Oval } from 'react-loader-spinner';
 
 interface Share {
   strategyAddress: string;
@@ -53,6 +54,7 @@ function Analytics() {
   const [skip, setSkip] = useState(0);
   const [take, setTake] = useState(10);
   const [total, setTotal] = useState(0);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async() => {
@@ -77,6 +79,7 @@ function Analytics() {
           setRestakeTVL(restakeTVL.tvlStrategies)
           setAVSOperators(avsOperators)
           setIsDataFetched(true); // Set the flag to true after fetching data
+          setIsPageLoading(false)
         } catch (error) {
           console.log(error)
         }
@@ -103,6 +106,7 @@ function Analytics() {
       console.log("completeddddddddd", withdrawlsData.data.filter((withdrawal: { isCompleted: any; }) => withdrawal.isCompleted))
       setWithdrawals(withdrawlsData.data);
       setTotal(withdrawlsData.meta.total);
+      setIsPageLoading(false)
     };
 
     fetchWithdrawals();
@@ -208,113 +212,129 @@ function Analytics() {
   return (
     <div className='p-20'>
         <div>Analytics</div>
-        <div className="flex space-x-4">
-            <div className="p-4 bg-white rounded-lg border shadow-sm">
-                <div className="text-gray-600">TVL(ETH)</div>
-                {totalTVL && 
-                    <div className="font-bold text-lg text-black">{parseFloat(totalTVL.toFixed(2))}</div>
-                }
+        {isPageLoading && (
+            <div className="flex items-center justify-center pt-10">
+                <Oval
+                    visible={true}
+                    height="40"
+                    width="40"
+                    color="#0500FF"
+                    secondaryColor="#cdccff"
+                    ariaLabel="oval-loading"
+                />
             </div>
-            <div className="p-4 bg-white rounded-lg border shadow-sm">
-                <div className="text-gray-600">Total Operators</div>
-                <div className="font-bold text-lg text-black">{totalOperators}</div>
-            </div>
-            <div className="p-4 bg-white rounded-lg border shadow-sm">
-                <div className="text-gray-600">Total AVSs</div>
-                <div className="font-bold text-lg text-black">{totalAVSs}</div>
-            </div>
-            <div className="p-4 bg-white rounded-lg border shadow-sm">
-                <div className="text-gray-600">Total Stakers</div>
-                <div className="font-bold text-lg text-black">{totalStakers}</div>
-            </div>
-            <div className="p-4 bg-white rounded-lg border shadow-sm">
-                <div className="text-gray-600">TVL Restaking(ETH)</div>
-                {totalRestaking && 
-                    <div className="font-bold text-lg text-black">{parseFloat(totalRestaking.toFixed(2))}</div>
-                }
-            </div>
-        </div>
-        <div className='flex gap-x-40'>
-          <div className='w-96 h-96'>
-            <h1>Operators in AVSs</h1>
-            <Doughnut data={avsOperatorsData} />
-          </div>
-          <div className='w-96 h-96'>
-            <h1>Restaking TVL</h1>
-            <Doughnut data={restakeData} />
-          </div>
-        </div>
+        )}
+        {!isPageLoading && (        
         <div>
-          <div className="table-container mx-auto py-8">
-            <h1 className='mt-10 mb-10'>All Withdrawals</h1>
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-black">
-                  <th className="py-2 px-4 border">Block</th>
-                  <th className="py-2 px-4 border">Staker</th>
-                  <th className="py-2 px-4 border">Is Completed?</th>
-                  <th className="py-2 px-4 border">Delegated To</th>
-                  <th className="py-2 px-4 border">Shares(ETH)</th>
-                  <th className="py-2 px-4 border">Strategy</th>
-                </tr>
-              </thead>
-              <tbody>
-                {withdrawals.map((withdrawal, index) => (
-                  <tr key={index} className="bg-black">
-                    <td className="py-2 px-4 border text-sm">{withdrawal.createdAtBlock}</td>
-                    <td className="py-2 px-4 border text-sm">{withdrawal.stakerAddress}</td>
-                    <td className="py-2 px-4 border text-sm">{withdrawal.isCompleted ? 'Yes' : 'No'}</td>
-                    <td className="py-2 px-4 border text-sm">{withdrawal.delegatedTo}</td>
-                    <td className="py-2 px-4 border text-sm">
-                      {withdrawal.shares.map((share, index) => (
-                        <div key={index}>{weiToEth(share.shares)}</div>
-                      ))}
-                    </td>
-                    <td className="py-2 px-4 border">
-                    {withdrawal.shares.map((share, index) => (
-                      <div key={index}>{strategyNames[share.strategyAddress] || share.strategyAddress}</div>
-                    ))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className="flex justify-center mt-4">
-              <button
-                disabled={skip === 0}
-                onClick={() => handlePageChange(1)}
-                className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-              >
-                First
-              </button>
-              <button
-                disabled={skip === 0}
-                onClick={() => handlePageChange(skip / take)}
-                className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-              >
-                Prev
-              </button>
-              <span className="px-4 py-2 mr-2">
-                Page {skip / take + 1} of {totalPages}
-              </span>
-              <button
-                disabled={skip + take >= total}
-                onClick={() => handlePageChange((skip / take) + 2)}
-                className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-              >
-                Next
-              </button>
-              <button
-                disabled={skip + take >= total}
-                onClick={() => handlePageChange(totalPages)}
-                className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-              >
-                Last
-              </button>
+            <div className="flex space-x-4">
+                <div className="p-4 bg-white rounded-lg border shadow-sm">
+                    <div className="text-gray-600">TVL(ETH)</div>
+                    {totalTVL && 
+                        <div className="font-bold text-lg text-black">{parseFloat(totalTVL.toFixed(2))}</div>
+                    }
+                </div>
+                <div className="p-4 bg-white rounded-lg border shadow-sm">
+                    <div className="text-gray-600">Total Operators</div>
+                    <div className="font-bold text-lg text-black">{totalOperators}</div>
+                </div>
+                <div className="p-4 bg-white rounded-lg border shadow-sm">
+                    <div className="text-gray-600">Total AVSs</div>
+                    <div className="font-bold text-lg text-black">{totalAVSs}</div>
+                </div>
+                <div className="p-4 bg-white rounded-lg border shadow-sm">
+                    <div className="text-gray-600">Total Stakers</div>
+                    <div className="font-bold text-lg text-black">{totalStakers}</div>
+                </div>
+                <div className="p-4 bg-white rounded-lg border shadow-sm">
+                    <div className="text-gray-600">TVL Restaking(ETH)</div>
+                    {totalRestaking && 
+                        <div className="font-bold text-lg text-black">{parseFloat(totalRestaking.toFixed(2))}</div>
+                    }
+                </div>
             </div>
-          </div>
+            <div className='flex gap-x-40'>
+            <div className='w-96 h-96'>
+                <h1>Operators in AVSs</h1>
+                <Doughnut data={avsOperatorsData} />
+            </div>
+            <div className='w-96 h-96'>
+                <h1>Restaking TVL</h1>
+                <Doughnut data={restakeData} />
+            </div>
+            </div>
+            <div>
+            <div className="mx-auto py-8 overflow-x-auto table-container">
+                <h1 className='mt-10 mb-10'>All Withdrawals</h1>
+                <table className="w-full border-collapse">
+                <thead>
+                    <tr className="bg-black">
+                    <th className="py-2 px-4 border">Block</th>
+                    <th className="py-2 px-4 border">Staker</th>
+                    <th className="py-2 px-4 border">Is Completed?</th>
+                    <th className="py-2 px-4 border">Delegated To</th>
+                    <th className="py-2 px-4 border">Shares(ETH)</th>
+                    <th className="py-2 px-4 border">Strategy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {withdrawals.map((withdrawal, index) => (
+                    <tr key={index} className="bg-black">
+                        <td className="py-2 px-4 border text-sm">{withdrawal.createdAtBlock}</td>
+                        <td className="py-2 px-4 border text-sm">{withdrawal.stakerAddress}</td>
+                        <td className="py-2 px-4 border text-sm">{withdrawal.isCompleted ? 'Yes' : 'No'}</td>
+                        <td className="py-2 px-4 border text-sm">{withdrawal.delegatedTo}</td>
+                        <td className="py-2 px-4 border text-sm">
+                        {withdrawal.shares.map((share, index) => (
+                            <div key={index}>{weiToEth(share.shares)}</div>
+                        ))}
+                        </td>
+                        <td className="py-2 px-4 border">
+                        {withdrawal.shares.map((share, index) => (
+                        <div key={index}>{strategyNames[share.strategyAddress] || share.strategyAddress}</div>
+                        ))}
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+                </table>
+
+                <div className="flex justify-center mt-4">
+                <button
+                    disabled={skip === 0}
+                    onClick={() => handlePageChange(1)}
+                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+                >
+                    First
+                </button>
+                <button
+                    disabled={skip === 0}
+                    onClick={() => handlePageChange(skip / take)}
+                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+                >
+                    Prev
+                </button>
+                <span className="px-4 py-2 mr-2">
+                    Page {skip / take + 1} of {totalPages}
+                </span>
+                <button
+                    disabled={skip + take >= total}
+                    onClick={() => handlePageChange((skip / take) + 2)}
+                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+                >
+                    Next
+                </button>
+                <button
+                    disabled={skip + take >= total}
+                    onClick={() => handlePageChange(totalPages)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+                >
+                    Last
+                </button>
+                </div>
+            </div>
+            </div>
         </div>
+        )}
     </div>
   )
 }
