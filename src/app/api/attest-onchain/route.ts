@@ -1,6 +1,12 @@
+import { NextResponse } from "next/server";
+
 export async function GET() {
-    
+    return NextResponse.json(
+        { success: true},
+        { status: 200 }
+    );
 }
+
 // // attestOffchain.tsx
 // import { NextResponse, NextRequest } from "next/server";
 // import {
