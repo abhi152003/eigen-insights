@@ -34,7 +34,7 @@ function FeedbackTile() {
   return (
     <>
       {isShowing && !isPageLoading && !dataShowing && (
-        <div className="bg-yellow-200 flex justify-center items-center py-2 font-poppins">
+        <div className="bg-[#427FA3] flex justify-center items-center py-2 font-poppins">
           <span className="">
             Enjoying Eigen Insights? Share your feedback on{" "}
             <Link
@@ -55,7 +55,9 @@ function FeedbackTile() {
             .
           </span>
           <div className="flex absolute right-4">
-            <button onClick={handleCloseClick}>
+            <button onClick={handleCloseClick}
+            className="text-light-cyan hover:text-deep-blue"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 cursor-pointer"

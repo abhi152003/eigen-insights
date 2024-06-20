@@ -14,6 +14,8 @@ import { Oval } from "react-loader-spinner";
 import { Tooltip } from "@nextui-org/react";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { RxCross2 } from "react-icons/rx";
+import { IoSearchSharp } from "react-icons/io5";
+import "../../css/ExploreDAO.css";
 
 interface Type {
   img: StaticImageData;
@@ -159,14 +161,14 @@ function DaoOfficeHours() {
       </div>
 
       {showComingSoon && (
-        <div className="flex items-center w-fit bg-yellow-100 border border-yellow-400 rounded-full px-3 py-1 font-poppins">
-          <p className="text-sm text-yellow-700 mr-2">
+        <div className="flex items-center w-fit bg-[#718391] border border-light-cyan rounded-full px-3 py-1 font-poppins">
+          <p className="text-md text-white mr-2">
             Office hours are currently being developed. In the meantime, please
             enjoy our 1:1 sessions.
           </p>
           <button
             onClick={() => setShowComingSoon(false)}
-            className="text-yellow-700 hover:text-yellow-800 ps-3"
+            className="text-light-cyan hover:text-deep-blue ps-3"
           >
             <RxCross2 size={18} />
           </button>
@@ -207,7 +209,7 @@ function DaoOfficeHours() {
           </button>
         </div>
 
-        <div
+        {/* <div
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
           className="flex border-[0.5px] border-black w-1/3 rounded-full my-8 font-poppins"
         >
@@ -222,6 +224,20 @@ function DaoOfficeHours() {
           <span className="flex items-center bg-black rounded-full px-6 py-2">
             <Image src={search} alt="search" width={22} />
           </span>
+        </div> */}
+
+        <div className="searchBox btnShineExplore btnWidthOfcHour my-5">
+          <input
+            className="searchInput"
+            type="text"
+            name=""
+            placeholder="Search by title or host address"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          <button className="searchButton">
+            <IoSearchSharp className="iconExplore" />
+          </button>
         </div>
 
         <div className="py-5">

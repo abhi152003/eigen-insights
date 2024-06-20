@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNetwork, useAccount } from "wagmi";
 import { Grid } from "react-loader-spinner";
 import { motion, AnimatePresence } from "framer-motion";
+import '../../../css/SessionPage.css'
 
 interface AvailableUserSessionsProps {
   daoName: string;
@@ -61,8 +62,8 @@ function AvailableUserSessions({
   }, [daoName, address, scheduledSuccess === true]);
 
   return (
-    <div className="max-w-xl mt-2 p-8 bg-white rounded-2xl shadow-lg min-w-[34rem] min-h-[35rem]">
-      <h1 className="text-[#52648c] font-semibold text-2xl mb-4">
+    <div className="max-w-xl mt-2 p-8 session-bg2 rounded-2xl shadow-lg min-w-[34rem] min-h-[35rem]">
+      <h1 className="text-white font-semibold text-2xl flex justify-center items-center">
         Your Scheduled Availability
       </h1>
       {dataLoading ? (
@@ -110,7 +111,7 @@ function AvailableUserSessions({
           )}
         </>
       ) : (
-        <div className="text-center text-gray-500">
+        <div className="text-center text-white mt-2">
           No Scheduled Available Time
         </div>
       )}

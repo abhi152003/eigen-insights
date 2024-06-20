@@ -41,6 +41,7 @@ import InstantMeet from "./InstantMeet";
 import { useSession } from "next-auth/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
+import '../../css/MainProfile.css'
 
 interface Result {
   _id: string;
@@ -653,6 +654,7 @@ function MainProfile() {
                     </Link>
                     <Tooltip
                       content="Update your Profile"
+                      className="rounded-md bg-opacity-90 bg-light-blue"
                       placement="right"
                       showArrow>
                       <span
@@ -665,7 +667,7 @@ function MainProfile() {
                     <Modal
                       isOpen={isOpen}
                       onOpenChange={onOpenChange}
-                      className="font-poppins">
+                      className="font-poppins modal-bg">
                       <ModalContent>
                         {(onClose: any) => (
                           <>
@@ -758,7 +760,7 @@ function MainProfile() {
                                 Close
                               </Button>
                               <Button
-                                color="primary"
+                                className="btnSave"
                                 onClick={() => handleSubmit()}>
                                 {isLoading ? "Saving" : "Save"}
                               </Button>
@@ -834,7 +836,7 @@ function MainProfile() {
                   <div className="pt-2 flex gap-5">
                     {/* pass address of whom you want to delegate the voting power to */}
                     <button
-                      className="bg-blue-shade-200 font-bold text-white rounded-full px-8 py-[10px]"
+                      className="bg-deep-blue font-bold text-white rounded-full my-2 px-8 py-[10px] btn-bd"
                       onClick={() => handleDelegateVotes(`${address}`)}>
                       Become Delegate
                     </button>
@@ -861,7 +863,7 @@ function MainProfile() {
               <button
                 className={`border-b-2 py-4 px-2 outline-none ${
                   searchParams.get("active") === "votes"
-                    ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
+                    ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                     : "border-transparent"
                 }`}
                 onClick={() => router.push(path + "?active=votes")}>
@@ -871,7 +873,7 @@ function MainProfile() {
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "sessions"
-                  ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
+                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                   : "border-transparent"
               }`}
               onClick={() =>
@@ -882,7 +884,7 @@ function MainProfile() {
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "officeHours"
-                  ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
+                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                   : "border-transparent"
               }`}
               onClick={() =>
@@ -895,7 +897,7 @@ function MainProfile() {
               <button
                 className={`border-b-2 py-4 px-2 outline-none ${
                   searchParams.get("active") === "instant-meet"
-                    ? "text-light-cyan font-semibold border-b-5 border-light-cyan"
+                    ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                     : "border-transparent"
                 }`}
                 onClick={() => router.push(path + "?active=instant-meet")}>

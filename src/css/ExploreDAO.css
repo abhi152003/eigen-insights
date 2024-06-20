@@ -1,0 +1,129 @@
+.searchBox {
+    display: flex;
+    min-width: 300px;
+    height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: white;
+    color: black;
+    font-weight: bold;
+    border-radius: 50px;
+    position: relative;
+}
+
+.btnWidthOfcHour {
+  width: 400px;
+}
+  
+.searchButton {
+    color: white;
+    position: absolute;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-2, linear-gradient(90deg, #1A1A1A 0%, #11334D 50%, #5E9CBF 100%));
+    border: 0;
+    display: inline-block;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+}
+
+.searchButton:hover {
+    color: #fff;
+    background-color: #1A1A1A;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 10px 20px;
+    transform: translateY(-3px);
+}
+
+.searchButton:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+  
+.searchInput {
+    width: 400px;
+    overflow: visible;
+    border: none;
+    background: none;
+    outline: none;
+    color: black;
+    font-size: 18px;
+    padding: 24px 46px 24px 26px;
+}
+
+.iconExplore {
+    width: 1.8rem;
+    margin: auto;
+    height: auto;
+}
+
+.exploreMainDiv {
+    width: 300px;
+    height: 220px;
+    border-radius: 15px;
+    background: rgba(105, 13, 197, 0.103);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .exploreMainDiv::before {
+    content: "";
+    height: 100px;
+    width: 100px;
+    position: absolute;
+    top: 10%;
+    left: -20%;
+    border-radius: 50%;
+    border: 35px solid rgba(255, 255, 255, 0.102);
+    transition: all .8s ease;
+    filter: blur(.5rem);
+  }
+  
+  .exploreMainDiv:hover::before {
+    width: 140px;
+    height: 140px;
+    top: -30%;
+    left: 50%;
+    filter: blur(0rem);
+  }
+
+  .btnShineExplore {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+  }
+  
+  .btnShineExplore::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 30%,
+      #5E9CBF,
+      rgba(255, 255, 255, 0) 70%
+    );
+    top: 0;
+    left: -100px;
+    opacity: 0.6;
+    animation: shine 3s ease-out infinite;
+  }
+  
+  @keyframes shine {
+    0% {
+      left: -100px;
+    }
+  
+    60% {
+      left: 100%;
+    }
+  
+    to {
+      left: 100%;
+    }
+  }
+  

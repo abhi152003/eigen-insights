@@ -169,7 +169,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
         {error && <div className="text-red-500">{error}</div>}
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+          className="bg-[#427FA3] hover:bg-[#214965] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

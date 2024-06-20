@@ -76,6 +76,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
 
   console.log(selectedOption)
   console.log('paramssssssss',searchParams.get("active") === "operatorsList")
+
   return (
     <div className="font-poppins py-6" id="secondSection">
       <div className="pr-8 pb-5 pl-16">

@@ -84,13 +84,13 @@ function Sidebar() {
               src={logo}
               alt={"image"}
               width={40}
-              className="xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
+              className={`xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
             ></Image>
 
             <Tooltip
               content="Explore"
               placement="right"
-              className="rounded-md bg-opacity-90"
+              className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
               <Link href={"/"}>
@@ -110,7 +110,7 @@ function Sidebar() {
             <Tooltip
               content="Office Hours"
               placement="right"
-              className="rounded-md bg-opacity-90"
+              className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
               <Link href={"/office-hours?hours=ongoing"}>
@@ -123,14 +123,14 @@ function Sidebar() {
                     pathname.includes(`/office-hours`)
                       ? "border-white border-2 rounded-full"
                       : ""
-                  }`}
+                  } ${styles.image_hover}`}
                 ></Image>
               </Link>
             </Tooltip>
             <Tooltip
               content="Sessions"
               placement="right"
-              className="rounded-md bg-opacity-90"
+              className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
               <Link href={"/sessions?active=recordedSessions"}>
@@ -144,14 +144,14 @@ function Sidebar() {
                     pathname.includes(`/sessions`)
                       ? "border-white border-2 rounded-full"
                       : ""
-                  }`}
+                  } ${styles.image_hover}`}
                 ></Image>
               </Link>
             </Tooltip>
           </div>
           <div className="h-full">
             <div
-              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#376380] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
+              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#214965] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
             >
               {storedDao ? (
                 storedDao.map((data, index) => (
@@ -172,7 +172,7 @@ function Sidebar() {
                       <Tooltip
                         content={<div className="capitalize">{data[0] === 'operators' ? 'Operators' : 'AVSs'}</div>}
                         placement="right"
-                        className="rounded-md bg-opacity-90"
+                        className="rounded-md bg-opacity-90 bg-light-blue"
                         closeDelay={1}
                       >
                         <Link href={data[0] === 'operators' ? `/${data[0]}?active=operatorsList`: `/${data[0]}?active=avsList`}>
@@ -186,7 +186,7 @@ function Sidebar() {
                               pathname.includes(`/${data[0]}`)
                                 ? "border-white border-[2.5px]"
                                 : ""
-                            }`}
+                            } ${styles.image_hover}`}
                             priority={true}
                           ></Image>
                         </Link>
@@ -203,7 +203,7 @@ function Sidebar() {
             <Tooltip
               content={<div className="capitalize">Git Book</div>}
               placement="right"
-              className="rounded-md bg-opacity-90"
+              className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
               <Link href={"https://docs.chora.club/"} target="_blank">
@@ -211,7 +211,7 @@ function Sidebar() {
                   src={gitbook}
                   alt={"image"}
                   width={40}
-                  className="xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
+                  className={`text-light-blue xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
                 />
               </Link>
             </Tooltip>
@@ -220,7 +220,7 @@ function Sidebar() {
               <Tooltip
                 content={<div className="capitalize">Wallet</div>}
                 placement="right"
-                className="rounded-md bg-opacity-90"
+                className="rounded-md bg-opacity-90 bg-light-blue"
                 closeDelay={1}
               >
                 {isPageLoading || sessionLoading ? (
@@ -228,7 +228,7 @@ function Sidebar() {
                     src={user}
                     alt={"image"}
                     width={40}
-                    className="cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
+                    className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer"`}
                   />
                 ) : (
                   <ConnectWallet />
@@ -238,14 +238,14 @@ function Sidebar() {
               <Tooltip
                 content={<div className="capitalize">Profile</div>}
                 placement="right"
-                className="rounded-md bg-opacity-90"
+                className="rounded-md bg-opacity-90 bg-light-blue"
                 closeDelay={1}
               >
                 <Image
                   src={user}
                   alt={"image"}
                   width={40}
-                  className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14`}
+                  className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
                   onClick={() => router.push(`/profile/${address}?active=info`)}
                 />
               </Tooltip>

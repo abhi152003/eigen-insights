@@ -285,7 +285,7 @@ export const bookedSessionTemplate = `
 														<tr>
 															<td class="pad">
 																<div style="color:#fafafa;font-family:Poppins, Arial, Helvetica, sans-serif;font-size:10px;line-height:150%;text-align:center;mso-line-height-alt:15px;">
-																	<p style="margin: 0; word-break: break-word;"><span><span>© 2024 ChoraClub.&nbsp;</span></span><span><span> All Rights Reserved.</span></span></p>
+																	<p style="margin: 0; word-break: break-word;"><span><span>© 2024 EigenInsight.&nbsp;</span></span><span><span> All Rights Reserved.</span></span></p>
 																</div>
 															</td>
 														</tr>

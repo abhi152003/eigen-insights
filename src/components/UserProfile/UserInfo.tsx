@@ -253,9 +253,10 @@ function UserInfo({
 
   return (
     <div className="pt-4">
-      <div className="flex w-fit gap-16 border-3 border-white px-6 rounded-xl text-sm mb-6">
+      <div className="flex justify-between items-center">
+      <div className="flex w-fit gap-16 border-3 border-white rounded-xl text-sm px-2 py-3 mb-6 ml-8">
         <button
-          className={`py-2 ${
+          className={`${
             activeButton === "onchain"
               ? "text-light-cyan"
               : "text-white font-bold"
@@ -265,7 +266,7 @@ function UserInfo({
           Onchain
         </button>
         <button
-          className={`py-2 ${
+          className={`${
             activeButton === "offchain"
               ? "text-light-cyan"
               : "text-white font-bold"
@@ -275,12 +276,12 @@ function UserInfo({
           Offchain
         </button>
       </div>
-      <div className="grid grid-cols-4 pe-32 gap-10">
+      <div className="grid grid-cols-2 pe-32 gap-10">
         {blocks.length > 0 ? (
           blocks.map((key, index) => (
             <div
               key={index}
-              className={`bg-[#11334D] text-white rounded-2xl px-3 py-7 ${
+              className={`bg-[#11334D] text-white w-[20rem] rounded-2xl px-3 py-7 ${
                 isDelegate === true || isSelfDelegate === true
                   ? "cursor-pointer"
                   : ""
@@ -314,6 +315,7 @@ function UserInfo({
         ) : (
           <div>No data available</div>
         )}
+      </div>
       </div>
 
       <div

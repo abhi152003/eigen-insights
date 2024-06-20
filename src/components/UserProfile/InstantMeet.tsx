@@ -28,6 +28,7 @@ import screenImghover from "@/assets/images/instant-meet/screenImghover.svg";
 import chatImg from "@/assets/images/instant-meet/chat.png";
 import chatImghover from "@/assets/images/instant-meet/chatImghover.svg";
 import heroImg from "@/assets/images/instant-meet/instant-meet-hero.svg";
+import "../../css/InstantMeet.css"
 
 interface instantMeetProps {
   isDelegate: boolean;
@@ -178,17 +179,17 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
           <div className="grid grid-cols-7 rounded-3xl border-solid border-2 border-[#F9F9F9]-900">
             <div className="col-span-4 border-solid border-r-2 border-[#F9F9F9]-900">
               <div className="p-14">
-                <div className="text-[#3E3D3D] text-3xl font-semibold font-poppins text-center">
+                <div className="text-[#A7DBF2] text-3xl font-semibold font-poppins text-center">
                   Start an Instant Meeting
                 </div>
 
-                <div className="grid grid-cols-3 grid-rows-2 text-sm gap-11 font-semibold pt-8 text-[#3E3D3D] text-center">
+                <div className="grid grid-cols-3 grid-rows-2 text-sm gap-11 font-semibold pt-8 text-white text-center">
                   {block.map((data, index) => (
                     <Tooltip
                       key={index}
                       content={
                         <div className="px-1 py-3 w-80 ">
-                          <div className="font-poppins text-[#7C7C7C] text-center">
+                          <div className="font-poppins text-black text-center">
                             {data.description}
                           </div>
                         </div>
@@ -215,7 +216,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                       }}
                     >
                       <div>
-                        <div className="group border rounded-3xl bg-[#E5E5EA] flex items-center justify-center p-8 hover:bg-blue-shade-100 hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+                        <div className="group border rounded-3xl bg-[#E5E5EA] flex items-center justify-center p-8 hover:bg-light-blue hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
                           <Image
                             alt="{image}"
                             height={60}
@@ -250,7 +251,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
               </div>
               <div className="text-center transition-transform transform hover:scale-105 duration-300">
                 <button
-                  className="bg-blue-shade-200 py-3 px-6 rounded-full text-white font-semibold"
+                  className="bg-[#427FA3] py-3 px-6 rounded-full text-white font-semibold"
                   onClick={onOpen}
                 >
                   Start an instant meet
@@ -267,7 +268,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
           onClose();
           // setIsScheduling(false);
         }}
-        className="font-poppins"
+        className="font-poppins modalIm-bg"
       >
         <ModalContent>
           <>
@@ -312,7 +313,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                 Close
               </Button>
               <Button
-                color="primary"
+                className="btnSave"
                 onClick={startInstantMeet}
                 isDisabled={confirmSave}
               >

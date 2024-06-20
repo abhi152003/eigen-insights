@@ -121,13 +121,13 @@ function UserSessions({
   return (
     <div>
       <div className="pr-32 pt-3">
-        <div className="flex gap-16 border-1 border-[#7C7C7C] pl-6 rounded-xl text-sm">
+        <div className="flex gap-8 justify-center pl-6 rounded-xl text-sm">
           {selfDelegate === true && (
             <button
-              className={`py-2  ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
                 searchParams.get("session") === "schedule"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=schedule")
@@ -139,10 +139,10 @@ function UserSessions({
 
           {selfDelegate === true && (
             <button
-              className={`py-2  ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
                 searchParams.get("session") === "book"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=book")
@@ -152,10 +152,10 @@ function UserSessions({
             </button>
           )}
           <button
-            className={`py-2 ${
+            className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
               searchParams.get("session") === "attending"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-[#A7DBF2]"
             }`}
             onClick={() =>
               router.push(path + "?active=sessions&session=attending")
@@ -165,10 +165,10 @@ function UserSessions({
           </button>
           {selfDelegate === true && (
             <button
-              className={`py-2 ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
                 searchParams.get("session") === "hosted"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=hosted")
@@ -178,10 +178,10 @@ function UserSessions({
             </button>
           )}
           <button
-            className={`py-2 ${
+            className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
               searchParams.get("session") === "attended"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-[#A7DBF2]"
             }`}
             onClick={() =>
               router.push(path + "?active=sessions&session=attended")

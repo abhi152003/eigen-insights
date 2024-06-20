@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 // import "@rainbow-me/rainbow-button/styles.css";
 import { getEnsName } from "./ENSResolver";
+import "../../css/ConnectWallet.css"
 
 function ConnectWalletWithENS() {
   const [displayAddress, setDisplayAddress] = useState<any>();
@@ -68,10 +69,10 @@ function ConnectWalletWithENS() {
                       paddingRight: "12px",
                       paddingTop: "8px",
                       paddingBottom: "8px",
-                      backgroundColor: "#0500FF",
+                      backgroundColor: "#214965",
                       fontWeight: "bold",
                     }}
-                    className="hover:scale-105 hover:transition-all hover:ease-in-out"
+                    className="hover:scale-105 hover:transition-all hover:ease-in-out btnShine"
                   >
                     Connect Wallet
                   </button>
@@ -97,7 +98,8 @@ function ConnectWalletWithENS() {
                       backgroundColor: "#ff494a",
                       fontWeight: "bold",
                     }}
-                    className="hover:scale-105 hover:transition-all hover:ease-in-out"
+                    className="hover:scale-105 hover:transition-all hover:ease-in-out
+                    btnShine"
                   >
                     Wrong network
                   </button>
@@ -124,7 +126,8 @@ function ConnectWalletWithENS() {
                       boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                     }}
                     type="button"
-                    className="hover:scale-105 hover:transition-all hover:ease-in-out"
+                    className="hover:scale-105 hover:transition-all hover:ease-in-out
+                    btnShine"
                   >
                     {chain.hasIcon && (
                       <div

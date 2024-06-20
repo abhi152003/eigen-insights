@@ -11,9 +11,11 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
+import "../../css/ShineFont.css";
+import "../../css/ExploreDAO.css"
+import { IoSearchSharp } from "react-icons/io5";
 
 function ExploreDAOs() {
-
   const dao_info = Object.keys(dao_details).map((key) => {
     const dao = dao_details[key];
     return {
@@ -60,7 +62,7 @@ function ExploreDAOs() {
       "visitedDao",
       JSON.stringify({ ...localData, [formatted]: [formatted, img] })
     );
-    if (formatted === 'operators') {
+    if (formatted === "operators") {
       router.push(`/${formatted}?active=operatorsList`);
     } else {
       router.push(`/${formatted}?active=avsList`);
@@ -91,29 +93,37 @@ function ExploreDAOs() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const options = {method: 'GET'};
+      const options = { method: "GET" };
       try {
-        const operatorsRes = await fetch('https://api.eigenexplorer.com/metrics/total-operators', options)
-        const avsRes = await fetch('https://api.eigenexplorer.com/metrics/total-avs', options)
+        const operatorsRes = await fetch(
+          "https://api.eigenexplorer.com/metrics/total-operators",
+          options
+        );
+        const avsRes = await fetch(
+          "https://api.eigenexplorer.com/metrics/total-avs",
+          options
+        );
 
-        const totalOperators = await operatorsRes.json()
-        const totalAVSs = await avsRes.json()
+        const totalOperators = await operatorsRes.json();
+        const totalAVSs = await avsRes.json();
         // console.log(totalOperators.totalOperators)
-        setTotalOperators(totalOperators.totalOperators)
-        setTotalAVSs(totalAVSs.totalAvs)
+        setTotalOperators(totalOperators.totalOperators);
+        setTotalAVSs(totalAVSs.totalAvs);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     fetchData();
-  })
+  });
 
   return (
     <div className="pt-6 pl-14 pr-6 min-h-screen">
       <div className="">
         <div className="flex justify-between pe-10">
-          <div className="text-blue-shade-200 font-medium text-4xl font-quanty pb-4">
+          <div
+            className="font-medium text-4xl font-quanty pb-4 shineFont"
+          >
             Explore
           </div>
 
@@ -127,7 +137,7 @@ function ExploreDAOs() {
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
           className="flex border-[0.5px] border-black w-fit rounded-full my-3 font-poppins"
         >
-          <input
+          {/* <input
             type="text"
             placeholder="Search"
             style={{ background: "rgba(238, 237, 237, 0.36)" }}
@@ -137,16 +147,30 @@ function ExploreDAOs() {
           ></input>
           <span className="flex items-center bg-black rounded-full px-6 py-3">
             <Image src={search} alt="search" width={20} height={20} />
-          </span>
+          </span> */}
+
+          <div className="searchBox btnShineExplore">
+            <input
+              className="searchInput"
+              type="text"
+              name=""
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+            />
+            <button className="searchButton">
+              <IoSearchSharp className="iconExplore"/>
+            </button>
+          </div>
         </div>
 
-        <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10 py-8 font-poppins">
+        <div className="flex gap-10 py-8 font-poppins">
           {daoInfo.length > 0 ? (
             daoInfo.map((daos: any, index: any) => (
               <div
                 key={daos.name}
                 style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-                className="px-5 py-7 rounded-2xl cursor-pointer"
+                className="px-5 py-7 rounded-2xl cursor-pointer bg-deep-blue exploreMainDiv"
                 onClick={() => handleClick(daos.name, daos.img)}
               >
                 <div className="flex justify-center">
@@ -155,25 +179,26 @@ function ExploreDAOs() {
                     alt="Image not found"
                     width={80}
                     height={80}
-                    style={{ width: '80px', height: '80px' }}
+                    style={{ width: "80px", height: "80px" }}
                     className="rounded-full"
                   ></Image>
                 </div>
                 <div className="text-center">
                   <div className="py-3">
                     <div className="font-semibold capitalize">{daos.name}</div>
-                    {daos.name === 'Operators' ? 
-                    <div className="text-sm bg-[#F2F2F2] py-2 rounded-md mt-3">
-                      {totalOperators} Operators
-                    </div> : 
-                    <div className="text-sm bg-[#F2F2F2] py-2 rounded-md mt-3">
-                      {totalAVSs} AVSs
-                    </div>
-                    } 
-                    
+                    {daos.name === "Operators" ? (
+                      <div className="text-sm bg-[#05223B] py-2 rounded-md mt-3">
+                        {totalOperators} Operators
+                      </div>
+                    ) : (
+                      <div className="text-sm bg-[#05223B] py-2 rounded-md mt-3">
+                        {totalAVSs} AVSs
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
+              
             ))
           ) : (
             <div className="pl-3 text-xl font-semibold">

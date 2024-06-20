@@ -143,27 +143,27 @@ function UserOfficeHours({
   return (
     <div>
       {showComingSoon && (
-        <div className="flex items-center w-fit bg-yellow-100 border border-yellow-400 rounded-full px-3 py-1 font-poppins">
-          <p className="text-sm text-yellow-700 mr-2">
+        <div className="flex items-center w-fit bg-[#718391] border border-light-cyan rounded-full px-3 py-1 mb-3 font-poppins">
+          <p className="text-md text-white mr-2">
             Office hours are currently being developed. In the meantime, please
             enjoy our 1:1 sessions.
           </p>
           <button
             onClick={() => setShowComingSoon(false)}
-            className="text-yellow-700 hover:text-yellow-800 ps-3"
+            className="text-light-cyan hover:text-deep-blue ps-3"
           >
             <RxCross2 size={18} />
           </button>
         </div>
       )}
       <div className="pt-3 pr-32">
-        <div className="flex w-fit gap-14 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm">
+        <div className="flex w-fit gap-8 rounded-xl text-sm">
           {selfDelegate === true && (
             <button
-              className={`py-2  ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
                 searchParams.get("hours") === "schedule"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=schedule")
@@ -175,10 +175,10 @@ function UserOfficeHours({
 
           {selfDelegate === true && (
             <button
-              className={`py-2  ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3  ${
                 searchParams.get("hours") === "upcoming"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=upcoming")
@@ -189,10 +189,10 @@ function UserOfficeHours({
           )}
           {selfDelegate === true && (
             <button
-              className={`py-2 ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
                 searchParams.get("hours") === "hosted"
-                  ? "text-[#3E3D3D] font-bold"
-                  : "text-[#7C7C7C]"
+                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-[#A7DBF2]"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=hosted")
@@ -202,10 +202,10 @@ function UserOfficeHours({
             </button>
           )}
           <button
-            className={`py-2 ${
+            className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
               searchParams.get("hours") === "attended"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-[#A7DBF2]"
             }`}
             onClick={() =>
               router.push(path + "?active=officeHours&hours=attended")

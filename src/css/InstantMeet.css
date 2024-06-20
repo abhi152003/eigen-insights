@@ -1,0 +1,8 @@
+.modalIm-bg {
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      #11334d 80%,
+      #214965 100%
+    );
+}

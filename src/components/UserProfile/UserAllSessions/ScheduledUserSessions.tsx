@@ -10,6 +10,7 @@ import { Tooltip } from "@nextui-org/react";
 import SchedulingSuccessModal from "./SchedulingSuccessModal";
 import { RxCross2 } from "react-icons/rx";
 import AddEmailModal from "@/components/utils/AddEmailModal";
+import '../../../css/SessionPage.css'
 
 import Image from "next/image";
 
@@ -481,9 +482,9 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
     <>
       <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-20 p-4">
         {/* First box- left side */}
-        <div className="w-full md:w-auto min-w-[34rem] h-fit mt-2 p-8 bg-white rounded-2xl shadow-lg">
+        <div className="w-full md:w-auto min-w-[34rem] h-fit mt-2 p-8 bg-white rounded-2xl shadow-lg session-bg">
           <div className="mb-4">
-            <label className="text-gray-700 font-semibold flex items-center">
+            <label className="text-white flex items-center">
               Select DAO Name:
               <Tooltip
                 content={
@@ -498,7 +499,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 delay={1}
               >
                 <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-blue-500" />
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
                 </span>
               </Tooltip>
             </label>
@@ -508,7 +509,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-700 font-semibold flex items-center">
+            <label className="text-white flex items-center">
               Select Time Slot Size:
               <Tooltip
                 content={
@@ -524,14 +525,14 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 delay={1}
               >
                 <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-blue-500" />
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
                 </span>
               </Tooltip>
             </label>
             <select
               value={timeSlotSizeMinutes}
               onChange={(e) => setTimeSlotSizeMinutes(Number(e.target.value))}
-              className="border border-gray-300 rounded px-3 py-2 mt-1 w-full"
+              className="border border-white text-black rounded px-3 py-2 mt-1 w-full"
             >
               <option value={15}>15 minutes</option>
               <option value={30}>30 minutes</option>
@@ -540,7 +541,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
           </div>
 
           <div className="mb-4">
-            <label className="text-gray-700 font-semibold flex items-center">
+            <label className="text-white flex items-center">
               Select Date:
               <Tooltip
                 content={
@@ -553,7 +554,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 delay={1}
               >
                 <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-blue-500" />
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
                 </span>
               </Tooltip>
             </label>
@@ -561,13 +562,13 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 mt-1 w-full"
+              className="border border-white text-black rounded px-3 py-2 mt-1 w-full"
               min={formattedDate}
             />
           </div>
 
           <div className="flex flex-col mb-4">
-            <label className="text-gray-700 font-semibold flex items-center">
+            <label className="text-white flex items-center">
               Select Available Time:
               <Tooltip
                 content={
@@ -580,13 +581,13 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 delay={1}
               >
                 <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-blue-500" />
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
                 </span>
               </Tooltip>
             </label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-3">
               <div>
-                <label className="text-gray-500 mt-1">Start Time</label>
+                <label className="text-white mt-4">Start Time</label>
                 <div className="relative">
                   <select
                     className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
@@ -607,7 +608,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 </div>
               </div>
               <div>
-                <label className="text-gray-500 mt-1">End Time</label>
+                <label className="text-white mt-2">End Time</label>
                 <div className="relative">
                   <select
                     className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
@@ -632,7 +633,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
 
           <button
             onClick={handleAddSelectedDate}
-            className="bg-blue-shade-400 hover:bg-blue-shade-500 text-[#0500FF] font-semibold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
+            className="bg-white hover:bg-blue-500 text-[#11334D] py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
           >
             <span className="flex items-center gap-3">
               <FaPlus className="" />
@@ -641,7 +642,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
           </button>
 
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-lg mb-2">
               Selected Dates for Session:
             </h3>
             <div className="grid gap-4">
@@ -651,7 +652,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                   className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
                 >
                   <div>
-                    <p className="font-semibold text-gray-700">{item.date}</p>
+                    <p className="text-white">{item.date}</p>
                     <p className="text-gray-600">
                       {item.timeRanges
                         .map((time: any) => {
@@ -683,7 +684,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
             className={`${
               createSessionLoading
                 ? "bg-green-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
+                : "bg-[#427FA3] hover:bg-[#214965]"
             } text-white font-bold py-3 px-4 rounded-3xl mt-4 w-[160px] flex justify-center items-center`}
             disabled={createSessionLoading}
           >
