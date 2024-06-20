@@ -64,19 +64,11 @@ function Analytics() {
           const restakeRes = await fetch('https://api.eigenexplorer.com/metrics/tvl/restaking', options)
           const avsOperatorsRes = await fetch('/api/get-avs-operators')
           const metricsRes = await fetch('https://api.eigenexplorer.com/metrics', options)
-          const topOperatorsRes = await fetch('/api/get-top-operators')
 
           const metricsData = await metricsRes.json()
-          console.log(metricsData)
-          // const withdrawlsRes = await fetch(`https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`, options);
-          
-          const totalTVL = await totalTVLRes.json()
           const restakeTVL = await restakeRes.json()
           const avsOperators = await avsOperatorsRes.json()
-          const topOperators = await topOperatorsRes.json()
-
-          console.log("top operatorssssssss",topOperators)
-          //   console.log(totalTVL.tvl, totalOperators.totalOperators, totalAVSs.totalAvs)
+          
           setTotalTVL(metricsData.tvl)
           setTotalOperators(metricsData.totalOperators)
           setTotalAVSs(metricsData.totalAvs)
