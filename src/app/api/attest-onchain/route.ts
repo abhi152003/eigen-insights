@@ -1,3 +1,6 @@
+export async function GET() {
+    
+}
 // // attestOffchain.tsx
 // import { NextResponse, NextRequest } from "next/server";
 // import {

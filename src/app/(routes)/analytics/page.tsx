@@ -2,7 +2,7 @@ import PageNotFound from "@/components/PageNotFound/PageNotFound";
 import React from "react";
 import Analytics from "@/components/Analytics/Analytics";
 
-function page({ params }: { params: { daoDelegates: string } }) {
+function page() {
   return (
     <div>
       <Analytics />
