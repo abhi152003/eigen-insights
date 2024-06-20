@@ -254,25 +254,33 @@ function UserInfo({
   return (
     <div className="pt-4">
       <div className="flex justify-between items-center">
-      <div className="flex w-fit gap-16 border-3 border-white rounded-xl text-sm px-2 py-3 mb-6 ml-8">
+      <div className="flex w-fit gap-16 border-1 border-white rounded-xl text-sm px-4 py-3 mb-6 ml-8">
         <button
-          className={`${
+          className={`
+            p-9 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+             ${
             activeButton === "onchain"
               ? "text-light-cyan"
               : "text-white font-bold"
           } `}
           onClick={() => fetchAttestation("onchain")}
         >
+        <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Onchain
         </button>
         <button
-          className={`${
+          className={` 
+            p-5 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+            ${
             activeButton === "offchain"
               ? "text-light-cyan"
               : "text-white font-bold"
           }`}
           onClick={() => fetchAttestation("offchain")}
         >
+        <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Offchain
         </button>
       </div>

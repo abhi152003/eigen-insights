@@ -13,6 +13,8 @@ import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
 import EILogo from "@/assets/images/daos/eigen_logo.png"
 import "../../css/ShineFont.css";
+import "../../css/BtnShine.css"
+import "../../css/SearchShine.css"
 import "../../css/ExploreDAO.css"
 import { IoSearchSharp } from "react-icons/io5";
 
@@ -152,7 +154,7 @@ function ExploreDAOs() {
             <Image src={search} alt="search" width={20} height={20} />
           </span> */}
 
-          <div className="searchBox btnShineExplore">
+          <div className="searchBox btnShine">
             <input
               className="searchInput"
               type="text"
@@ -173,8 +175,7 @@ function ExploreDAOs() {
               <div
                 key={daos.name}
                 style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-                className="px-5 py-7 rounded-2xl cursor-pointer bg-deep-blue exploreMainDiv"
-                onClick={() => handleClick(daos.name, daos.img)}
+                className="flex flex-col gap-3 justify-center px-5 py-7 rounded-2x exploreMainDiv"
               >
                 <div className="flex justify-center">
                   <Image
@@ -188,7 +189,11 @@ function ExploreDAOs() {
                 </div>
                 <div className="text-center">
                   <div className="py-3">
-                    <div className="font-semibold capitalize">{daos.name}</div>
+                    <button className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group`}
+                    onClick={() => handleClick(daos.name, daos.img)}>
+                    <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+                      {daos.name}</button>
                     {daos.name === "Operators" ? (
                       <div className="text-sm bg-[#05223B] py-2 rounded-md mt-3">
                         {totalOperators} Operators
@@ -211,7 +216,7 @@ function ExploreDAOs() {
           <div
             // key={daos.name}
             style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className="px-5 py-7 rounded-2xl cursor-pointer"
+            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">

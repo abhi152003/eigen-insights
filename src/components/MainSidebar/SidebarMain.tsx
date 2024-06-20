@@ -151,7 +151,7 @@ function Sidebar() {
           </div>
           <div className="h-full">
             <div
-              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#214965] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
+              className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#05223B] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
             >
               {storedDao ? (
                 storedDao.map((data, index) => (
@@ -206,7 +206,7 @@ function Sidebar() {
               className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
-              <Link href={"https://docs.chora.club/"} target="_blank">
+              <Link href={""}>
                 <Image
                   src={gitbook}
                   alt={"image"}

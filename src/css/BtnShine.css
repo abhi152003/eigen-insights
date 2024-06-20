@@ -1,0 +1,57 @@
+.btnShine {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.btnShine::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    #5e9cbf,
+    rgba(255, 255, 255, 0) 70%
+  );
+  top: 0;
+  left: -100px;
+  opacity: 0.6;
+  animation: shine 3s ease-out infinite;
+}
+
+.btnShineWallet {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  border: 3px solid #ffffff4d;
+}
+
+.btnShineWallet:hover {
+  transform: scale(1.1);
+  border-color: #fff9;
+}
+
+.btnShineWallet::before {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    #fff,
+    rgba(255, 255, 255, 0) 70%
+  );
+}
+
+@keyframes shine {
+  0% {
+    left: -100px;
+  }
+
+  60% {
+    left: 100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}

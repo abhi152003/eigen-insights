@@ -18,6 +18,10 @@
     -webkit-background-clip: text;
 }
 
+.shineFontOfcHours {
+  margin-left: 0rem;
+}
+
 @keyframes bg {
     0% {
       background-position-x: 0;
