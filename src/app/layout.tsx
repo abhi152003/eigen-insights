@@ -7,7 +7,6 @@ import SidebarMain from "@/components/MainSidebar/SidebarMain";
 import RootProviders from "./providers/root-providers";
 import HuddleContextProvider from "@/components/ClientComponents/HuddleContextProvider";
 import { useEffect } from "react";
-import FeedbackTile from "@/components/utils/FeedbackTile";
 import Script from "next/script";
 import ProgressBarProvider from "@/components/ProgressBarProvider/ProgressBarProvider";
 
@@ -83,7 +82,6 @@ export default function RootLayout({
                   <SidebarMain />
                 </div>
                 <div className="w-[94%] ml-auto">
-                  <FeedbackTile />
                   <div>{children}</div>
                 </div>
               </div>

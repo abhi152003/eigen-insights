@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         method: "POST",
         body: JSON.stringify({
           title: "Test Room",
-        }),
+        }), 
         headers: {
           "Content-Type": "application/json",
           "x-api-key": process.env.NEXT_PUBLIC_API_KEY ?? "",

@@ -13,7 +13,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { Tooltip } from "@nextui-org/react";
 import text1 from "@/assets/images/daos/texture1.png";
 import clockIcn from "@/assets/images/daos/icon_clock.png";
-import EILogo from "@/assets/images/daos/EI.png";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import NOLogo from "@/assets/images/daos/operators.png"
 import AVSLogo from "@/assets/images/daos/avss.png"
 import "@/components/DelegateSessions/DelegateSessionsMain.module.css";

@@ -19,7 +19,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 import NOLogo from "@/assets/images/daos/operators.png"
 import AVSLogo from "@/assets/images/daos/avss.png"
-import EILogo from "@/assets/images/daos/Eigen circle logo.png";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import {
   Modal,
   ModalContent,

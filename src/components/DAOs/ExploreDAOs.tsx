@@ -11,6 +11,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
+import EILogo from "@/assets/images/daos/eigen_logo.png"
 import "../../css/ShineFont.css";
 import "../../css/ExploreDAO.css"
 import { IoSearchSharp } from "react-icons/io5";
@@ -64,8 +65,10 @@ function ExploreDAOs() {
     );
     if (formatted === "operators") {
       router.push(`/${formatted}?active=operatorsList`);
-    } else {
+    } else if (formatted === 'avss') {
       router.push(`/${formatted}?active=avsList`);
+    } else if (formatted === 'analytics') {
+      router.push(`/${formatted}`);
     }
   };
 
@@ -205,6 +208,28 @@ function ExploreDAOs() {
               No such Dao available
             </div>
           )}
+          <div
+            // key={daos.name}
+            style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
+            className="px-5 py-7 rounded-2xl cursor-pointer"
+            onClick={() => handleClick("analytics", EILogo)}
+          >
+            <div className="flex justify-center">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={80}
+                height={80}
+                style={{ width: '80px', height: '80px' }}
+                className="rounded-full"
+              ></Image>
+            </div>
+            <div className="text-center">
+              <div className="py-3">
+                <div className="font-semibold capitalize">Analytics</div>                    
+              </div>
+            </div>
+          </div>
           {/* <div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

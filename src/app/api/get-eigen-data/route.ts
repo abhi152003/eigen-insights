@@ -4,20 +4,20 @@ import { connectToDB } from '@/config/connectToDB';
 import { MongoClient, Db, Collection } from 'mongodb';
 
 interface Result {
-    _id: string;
-    address: string;
-    metadataName: string;
-    metadataDescription: string;
-    metadataDiscord: string | null;
-    metadataLogo: string;
-    metadataTelegram: string | null;
-    metadataWebsite: string;
-    metadataX: string;
-    tags: string[];
-    shares: any[];
-    totalOperators: number;
-    totalStakers: number;
-    tvl: any;
+  _id: string;
+  address: string;
+  metadataName: string;
+  metadataDescription: string;
+  metadataDiscord: string | null;
+  metadataLogo: string;
+  metadataTelegram: string | null;
+  metadataWebsite: string;
+  metadataX: string;
+  tags: string[];
+  shares: any[];
+  totalOperators: number;
+  totalStakers: number;
+  tvl: any;
 }
 
 
@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
     }
   
     const query = req.nextUrl.searchParams.get('query');
+    const selectedValue = req.nextUrl.searchParams.get('selectedValue')
   
     if (!query) {
       console.log('No query parameter');
@@ -52,6 +53,8 @@ export async function GET(req: NextRequest) {
       const skipNumber = parseInt(skip as string, 10);
       const limitNumber = parseInt(limit as string, 10);
 
+      let results: Result[] = [];
+
       if (query === 'operators') {
         collection = db.collection('operators');
       } else if (query === 'avss') {
@@ -59,11 +62,16 @@ export async function GET(req: NextRequest) {
       } else {
         return NextResponse.json({ message: 'Invalid prop value' }, { status: 400 });
       }
-  
-      const batchedResults = await collection.find({}).sort({ totalStakers: -1 }).skip(skipNumber).limit(limitNumber).toArray();
-      const results: Result[] = batchedResults.flatMap(batch => batch);
-  
-      console.log('Search results:', results);
+
+      if (selectedValue === "Most stakers") {
+        const batchedResults = await collection.find({}).sort({ totalStakers: -1 }).skip(skipNumber).limit(limitNumber).toArray();
+        results = batchedResults.flatMap(batch => batch);
+      } else if(selectedValue === "Random") {
+        const batchedResults = await collection.find({}).skip(skipNumber).limit(limitNumber).toArray();
+        results = batchedResults.flatMap(batch => batch);
+      }
+      
+      // console.log('Search results:', results);
   
       return NextResponse.json(results, {
         status: 200,

@@ -54,7 +54,14 @@ interface TileProps {
 }
 
 const createRandomRoom = async () => {
-  const res = await fetch("https://api-choraclub.vercel.app/api/create-room", {
+  const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
+  
+  if (!createRoomUrl) {
+    console.error('NEXT_PUBLIC_CREATE_ROOM environment variable is not set.');
+    return null;
+  }
+  
+  const res = await fetch(createRoomUrl, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

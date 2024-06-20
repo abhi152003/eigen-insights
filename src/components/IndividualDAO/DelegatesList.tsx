@@ -1,11 +1,11 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import search from "@/assets/images/daos/search.png";
 import NOLogo from "@/assets/images/daos/operators.png";
 import AVSLogo from "@/assets/images/daos/avss.png";
-import EILogo from "@/assets/images/daos/EI.png";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import { Button, Dropdown, Pagination, Tooltip } from "@nextui-org/react";
@@ -37,109 +37,72 @@ interface Result {
   tvl: any;
 }
 
+
+
 function DelegatesList({ props }: { props: string }) {
-  const [delegateData, setDelegateData] = useState<any>({ delegates: [] });
+  const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({ delegates: [] });
+  const [tempData, setTempData] = useState<{ delegates: any[] }>({ delegates: [] });
   const { openChainModal } = useChainModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
   const { openConnectModal } = useConnectModal();
   const { isConnected, address } = useAccount();
-  const [tempData, setTempData] = useState<any>({ delegates: [] });
   const [searchResults, setSearchResults] = useState<any>({ delegates: [] });
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isPageLoading, setPageLoading] = useState(true);
-  const [isDataLoading, setDataLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isPageLoading, setPageLoading] = useState<boolean>(true);
+  const [isDataLoading, setDataLoading] = useState<boolean>(true);
   const router = useRouter();
   const path = usePathname();
   const searchParams = useSearchParams();
   const [isShowing, setIsShowing] = useState(true);
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [selectedValue, setSelectedValue] = useState<string>("Most stakers");
   // const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
   // const [clickedTileIndex,setClickedTileIndex]=useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = useCallback(
+    async (props: any, currentPage: number, selectedValue: any, setDelegateData: (arg0: (prevData: any) => { delegates: any[]; }) => void, setTempData: (arg0: (prevData: any) => { delegates: any[]; }) => void) => {
       try {
         setDataLoading(true);
-        // console.log("Current page: ", currentPage);
-
-        // try {
-        //   const res = await fetch(`/api/get-eigen-data?query=operators&skip=${currentPage}&limit=25`);
-        //   if (!res.ok) {
-        //     throw new Error(`Error: ${res.status}`);
-        //   }
-        //   const data: Result[] | { message: string } = await res.json();
-        //   if (Array.isArray(data)) {
-        //     console.log("databaseeeeeeeeeeee", data)
-        //     const delegates = data;
-        //     setDelegateData((prevData: { delegates: any; }) => ({
-        //       delegates: [...prevData.delegates, ...delegates],
-        //     }));
-        //     setTempData((prevData: { delegates: any; }) => ({
-        //       delegates: [...prevData.delegates, ...delegates],
-        //     }));
-        //   } else {
-        //     console.error(data.message);
-        //   }
-        // } catch (error) {
-        //   console.log(error)
-        // }
-
-        if(props === 'operators'){
-          try {
-            const res = await fetch(`/api/get-eigen-data?query=${props}&skip=${currentPage}&limit=25`);
-            if (!res.ok) {
-              throw new Error(`Error: ${res.status}`);
-            }
-            const data: Result[] | { message: string } = await res.json();
-            if (Array.isArray(data)) {
-              // console.log("databaseeeeeeeeeeee", data)
-              const delegates = data;
-              setDelegateData((prevData: { delegates: any; }) => ({
-                delegates: [...prevData.delegates, ...delegates],
-              }));
-              setTempData((prevData: { delegates: any; }) => ({
-                delegates: [...prevData.delegates, ...delegates],
-              }));
-            } else {
-              console.error(data.message);
-            }
-          } catch (error) {
-            console.log(error)
-          }
-        } else if (props = 'avss') {
-          try {
-            const res = await fetch(`/api/get-eigen-data?query=${props}&skip=${currentPage}&limit=25`);
-            if (!res.ok) {
-              throw new Error(`Error: ${res.status}`);
-            }
-            const data: Result[] | { message: string } = await res.json();
-            if (Array.isArray(data)) {
-              // console.log("databaseeeeeeeeeeee", data)
-              const delegates = data;
-              setDelegateData((prevData: { delegates: any; }) => ({
-                delegates: [...prevData.delegates, ...delegates],
-              }));
-              setTempData((prevData: { delegates: any; }) => ({
-                delegates: [...prevData.delegates, ...delegates],
-              }));
-            } else {
-              console.error(data.message);
-            }
-          } catch (error) {
-            console.log(error)
-          }
+        const res = await fetch(
+          `/api/get-eigen-data?query=${props}&skip=${currentPage}&limit=25&selectedValue=${selectedValue}`
+        );
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
         }
-        setDataLoading(false);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const delegates = data;
+          setDelegateData((prevData) => ({
+            delegates: currentPage === 0 ? delegates : [...prevData.delegates, ...delegates],
+          }));
+          setTempData((prevData) => ({
+            delegates: currentPage === 0 ? delegates : [...prevData.delegates, ...delegates],
+          }));
+        } else {
+          console.error(data.message);
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log(error);
       } finally {
+        setDataLoading(false);
         setPageLoading(false);
       }
-    };
+    },
+    []
+  );
 
-    fetchData();
-  }, [currentPage]);
+  useEffect(() => {
+    const loadPageData = async () => {
+      try {
+        await fetchData(props, currentPage, selectedValue, setDelegateData, setTempData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    loadPageData();
+  }, [currentPage, selectedValue, props, fetchData]);
 
   const handleSearchChange = async (query: string) => {
     // console.log("query: ", query.length);
@@ -178,16 +141,23 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
-  const handleScroll = () => {
+  const debounce = (func: { (): void; apply?: any; }, delay: number | undefined) => {
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
+    return (...args: any) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(null, args);
+      }, delay);
+    };
+  };
+  
+  const handleScroll = debounce(() => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     const threshold = 100;
-    if (
-      !isDataLoading &&
-      scrollTop + clientHeight >= scrollHeight - threshold
-    ) {
+    if (!isDataLoading && scrollTop + clientHeight >= scrollHeight - threshold) {
       setCurrentPage((prev) => prev + 25);
     }
-  };
+  }, 200);
 
   useEffect(() => {
     if (isSearching === false) {
@@ -274,14 +244,17 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
-  const handleSelectChange = (event: any) => {
-    const selectedValue = event.target.value;
-    if (
-      selectedValue === "Random" ||
-      selectedValue === "Most stakers"
-    ) {
-      toast("Coming Soon 🚀");
-    }
+  const handleSelectChange = async (event: { target: { value: any; }; }) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+    setCurrentPage(0);
+    setDelegateData({ delegates: [] });
+    setTempData({ delegates: [] });
+    setDataLoading(true);
+    setPageLoading(true);
+    await fetchData(props, 0, value, setDelegateData, setTempData);
+    setDataLoading(false);
+    setPageLoading(false);
   };
 
   const scrollToSection = (sectionId: string, duration = 1000) => {
@@ -316,6 +289,8 @@ function DelegatesList({ props }: { props: string }) {
       requestAnimationFrame(scrollStep);
     }
   };
+
+  console.log("delegateDataaaaaaa",delegateData);
 
   return (
     <div>
