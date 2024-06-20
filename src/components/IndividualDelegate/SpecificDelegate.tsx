@@ -24,7 +24,7 @@ import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit";
 import { useNetwork } from "wagmi";
 import NOLogo from "@/assets/images/daos/operators.png";
 import AVSLogo from "@/assets/images/daos/avss.png";
-import EILogo from "@/assets/images/daos/EI.png";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import { Oval } from "react-loader-spinner";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";

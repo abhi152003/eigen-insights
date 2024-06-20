@@ -305,20 +305,27 @@ function BookSession({ props }: { props: Type }) {
   };
 
   const createRandomRoom = async () => {
-    const res = await fetch(
-      "https://api-choraclub.vercel.app/api/create-room",
-      {
-        method: "GET",
+    const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
+  
+    if (!createRoomUrl) {
+      console.error('NEXT_PUBLIC_CREATE_ROOM environment variable is not set.');
+      return null;
+    }
+  
+    try {
+      const res = await fetch(createRoomUrl, {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
-    );
-    const result = await res.json();
-    // console.log("result", result);
-    const roomId = await result.data;
-    // console.log("roomId", roomId);
-    return roomId;
+      });
+      const result = await res.json();
+      const roomId = result.data;
+      return roomId;
+    } catch (error) {
+      console.error('Error creating random room:', error);
+      return null;
+    }
   };
   const apiCall = async () => {
     let roomId = await createRandomRoom();

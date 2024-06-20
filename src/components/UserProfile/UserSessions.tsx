@@ -4,8 +4,6 @@ import BookedUserSessions from "./UserAllSessions/BookedUserSessions";
 import AttendingUserSessions from "./UserAllSessions/AttendingUserSessions";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
-import text1 from "@/assets/images/daos/texture1.png";
-import text2 from "@/assets/images/daos/texture2.png";
 import EventTile from "../utils/EventTile";
 // import HostedUserSessions from "./UserAllSessions/HostedUserSessions";
 // import AttendedUserSessions from "./UserAllSessions/AttendedUserSessions";
@@ -163,7 +161,7 @@ function UserSessions({
           >
             Attending
           </button>
-          {selfDelegate === true && (
+          {selfDelegate === false && (
             <button
               className={`py-2 ${
                 searchParams.get("session") === "hosted"
@@ -202,7 +200,7 @@ function UserSessions({
           {searchParams.get("session") === "attending" && (
             <AttendingUserSessions daoName={daoName} />
           )}
-          {selfDelegate === true &&
+          {selfDelegate === false &&
             searchParams.get("session") === "hosted" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">

@@ -64,8 +64,14 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
 
   const startInstantMeet = async () => {
     setConfirmSave(true);
+    const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
+  
+    if (!createRoomUrl) {
+      console.error(' environment variable is not set.');
+      return null;
+    }
     const res = await fetch(
-      "https://api-choraclub.vercel.app/api/create-room",
+      createRoomUrl,
       {
         method: "GET",
         headers: {

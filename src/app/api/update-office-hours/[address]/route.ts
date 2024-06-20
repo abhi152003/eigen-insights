@@ -29,9 +29,18 @@ export async function PUT(
   console.log("calling PUT....");
   const address = req.url.split("update-office-hours/")[1];
 
+  const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
+
+  if (!createRoomUrl) {
+    return NextResponse.json(
+      { success: false, error: "Create room URL is not defined" },
+      { status: 500 }
+    );
+  }
+
   try {
     const res = await fetch(
-      `https://api-choraclub.vercel.app/api/create-room`,
+      createRoomUrl,
       {
         method: "GET",
       }

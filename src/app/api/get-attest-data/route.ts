@@ -14,17 +14,17 @@ async function delegateAttestationOnchain(data: any) {
     body: raw,
   };
 
-  try {
-    const response = await fetch(
-      `${baseUrl}/api/attest-offchain/`,
-      requestOptions
-    );
-    console.log("Response from attestation endpoint:", response);
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching from attestation endpoint:", error);
-    throw error;
-  }
+  // try {
+  //   const response = await fetch(
+  //     `${baseUrl}/api/attest-offchain/`,
+  //     requestOptions
+  //   );
+  //   console.log("Response from attestation endpoint:", response);
+  //   return response.json();
+  // } catch (error) {
+  //   console.error("Error fetching from attestation endpoint:", error);
+  //   throw error;
+  // }
 }
 
 export async function POST(req: NextRequest, res: NextResponse) {

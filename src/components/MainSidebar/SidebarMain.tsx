@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import logo from "@/assets/images/daos/EI.png";
+import logo from "@/assets/images/daos/eigen_logo.png";
 import rocket from "@/assets/images/sidebar/rocket.png";
 import sessionIcn from "@/assets/images/sidebar/office.png";
 import office from "@/assets/images/sidebar/Office hour (1).png";
