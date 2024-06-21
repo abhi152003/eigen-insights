@@ -329,36 +329,45 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
 
   return (
     <div>
-      <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm mb-6">
+      {/* <div className="flex w-fit gap-16 border-1 border-white rounded-xl text-sm px-4 py-3 mb-6 ml-8">
         <button
-          className={`py-2 ${
+          className={`
+              p-9 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+            ${
             activeButton === "onchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
+              ? "text-light-cyan"
+                 : "text-white font-bold"
           } `}
           onClick={() => fetchAttestation("onchain")}
         >
+          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-100 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Onchain
         </button>
         <button
-          className={`py-2 ${
+          className={`
+            p-5 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+            ${
             activeButton === "offchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
+              ? "text-light-cyan"
+                : "text-white font-bold"
           }`}
           onClick={() => fetchAttestation("offchain")}
         >
+          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Offchain
         </button>
-      </div>
-      <div className="grid grid-cols-4 pe-32 gap-10">
+      </div> */}
+      {/* <div className="grid grid-cols-4 pe-32 gap-10">
         {details.length > 0 ? (
           details.map((key, index) => (
             <div
               key={index}
-              className="bg-[#3E3D3D] text-white rounded-2xl px-3 py-5 cursor-pointer"
+              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[20rem] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
               onClick={() => router.push(`${key.ref}`)}
             >
+              <div className="absolute top-2 right-2 h-4 w-4 bg-light-cyan rounded-full animate-ping"></div>
               <div className="font-semibold text-3xl text-center pb-2">
                 {isSessionHostedLoading &&
                 isSessionAttendedLoading &&
@@ -382,7 +391,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
         ) : (
           <div>No data available</div>
         )}
-      </div>
+      </div> */}
 
       <div className="flex justify-center mt-5">
         {filteredData.length > 0 ? (

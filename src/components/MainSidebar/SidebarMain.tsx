@@ -9,6 +9,7 @@ import office from "@/assets/images/sidebar/Office hour (1).png";
 import wallet from "@/assets/images/sidebar/wallet.png";
 import gitbook from "@/assets/images/sidebar/gitbook.png";
 import user from "@/assets/images/sidebar/user.png";
+// import "../../css/ImagePulse.css"
 import styles from "./sidebar.module.css";
 import { usePathname } from "next/navigation";
 import { Badge, Tooltip } from "@nextui-org/react";

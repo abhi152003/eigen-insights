@@ -195,7 +195,7 @@ function UserSessions({
                 ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
                 : "text-[#A7DBF2]"
             }`}
-            onClick={() =>
+            onClick={() => 
               router.push(path + "?active=sessions&session=attended")
             }
           >

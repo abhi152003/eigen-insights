@@ -5,7 +5,6 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import copy from "copy-to-clipboard";
 import { Tooltip } from "@nextui-org/react";
 import user from "@/assets/images/daos/user3.png";
-import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { IoCopy } from "react-icons/io5";
 import UserInfo from "./UserInfo";
@@ -42,6 +41,11 @@ import { useSession } from "next-auth/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import '../../css/MainProfile.css'
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { MdOutlineMail } from "react-icons/md";
+import { FaDiscourse } from "react-icons/fa6"
+import { RiFolderUserLine } from "react-icons/ri";
+import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
 
 interface Result {
   _id: string;
@@ -664,19 +668,23 @@ function MainProfile() {
                         <FaPencil color="#3e3d3d" size={12} />
                       </span>
                     </Tooltip>
+                    <div className="mt-10">
                     <Modal
                       isOpen={isOpen}
                       onOpenChange={onOpenChange}
                       className="font-poppins modal-bg">
-                      <ModalContent>
+                      <ModalContent className="mt-5">
                         {(onClose: any) => (
                           <>
                             <ModalHeader className="flex flex-col gap-1">
                               Update your Profile
                             </ModalHeader>
                             <ModalBody>
-                              <div className="px-1 font-medium">
-                                Upload Profile Image:
+                              <div className="px-1 font-medium flex gap-3 items-center">
+                                <p>Upload Profile Image:</p>
+                                <div className=" border border-white rounded-full bg-white text-black p-[6px] hover:bg-light-blue hover:text-white hover:cursor-pointer hover:scale-125">
+                                <RiFolderUserLine className="w-4 h-4"/>
+                                </div>
                               </div>
                               <input
                                 type="file"
@@ -684,8 +692,11 @@ function MainProfile() {
                                 placeholder="Upload Image"
                                 onChange={(e) => uploadImage(e.target.files)}
                               />
-                              <div className="px-1 font-medium">
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
                                 Display name:
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
+                                <MdDriveFileRenameOutline className="w-4 h-4"/>
+                                </div>
                               </div>
                               <input
                                 type="text"
@@ -699,7 +710,12 @@ function MainProfile() {
                                   )
                                 }
                               />
-                              <div className="px-1 font-medium">Email:</div>
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
+                                Email:
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-yellow-500 hover:text-white hover:cursor-pointer hover:scale-125">
+                                <MdOutlineMail className="w-4 h-4"/>
+                                </div>
+                              </div>
                               <input
                                 type="email"
                                 value={emailId}
@@ -710,8 +726,11 @@ function MainProfile() {
                                 }
                               />
 
-                              <div className="px-1 font-medium">
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
                                 X (Formerly Twitter):
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-black hover:text-white hover:cursor-pointer hover:scale-125">
+                                <FaXTwitter />
+                                </div>
                               </div>
                               <input
                                 type="url"
@@ -723,7 +742,12 @@ function MainProfile() {
                                 }
                               />
 
-                              <div className="px-1 font-medium">Discourse:</div>
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
+                                Discourse:
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-green-400 hover:text-white hover:cursor-pointer hover:scale-125">
+                                <FaDiscourse className="w-4 h-4" />
+                                </div>
+                              </div>
                               <input
                                 type="url"
                                 value={discourse}
@@ -734,7 +758,13 @@ function MainProfile() {
                                 }
                               />
 
-                              <div className="px-1 font-medium">Discord:</div>
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
+                                Discord:
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
+                                <FaDiscord className="w-4 h-4" />
+                                </div>
+                              </div>
+
                               <input
                                 type="url"
                                 value={discord}
@@ -744,7 +774,12 @@ function MainProfile() {
                                   handleInputChange("discord", e.target.value)
                                 }
                               />
-                              <div className="px-1 font-medium">Github:</div>
+                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
+                                Github:
+                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-black hover:text-white hover:cursor-pointer hover:scale-125">
+                                <FaGithub className="w-4 h-4"/>
+                                </div>
+                              </div>
                               <input
                                 type="url"
                                 value={github}
@@ -769,6 +804,7 @@ function MainProfile() {
                         )}
                       </ModalContent>
                     </Modal>
+                    </div>
                   </div>
                 </div>
 

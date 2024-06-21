@@ -254,80 +254,131 @@ function UserInfo({
   return (
     <div className="pt-4">
       <div className="flex justify-between items-center">
-      <div className="flex w-fit gap-16 border-1 border-white rounded-xl text-sm px-4 py-3 mb-6 ml-8">
-        <button
-          className={`
+        <div className="flex w-fit gap-16 border-1 border-white rounded-xl text-sm px-4 py-3 mb-6 ml-8">
+          <button
+            className={`
             p-9 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
              ${
-            activeButton === "onchain"
-              ? "text-light-cyan"
-              : "text-white font-bold"
-          } `}
-          onClick={() => fetchAttestation("onchain")}
-        >
-        <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-          Onchain
-        </button>
-        <button
-          className={` 
+               activeButton === "onchain"
+                 ? "text-light-cyan"
+                 : "text-white font-bold"
+             } `}
+            onClick={() => fetchAttestation("onchain")}
+          >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-100 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            Onchain
+          </button>
+          <button
+            className={` 
             p-5 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
             ${
-            activeButton === "offchain"
-              ? "text-light-cyan"
-              : "text-white font-bold"
-          }`}
-          onClick={() => fetchAttestation("offchain")}
-        >
-        <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-          Offchain
-        </button>
-      </div>
-      <div className="grid grid-cols-2 pe-32 gap-10">
-        {blocks.length > 0 ? (
-          blocks.map((key, index) => (
-            <div
-              key={index}
-              className={`bg-[#11334D] text-white w-[20rem] rounded-2xl px-3 py-7 ${
-                isDelegate === true || isSelfDelegate === true
-                  ? "cursor-pointer"
-                  : ""
-              }`}
-              onClick={
-                isSelfDelegate === true || isDelegate === true
-                  ? () => router.push(`${key.ref}`)
-                  : undefined
-              }
-            >
-              <div className="font-semibold text-3xl text-center pb-2">
-                {isSessionHostedLoading &&
-                isSessionAttendedLoading &&
-                isOfficeHoursHostedLoading &&
-                isOfficeHourseAttendedLoading ? (
-                  <div className="flex items-center justify-center">
-                    <RotatingLines
-                      visible={true}
-                      width="36"
-                      strokeColor="grey"
-                      ariaLabel="oval-loading"
-                    />
-                  </div>
-                ) : (
-                  key.number
-                )}
+              activeButton === "offchain"
+                ? "text-light-cyan"
+                : "text-white font-bold"
+            }`}
+            onClick={() => fetchAttestation("offchain")}
+          >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            Offchain
+          </button>
+        </div>
+        <div className="grid grid-cols-2 pe-32 gap-10">
+          {blocks.length > 0 ? (
+            // blocks.map((key, index) => (
+            //   <div
+            //     key={index}
+            //     className={`bg-[#11334D] text-white w-[20rem] rounded-2xl px-3 py-7 ${
+            //       isDelegate === true || isSelfDelegate === true
+            //         ? "cursor-pointer"
+            //         : ""
+            //     }`}
+            //     onClick={
+            //       isSelfDelegate === true || isDelegate === true
+            //         ? () => router.push(`${key.ref}`)
+            //         : undefined
+            //     }
+            //   >
+            //     <div className="font-semibold text-3xl text-center pb-2">
+            //       {isSessionHostedLoading &&
+            //       isSessionAttendedLoading &&
+            //       isOfficeHoursHostedLoading &&
+            //       isOfficeHourseAttendedLoading ? (
+            //         <div className="flex items-center justify-center">
+            //           <RotatingLines
+            //             visible={true}
+            //             width="36"
+            //             strokeColor="grey"
+            //             ariaLabel="oval-loading"
+            //           />
+            //         </div>
+            //       ) : (
+            //         key.number
+            //       )}
+            //     </div>
+            //     <div className="text-center text-sm">{key.desc}</div>
+            //   </div>
+            // ))
+            blocks.map((key, index) => (
+              <div
+                key={index}
+                className={`relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[20rem] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50 ${
+                  isDelegate === true || isSelfDelegate === true
+                    ? "cursor-pointer"
+                    : ""
+                }`}
+                onClick={
+                  isSelfDelegate === true || isDelegate === true
+                    ? () => router.push(`${key.ref}`)
+                    : undefined
+                }
+              >
+                <div className="absolute top-2 right-2 h-4 w-4 bg-light-cyan rounded-full animate-ping"></div>
+                <div className="font-semibold text-4xl text-center pb-2 relative z-10">
+                  {isSessionHostedLoading &&
+                  isSessionAttendedLoading &&
+                  isOfficeHoursHostedLoading &&
+                  isOfficeHourseAttendedLoading ? (
+                    <div className="flex items-center justify-center">
+                      <RotatingLines
+                        visible={true}
+                        width="36"
+                        strokeColor="grey"
+                        ariaLabel="oval-loading"
+                      />
+                    </div>
+                  ) : (
+                    key.number
+                  )}
+                </div>
+                <div className="text-center text-lg relative z-10">
+                  {key.desc}
+                </div>
+
+                {/* New additions for extra styles */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white to-transparent animate-pulse"></div>
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white to-transparent animate-pulse"></div>
+                <div className="absolute top-0 bottom-0 left-0 w-1 bg-gradient-to-b from-transparent via-white to-transparent animate-pulse"></div>
+                <div className="absolute top-0 bottom-0 right-0 w-1 bg-gradient-to-b from-transparent via-white to-transparent animate-pulse"></div>
+
+                <div className="absolute inset-0 bg-black opacity-10 rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 opacity-5 mix-blend-overlay rounded-2xl"></div>
+
+                <div className="absolute inset-0 backdrop-blur-sm rounded-2xl"></div>
               </div>
-              <div className="text-center text-sm">{key.desc}</div>
-            </div>
-          ))
-        ) : (
-          <div>No data available</div>
-        )}
-      </div>
+            ))
+          ) : (
+            <div>No data available</div>
+          )}
+        </div>
       </div>
 
       <div
-        style={{ boxShadow: "0px 3px 7px 3px #A7DBF2", backgroundColor: '#214965' }}
+        style={{
+          boxShadow: "0px 3px 7px 3px #A7DBF2",
+          backgroundColor: "#214965",
+        }}
         className={`flex flex-col justify-between min-h-48 rounded-xl my-7 me-32 p-3 
         ${isEditing ? "outline" : ""}`}
       >
@@ -337,7 +388,12 @@ function UserInfo({
           onChange={handleDescChange}
           value={isEditing ? tempDesc : description}
           placeholder={"Type your description here..."}
-          style={{backgroundColor: '#214965', color: 'white', borderRadius: '6px', padding: '16px'}}
+          style={{
+            backgroundColor: "#214965",
+            color: "white",
+            borderRadius: "6px",
+            padding: "16px",
+          }}
         />
 
         <div className="flex justify-end">

@@ -11,6 +11,8 @@ import operators_logo from "@/assets/images/daos/operators.png";
 import avss_logo from "@/assets/images/daos/avss.png";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
+import "../../css/ShineFont.css";
+import "../../css/SearchShine.css";
 
 function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
   const router = useRouter();
@@ -79,7 +81,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
 
   return (
     <div className="font-poppins py-6" id="secondSection">
-      <div className="pr-8 pb-5 pl-16">
+      <div className="pr-8 pb-3 pl-16">
         <div className="flex items-center justify-between pe-10">
           <div
             className="relative"
@@ -88,11 +90,11 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           >
             <div>
               <div
-                className="capitalize text-4xl text-blue-shade-100 bg-white-200 outline-none cursor-pointer flex items-center justify-between transition duration-500"
+                className="capitalize outline-none cursor-pointer flex items-center gap-3 justify-between transition duration-500"
                 // onMouseEnter={handleMouseEnter}
                 // onMouseLeave={handleMouseLeave}
               >
-                <div className="mr-5 flex items-center">
+                <div className="flex items-center text-light-cyan text-[40px]">
                   {selectedOption.label}
                 </div>
                 <svg
@@ -115,7 +117,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
               </div>
               {isOpen && (
                 <div
-                  className={`absolute mt-1 p-2 w-72 border border-white-shade-100 rounded-xl bg-white shadow-md ${
+                  className={`absolute mt-1 p-2 w-72 border border-white-shade-100 rounded-xl bg-dark-blue shadow-md ${
                     isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
                   }`}
                   style={{ transition: "opacity 0.3s" }}
@@ -125,8 +127,8 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
                   {options.map((option: any, index: number) => (
                     <div key={index}>
                       <div
-                        className={`option flex items-center cursor-pointer px-3 py-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 capitalize ${
-                          option.label === dao_name ? "text-blue-shade-100" : ""
+                        className={`option flex items-center cursor-pointer px-3 py-2 rounded-lg transition duration-1000  ease-in-out transform hover:scale-105 capitalize ${
+                          option.label === dao_name ? "text-light-cyan" : ""
                         }`}
                         onClick={() => selectOption(option)}
                       >
@@ -153,68 +155,87 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
         </div>
       </div>
 
-      <div className="flex gap-12 bg-[#D9D9D945] pl-16">
+      <div className="ml-16 my-3 flex gap-12 justify-start rounded-xl text-md">
         {dao_name === 'Operators' ? 
           <button
-            className={`border-b-2 py-4 px-2 ${
+            className={` 
+              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              ${
               searchParams.get("active") === "operatorsList"
-                ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
-                : "border-transparent"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() => router.push(path +"?active=operatorsList")}
           >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
             Operators List
           </button> : 
           <button
-            className={`border-b-2 py-4 px-2 ${
+            className={`
+              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              ${
               searchParams.get("active") === "avsList"
-                ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
-                : "border-transparent"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() => router.push(path +"?active=avsList")}
           >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000   shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
             AVSs List
           </button>
         } 
 
         {dao_name === 'Operators' ? 
           <button
-            className={`border-b-2 py-4 px-2 ${
+            className={`
+              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              ${
               searchParams.get("active") === "operatorsSession"
-                ? "text-blue-shade-200 font-semibold border-blue-shade-200"
-                : "border-transparent"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=operatorsSession&session=recorded")
           }
           >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
             Operators Sessions
           </button> :
           <button
-            className={`border-b-2 py-4 px-2 ${
+            className={`
+              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group 
+              ${
               searchParams.get("active") === "avsSession"
-                ? "text-blue-shade-200 font-semibold border-blue-shade-200"
-                : "border-transparent"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=avsSession&session=recorded")
           }
           >
+            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000   shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
             AVSs Sessions
           </button>
         }
         
-        
         <button
-          className={`border-b-2 py-4 px-2 ${
+          className={`
+            p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group 
+            ${
             searchParams.get("active") === "officeHours"
-              ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
-              : "border-transparent"
+              ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
           }`}
           onClick={() =>
             router.push(path + "?active=officeHours&hours=ongoing")
           }
         >
+          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Office hours
         </button>
       </div>

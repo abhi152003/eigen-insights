@@ -19,6 +19,11 @@ import { useConnectModal, useChainModal } from "@rainbow-me/rainbowkit";
 import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
+import { IoSearchSharp } from "react-icons/io5";
+import "../../css/SearchShine.css";
+import "../../css/AVSsList.css"
+import "../../css/ImagePulse.css"
+import Avss from '@/assets/images/sidebar/avss.webp'
 
 interface Result {
   _id: string;
@@ -295,7 +300,7 @@ function DelegatesList({ props }: { props: string }) {
   return (
     <div>
       <div className="flex items-center justify-between pe-10">
-        <div
+        {/* <div
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
           className="flex border-[0.5px] border-black w-1/3 rounded-full my-3 font-poppins"
         >
@@ -310,15 +315,28 @@ function DelegatesList({ props }: { props: string }) {
           <span className="flex items-center bg-black rounded-full px-5 py-2">
             <Image src={search} alt="search" width={20} />
           </span>
-        </div>
+        </div> */}
+        <div className="searchBox searchShineWidthOfAVSs my-1">
+            <input
+              className="searchInput"
+              type="text"
+              name=""
+              placeholder="Search by Address or ENS Name"
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+            />
+            <button className="searchButton">
+              <IoSearchSharp className="iconExplore"/>
+            </button>
+          </div>
         <div>
           <select
             style={{ background: "rgba(238, 237, 237, 0.36)" }}
             className="rounded-full py-2 px-4 outline-none cursor-pointer"
             onChange={handleSelectChange}
           >
-            <option>Most stakers</option>
-            <option>Random</option>
+            <option className="bg-grayish-blue text-white">Most stakers</option>
+            <option className="bg-grayish-blue text-white">Random</option>
           </select>
         </div>
       </div>
@@ -337,7 +355,7 @@ function DelegatesList({ props }: { props: string }) {
           </div>
         ) : delegateData.delegates.length > 0 ? (
           <div> 
-            <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10">
+            <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-10">
               {delegateData.delegates.map((daos: any, index: number) => (
                 <div
                   onClick={(event) =>{
@@ -349,7 +367,7 @@ function DelegatesList({ props }: { props: string }) {
                     boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
                   }}
                   
-                  className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative"
+                  className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue"
                 >
                   {/* {clickedTileIndex === index && (
                     <div
@@ -363,30 +381,30 @@ function DelegatesList({ props }: { props: string }) {
                    }}
                    ></div>
                   )} */}
-                  <div>
-                    <div className="flex justify-center relative">
+                  <div className="flex items-center justify-around">
+                    <div className="flex justify-center">
                       <Image
                         src={
                           daos.metadataLogo == null
                             ? props == "operators"
-                              ? NOLogo
+                              ? Avss
                               : props == "avss"
-                              ? AVSLogo
+                              ? Avss
                               : ""
                             : daos.metadataLogo
                         }
                         alt="Image not found"
-                        width={80}
-                        height={80}
+                        width={100}
+                        height={100}
                         // layout="fixed"
                         className="rounded-full"
-                        style={{ width: '80px', height: '80px' }} 
+                        style={{ width: '75px', height: '75px' }} 
                       ></Image>
 
                       <Image
                         src={EILogo}
                         alt="EigenInsights Logo"
-                        className="absolute top-0 right-0"
+                        className="absolute top-7 right-4 pulsatingImage"
                         style={{
                           width: "35px",
                           height: "35px",
@@ -395,7 +413,7 @@ function DelegatesList({ props }: { props: string }) {
                         }}
                       />
                     </div>
-                    <div className="text-center">
+                    <div className="text-left">
                       <div className="py-3">
                         <div
                           className={`font-semibold overflow-hidden ${styles.desc}`}
@@ -414,7 +432,7 @@ function DelegatesList({ props }: { props: string }) {
                             </span>
                           )}
                         </div>
-                        <div className="flex justify-center items-center gap-2 pb-2 pt-1">
+                        <div className="flex justify-start items-center gap-2 pb-2 pt-1">
                           {daos.address.slice(0, 6) +
                             "..." +
                             daos.address.slice(-4)}
@@ -423,6 +441,7 @@ function DelegatesList({ props }: { props: string }) {
                             placement="right"
                             closeDelay={1}
                             showArrow
+                            className="bg-sky-blue"
                           >
                             <span className="cursor-pointer text-sm">
                               <IoCopy
@@ -435,7 +454,7 @@ function DelegatesList({ props }: { props: string }) {
                           </Tooltip>
                         </div>
                         <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
-                          <span className="text-blue-shade-200 font-semibold">
+                          <span className="text-light-cyan font-semibold">
                             {daos.totalStakers}&nbsp;
                           </span>
                           total stakers
@@ -446,13 +465,15 @@ function DelegatesList({ props }: { props: string }) {
                   <div>
                     <div>
                       <button
-                        className="bg-blue-shade-100 text-white font-poppins w-full rounded-[4px] text-sm py-1 font-medium"
+                        className=" text-white font-poppins w-full rounded-[4px] text-sm btnStake
+                        p-3 border-[#A7DBF2] border-1 px-6 
+              border-b-4 font-medium overflow-hidden py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
                         onClick={(event) => {
                           event.stopPropagation(); // Prevent event propagation to parent container
                           WalletOpen(daos.address);
                         }}
                       >
-                        Delegate
+                        <span className="hover-text">Stake</span>
                       </button>
                     </div>
                   </div>
@@ -497,7 +518,7 @@ function DelegatesList({ props }: { props: string }) {
 
       <div className="fixed right-5 bottom-5 cursor-pointer">
         <div
-          className="bg-blue-shade-100 p-3 rounded-full"
+          className="bg-light-blue p-3 rounded-full"
           onClick={() => scrollToSection("secondSection")}
         >
           <FaArrowUp size={25} color="white" />

@@ -16,7 +16,7 @@ import "../../css/ShineFont.css";
 import "../../css/BtnShine.css"
 import "../../css/SearchShine.css"
 import "../../css/ExploreDAO.css"
-import { IoSearchSharp } from "react-icons/io5";
+  import { IoSearchSharp } from "react-icons/io5";
 
 function ExploreDAOs() {
   const dao_info = Object.keys(dao_details).map((key) => {
@@ -123,7 +123,7 @@ function ExploreDAOs() {
   });
 
   return (
-    <div className="pt-6 pl-14 pr-6 min-h-screen">
+    <div className="pt-6 pl-14 pr-14 min-h-screen">
       <div className="">
         <div className="flex justify-between pe-10">
           <div
@@ -169,13 +169,13 @@ function ExploreDAOs() {
           </div>
         </div>
 
-        <div className="flex gap-10 py-8 font-poppins">
+        <div className="flex gap-10 py-8 px-0 font-poppins">
           {daoInfo.length > 0 ? (
             daoInfo.map((daos: any, index: any) => (
               <div
                 key={daos.name}
                 style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-                className="flex flex-col gap-3 justify-center px-5 py-7 rounded-2x exploreMainDiv"
+                className="flex flex-col gap-3 justify-center px-5 py-7 rounded-2x exploreMainDiv flex-1"
               >
                 <div className="flex justify-center">
                   <Image
@@ -184,22 +184,22 @@ function ExploreDAOs() {
                     width={80}
                     height={80}
                     style={{ width: "80px", height: "80px" }}
-                    className="rounded-full"
+                    className="rounded-full pulsate"
                   ></Image>
                 </div>
                 <div className="text-center">
                   <div className="py-3">
-                    <button className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group`}
+                    <button className={`w-[300px] my-5 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-4 font-medium overflow-hidden relative py-5 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group`}
                     onClick={() => handleClick(daos.name, daos.img)}>
                     <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
                       {daos.name}</button>
                     {daos.name === "Operators" ? (
-                      <div className="text-sm bg-[#05223B] py-2 rounded-md mt-3">
+                      <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
                         {totalOperators} Operators
                       </div>
                     ) : (
-                      <div className="text-sm bg-[#05223B] py-2 rounded-md mt-3">
+                      <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
                         {totalAVSs} AVSs
                       </div>
                     )}
@@ -216,7 +216,7 @@ function ExploreDAOs() {
           <div
             // key={daos.name}
             style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
+            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv flex-1"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">
@@ -273,7 +273,7 @@ function ExploreDAOs() {
             status ? "" : "hidden"
           }`}
         >
-          <div className="py-2 bg-blue-shade-100 text-white rounded-full px-7">
+          <div className="py-2 bg-medium-blue text-white rounded-full px-7">
             To ensure optimal user experience, please note that our site is
             designed to be responsive on desktop devices.
           </div>

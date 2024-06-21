@@ -16,6 +16,10 @@ const config: Config = {
         "1.7xl": "1450px",
         "1.5lg": "1200px",
       },
+      transitionDuration: {
+        '2000': '2000ms',
+        '3000': '3000ms',
+       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

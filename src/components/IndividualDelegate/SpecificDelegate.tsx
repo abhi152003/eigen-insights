@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import user from "@/assets/images/daos/profile.png";
-import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 import { IoCopy } from "react-icons/io5";
@@ -28,6 +27,9 @@ import EILogo from "@/assets/images/daos/eigen_logo.png";
 import { Oval } from "react-loader-spinner";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
+import "../../css/ConnectWallet.css";
+import { FaTelegram } from "react-icons/fa";
+import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 
 interface Type {
   daoDelegates: string;
@@ -405,57 +407,65 @@ function SpecificDelegate({ props }: { props: Type }) {
                       href={
                         socials.twitter
                       }
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         socials.twitter == ""
                           ? "hidden"
                           : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <FaXTwitter color="#7C7C7C" size={12} />
+                      <div className="rounded-full bg-gray text-black p-[6px] hover:text-white hover:cursor-pointer hover:bg-black hover:scale-125">
+                      <FaXTwitter color="white" className="w-4 h-4" />
+                      </div>
                     </Link>
                     <Link
                       href={
                         socials.telegram
                       }
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1  ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1  ${
                         socials.telegram == ""
                           ? "hidden"
                           : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <BiSolidMessageRoundedDetail color="#7C7C7C" size={12} />
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-[#34ABE2] hover:text-white hover:cursor-pointer hover:scale-125">
+                      <FaTelegram color="white" className="w-4 h-4" />
+                      </div>
                     </Link>
                     <Link
                       href={
                         socials.discord
                       }
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         socials.discord == "" 
                           ? "hidden"
                           : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <FaDiscord color="#7C7C7C" size={12} />
+                      <div className="  bg-black rounded-full text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
+                      <FaDiscord color="white" className="w-4 h-4" />
+                      </div>
                     </Link>
                     <Link
                       href={
                         socials.website
                       }
-                      className={`border-[0.5px] border-[#8E8E8E] rounded-full h-fit p-1 ${
+                      className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
                         socials.website == ""
                           ? "hidden"
                           : ""
                       }`}
-                      style={{ backgroundColor: "rgba(217, 217, 217, 0.42)" }}
+                      style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <FiExternalLink color="#7C7C7C" size={12} />
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
+                      <FiExternalLink color="white"className="w-4 h-4" />
+                      </div>
                     </Link>
                   </div>
                 </div>
@@ -471,8 +481,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                     placement="right"
                     closeDelay={1}
                     showArrow
+                    className="text-white bg-light-blue"
                   >
-                    <span className="px-2 cursor-pointer" color="#3E3D3D">
+                    <span className="px-2 cursor-pointer">
                       <IoCopy
                         onClick={() => handleCopy(props.individualDelegate)}
                       />
@@ -495,8 +506,8 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
 
                 <div className="flex gap-4 py-1">
-                  <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    <span className="text-blue-shade-200 font-semibold">
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                    <span className="text-light-cyan font-semibold">
                       {delegateInfo?.totalStakers
                         ? Number(delegateInfo?.totalStakers)
                         : 0}
@@ -504,9 +515,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </span>
                     total stakers
                   </div>
-                  <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                     Total
-                    <span className="text-blue-shade-200 font-semibold">
+                    <span className="text-light-cyan font-semibold">
                       &nbsp;
                       {delegateInfo?.tvl.tvl
                         ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
@@ -519,7 +530,7 @@ function SpecificDelegate({ props }: { props: Type }) {
 
                 <div className="pt-2">
                   <button
-                    className="bg-blue-shade-200 font-bold text-white rounded-full px-8 py-[10px]"
+                    className="bg-midnight-blue font-bold text-white rounded-full px-8 py-[10px] btnShineWallet"
                     onClick={() =>
                       handleDelegateVotes(`${props.individualDelegate}`)
                     }
@@ -534,49 +545,65 @@ function SpecificDelegate({ props }: { props: Type }) {
             </div>
           </div>
 
-          <div className="flex gap-12 bg-[#D9D9D945] pl-16">
+          <div className="flex gap-12 pl-16 justify-center">
             <button
-              className={`border-b-2 py-4 px-2  ${
+              className={`border-b-2 py-4 px-2 w-[150px]
+                border-[#A7DBF2] border-1 rounded-full 
+               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+                ${
                 searchParams.get("active") === "info"
-                  ? " border-blue-shade-200 text-blue-shade-200 font-semibold"
-                  : "border-transparent"
+                  ? "text-light-cyan"
+                : "text-white font-bold"
               }`}
               onClick={() => router.push(path + "?active=info")}
             >
+              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Info
             </button>
             <button
-              className={`border-b-2 py-4 px-2 ${
+              className={`border-b-2 py-4 px-2 w-[150px] 
+                border-[#A7DBF2] border-1 rounded-full 
+               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+                ${
                 searchParams.get("active") === "pastVotes"
-                  ? "text-blue-shade-200 font-semibold border-blue-shade-200"
-                  : "border-transparent"
+                  ? "text-light-cyan"
+                : "text-white font-bold"
               }`}
               onClick={() => router.push(path + "?active=pastVotes")}
             >
+              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Past Votes
             </button>
             <button
-              className={`border-b-2 py-4 px-2 ${
+              className={`border-b-2 py-4 px-2 w-[150px] 
+                border-[#A7DBF2] border-1 rounded-full 
+               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+                ${
                 searchParams.get("active") === "delegatesSession"
-                  ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
-                  : "border-transparent"
+                  ? "text-light-cyan"
+                : "text-white font-bold"
               }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
               }
             >
+              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Sessions
             </button>
             <button
-              className={`border-b-2 py-4 px-2 ${
+              className={`border-b-2 py-4 px-2 w-[150px] 
+                border-[#A7DBF2] border-1 rounded-full 
+               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+                ${
                 searchParams.get("active") === "officeHours"
-                  ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
-                  : "border-transparent"
+                  ? "text-light-cyan"
+                : "text-white font-bold"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")
               }
             >
+              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Office Hours
             </button>
           </div>
