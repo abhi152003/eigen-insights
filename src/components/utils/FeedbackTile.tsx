@@ -36,7 +36,7 @@ function FeedbackTile() {
       {isShowing && !isPageLoading && !dataShowing && (
         <div className="bg-[#427FA3] flex justify-center items-center py-2 font-poppins">
           <span className="">
-            Enjoying Eigen Insights? Share your feedback on{" "}
+            Enjoying Eigen Insight? Share your feedback on{" "}
             <Link
               target="_blank"
               className="underline"

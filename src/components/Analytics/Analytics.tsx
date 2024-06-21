@@ -7,6 +7,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Title, Tooltip} from 'chart.js';
 import { formatEther } from 'ethers';
 import { Oval } from 'react-loader-spinner';
+import '../../app/globals.css'
 
 interface Share {
   strategyAddress: string;
@@ -34,6 +35,7 @@ const strategyNames: { [key: string]: string } = {
   "0xacb55c530acdb2849e6d4f36992cd8c9d50ed8f7":  "Eigen",
   "0x298afb19a105d59e74658c4c334ff360bade6dd2" : "mETH",
   "0x8ca7a5d6f3acd3a7a8bc468a8cd0fb14b6bd28b6" : "sfrxETH",
+  "0xae60d8180437b5c34bb956822ac2710972584473" : "LST ETH"
 };
 
 Chart.register(ArcElement, Title, Tooltip);
@@ -49,8 +51,6 @@ function Analytics() {
   const [avsOperators, setAVSOperators] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
-  const [queuedWithdrawals, setQueuedWithdrawals] = useState<Withdrawal[]>([]);
-  const [completedWithdrawals, setCompletedWithdrawals] = useState<Withdrawal[]>([]);
   const [skip, setSkip] = useState(0);
   const [take, setTake] = useState(10);
   const [total, setTotal] = useState(0);
@@ -100,10 +100,6 @@ function Analytics() {
       const withdrawlsRes = await fetch(`https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`, options);
       const withdrawlsData = await withdrawlsRes.json();
       console.log(withdrawlsData)
-      setQueuedWithdrawals(withdrawlsData.data.filter((withdrawal: { isCompleted: any; }) => !withdrawal.isCompleted));
-      setCompletedWithdrawals(withdrawlsData.data.filter((withdrawal: { isCompleted: any; }) => withdrawal.isCompleted));
-      console.log("queueddddddddddd", withdrawlsData.data.filter((withdrawal: { isCompleted: any; }) => !withdrawal.isCompleted))
-      console.log("completeddddddddd", withdrawlsData.data.filter((withdrawal: { isCompleted: any; }) => withdrawal.isCompleted))
       setWithdrawals(withdrawlsData.data);
       setTotal(withdrawlsData.meta.total);
       setIsPageLoading(false)
@@ -136,34 +132,32 @@ function Analytics() {
         label: 'TVL Strategies',
         data: dataValues,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
-          'rgba(255, 83, 64, 0.6)',
+          'rgba(255, 99, 132, 0.8)',    // Bright pink
+          'rgba(54, 162, 235, 0.8)',    // Bright blue
+          'rgba(255, 206, 86, 0.8)',    // Bright yellow
+          'rgba(75, 192, 192, 0.8)',    // Bright teal
+          'rgba(153, 102, 255, 0.8)',   // Bright purple
+          'rgba(255, 159, 64, 0.8)',    // Bright orange
+          'rgba(46, 204, 113, 0.8)',    // Bright green
+          'rgba(52, 152, 219, 0.8)',    // Another blue shade
+          'rgba(155, 89, 182, 0.8)',    // Another purple shade
+          'rgba(241, 196, 15, 0.8)',    // Another yellow shade
+          'rgba(231, 76, 60, 0.8)',     // Bright red
+          'rgba(26, 188, 156, 0.8)',    // Another teal shade
         ],
         borderColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
-          'rgba(255, 83, 64, 0.6)',
+          'rgba(255, 99, 132, 1)',      
+          'rgba(54, 162, 235, 1)',      
+          'rgba(255, 206, 86, 1)',      
+          'rgba(75, 192, 192, 1)',      
+          'rgba(153, 102, 255, 1)',     
+          'rgba(255, 159, 64, 1)',      
+          'rgba(46, 204, 113, 1)',      
+          'rgba(52, 152, 219, 1)',      
+          'rgba(155, 89, 182, 1)',      
+          'rgba(241, 196, 15, 1)',      
+          'rgba(231, 76, 60, 1)',       
+          'rgba(26, 188, 156, 1)',
         ],     
         borderWidth: 2
       }
@@ -176,165 +170,192 @@ function Analytics() {
       {
         data: avsOperators.map(({ operatorsCount }) => operatorsCount),
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+          'rgba(46, 204, 113, 0.8)',
+          'rgba(52, 152, 219, 0.8)',
+          'rgba(155, 89, 182, 0.8)',
+          'rgba(241, 196, 15, 0.8)',
+          'rgba(231, 76, 60, 0.8)',
+          'rgba(26, 188, 156, 0.8)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
-          'rgba(255, 83, 64, 0.6)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+          'rgba(46, 204, 113, 1)',
+          'rgba(52, 152, 219, 1)',
+          'rgba(155, 89, 182, 1)',
+          'rgba(241, 196, 15, 1)',
+          'rgba(231, 76, 60, 1)', 
+          'rgba(26, 188, 156, 1)',
         ],     
         borderWidth: 2
       },
     ],
   };
 
+  interface AnalyticsSummaryProps {
+    totalTVL: number;
+    totalOperators: number;
+    totalAVSs: number;
+    totalStakers: number;
+    totalRestaking: number;
+  }
+  
+  const AnalyticsSummary: React.FC<AnalyticsSummaryProps> = ({ 
+    totalTVL, 
+    totalOperators, 
+    totalAVSs, 
+    totalStakers, 
+    totalRestaking 
+  }) => {
+    return (
+      <div className="flex bg-white rounded-lg shadow-sm overflow-hidden">
+        <SummaryItem label="TVL(ETH)" value={totalTVL} isFirst={true} />
+        <SummaryItem label="Total Operators" value={totalOperators} />
+        <SummaryItem label="Total AVSs" value={totalAVSs} />
+        <SummaryItem label="Total Stakers" value={totalStakers} />
+        <SummaryItem label="TVL Restaking(ETH)" value={totalRestaking} isLast={true} />
+      </div>
+    );
+  };
+  
+  interface SummaryItemProps {
+    label: string;
+    value: number;
+    isFirst?: boolean;
+    isLast?: boolean;
+  }
+
+  const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, isFirst = false, isLast = false }) => {
+    return (
+      <div className={`flex-1 p-4 ${!isLast ? 'border-r border-gray-200' : ''} ${isFirst ? 'pl-6' : ''} ${isLast ? 'pr-6' : ''}`}>
+        <div className="text-sm text-gray-600">{label}</div>
+        <div className="font-bold text-lg text-black">
+          {parseFloat(value.toFixed(2)).toLocaleString()}
+        </div>
+      </div>
+    );
+  };
+  
   return (
     <div className='p-20'>
-        <div>Analytics</div>
-        {isPageLoading && (
-            <div className="flex items-center justify-center pt-10">
-                <Oval
-                    visible={true}
-                    height="40"
-                    width="40"
-                    color="#0500FF"
-                    secondaryColor="#cdccff"
-                    ariaLabel="oval-loading"
-                />
+      <h1 className='text-4xl text-center pb-7'>Analytics</h1>
+      {isPageLoading && (
+          <div className="flex items-center justify-center pt-10">
+              <Oval
+                  visible={true}
+                  height="40"
+                  width="40"
+                  color="#0500FF"
+                  secondaryColor="#cdccff"
+                  ariaLabel="oval-loading"
+              />
+          </div>
+      )}
+      {!isPageLoading && (        
+      <div>
+          <AnalyticsSummary
+            totalTVL={totalTVL}
+            totalOperators={totalOperators}
+            totalAVSs={totalAVSs}
+            totalStakers={totalStakers}
+            totalRestaking={totalRestaking}
+          />
+          <div className='flex items-center justify-center mt-7'>
+            <div className='flex gap-x-40 text-center'>
+              <div className='w-96 h-96'>
+                  <h1 className='pt-5 pb-5'>Operators Distribution in AVSs</h1>
+                  <Doughnut data={avsOperatorsData} options={{cutout: '95%'}}  />
+              </div>
+              <div className='w-96 h-96'>
+                  <h1 className='pt-5 pb-5'>Restaking TVL Distribution</h1>
+                  <Doughnut data={restakeData} options={{cutout: '95%'}} />
+              </div>
             </div>
-        )}
-        {!isPageLoading && (        
-        <div>
-            <div className="flex space-x-4">
-                <div className="p-4 bg-white rounded-lg border shadow-sm">
-                    <div className="text-gray-600">TVL(ETH)</div>
-                    {totalTVL && 
-                        <div className="font-bold text-lg text-black">{parseFloat(totalTVL.toFixed(2))}</div>
-                    }
-                </div>
-                <div className="p-4 bg-white rounded-lg border shadow-sm">
-                    <div className="text-gray-600">Total Operators</div>
-                    <div className="font-bold text-lg text-black">{totalOperators}</div>
-                </div>
-                <div className="p-4 bg-white rounded-lg border shadow-sm">
-                    <div className="text-gray-600">Total AVSs</div>
-                    <div className="font-bold text-lg text-black">{totalAVSs}</div>
-                </div>
-                <div className="p-4 bg-white rounded-lg border shadow-sm">
-                    <div className="text-gray-600">Total Stakers</div>
-                    <div className="font-bold text-lg text-black">{totalStakers}</div>
-                </div>
-                <div className="p-4 bg-white rounded-lg border shadow-sm">
-                    <div className="text-gray-600">TVL Restaking(ETH)</div>
-                    {totalRestaking && 
-                        <div className="font-bold text-lg text-black">{parseFloat(totalRestaking.toFixed(2))}</div>
-                    }
-                </div>
-            </div>
-            <div className='flex gap-x-40'>
-            <div className='w-96 h-96'>
-                <h1>Operators in AVSs</h1>
-                <Doughnut data={avsOperatorsData} />
-            </div>
-            <div className='w-96 h-96'>
-                <h1>Restaking TVL</h1>
-                <Doughnut data={restakeData} />
-            </div>
-            </div>
-            <div>
-            <div className="mx-auto py-8 overflow-x-auto table-container">
+          </div>
+          <div className='mt-10'>
+            <div className="mx-auto py-8 overflow-x-auto">
                 <h1 className='mt-10 mb-10'>All Withdrawals</h1>
-                <table className="w-full border-collapse">
-                <thead>
-                    <tr className="bg-black">
-                    <th className="py-2 px-4 border">Block</th>
-                    <th className="py-2 px-4 border">Staker</th>
-                    <th className="py-2 px-4 border">Is Completed?</th>
-                    <th className="py-2 px-4 border">Delegated To</th>
-                    <th className="py-2 px-4 border">Shares(ETH)</th>
-                    <th className="py-2 px-4 border">Strategy</th>
+
+                <table className="w-full border-collapse text-center text-white">
+                  <thead>
+                    <tr className="bg-gray-800">
+                      <th className="py-2 px-4 border border-gray-700">Block</th>
+                      <th className="py-2 px-4 border border-gray-700">Staker</th>
+                      <th className="py-2 px-4 border border-gray-700">Is Completed?</th>
+                      <th className="py-2 px-4 border border-gray-700">Delegated To</th>
+                      <th className="py-2 px-4 border border-gray-700">Shares(ETH)</th>
+                      <th className="py-2 px-4 border border-gray-700">Strategy</th>
                     </tr>
-                </thead>
-                <tbody>
+                  </thead>
+                  <tbody>
                     {withdrawals.map((withdrawal, index) => (
-                    <tr key={index} className="bg-black">
-                        <td className="py-2 px-4 border text-sm">{withdrawal.createdAtBlock}</td>
-                        <td className="py-2 px-4 border text-sm">{withdrawal.stakerAddress}</td>
-                        <td className="py-2 px-4 border text-sm">{withdrawal.isCompleted ? 'Yes' : 'No'}</td>
-                        <td className="py-2 px-4 border text-sm">{withdrawal.delegatedTo}</td>
-                        <td className="py-2 px-4 border text-sm">
-                        {withdrawal.shares.map((share, index) => (
+                      <tr key={index} className="bg-gray-900 hover:bg-gray-800 transition-colors">
+                        <td className="py-2 px-4 border border-gray-700 text-sm">{withdrawal.createdAtBlock}</td>
+                        <td className="py-2 px-4 border border-gray-700 text-sm">{withdrawal.stakerAddress}</td>
+                        <td className="py-2 px-4 border border-gray-700 text-sm">{withdrawal.isCompleted ? 'Yes' : 'No'}</td>
+                        <td className="py-2 px-4 border border-gray-700 text-sm">{withdrawal.delegatedTo}</td>
+                        <td className="py-2 px-4 border border-gray-700 text-sm">
+                          {withdrawal.shares.map((share, index) => (
                             <div key={index}>{weiToEth(share.shares)}</div>
-                        ))}
+                          ))}
                         </td>
-                        <td className="py-2 px-4 border">
-                        {withdrawal.shares.map((share, index) => (
-                        <div key={index}>{strategyNames[share.strategyAddress] || share.strategyAddress}</div>
-                        ))}
+                        <td className="py-2 px-4 border border-gray-700">
+                          {withdrawal.shares.map((share, index) => (
+                            <div key={index}>{strategyNames[share.strategyAddress] || share.strategyAddress}</div>
+                          ))}
                         </td>
-                    </tr>
+                      </tr>
                     ))}
-                </tbody>
+                  </tbody>
                 </table>
 
                 <div className="flex justify-center mt-4">
-                <button
+                  <button
                     disabled={skip === 0}
                     onClick={() => handlePageChange(1)}
-                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-                >
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-blue-600 disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
                     First
-                </button>
-                <button
+                  </button>
+                  <button
                     disabled={skip === 0}
                     onClick={() => handlePageChange(skip / take)}
-                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-                >
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
                     Prev
-                </button>
-                <span className="px-4 py-2 mr-2">
+                  </button>
+                  <span className="px-4 py-2 mr-2 text-gray-300">
                     Page {skip / take + 1} of {totalPages}
-                </span>
-                <button
+                  </span>
+                  <button
                     disabled={skip + take >= total}
                     onClick={() => handlePageChange((skip / take) + 2)}
-                    className="px-4 py-2 mr-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-                >
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
                     Next
-                </button>
-                <button
+                  </button>
+                  <button
                     disabled={skip + take >= total}
                     onClick={() => handlePageChange(totalPages)}
-                    className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-                >
+                    className="px-4 py-2 bg-gray-700 text-gray-100 rounded hover:bg-blue-500 disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
                     Last
-                </button>
+                  </button>
                 </div>
             </div>
-            </div>
-        </div>
-        )}
+          </div>
+      </div>
+      )}
     </div>
   )
 }

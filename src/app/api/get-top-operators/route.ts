@@ -56,6 +56,8 @@ export async function GET(req: NextRequest) {
 
         const results = sortedOperators.slice(0,10)
 
+        client.close();
+
         return NextResponse.json(results, {
             status: 200,
             headers: {

@@ -264,26 +264,26 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       console.error("Error handling end call:", error);
     }
 
-    try {
-      toast.success("Giving Attestations");
-      const response = await fetch(`/api/get-attest-data`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomId: roomId,
-        }),
-      });
-      const response_data = await response.json();
-      console.log("Updated", response_data);
-      if (response_data.success) {
-        toast.success("Attestation successful");
-      }
-    } catch (e) {
-      console.log("Error in attestation: ", e);
-      toast.error("Attestation denied");
-    }
+    // try {
+    //   toast.success("Giving Attestations");
+    //   const response = await fetch(`/api/get-attest-data`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       roomId: roomId,
+    //     }),
+    //   });
+    //   const response_data = await response.json();
+    //   console.log("Updated", response_data);
+    //   if (response_data.success) {
+    //     toast.success("Attestation successful");
+    //   }
+    // } catch (e) {
+    //   console.log("Error in attestation: ", e);
+    //   toast.error("Attestation denied");
+    // }
 
     if (meetingCategory === "officehours") {
       try {

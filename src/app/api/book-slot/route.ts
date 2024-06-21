@@ -108,7 +108,7 @@ export async function POST(
           try {
             await sendMail({
               to: emailId,
-              name: "Eigen Insights",
+              name: "Eigen Insight",
               subject: "Session Booked",
               body: compileBookedSessionTemplate(
                 "Your session has been Booked.",
@@ -132,7 +132,7 @@ export async function POST(
             try {
               await sendMail({
                 to: emailId,
-                name: "Eigen Insights",
+                name: "Eigen Insight",
                 subject: "Session Booked",
                 body: compileBookedSessionTemplate(
                   "🎉 Hooray! Your session is officially booked! ",
