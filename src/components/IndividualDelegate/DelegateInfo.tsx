@@ -52,27 +52,27 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
   const [avsOperators, setAVSOperators] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  if (props.daoDelegates === 'avss') {
+  
     useEffect(() => {
-      const fetchData = async () => {
-        if (isDataFetched) return;
+      if (props.daoDelegates === 'avss') {
+        const fetchData = async () => {
+          if (isDataFetched) return;
 
-        const options = {method: 'GET'};
-        const avsOperatorsrRes = await fetch(`https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=0&take=12`, options)
-        
-        const avsOperators = await avsOperatorsrRes.json();
+          const options = {method: 'GET'};
+          const avsOperatorsrRes = await fetch(`https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=0&take=12`, options)
+          
+          const avsOperators = await avsOperatorsrRes.json();
 
-        console.log("operatorsassssssssssssssss", avsOperators.data);
-        setIsDataFetched(true); 
-        setAVSOperators(avsOperators.data);
-        setLoading(false);
-        setDataLoading(false);
-        setPageLoading(false);
+          console.log("operatorsassssssssssssssss", avsOperators.data);
+          setIsDataFetched(true); 
+          setAVSOperators(avsOperators.data);
+          setLoading(false);
+          setDataLoading(false);
+          setPageLoading(false);
+        }
+        fetchData();
       }
-
-      fetchData();
     })
-  }
   
 
   useEffect(() => {
@@ -400,85 +400,6 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
 
   return (
     <div>
-      {/* <div
-        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
-        className={`rounded-xl my-7 me-32 py-6 px-7 text-sm ${
-          desc ? "" : "min-h-52"
-        }`}
-      >
-        {loading ? (
-          <div className="flex pt-6 justify-center">
-            <ThreeDots
-              visible={true}
-              height="60"
-              width="60"
-              color="#0500FF"
-              ariaLabel="oval-loading"
-            />
-          </div>
-        ) : desc !== "" ? (
-          desc
-        ) : (
-          <div className="font-semibold text-base flex justify-center">
-            Descrption has not been provided
-          </div>
-        )}
-      </div>
-      <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm mb-6">
-        <button
-          className={`py-2 ${
-            activeButton === "onchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
-          } `}
-          onClick={() => fetchAttestation("onchain")}
-        >
-          Onchain
-        </button>
-        <button
-          className={`py-2 ${
-            activeButton === "offchain"
-              ? "text-[#3E3D3D] font-bold"
-              : "text-[#7C7C7C]"
-          }`}
-          onClick={() => fetchAttestation("offchain")}
-        >
-          Offchain
-        </button>
-      </div> */}
-      <div className="grid grid-cols-4 pe-32 gap-10">
-        {details.length > 0 ? (
-          details.map((key, index) => (
-            <div
-              key={index}
-              className="bg-[#3E3D3D] text-white rounded-2xl px-3 py-5 cursor-pointer"
-              onClick={() => router.push(`${key.ref}`)}
-            >
-              <div className="font-semibold text-3xl text-center pb-2">
-                {isSessionHostedLoading &&
-                isSessionAttendedLoading &&
-                isOfficeHoursHostedLoading &&
-                isOfficeHoursAttendedLoading ? (
-                  <div className="flex items-center justify-center">
-                    <RotatingLines
-                      visible={true}
-                      width="36"
-                      strokeColor="grey"
-                      ariaLabel="oval-loading"
-                    />
-                  </div>
-                ) : (
-                  key.number
-                )}
-              </div>
-              <div className="text-center text-sm">{key.desc}</div>
-            </div>
-          ))
-        ) : (
-          <div>No data available</div>
-        )}
-      </div>
-
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
@@ -519,7 +440,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
         )}
       </div>
 
-      <h1 className="mt-10 mb-5">Operators</h1>
+      <h1 className="mt-10 mb-5 font-bold text-3xl">Node Operators</h1>
       <div className="py-8 pe-10 font-poppins">
         {isPageLoading ? (
           <div className="flex items-center justify-center">
@@ -615,22 +536,6 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                           {daos.address.slice(0, 6) +
                             "..." +
                             daos.address.slice(-4)}
-                          {/* <Tooltip
-                            content="Copy"
-                            placement="right"
-                            closeDelay={1}
-                            showArrow
-                            className="bg-sky-blue"
-                          >
-                            <span className="cursor-pointer text-sm">
-                              <IoCopy
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  handleCopy(daos.address);
-                                }}
-                              />
-                            </span>
-                          </Tooltip> */}
                         </div>
                         <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
                           <span className="text-light-cyan font-semibold">
@@ -638,27 +543,12 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                           </span>
                           total stakers
                         </div>
-                        {/* <div
+                        <div
                           className={`font-semibold overflow-hidden ${styles.desc}`}
                         >
                           {daos.metadataDescription}
-                        </div> */}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div>
-                      {/* <button
-                        className=" text-white font-poppins w-full rounded-[4px] text-sm btnStake
-                        p-3 border-[#A7DBF2] border-1 px-6 
-              border-b-4 font-medium overflow-hidden py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
-                        onClick={(event) => {
-                          event.stopPropagation(); // Prevent event propagation to parent container
-                          WalletOpen(daos.address);
-                        }}
-                      >
-                        <span className="hover-text">Stake</span>
-                      </button> */}
                     </div>
                   </div>
                   <div style={{ zIndex: "21474836462" }}>

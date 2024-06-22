@@ -496,7 +496,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
 
                 <div className="flex gap-4 py-1">
-                  <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                     <span className="text-blue-shade-200 font-semibold">
                       {delegateInfo?.totalStakers
                         ? Number(delegateInfo?.totalStakers)
@@ -506,7 +506,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     total stakers
                   </div>
                   {props.daoDelegates === "avss" && 
-                    <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                       <span className="text-blue-shade-200 font-semibold">
                         {delegateInfo?.totalOperators
                           ? Number(delegateInfo?.totalOperators)
@@ -516,7 +516,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       total operators
                     </div>
                   }
-                  <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                     TVL
                     <span className="text-blue-shade-200 font-semibold">
                       &nbsp;
@@ -527,7 +527,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </span>
                     ETH 
                   </div>
-                  <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                     TVL Restaked
                     <span className="text-blue-shade-200 font-semibold">
                       &nbsp;
