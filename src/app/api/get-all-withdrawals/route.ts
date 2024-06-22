@@ -49,6 +49,8 @@ export async function GET(req: NextRequest) {
         const queued = queuedWithdrawals.flatMap(batch => batch).length;
         const results = [complete, queued]
 
+        client.close();
+
         return NextResponse.json(results, {
             status: 200,
             headers: {

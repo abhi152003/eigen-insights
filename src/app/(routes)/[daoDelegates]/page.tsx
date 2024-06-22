@@ -27,7 +27,7 @@ export async function generateMetadata(
 
   return {
     metadataBase: new URL("https://app.chora.club/"),
-    title: "Eigen Insights",
+    title: "Eigen Insight",
     description: "Discover. Learn. Engage.",
   };
 }

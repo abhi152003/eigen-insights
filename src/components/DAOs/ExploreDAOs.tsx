@@ -127,7 +127,7 @@ function ExploreDAOs() {
       <div className="">
         <div className="flex justify-between pe-10">
           <div
-            className="font-medium text-4xl font-quanty pb-4 shineFont"
+            className="text-light-cyan font-medium text-4xl font-quanty pb-4 ml-3"
           >
             Explore
           </div>

@@ -322,6 +322,7 @@ function SpecificDelegate({ props }: { props: Type }) {
   //   fetchEnsName();
   // }, [chain, props.individualDelegate]);
 
+  console.log(delegateInfo);
   return (
     <>
       {isPageLoading && (
@@ -515,8 +516,19 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </span>
                     total stakers
                   </div>
+                  {props.daoDelegates === "avss" && 
+                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                      <span className="text-light-cyan font-semibold">
+                        {delegateInfo?.totalOperators
+                          ? Number(delegateInfo?.totalOperators)
+                          : 0}
+                        &nbsp;
+                      </span>
+                      total operators
+                    </div>
+                  }
                   <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    Total
+                    TVL
                     <span className="text-light-cyan font-semibold">
                       &nbsp;
                       {delegateInfo?.tvl.tvl
@@ -524,7 +536,18 @@ function SpecificDelegate({ props }: { props: Type }) {
                         : 0}
                       &nbsp;
                     </span>
-                    ETH Staked
+                    ETH 
+                  </div>
+                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                    TVL Restaked
+                    <span className="text-light-cyan font-semibold">
+                      &nbsp;
+                      {delegateInfo?.tvl.tvl
+                        ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                        : 0}
+                      &nbsp;
+                    </span>
+                    ETH
                   </div>
                 </div>
 
@@ -535,7 +558,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       handleDelegateVotes(`${props.individualDelegate}`)
                     }
                   >
-                    Delegate
+                    Stake
                   </button>
                 </div>
               </div>
@@ -631,7 +654,8 @@ function SpecificDelegate({ props }: { props: Type }) {
             </div>
           </div>
         )
-      )}
+      )
+    }
     </>
   );
 }

@@ -140,7 +140,7 @@ function DaoOfficeHours() {
   return (
     <div className="pt-6 pl-14 pr-6">
       <div className="flex justify-between pe-10">
-        <div className="font-quanty font-medium text-4xl pb-4 pl-2 shineFont shineFontOfcHours">
+        <div className="font-quanty font-medium text-4xl pb-4 pl-2">
           <Tooltip
             showArrow
             content={
@@ -184,8 +184,8 @@ function DaoOfficeHours() {
               border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "ongoing"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() => router.push(path + "?hours=ongoing")}
           >
@@ -197,8 +197,8 @@ function DaoOfficeHours() {
               border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "upcoming"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white border-white"
             }`}
             onClick={() => router.push(path + "?hours=upcoming")}
           >
@@ -210,8 +210,8 @@ function DaoOfficeHours() {
               border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "recorded"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white border-white"
             }`}
             onClick={() => router.push(path + "?hours=recorded")}
           >

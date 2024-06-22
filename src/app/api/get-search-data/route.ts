@@ -67,6 +67,8 @@ export async function GET(req: NextRequest) {
 
     // console.log('Search results:', results);
 
+    client.close();
+    
     return NextResponse.json(results, {
       status: 200,
       headers: {
