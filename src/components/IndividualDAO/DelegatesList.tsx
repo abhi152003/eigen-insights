@@ -87,11 +87,13 @@ function DelegatesList({ props }: { props: string }) {
         } else {
           console.error(data.message);
         }
+
+        setPageLoading(false);
       } catch (error) {
         console.log(error);
       } finally {
         setDataLoading(false);
-        setPageLoading(false);
+        
       }
     },
     []
