@@ -4,7 +4,7 @@ import React, { useState, useEffect, ReactEventHandler } from "react";
 import { DateTime } from "luxon";
 import { useAccount, useNetwork } from "wagmi";
 import toast, { Toaster } from "react-hot-toast";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
 import { Tooltip } from "@nextui-org/react";
 import SchedulingSuccessModal from "./SchedulingSuccessModal";
@@ -689,14 +689,14 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
             disabled={createSessionLoading}
           >
             {createSessionLoading ? (
-              <Oval
+              <ThreeCircles
                 visible={true}
-                height="28"
-                width="28"
-                color="#ffffff"
-                secondaryColor="#cdccff"
-                ariaLabel="oval-loading"
-                wrapperClass="flex justify-center items-center"
+                height="60"
+                width="60"
+                color="#FFFFFF"
+                ariaLabel="three-circles-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
               />
             ) : (
               "Create Session"

@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import text1 from "@/assets/images/daos/texture1.png";
 import SessionTile from "../utils/SessionTiles";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 
 type Attendee = {
   attendee_address: string;
@@ -201,13 +201,14 @@ function DelegateSessions({ props }: { props: Type }) {
           {searchParams.get("session") === "upcoming" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -222,13 +223,14 @@ function DelegateSessions({ props }: { props: Type }) {
           {searchParams.get("session") === "hosted" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -243,13 +245,14 @@ function DelegateSessions({ props }: { props: Type }) {
           {searchParams.get("session") === "attended" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (

@@ -9,7 +9,7 @@ import EILogo from "@/assets/images/daos/eigen_logo.png";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import { Button, Dropdown, Pagination, Tooltip } from "@nextui-org/react";
-import { Oval, RotatingLines } from "react-loader-spinner";
+import { BallTriangle, Oval, RotatingLines, ThreeCircles } from "react-loader-spinner";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
@@ -346,13 +346,14 @@ function DelegatesList({ props }: { props: string }) {
       <div className="py-8 pe-10 font-poppins">
         {isPageLoading ? (
           <div className="flex items-center justify-center">
-            <Oval
+            <ThreeCircles
               visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
+              height="60"
+              width="60"
+              color="#FFFFFF"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
             />
           </div>
         ) : delegateData.delegates.length > 0 ? (
@@ -499,11 +500,15 @@ function DelegatesList({ props }: { props: string }) {
             
             {isDataLoading && (
               <div className="flex items-center justify-center my-4">
-                <RotatingLines
+                <BallTriangle
+                  height={100}
+                  width={100}
+                  radius={5}
+                  color="#FFFFFF"
+                  ariaLabel="ball-triangle-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                   visible={true}
-                  width="40"
-                  strokeColor="#0500FF"
-                  ariaLabel="oval-loading"
                 />
               </div>
             )}

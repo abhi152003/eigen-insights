@@ -34,7 +34,7 @@ import { useNetwork } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import axios from "axios";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import lighthouse from "@lighthouse-web3/sdk";
 import InstantMeet from "./InstantMeet";
 import { useSession } from "next-auth/react";
@@ -669,141 +669,75 @@ function MainProfile() {
                       </span>
                     </Tooltip>
                     <div className="mt-10">
-                    <Modal
-                      isOpen={isOpen}
-                      onOpenChange={onOpenChange}
-                      className="font-poppins modal-bg">
-                      <ModalContent className="mt-5">
-                        {(onClose: any) => (
-                          <>
-                            <ModalHeader className="flex flex-col gap-1">
-                              Update your Profile
-                            </ModalHeader>
-                            <ModalBody>
-                              <div className="px-1 font-medium flex gap-3 items-center">
-                                <p>Upload Profile Image:</p>
-                                <div className=" border border-white rounded-full bg-white text-black p-[6px] hover:bg-light-blue hover:text-white hover:cursor-pointer hover:scale-125">
-                                <RiFolderUserLine className="w-4 h-4"/>
+                      <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        className="font-poppins modal-bg"
+                        size="3xl"
+                      >
+                        <ModalContent className="max-h-[95vh]">
+                          {(onClose) => (
+                            <>
+                              <ModalHeader className="flex flex-col gap-1 py-2">
+                                Update your Profile
+                              </ModalHeader>
+                              <ModalBody className="py-2 space-y-2">
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                  <div className="col-span-2">
+                                    <label className="text-sm font-medium flex gap-2 items-center mb-1">
+                                      Upload Profile Image:
+                                      <div className="border border-white rounded-full bg-white text-black p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer">
+                                        <RiFolderUserLine className="w-4 h-4"/>
+                                      </div>
+                                    </label>
+                                    <input
+                                      type="file"
+                                      className="w-full text-sm"
+                                      onChange={(e) => uploadImage(e.target.files)}
+                                    />
+                                  </div>
+                                  
+                                  {[
+                                    { label: "Display name", icon: <MdDriveFileRenameOutline />, value: displayName, onChange: (e: { target: { value: string; }; }) => handleInputChange("displayName", e.target.value) },
+                                    { label: "Email", icon: <MdOutlineMail />, value: emailId, onChange: (e: { target: { value: string; }; }) => handleInputChange("emailId", e.target.value) },
+                                    { label: "X (Formerly Twitter)", icon: <FaXTwitter />, value: twitter, onChange: (e: { target: { value: string; }; }) => handleInputChange("twitter", e.target.value) },
+                                    { label: "Discourse", icon: <FaDiscourse />, value: discourse, onChange: (e: { target: { value: string; }; }) => handleInputChange("discourse", e.target.value) },
+                                    { label: "Discord", icon: <FaDiscord />, value: discord, onChange: (e: { target: { value: string; }; }) => handleInputChange("discord", e.target.value) },
+                                    { label: "Github", icon: <FaGithub />, value: github, onChange: (e: { target: { value: string; }; }) => handleInputChange("github", e.target.value) },
+                                  ].map((field, index) => (
+                                    <div key={index}>
+                                      <label className="text-sm font-medium flex gap-2 items-center mb-1">
+                                        {field.label}:
+                                        <div className="border border-white rounded-full bg-white text-black p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer">
+                                          {field.icon}
+                                        </div>
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={field.value}
+                                        placeholder={`Enter ${field.label.toLowerCase()}`}
+                                        className="w-full outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
+                                        onChange={field.onChange}
+                                      />
+                                    </div>
+                                  ))}
                                 </div>
-                              </div>
-                              <input
-                                type="file"
-                                ref={fileInputRef}
-                                placeholder="Upload Image"
-                                onChange={(e) => uploadImage(e.target.files)}
-                              />
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                Display name:
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
-                                <MdDriveFileRenameOutline className="w-4 h-4"/>
-                                </div>
-                              </div>
-                              <input
-                                type="text"
-                                value={displayName}
-                                placeholder="Enter your name here"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    "displayName",
-                                    e.target.value
-                                  )
-                                }
-                              />
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                Email:
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-yellow-500 hover:text-white hover:cursor-pointer hover:scale-125">
-                                <MdOutlineMail className="w-4 h-4"/>
-                                </div>
-                              </div>
-                              <input
-                                type="email"
-                                value={emailId}
-                                placeholder="Enter your email here"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange("emailId", e.target.value)
-                                }
-                              />
-
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                X (Formerly Twitter):
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-black hover:text-white hover:cursor-pointer hover:scale-125">
-                                <FaXTwitter />
-                                </div>
-                              </div>
-                              <input
-                                type="url"
-                                value={twitter}
-                                placeholder="Enter twitter username"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange("twitter", e.target.value)
-                                }
-                              />
-
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                Discourse:
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-green-400 hover:text-white hover:cursor-pointer hover:scale-125">
-                                <FaDiscourse className="w-4 h-4" />
-                                </div>
-                              </div>
-                              <input
-                                type="url"
-                                value={discourse}
-                                placeholder="Enter discourse username"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange("discourse", e.target.value)
-                                }
-                              />
-
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                Discord:
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
-                                <FaDiscord className="w-4 h-4" />
-                                </div>
-                              </div>
-
-                              <input
-                                type="url"
-                                value={discord}
-                                placeholder="Enter discord username"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange("discord", e.target.value)
-                                }
-                              />
-                              <div className="px-1 mt-1 font-medium flex gap-3 items-center">
-                                Github:
-                                <div className="border border-white rounded-full bg-white text-black p-[6px] hover:bg-black hover:text-white hover:cursor-pointer hover:scale-125">
-                                <FaGithub className="w-4 h-4"/>
-                                </div>
-                              </div>
-                              <input
-                                type="url"
-                                value={github}
-                                placeholder="Enter github username"
-                                className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm"
-                                onChange={(e) =>
-                                  handleInputChange("github", e.target.value)
-                                }
-                              />
-                            </ModalBody>
-                            <ModalFooter>
-                              <Button color="default" onPress={onClose}>
-                                Close
-                              </Button>
-                              <Button
-                                className="btnSave"
-                                onClick={() => handleSubmit()}>
-                                {isLoading ? "Saving" : "Save"}
-                              </Button>
-                            </ModalFooter>
-                          </>
-                        )}
-                      </ModalContent>
-                    </Modal>
+                              </ModalBody>
+                              <ModalFooter className="py-2">
+                                <Button color="default" onPress={onClose}>
+                                  Close
+                                </Button>
+                                <Button
+                                  className="btnSave"
+                                  onClick={() => handleSubmit()}
+                                >
+                                  {isLoading ? "Saving" : "Save"}
+                                </Button>
+                              </ModalFooter>
+                            </>
+                          )}
+                        </ModalContent>
+                      </Modal>
                     </div>
                   </div>
                 </div>
@@ -895,17 +829,6 @@ function MainProfile() {
               onClick={() => router.push(path + "?active=info")}>
               Info
             </button>
-            {selfDelegate === true && (
-              <button
-                className={`border-b-2 py-4 px-2 outline-none ${
-                  searchParams.get("active") === "votes"
-                    ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
-                    : "border-transparent"
-                }`}
-                onClick={() => router.push(path + "?active=votes")}>
-                Past Votes
-              </button>
-            )}
             <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "sessions"
@@ -1003,13 +926,14 @@ function MainProfile() {
       ) : (
         <>
           <div className="flex items-center justify-center pt-10">
-            <Oval
+            <ThreeCircles
               visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
+              height="60"
+              width="60"
+              color="#FFFFFF"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
             />
           </div>
         </>

@@ -10,7 +10,7 @@ import {
 // import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import React, { useEffect, useState } from "react";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { useNetwork } from "wagmi";
 import Image from "next/image";
@@ -325,13 +325,14 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
               >
                 {confirmSave ? (
                   <div className="flex items-center justify-center">
-                    <Oval
+                    <ThreeCircles
                       visible={true}
-                      height="20"
-                      width="20"
-                      color="#0500FF"
-                      secondaryColor="#cdccff"
-                      ariaLabel="oval-loading"
+                      height="60"
+                      width="60"
+                      color="#FFFFFF"
+                      ariaLabel="three-circles-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
                     />
                   </div>
                 ) : (

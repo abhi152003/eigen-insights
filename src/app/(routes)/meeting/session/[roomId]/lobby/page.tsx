@@ -27,7 +27,7 @@ import {
 import { useAccount, useNetwork } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Role } from "@huddle01/server-sdk/auth";
-import { Oval, TailSpin } from "react-loader-spinner";
+import { Oval, TailSpin, ThreeCircles } from "react-loader-spinner";
 import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
 import record from "@/assets/images/instant-meet/record.svg";
@@ -439,13 +439,14 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                     <div className="flex-1 bg-transparent py-3 outline-none text-[#7C7C7C]">
                       {isLoading ? (
                         <div className="flex items-center justify-center top-10">
-                          <Oval
+                          <ThreeCircles
                             visible={true}
-                            height="20"
-                            width="20"
-                            color="#0500FF"
-                            secondaryColor="#cdccff"
-                            ariaLabel="oval-loading"
+                            height="60"
+                            width="60"
+                            color="#FFFFFF"
+                            ariaLabel="three-circles-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
                           />
                         </div>
                       ) : (
@@ -505,19 +506,12 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
               <div className="flex justify-center items-center h-screen">
                 <div className="text-center">
                   <div className="flex items-center justify-center pt-10">
-                    <TailSpin
-                      // visible={true}
-                      // height="40"
-                      // width="40"
-                      // color="#0500FF"
-                      // secondaryColor="#cdccff"
-                      // ariaLabel="oval-loading"
+                    <ThreeCircles
                       visible={true}
                       height="80"
                       width="80"
-                      color="#0500FF"
-                      ariaLabel="tail-spin-loading"
-                      radius="1"
+                      color="#FFFFFF"
+                      ariaLabel="three-circles-loading"
                       wrapperStyle={{}}
                       wrapperClass=""
                     />

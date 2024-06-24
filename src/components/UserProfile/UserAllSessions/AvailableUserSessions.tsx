@@ -4,7 +4,7 @@ import { ImBin } from "react-icons/im";
 import { FaPencilAlt } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { useNetwork, useAccount } from "wagmi";
-import { Grid } from "react-loader-spinner";
+import { CirclesWithBar, Grid } from "react-loader-spinner";
 import { motion, AnimatePresence } from "framer-motion";
 import '../../../css/SessionPage.css'
 
@@ -68,13 +68,17 @@ function AvailableUserSessions({
       </h1>
       {dataLoading ? (
         <div className="flex justify-center items-center">
-          <Grid
+          <CirclesWithBar
+            height="100"
+            width="100"
+            color="#FFFFFF"
+            outerCircleColor="#FFFFFF"
+            innerCircleColor="#FFFFFF"
+            barColor="#FFFFFF"
+            ariaLabel="circles-with-bar-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
             visible={true}
-            height="40"
-            width="40"
-            color="#0E76FD"
-            ariaLabel="grid-loading"
-            radius="12.5"
           />
         </div>
       ) : data.length > 0 ? (

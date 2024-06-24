@@ -16,7 +16,7 @@ import { FaPencil, FaRegShareFromSquare } from "react-icons/fa6"; // Importing t
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { FaSpinner } from "react-icons/fa"; // Importing the spinner icon
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 
 interface SessionDetail {
@@ -203,13 +203,14 @@ function UserUpcomingHours() {
       <div className="space-y-6">
         {pageLoading ? (
           <div className="flex items-center justify-center">
-            <Oval
+            <ThreeCircles
               visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
+              height="60"
+              width="60"
+              color="#FFFFFF"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
             />
           </div>
         ) : sessionDetails.length > 0 ? (
@@ -303,13 +304,14 @@ function UserUpcomingHours() {
                   >
                     {startLoading ? (
                       <>
-                        <Oval
+                        <ThreeCircles
                           visible={true}
-                          height="20"
-                          width="20"
-                          color="#fff"
-                          secondaryColor="#cdccff"
-                          ariaLabel="oval-loading"
+                          height="60"
+                          width="60"
+                          color="#FFFFFF"
+                          ariaLabel="three-circles-loading"
+                          wrapperStyle={{}}
+                          wrapperClass=""
                         />
                       </>
                     ) : (

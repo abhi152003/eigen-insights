@@ -7,7 +7,7 @@ import { useRouter } from "next-nprogress-bar";
 import Tile from "../utils/Tile";
 import { useNetwork, useAccount } from "wagmi";
 import text1 from "@/assets/images/daos/texture1.png";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import { RxCross2 } from "react-icons/rx";
 
 interface UserOfficeHoursProps {
@@ -143,7 +143,7 @@ function UserOfficeHours({
   return (
     <div>
       {showComingSoon && (
-        <div className="flex items-center w-fit bg-[#718391] border border-light-cyan rounded-full px-3 py-1 mb-3 font-poppins">
+        <div className="flex items-center w-fit bg-[#FFFFFF] border border-light-cyan rounded-full px-3 py-1 mb-3 font-poppins">
           <p className="text-md text-white mr-2">
             Office hours are currently being developed. In the meantime, please
             enjoy our 1:1 sessions.
@@ -226,13 +226,14 @@ function UserOfficeHours({
           {searchParams.get("hours") === "hosted" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -246,13 +247,14 @@ function UserOfficeHours({
           {searchParams.get("hours") === "attended" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (

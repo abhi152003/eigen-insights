@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Title, Tooltip} from 'chart.js';
 import { formatEther } from 'ethers';
-import { Oval } from 'react-loader-spinner';
+import { Oval, ThreeCircles } from 'react-loader-spinner';
 import '../../app/globals.css'
 
 interface Share {
@@ -251,13 +251,14 @@ function Analytics() {
       <h1 className='text-4xl text-center pb-7'>Analytics</h1>
       {isPageLoading && (
           <div className="flex items-center justify-center pt-10">
-              <Oval
-                  visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+              <ThreeCircles
+                visible={true}
+                height="60"
+                width="60"
+                color="#FFFFFF"
+                ariaLabel="three-circles-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
               />
           </div>
       )}

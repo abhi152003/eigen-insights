@@ -1,24 +1,30 @@
 // import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  BallTriangle,
   Comment,
   Hourglass,
+  InfinitySpin,
+  LineWave,
   Oval,
   RotatingLines,
+  ThreeCircles,
   ThreeDots,
 } from "react-loader-spinner";
 
 
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { IoCopy } from "react-icons/io5";
 import Image from "next/image";
 import NOLogo from "@/assets/images/daos/operators.png";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
 import styles from "@/components/IndividualDelegate/DelegateVotes.module.css";
+import { Button, Dropdown, Pagination, Tooltip as CopyToolTip } from "@nextui-org/react";
+import copy from "copy-to-clipboard";
 
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
@@ -35,7 +41,7 @@ interface Type {
 function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string, delegateInfo: any }) {
 
   const [loading, setLoading] = useState(true);
-  const [isDataLoading, setDataLoading] = useState(true);
+  const [isDataLoading, setDataLoading] = useState<boolean>(false);
   const router = useRouter();
   const [sessionHostCount, setSessionHostCount] = useState(0);
   const [sessionAttendCount, setSessionAttendCount] = useState(0);
@@ -49,31 +55,70 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
     useState(true);
   const [activeButton, setActiveButton] = useState("onchain");
   const [isPageLoading, setPageLoading] = useState<boolean>(true);
-  const [avsOperators, setAVSOperators] = useState([]);
+  const [avsOperators, setAVSOperators] = useState<any[]>([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+
 
   
-    useEffect(() => {
-      if (props.daoDelegates === 'avss') {
-        const fetchData = async () => {
-          if (isDataFetched) return;
-
-          const options = {method: 'GET'};
-          const avsOperatorsrRes = await fetch(`https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=0&take=12`, options)
-          
-          const avsOperators = await avsOperatorsrRes.json();
-
-          console.log("operatorsassssssssssssssss", avsOperators.data);
-          setIsDataFetched(true); 
-          setAVSOperators(avsOperators.data);
-          setLoading(false);
-          setDataLoading(false);
-          setPageLoading(false);
-        }
-        fetchData();
-      }
-    })
+  const fetchData = useCallback(async () => {
+    if (!hasMore || isDataLoading) return;
   
+    setDataLoading(true);
+    const options = { method: 'GET' };
+    const avsOperatorsRes = await fetch(
+      `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
+      options
+    );
+    
+    const newAvsOperators = await avsOperatorsRes.json();
+  
+    if (newAvsOperators.data.length === 0) {
+      setHasMore(false);
+    } else {
+      setAVSOperators(prevOperators => [...prevOperators, ...newAvsOperators.data]);
+      setCurrentPage(prevPage => prevPage + 12);
+    }
+  
+    setDataLoading(false);
+    setInitialLoad(false);
+  }, [currentPage, hasMore, isDataLoading, props.individualDelegate]);
+
+  useEffect(() => {
+    if (props.daoDelegates === 'avss' && initialLoad) {
+      fetchData();
+    }
+  }, [fetchData, props.daoDelegates, initialLoad]);
+  
+  const debounce = (func: { (): void; apply?: any; }, delay: number | undefined) => {
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
+    return (...args: any) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(null, args);
+      }, delay);
+    };
+  };
+  
+  const handleScroll = useCallback(() => {
+    if (initialLoad) return;
+    
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    const threshold = 100;
+    if (scrollTop + clientHeight >= scrollHeight - threshold && !isDataLoading) {
+      fetchData();
+    }
+  }, [fetchData, initialLoad, isDataLoading]);
+  
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   useEffect(() => {
     if (activeButton === "onchain") {
@@ -375,8 +420,12 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
           '#16a085', '#8e44ad', '#2c3e50'
         ],
-        borderColor: 'white',
-        borderWidth: 2
+        borderColor: [
+          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
+          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
+          '#16a085', '#8e44ad', '#2c3e50'
+        ],
+        borderWidth: 1
       }
     ]
   };
@@ -396,25 +445,30 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
     }
   };
 
+  const handleCopy = (addr: string) => {
+    copy(addr);
+    toast("Address Copied");
+  };
+
   console.log("avs operatorsassssssssss", avsOperators);
 
   return (
     <div>
-      {/* <div className="flex w-fit gap-16 border-1 border-white rounded-xl text-sm px-4 py-3 mb-6 ml-8">
-      {/* <div
+      <div
         style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
         className={`rounded-xl my-7 me-32 py-6 px-7 text-sm ${
           desc ? "" : "min-h-52"
         }`}
       >
+        <h1 className="text-xl mb-5">About</h1>
         {loading ? (
-          <div className="flex pt-6 justify-center">
-            <ThreeDots
+          <div className="flex -mt-10 justify-center">
+            <LineWave
               visible={true}
-              height="60"
-              width="60"
-              color="#0500FF"
-              ariaLabel="oval-loading"
+              height="150"
+              width="150"
+              color="#FFFFFF"
+              ariaLabel="line-wave-loading"
             />
           </div>
         ) : desc !== "" ? (
@@ -433,7 +487,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
             ${
             activeButton === "onchain"
               ? "text-light-cyan"
-                 : "text-white font-bold"
+                : "text-white font-bold"
           } `}
           onClick={() => fetchAttestation("onchain")}
         >
@@ -454,13 +508,13 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Offchain
         </button>
-      </div> */}
+      </div>
       <div className="grid grid-cols-4 pe-32 gap-10">
         {details.length > 0 ? (
           details.map((key, index) => (
             <div
               key={index}
-              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[20rem] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
+              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[18vmax] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
               onClick={() => router.push(`${key.ref}`)}
             >
               {/* <div className="absolute top-2 right-2 h-4 w-4 bg-light-cyan rounded-full animate-ping"></div> */}
@@ -469,12 +523,10 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                 isSessionAttendedLoading &&
                 isOfficeHoursHostedLoading &&
                 isOfficeHoursAttendedLoading ? (
-                  <div className="flex items-center justify-center">
-                    <RotatingLines
-                      visible={true}
-                      width="36"
-                      strokeColor="grey"
-                      ariaLabel="oval-loading"
+                  <div className="flex items-center justify-center -ml-12">
+                    <InfinitySpin
+                      width="100"
+                      color="#FFFFFF"
                     />
                   </div>
                 ) : (
@@ -492,192 +544,196 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-          <div className="bg-light-blue p-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Total</h2>
-              <div className="text-right">
-                <p className="text-2xl font-bold">{totalEth.toLocaleString(undefined, { maximumFractionDigits: 3 })} ETH</p>
+            <div className="mt-7">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Total</h2>
+                <div className="text-right">
+                  <p className="text-2xl font-bold">{totalEth.toLocaleString(undefined, { maximumFractionDigits: 3 })} ETH</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="p-6">
-            <div className="flex flex-col md:flex-row gap-x-40">
-              <div className="w-full md:w-1/2 pr-10">
-                <div className="space-y-2">
-                  {filteredData.map(([label, value], index) => (
-                    <div key={label} className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? 'bg-gray-600' : ''}`}>
-                      <div className="flex items-center">
-                        <div className="w-4 h-4 rounded-full mr-1" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index % chartData.datasets[0].backgroundColor.length] }}></div>
-                        <span>{label}</span>
+            <div className="p-6">
+              <div className="flex flex-col md:flex-row gap-x-40">
+                <div className="w-full md:w-1/2 pr-10">
+                  <div className="space-y-2">
+                    {filteredData.map(([label, value], index) => (
+                      <div key={label} className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? 'bg-gray-600' : ''}`}>
+                        <div className="flex items-center">
+                          <div className="w-4 h-4 rounded-full mr-1" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index % chartData.datasets[0].backgroundColor.length] }}></div>
+                          <span>{label}</span>
+                        </div>
+                        <span className="font-semibold">{value.toLocaleString(undefined, { maximumFractionDigits: 3 })}</span>
                       </div>
-                      <span className="font-semibold">{value.toLocaleString(undefined, { maximumFractionDigits: 3 })}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                <div style={{ width: '300px', height: '300px' }}>
-                  <Pie data={chartData} options={chartOptions} />
+                <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                  <div style={{ width: '300px', height: '300px' }}>
+                    <Pie data={chartData} options={chartOptions} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         
         ) : (
           <p>No ETH stacked</p>
         )}
       </div>
-
-      <h1 className="mt-10 mb-5 font-bold text-3xl">Node Operators</h1>
-      <div className="py-8 pe-10 font-poppins">
-        {isPageLoading ? (
-          <div className="flex items-center justify-center">
-            <Oval
-              visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
-            />
-          </div>
-        ) : avsOperators.length > 0 ? (
-          <div> 
-            <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-10">
-              {avsOperators.map((daos: any, index: number) => (
-                <div
-                  onClick={(event) =>{
-                    // handleMouseMove(event,index);
-                    router.push(`/${props}/${daos.address}?active=info  `)
-                  }}
-                  key={index}
-                  style={{
-                    boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
-                  }}
-                  
-                  className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue"
-                >
-                  {/* {clickedTileIndex === index && (
+      
+      {props.daoDelegates === 'avss' ? 
+      (
+        <div>
+          <h1 className="mt-10 mb-5 font-bold text-3xl">Node Operators</h1>
+          <div className="py-8 pe-14 font-poppins">
+            {initialLoad ? (
+              <div className="flex items-center justify-center">
+                <ThreeCircles
+                  visible={true}
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            ) : avsOperators.length > 0 ? (
+              <div> 
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-3 gap-10">
+                  {avsOperators.map((daos: any, index: number) => (
                     <div
-                    className="absolute bg-blue-200 rounded-full animate-ping"
-                    style={{
-                    width: "30px",
-                    height: "30px",
-                    left: `${circlePosition.x -10}px`,
-                    top: `${circlePosition.y - 10}px`,
-                    zIndex: "9999",
-                   }}
-                   ></div>
-                  )} */}
-                  <div className="flex items-center justify-around">
-                    <div className="flex justify-center">
-                      <Image
-                        src={
-                          daos.metadataLogo == null
-                            ? props.daoDelegates == "operators"
-                              ? NOLogo
-                              : props.daoDelegates == "avss"
-                              ? AVSLogo
-                              : ""
-                            : daos.metadataLogo
-                        }
-                        alt="Image not found"
-                        width={80}
-                        height={80}
-                        // layout="fixed"
-                        className="rounded-full"
-                        style={{ width: '80px', height: '80px' }} 
-                      ></Image>
+                      key={index}
+                      onClick={() => router.push(`/operators/${daos.address}?active=info`)}
+                      className="p-5 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue h-full"
+                      style={{
+                        boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
+                      }}
+                    >
+                      <div className="absolute top-2 right-2">
+                        <Image
+                          src={EILogo}
+                          alt="EigenInsights Logo"
+                          width={35}
+                          height={35}
+                          className="pulsatingImage"
+                        />
+                      </div>
 
-                      <Image
-                        src={EILogo}
-                        alt="EigenInsights Logo"
-                        className="absolute top-7 right-4 pulsatingImage"
-                        style={{
-                          width: "35px",
-                          height: "35px",
-                          marginTop: "-20px",
-                          marginRight: "-5px",
-                        }}
-                      />
-                    </div>
-                    <div className="text-center">
-                      <div className="py-3">
-                        <div
-                          className={`font-semibold overflow-hidden ${styles.desc}`}
-                        >
-                          {daos.metadataName == null ? (
-                            <span>
-                              {daos.address.slice(0, 6) +
-                                "..." +
-                                daos.address.slice(-4)}
-                            </span>
-                          ) : (
-                            <span>
-                              {daos.metadataName.length > 15
-                                ? daos.metadataName.slice(0, 15) + "..."
-                                : daos.metadataName}
-                            </span>
-                          )}
+                      <div className="flex items-center mb-4">
+                        <div className="relative w-20 h-20 flex-shrink-0 mr-4">
+                          <Image
+                            src={
+                              daos.metadataLogo ?? 
+                              (props.daoDelegates === "operators" ? NOLogo : 
+                              props.daoDelegates === "avss" ? AVSLogo : "")
+                            }
+                            alt="Logo"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-full"
+                          />
                         </div>
-                        <div className="flex justify-center items-center gap-2 pb-2 pt-1">
-                          {daos.address.slice(0, 6) +
-                            "..." +
-                            daos.address.slice(-4)}
+                        <div>
+                          <h3 className="font-semibold text-lg">
+                            {daos.metadataName ?? 
+                            `${daos.address.slice(0, 6)}...${daos.address.slice(-4)}`}
+                          </h3>
+                          <div className="flex justify-start items-center gap-2 pb-2 pt-1">
+                            {daos.address.slice(0, 6) +
+                              "..." +
+                              daos.address.slice(-4)}
+                            <CopyToolTip
+                              content="Copy"
+                              placement="right"
+                              closeDelay={1}
+                              showArrow
+                              className="bg-sky-blue"
+                            >
+                              <span className="cursor-pointer text-sm">
+                                <IoCopy
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    handleCopy(daos.address);
+                                  }}
+                                />
+                              </span>
+                            </CopyToolTip>
+                          </div>
                         </div>
-                        <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
+                      </div>
+                      
+                      <div className="flex flex-col flex-grow">
+                        {daos.metadataDescription ? (
+                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">{daos.metadataDescription}</p>
+                        ) : (
+                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">No description provided</p>
+                        )
+                        }
+                        
+                        <div className="text-sm border-t-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
                           <span className="text-light-cyan font-semibold">
                             {daos.totalStakers}&nbsp;
                           </span>
-                          total stakers
+                          Total Stakers
                         </div>
-                        <div
-                          className={`font-semibold overflow-hidden ${styles.desc}`}
-                        >
-                          {daos.metadataDescription}
+                        <div className="text-sm border-t-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
+                          <span className="text-light-cyan font-semibold">
+                            {daos.tvl.tvlStrategies.ETHx.toFixed(2)}&nbsp;
+                          </span>
+                          ETH Restaked
+                        </div>
+                        <div className="text-sm border-y-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
+                          <span className="text-light-cyan font-semibold">
+                            {daos.tvl.tvlStrategies.Eigen.toFixed(2)}&nbsp;
+                          </span>
+                          EIGEN Restaked
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div style={{ zIndex: "21474836462" }}>
-                    <Toaster
-                      toastOptions={{
-                        style: {
-                          fontSize: "14px",
-                          backgroundColor: "#3E3D3D",
-                          color: "#fff",
-                          boxShadow: "none",
-                          borderRadius: "50px",
-                          padding: "3px 5px",
-                        },
-                      }}
+                  ))}
+                  <Toaster
+                    toastOptions={{
+                      style: {
+                        fontSize: "14px",
+                        backgroundColor: "#3E3D3D",
+                        color: "#fff",
+                        boxShadow: "none",
+                        borderRadius: "50px",
+                        padding: "3px 5px",
+                      },
+                    }}
+                  />
+                </div>
+                {isDataLoading && (
+                  <div className="flex items-center justify-center my-4">
+                    <BallTriangle
+                      height={100}
+                      width={100}
+                      radius={5}
+                      color="#FFFFFF"
+                      ariaLabel="ball-triangle-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      visible={true}
                     />
                   </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center items-center pt-10">
+                <div className="text-5xl">☹️</div>{" "}
+                <div className="pt-4 font-semibold text-lg">
+                  Oops, no such result available!
                 </div>
-              ))}
-            </div>
-            
-            {isDataLoading && (
-              <div className="flex items-center justify-center my-4">
-                <RotatingLines
-                  visible={true}
-                  width="40"
-                  strokeColor="#0500FF"
-                  ariaLabel="oval-loading"
-                />
               </div>
             )}
           </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center pt-10">
-            <div className="text-5xl">☹️</div>{" "}
-            <div className="pt-4 font-semibold text-lg">
-              Oops, no such result available!
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        ""
+      )
+      } 
     </div>
   );
 }

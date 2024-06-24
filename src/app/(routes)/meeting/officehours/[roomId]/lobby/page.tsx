@@ -28,7 +28,7 @@ import {
 } from "@huddle01/react/hooks";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Role } from "@huddle01/server-sdk/auth";
-import { Oval, TailSpin } from "react-loader-spinner";
+import { Oval, TailSpin, ThreeCircles } from "react-loader-spinner";
 import Link from "next/link";
 import ConnectWalletWithENS from "@/components/ConnectWallet/ConnectWalletWithENS";
 
@@ -356,19 +356,12 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
               <div className="flex justify-center items-center h-screen">
                 <div className="text-center">
                   <div className="flex items-center justify-center pt-10">
-                    <TailSpin
-                      // visible={true}
-                      // height="40"
-                      // width="40"
-                      // color="#0500FF"
-                      // secondaryColor="#cdccff"
-                      // ariaLabel="oval-loading"
+                    <ThreeCircles
                       visible={true}
                       height="80"
                       width="80"
-                      color="#0500FF"
-                      ariaLabel="tail-spin-loading"
-                      radius="1"
+                      color="#FFFFFF"
+                      ariaLabel="three-circles-loading"
                       wrapperStyle={{}}
                       wrapperClass=""
                     />

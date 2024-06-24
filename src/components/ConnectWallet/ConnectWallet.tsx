@@ -1,7 +1,7 @@
 "use client";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import wallet from "../../assets/images/sidebar/wallet.png";
+import wallet from "../../assets/images/sidebar/new_wallet.png";
 import Image from "next/image";
 export const ConnectWallet = () => {
   return (
@@ -39,11 +39,11 @@ export const ConnectWallet = () => {
                 return (
                   <button onClick={openConnectModal} type="button">
                     <Image
-                      className="cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
+                      className="cursor-pointer xl:w-10 xl:h-10 2xl:w-10 2xl:h-10 2.5xl:w-14 2.5xl:h-14 border border-white rounded-full object-cover"
                       src={wallet}
-                      alt="image"
-                      width={40}
-                      // style={{ width: "40px", height: "40px" }}
+                      alt="Wallet icon"
+                      width={56}
+                      height={56}
                     />
                   </button>
                 );

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import text2 from "@/assets/images/daos/texture2.png";
 import IndividualSessionTileModal from "./IndividualSessionTileModal";
 import { usePathname } from "next/navigation";
@@ -393,13 +393,14 @@ SessionTileProps) {
                 >
                   {isClaiming[index] ? (
                     <div className="flex items-center justify-center px-3">
-                      <Oval
+                      <ThreeCircles
                         visible={true}
-                        height="20"
-                        width="20"
-                        color="#fff"
-                        secondaryColor="#cdccff"
-                        ariaLabel="oval-loading"
+                        height="60"
+                        width="60"
+                        color="#FFFFFF"
+                        ariaLabel="three-circles-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
                       />
                     </div>
                   ) : data.attendees[0].onchain_attendee_uid ||
@@ -433,13 +434,14 @@ SessionTileProps) {
                 >
                   {isClaiming[index] ? (
                     <div className="flex items-center justify-center px-3">
-                      <Oval
+                      <ThreeCircles
                         visible={true}
-                        height="20"
-                        width="20"
-                        color="#fff"
-                        secondaryColor="#cdccff"
-                        ariaLabel="oval-loading"
+                        height="60"
+                        width="60"
+                        color="#FFFFFF"
+                        ariaLabel="three-circles-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
                       />
                     </div>
                   ) : data.onchain_host_uid || isClaimed[index] ? (

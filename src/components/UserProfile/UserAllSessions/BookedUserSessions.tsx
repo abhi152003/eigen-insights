@@ -9,7 +9,7 @@ import { Tooltip } from "@nextui-org/react";
 import EventTile from "../../utils/EventTile";
 import { useAccount, useNetwork } from "wagmi";
 import toast, { Toaster } from "react-hot-toast";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 
 interface Session {
   booking_status: string;
@@ -73,13 +73,14 @@ function BookedUserSessions({ daoName }: { daoName: string }) {
       <div className="space-y-6">
         {pageLoading ? (
           <div className="flex items-center justify-center">
-            <Oval
+            <ThreeCircles
               visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
+              height="60"
+              width="60"
+              color="#FFFFFF"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
             />
           </div>
         ) : sessionDetails.length > 0 ? (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image, { StaticImageData } from "next/image";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import IndividualTileModal from "./IndividualTileModal";
 import staticImg from "@/assets/images/daos/texture1.png";
 import { useAccount } from "wagmi";
@@ -76,13 +76,14 @@ function Tile({
     <div className="space-y-6">
       {sessionDetails.length > 0 ? (
         dataLoading ? (
-          <Oval
+          <ThreeCircles
             visible={true}
-            height="50"
-            width="50"
-            color="#0500FF"
-            secondaryColor="#cdccff"
-            ariaLabel="oval-loading"
+            height="60"
+            width="60"
+            color="#FFFFFF"
+            ariaLabel="three-circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
           />
         ) : (
           sessionDetails.map((data: any, index: any) => (
@@ -185,13 +186,14 @@ function Tile({
                     >
                       {startLoading ? (
                         <>
-                          <Oval
+                          <ThreeCircles
                             visible={true}
-                            height="20"
-                            width="20"
-                            color="#fff"
-                            secondaryColor="#cdccff"
-                            ariaLabel="oval-loading"
+                            height="60"
+                            width="60"
+                            color="#FFFFFF"
+                            ariaLabel="three-circles-loading"
+                            wrapperStyle={{}}
+                            wrapperClass=""
                           />
                         </>
                       ) : (

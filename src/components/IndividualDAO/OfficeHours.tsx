@@ -4,7 +4,7 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import Tile from "../utils/Tile";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 
 interface Session {
   _id: string;
@@ -184,13 +184,14 @@ function OfficeHours({ props }: { props: string }) {
           {searchParams.get("hours") === "ongoing" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -204,13 +205,14 @@ function OfficeHours({ props }: { props: string }) {
           {searchParams.get("hours") === "upcoming" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -224,13 +226,14 @@ function OfficeHours({ props }: { props: string }) {
           {searchParams.get("hours") === "recorded" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (

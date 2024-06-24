@@ -5,7 +5,7 @@ import Image, { StaticImageData } from "next/image";
 import { FaCircleCheck, FaCircleXmark, FaCirclePlay } from "react-icons/fa6";
 import { Tooltip } from "@nextui-org/react";
 import toast, { Toaster } from "react-hot-toast";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 // import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import Link from "next/link";
@@ -224,13 +224,14 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
               <div className="flex justify-between ">
                 {startLoading || isConfirmSlotLoading ? (
                   <div className="flex items-center justify-center">
-                    <Oval
+                    <ThreeCircles
                       visible={true}
-                      height="30"
-                      width="30"
-                      color="#0500FF"
-                      secondaryColor="#cdccff"
-                      ariaLabel="oval-loading"
+                      height="60"
+                      width="60"
+                      color="#FFFFFF"
+                      ariaLabel="three-circles-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
                     />
                   </div>
                 ) : (
@@ -298,13 +299,14 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
                             className="bg-red-500 text-white px-8 py-3 font-semibold rounded-full"
                             onClick={() => confirmSlot(data._id, "Rejected")}>
                             {startLoading ? (
-                              <Oval
+                              <ThreeCircles
                                 visible={true}
-                                height="20"
-                                width="20"
-                                color="black"
-                                secondaryColor="#cdccff"
-                                ariaLabel="oval-loading"
+                                height="60"
+                                width="60"
+                                color="#FFFFFF"
+                                ariaLabel="three-circles-loading"
+                                wrapperStyle={{}}
+                                wrapperClass=""
                               />
                             ) : (
                               "Reject"
@@ -319,13 +321,14 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
             ) : data.booking_status === "Pending" ? (
               isConfirmSlotLoading ? (
                 <div className="flex items-center justify-center">
-                  <Oval
+                  <ThreeCircles
                     visible={true}
-                    height="30"
-                    width="30"
-                    color="#0500FF"
-                    secondaryColor="#cdccff"
-                    ariaLabel="oval-loading"
+                    height="60"
+                    width="60"
+                    color="#FFFFFF"
+                    ariaLabel="three-circles-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
                   />
                 </div>
               ) : (
@@ -356,13 +359,14 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
                 className="text-center bg-blue-shade-100 rounded-full font-bold text-white py-2 text-xs cursor-pointer">
                 {startLoading ? (
                   <div className="flex justify-center items-center">
-                    <Oval
+                    <ThreeCircles
                       visible={true}
-                      height="20"
-                      width="20"
-                      color="#fff"
-                      secondaryColor="#cdccff"
-                      ariaLabel="oval-loading"
+                      height="60"
+                      width="60"
+                      color="#FFFFFF"
+                      ariaLabel="three-circles-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
                     />
                   </div>
                 ) : (

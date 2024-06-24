@@ -10,7 +10,7 @@ import { IoCopy } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
 import copy from "copy-to-clipboard";
 import styles from "./RecordedSessions.module.css";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 // const { parseISO } = require("date-fns");
 import { parseISO } from "date-fns";
 // import { useRouter } from "next/navigation";
@@ -244,7 +244,7 @@ function RecordedSessions() {
     };
 
     meetingData.forEach((data: SessionData) => {
-      const guestAddress = data.session.attendees[0].attendee_address;
+      const guestAddress = data.session.attendees[0]?.attendee_address;
       const hostAddress = data.session.host_address;
       if (!data.guestInfo?.image && !newRandomUserImages[guestAddress]) {
         newRandomUserImages[guestAddress] = getRandomUserImage();
@@ -282,7 +282,7 @@ function RecordedSessions() {
       const ensNamesMap: any = {};
       for (const data of meetingData) {
         const ensName = await getEnsName(
-          data.session.attendees[0].attendee_address.toLowerCase()
+          data.session.attendees[0]?.attendee_address.toLowerCase()
         );
         if (ensName) {
           ensNamesMap[data.session.attendees[0].attendee_address] = ensName;
@@ -355,13 +355,14 @@ function RecordedSessions() {
 
         {isLoading ? (
           <div className="flex items-center justify-center m-6">
-            <Oval
+            <ThreeCircles
               visible={true}
-              height="40"
-              width="40"
-              color="#0500FF"
-              secondaryColor="#cdccff"
-              ariaLabel="oval-loading"
+              height="60"
+              width="60"
+              color="#FFFFFF"
+              ariaLabel="three-circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
             />
           </div>
         ) : meetingData && meetingData.length > 0 ? (
@@ -374,7 +375,7 @@ function RecordedSessions() {
                 onMouseEnter={() => setHoveredVideo(index)}
                 onMouseLeave={() => setHoveredVideo(null)}>
                 <div
-                  className={`w-full h-44 rounded-t-3xl bg-black object-cover object-center ${styles.container}`}
+                  className={`w-full h-44 rounded-t-3xl bg-black object-cover object-center relative`}
                 >
                   {hoveredVideo === index ? (
                     <div className="relative">
@@ -491,7 +492,7 @@ function RecordedSessions() {
                             data.guestInfo?.image
                               ? `https://gateway.lighthouse.storage/ipfs/${data.guestInfo.image}`
                               : randomUserImages[
-                                  data.session.attendees[0].attendee_address
+                                  data.session.attendees[0]?.attendee_address
                                 ]
                           }
                           alt="image"
@@ -504,7 +505,7 @@ function RecordedSessions() {
                         Guest:{" "}
                         {
                           ensGuestNames[
-                            data.session.attendees[0].attendee_address
+                            data.session.attendees[0]?.attendee_address
                           ]
                         }
                       </div>

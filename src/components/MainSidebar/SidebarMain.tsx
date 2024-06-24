@@ -7,8 +7,8 @@ import rocket from "@/assets/images/sidebar/rocket.png";
 import sessionIcn from "@/assets/images/sidebar/office.png";
 import office from "@/assets/images/sidebar/Office hour (1).png";
 import wallet from "@/assets/images/sidebar/wallet.png";
-import gitbook from "@/assets/images/sidebar/gitbook.png";
-import user from "@/assets/images/sidebar/user.png";
+import gitbook from "@/assets/images/sidebar/git_book_new.png";
+import user from "@/assets/images/sidebar/user_new.png";
 // import "../../css/ImagePulse.css"
 import styles from "./sidebar.module.css";
 import { usePathname } from "next/navigation";
@@ -208,12 +208,13 @@ function Sidebar() {
               closeDelay={1}
             >
               <Link href={""}>
-                <Image
-                  src={gitbook}
-                  alt={"image"}
-                  width={40}
-                  className={`text-light-blue xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
-                />
+              <Image
+                src={gitbook}
+                alt="image"
+                width={40}
+                className={`text-light-blue xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer border-1 border-white rounded-full`}
+              />
+
               </Link>
             </Tooltip>
 
@@ -229,7 +230,7 @@ function Sidebar() {
                     src={user}
                     alt={"image"}
                     width={40}
-                    className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer"`}
+                    className={`cursor-pointer opacity-80 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer"`}
                   />
                 ) : (
                   <ConnectWallet />

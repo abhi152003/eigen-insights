@@ -6,7 +6,7 @@ import { useAccount } from "wagmi";
 import { DateTime, Duration } from "luxon";
 import dateFns from "date-fns";
 import { useSession } from "next-auth/react";
-import { Oval, ThreeDots } from "react-loader-spinner";
+import { Oval, ThreeCircles, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import {
   Modal,
@@ -548,13 +548,14 @@ function BookSession({ props }: { props: Type }) {
     <>
       {isPageLoading ? (
         <div className="flex items-center justify-center">
-          <Oval
+          <ThreeCircles
             visible={true}
-            height="40"
-            width="40"
-            color="#0500FF"
-            secondaryColor="#cdccff"
-            ariaLabel="oval-loading"
+            height="60"
+            width="60"
+            color="#FFFFFF"
+            ariaLabel="three-circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
           />
         </div>
       ) : (
@@ -690,13 +691,14 @@ function BookSession({ props }: { props: Type }) {
                   disabled={confirmSave}>
                   {confirmSave ? (
                     <div className="flex items-center">
-                      <Oval
+                      <ThreeCircles
                         visible={true}
-                        height="20"
-                        width="20"
-                        color="#0500FF"
-                        secondaryColor="#cdccff"
-                        ariaLabel="oval-loading"
+                        height="60"
+                        width="60"
+                        color="#FFFFFF"
+                        ariaLabel="three-circles-loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
                       />
                     </div>
                   ) : (

@@ -1,7 +1,7 @@
 // import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import React, { ChangeEvent, useState, useEffect } from "react";
-import { Oval, RotatingLines } from "react-loader-spinner";
+import { InfinitySpin, Oval, RotatingLines } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { useNetwork } from "wagmi";
 
@@ -340,12 +340,10 @@ function UserInfo({
                   isSessionAttendedLoading &&
                   isOfficeHoursHostedLoading &&
                   isOfficeHourseAttendedLoading ? (
-                    <div className="flex items-center justify-center">
-                      <RotatingLines
-                        visible={true}
-                        width="36"
-                        strokeColor="grey"
-                        ariaLabel="oval-loading"
+                    <div className="flex items-center justify-center -ml-12">
+                      <InfinitySpin
+                        width="100"
+                        color="#FFFFFF"
                       />
                     </div>
                   ) : (

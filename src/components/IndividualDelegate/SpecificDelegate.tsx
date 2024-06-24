@@ -24,7 +24,7 @@ import { useNetwork } from "wagmi";
 import NOLogo from "@/assets/images/daos/operators.png";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
-import { Oval } from "react-loader-spinner";
+import { Oval, Rings, ThreeCircles } from "react-loader-spinner";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 import "../../css/ConnectWallet.css";
@@ -327,13 +327,14 @@ function SpecificDelegate({ props }: { props: Type }) {
     <>
       {isPageLoading && (
         <div className="flex items-center justify-center pt-10">
-          <Oval
+          <ThreeCircles
             visible={true}
-            height="40"
-            width="40"
-            color="#0500FF"
-            secondaryColor="#cdccff"
-            ariaLabel="oval-loading"
+            height="60"
+            width="60"
+            color="#FFFFFF"
+            ariaLabel="three-circles-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
           />
         </div>
       )}
@@ -349,13 +350,13 @@ function SpecificDelegate({ props }: { props: Type }) {
             className="w-40 rounded-3xl"
           /> */}
               <div
-                className="relative object-cover rounded-3xl"
+                className="relative w-50 h-50 rounded-3xl overflow-hidden"
                 style={{
                   backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
                 }}
               >
-                <div className="w-40 h-40 flex items-center justify-content ">
+                <div className="w-50 h-50 flex items-center justify-content ">
                   <div className="flex justify-center items-center w-40 h-40">
                     <Image
                       src={
@@ -369,11 +370,11 @@ function SpecificDelegate({ props }: { props: Type }) {
                               : EILogo)
                       }
                       alt="user"
-                      width={256}
-                      height={256}
+                      layout="fill"
+                      objectFit="cover"
                       className={
                         displayImage || delegateInfo?.metadataLogo
-                          ? "w-40 h-40 rounded-3xl"
+                          ? "w-50 h-50 rounded-3xl"
                           : "w-20 h-20 rounded-3xl"
                       }
                     />
@@ -393,7 +394,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
               </div>
               <div className="px-4">
-                <div className=" flex items-center py-1">
+                <div className="flex items-center py-1">
                   <div className="font-bold text-lg pr-4">
                     {delegateInfo?.metadataName || delegateInfo.metadataName || displayName || (
                       <>
@@ -402,7 +403,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       </>
                     )}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 mt-2">
                     {/* {socials.discord + socials.discourse + socials.website + socials.twitter} */}
                     <Link
                       href={
@@ -417,7 +418,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="rounded-full bg-gray text-black p-[6px] hover:text-white hover:cursor-pointer hover:bg-black hover:scale-125">
-                      <FaXTwitter color="white" className="w-4 h-4" />
+                      <FaXTwitter color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
@@ -433,7 +434,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  rounded-full bg-black text-black p-[6px] hover:bg-[#34ABE2] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaTelegram color="white" className="w-4 h-4" />
+                      <FaTelegram color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
@@ -449,7 +450,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  bg-black rounded-full text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaDiscord color="white" className="w-4 h-4" />
+                      <FaDiscord color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
@@ -465,9 +466,19 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  rounded-full bg-black text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FiExternalLink color="white"className="w-4 h-4" />
+                      <FiExternalLink color="white"className="w-2 h-2" />
                       </div>
                     </Link>
+                    <div>
+                      <button
+                        className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                        onClick={() =>
+                          handleDelegateVotes(`${props.individualDelegate}`)
+                        }
+                      >
+                        Stake
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -506,52 +517,58 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
                 </div>
 
-                <div className="flex gap-4 py-1">
-                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    <span className="text-light-cyan font-semibold">
-                      {delegateInfo?.totalStakers
-                        ? Number(delegateInfo?.totalStakers)
-                        : 0}
-                      &nbsp;
-                    </span>
-                    total stakers
-                  </div>
-                  {props.daoDelegates === "avss" && 
-                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                <div className="flex gap-3 py-1">
+                  <div>
+                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
                       <span className="text-light-cyan font-semibold">
-                        {delegateInfo?.totalOperators
-                          ? Number(delegateInfo?.totalOperators)
+                        {delegateInfo?.totalStakers
+                          ? Number(delegateInfo?.totalStakers)
                           : 0}
                         &nbsp;
                       </span>
-                      total operators
+                      total stakers
                     </div>
-                  }
-                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    TVL
-                    <span className="text-light-cyan font-semibold">
-                      &nbsp;
-                      {delegateInfo?.tvl.tvl
-                        ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
-                        : 0}
-                      &nbsp;
-                    </span>
-                    ETH 
+                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                      TVL
+                      <span className="text-light-cyan font-semibold">
+                        &nbsp;
+                        {delegateInfo?.tvl.tvl
+                          ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
+                          : 0}
+                        &nbsp;
+                      </span>
+                      ETH 
+                    </div>
                   </div>
-                  <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                    TVL Restaked
-                    <span className="text-light-cyan font-semibold">
-                      &nbsp;
-                      {delegateInfo?.tvl.tvl
-                        ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
-                        : 0}
-                      &nbsp;
-                    </span>
-                    ETH
+                  
+                  <div>
+                    {props.daoDelegates === "avss" && 
+                      <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
+                        <span className="text-light-cyan font-semibold">
+                          {delegateInfo?.totalOperators
+                            ? Number(delegateInfo?.totalOperators)
+                            : 0}
+                          &nbsp;
+                        </span>
+                        total operators
+                      </div>
+                    }
+                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+                      TVL Restaked
+                      <span className="text-light-cyan font-semibold">
+                        &nbsp;
+                        {delegateInfo?.tvl.tvl
+                          ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                          : 0}
+                        &nbsp;
+                      </span>
+                      ETH
+                    </div>
                   </div>
+                  
                 </div>
 
-                <div className="pt-2">
+                {/* <div className="pt-2">
                   <button
                     className="bg-midnight-blue font-bold text-white rounded-full px-8 py-[10px] btnShineWallet"
                     onClick={() =>
@@ -560,7 +577,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                   >
                     Stake
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="pr-[2.2rem]">
@@ -582,20 +599,6 @@ function SpecificDelegate({ props }: { props: Type }) {
             >
               <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Info
-            </button>
-            <button
-              className={`border-b-2 py-4 px-2 w-[150px] 
-                border-[#A7DBF2] border-1 rounded-full 
-               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
-                ${
-                searchParams.get("active") === "pastVotes"
-                  ? "text-light-cyan"
-                : "text-white font-bold"
-              }`}
-              onClick={() => router.push(path + "?active=pastVotes")}
-            >
-              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-              Past Votes
             </button>
             <button
               className={`border-b-2 py-4 px-2 w-[150px] 

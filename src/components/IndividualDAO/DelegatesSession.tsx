@@ -6,7 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import Tile from "../utils/Tile";
 import SessionTile from "../utils/SessionTiles";
-import { Oval } from "react-loader-spinner";
+import { Oval, ThreeCircles } from "react-loader-spinner";
 import {
   Modal,
   ModalContent,
@@ -70,7 +70,7 @@ function DelegatesSession({ props }: { props: string }) {
               return session.meeting_status === "Upcoming";
             } else if (searchParams.get("session") === "recorded") {
               return session.meeting_status === "Recorded";
-            }
+            } 
           });
           // console.log("filtered", filtered);
           setSearchQuery("");
@@ -183,13 +183,14 @@ function DelegatesSession({ props }: { props: string }) {
           {/* {searchParams.get("session") === "upcoming" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
@@ -204,13 +205,14 @@ function DelegatesSession({ props }: { props: string }) {
           {searchParams.get("session") === "recorded" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
-                <Oval
+                <ThreeCircles
                   visible={true}
-                  height="40"
-                  width="40"
-                  color="#0500FF"
-                  secondaryColor="#cdccff"
-                  ariaLabel="oval-loading"
+                  height="60"
+                  width="60"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
                 />
               </div>
             ) : (
