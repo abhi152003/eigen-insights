@@ -85,13 +85,15 @@ function SpecificDelegate({ props }: { props: Type }) {
     console.log("Network", chain?.network);
     const fetchData = async () => {
       setIsPageLoading(true);
-  
+
       let details: Result | undefined;
-  
-      try {   
+
+      try {
         const fetchDetails = async (query: string, prop: string) => {
           try {
-            const res = await fetch(`/api/get-search-data?q=${query}&prop=${prop}`);
+            const res = await fetch(
+              `/api/get-search-data?q=${query}&prop=${prop}`
+            );
             if (!res.ok) {
               throw new Error(`Error: ${res.status}`);
             }
@@ -103,21 +105,27 @@ function SpecificDelegate({ props }: { props: Type }) {
               return undefined;
             }
           } catch (error) {
-            console.error('Search error:', error);
+            console.error("Search error:", error);
             return undefined;
           }
         };
-  
-        if (props.daoDelegates === 'operators' || props.daoDelegates === 'avss') {
-          details = await fetchDetails(props.individualDelegate, props.daoDelegates);
+
+        if (
+          props.daoDelegates === "operators" ||
+          props.daoDelegates === "avss"
+        ) {
+          details = await fetchDetails(
+            props.individualDelegate,
+            props.daoDelegates
+          );
           setDelegateInfo(details);
         }
-  
+
         if (details) {
           if (addressFromUrl.toLowerCase() === details.address.toLowerCase()) {
             setIsDelegate(true);
           }
-  
+
           setSocials({
             twitter: details.metadataX || "",
             telegram: details.metadataTelegram || "",
@@ -125,14 +133,14 @@ function SpecificDelegate({ props }: { props: Type }) {
             website: details.metadataWebsite || "",
           });
         }
-  
+
         setIsPageLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsPageLoading(false);
       }
     };
-  
+
     fetchData();
   }, []);
 
@@ -165,8 +173,6 @@ function SpecificDelegate({ props }: { props: Type }) {
   //   };
   //   checkDelegateStatus();
   // }, []);
-
-  
 
   // if (isPageLoading) {
   //   return null;
@@ -350,7 +356,7 @@ function SpecificDelegate({ props }: { props: Type }) {
             className="w-40 rounded-3xl"
           /> */}
               <div
-                className="relative w-50 h-50 rounded-3xl overflow-hidden"
+                className="mt-5 relative object-cover h-40 rounded-3xl"
                 style={{
                   backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
@@ -396,39 +402,33 @@ function SpecificDelegate({ props }: { props: Type }) {
               <div className="px-4">
                 <div className="flex items-center py-1">
                   <div className="font-bold text-lg pr-4">
-                    {delegateInfo?.metadataName || delegateInfo.metadataName || displayName || (
-                      <>
-                        {props.individualDelegate.slice(0, 6)}...
-                        {props.individualDelegate.slice(-4)}
-                      </>
-                    )}
+                    {delegateInfo?.metadataName ||
+                      delegateInfo.metadataName ||
+                      displayName || (
+                        <>
+                          {props.individualDelegate.slice(0, 6)}...
+                          {props.individualDelegate.slice(-4)}
+                        </>
+                      )}
                   </div>
                   <div className="flex gap-3 mt-2">
                     {/* {socials.discord + socials.discourse + socials.website + socials.twitter} */}
                     <Link
-                      href={
-                        socials.twitter
-                      }
+                      href={socials.twitter}
                       className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
-                        socials.twitter == ""
-                          ? "hidden"
-                          : ""
+                        socials.twitter == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
                       <div className="rounded-full bg-gray text-black p-[6px] hover:text-white hover:cursor-pointer hover:bg-black hover:scale-125">
-                      <FaXTwitter color="white" className="w-2 h-2" />
+                        <FaXTwitter color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
-                      href={
-                        socials.telegram
-                      }
+                      href={socials.telegram}
                       className={`border-[0.5px] border-white rounded-full h-fit p-1  ${
-                        socials.telegram == ""
-                          ? "hidden"
-                          : ""
+                        socials.telegram == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "black" }}
                       target="_blank"
@@ -438,13 +438,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                       </div>
                     </Link>
                     <Link
-                      href={
-                        socials.discord
-                      }
+                      href={socials.discord}
                       className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
-                        socials.discord == "" 
-                          ? "hidden"
-                          : ""
+                        socials.discord == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "black" }}
                       target="_blank"
@@ -454,13 +450,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                       </div>
                     </Link>
                     <Link
-                      href={
-                        socials.website
-                      }
+                      href={socials.website}
                       className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
-                        socials.website == ""
-                          ? "hidden"
-                          : ""
+                        socials.website == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "black" }}
                       target="_blank"
@@ -585,58 +577,60 @@ function SpecificDelegate({ props }: { props: Type }) {
             </div>
           </div>
 
-          <div className="flex gap-12 pl-16 justify-center">
+          {/* <div className="flex gap-12 pl-16 justify-center">
+            
+          </div> */}
+
+          <div className="ml-0 my-2 pl-16 py-4 flex gap-12 justify-start text-base bg-[#D9D9D945]">
             <button
-              className={`border-b-2 py-4 px-2 w-[150px]
-                border-[#A7DBF2] border-1 rounded-full 
-               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
                 ${
-                searchParams.get("active") === "info"
-                  ? "text-light-cyan"
-                : "text-white font-bold"
-              }`}
+                  searchParams.get("active") === "info"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                : "text-white border-white"
+                }`}
               onClick={() => router.push(path + "?active=info")}
             >
-              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Info
             </button>
             <button
-              className={`border-b-2 py-4 px-2 w-[150px] 
-                border-[#A7DBF2] border-1 rounded-full 
-               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
                 ${
-                searchParams.get("active") === "delegatesSession"
-                  ? "text-light-cyan"
-                : "text-white font-bold"
-              }`}
+                  searchParams.get("active") === "delegatesSession"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                : "text-white border-white"
+                }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
               }
             >
-              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Sessions
             </button>
             <button
-              className={`border-b-2 py-4 px-2 w-[150px] 
-                border-[#A7DBF2] border-1 rounded-full 
-               font-medium overflow-hidden relative hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
                 ${
-                searchParams.get("active") === "officeHours"
-                  ? "text-light-cyan"
-                : "text-white font-bold"
-              }`}
+                  searchParams.get("active") === "officeHours"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                : "text-white border-white"
+                }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")
               }
             >
-              <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
               Office Hours
             </button>
           </div>
 
           <div className="py-6 ps-16">
             {searchParams.get("active") === "info" && (
-              <DelegateInfo props={props} delegateInfo={delegateInfo} desc={delegateInfo.metadataDescription} />
+              <DelegateInfo
+                props={props}
+                delegateInfo={delegateInfo}
+                desc={delegateInfo.metadataDescription}
+              />
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />
@@ -657,8 +651,7 @@ function SpecificDelegate({ props }: { props: Type }) {
             </div>
           </div>
         )
-      )
-    }
+      )}
     </>
   );
 }

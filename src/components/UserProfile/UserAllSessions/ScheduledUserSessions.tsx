@@ -480,15 +480,15 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-20 p-4">
+      <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-6 1.5lg:gap-20 md:px-20">
         {/* First box- left side */}
-        <div className="w-full md:w-auto min-w-[34rem] h-fit mt-2 p-8 bg-white rounded-2xl shadow-lg session-bg">
+        <div className="w-full md:w-auto min-w-[34vw] h-[38rem] mt-2 p-8 bg-white rounded-2xl shadow-lg session-bg md:ml-[4vmax]">
           <div className="mb-4">
             <label className="text-white flex items-center">
               Select DAO Name:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md">
+                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
                     DAO for which the session is to be created. The attestations
                     will be issued for the selected DAO. The attendees of this
                     session will seek questions related to the selected DAO.
@@ -513,7 +513,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Time Slot Size:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md">
+                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
                     The duration for which you would be able to take the
                     session. The preferred duration is 30 minutes. And note that
                     the selected time slot size will apply to all the selected
@@ -545,7 +545,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Date:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md">
+                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
                     It is based on your timezone.
                   </div>
                 }
@@ -572,7 +572,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Available Time:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md">
+                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
                     Session start time and end time based on your timezone.
                   </div>
                 }
@@ -633,7 +633,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
 
           <button
             onClick={handleAddSelectedDate}
-            className="bg-white hover:bg-blue-500 text-[#11334D] py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
+            className="bg-white hover:bg-light-cyan text-[#11334D] py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
           >
             <span className="flex items-center gap-3">
               <FaPlus className="" />
@@ -718,7 +718,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
         </div>
 
         {/* Second box- right side */}
-        <div className="w-full md:w-auto">
+        <div className="min-w-[34vw] h-[38rem]">
           <AvailableUserSessions
             daoName={daoName}
             scheduledSuccess={scheduledSuccess}

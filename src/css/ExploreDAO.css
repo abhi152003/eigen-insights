@@ -1,9 +1,6 @@
 .exploreMainDiv {
-    width: 400px;
-    height: 320px;
     border-radius: 15px;
-    /* background: linear-gradient(45deg, #11334D 50%, #214965 100%); */
-    background-color: #11334D;
+    background-color: #05223B;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -16,7 +13,7 @@
     width: 100px;
     position: absolute;
     top: 30%;
-    left: -15%;
+    left: -35%;
     border-radius: 50%;
     border: 35px solid rgba(255, 255, 255, 0.102);
     transition: all .8s ease;

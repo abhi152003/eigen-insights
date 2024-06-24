@@ -30,14 +30,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
           // daoName: dao_name,
         });
 
-        let guestInfo
-        if (attendees) {
-            guestInfo = await delegatesCollection.findOne({
-            address: attendees[0]?.attendee_address,
-            daoName: dao_name,
-          });
-        }
-        
+        const guestInfo = await delegatesCollection.findOne({
+          address: attendees[0]?.attendee_address,
+          daoName: dao_name,
+        });
 
         // Return merged data
         return { session, hostInfo, guestInfo };

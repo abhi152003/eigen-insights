@@ -42,3 +42,7 @@
     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
   }
 }
+
+.marginModal {
+  margin: 8rem 0rem !important;
+}

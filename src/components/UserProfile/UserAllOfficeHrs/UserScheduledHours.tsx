@@ -119,10 +119,10 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
 
   return (
     <div className="ps-4 font-poppins">
-      <h1 className="text-xl font-bold mb-4">Schedule Office Hours</h1>
+      <h1 className="text-xl font-medium mb-4">Schedule Office Hours</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block font-bold mb-2" htmlFor="title">
+          <label className="block font-medium mb-2" htmlFor="title">
             Title
           </label>
           <input
@@ -134,7 +134,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-bold mb-2" htmlFor="description">
+          <label className="block font-medium mb-2" htmlFor="description">
             Description
           </label>
           <textarea
@@ -145,7 +145,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-bold mb-2" htmlFor="startDate">
+          <label className="block font-medium mb-2" htmlFor="startDate">
             Date & Time
           </label>
           <div className="flex">
@@ -175,7 +175,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
         {error && <div className="text-red-500">{error}</div>}
         <button
           type="submit"
-          className="bg-[#427FA3] hover:bg-[#214965] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+          className="bg-[#427FA3] hover:bg-[#214965] text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

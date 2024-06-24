@@ -514,11 +514,10 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           details.map((key, index) => (
             <div
               key={index}
-              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[18vmax] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
+              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white rounded-2xl py-7 px-3 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
               onClick={() => router.push(`${key.ref}`)}
             >
-              {/* <div className="absolute top-2 right-2 h-4 w-4 bg-light-cyan rounded-full animate-ping"></div> */}
-              <div className="font-semibold text-3xl text-center pb-2">
+              <div className="font-semibold text-3xl text-center pb-2 relative z-10">
                 {isSessionHostedLoading &&
                 isSessionAttendedLoading &&
                 isOfficeHoursHostedLoading &&
@@ -533,7 +532,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                   key.number
                 )}
               </div>
-              <div className="text-center text-sm">{key.desc}</div>
+              <div className="text-center text-sm relative z-10">{key.desc}</div>
             </div>
           ))
         ) : (
@@ -544,37 +543,37 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-            <div className="mt-7">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Total</h2>
-                <div className="text-right">
-                  <p className="text-2xl font-bold">{totalEth.toLocaleString(undefined, { maximumFractionDigits: 3 })} ETH</p>
-                </div>
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold">Total</h2>
+              <div className="text-right">
+                <p className="text-2xl font-bold">{totalEth.toLocaleString(undefined, { maximumFractionDigits: 3 })} ETH</p>
               </div>
             </div>
-            <div className="p-6">
-              <div className="flex flex-col md:flex-row gap-x-40">
-                <div className="w-full md:w-1/2 pr-10">
-                  <div className="space-y-2">
-                    {filteredData.map(([label, value], index) => (
-                      <div key={label} className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? 'bg-gray-600' : ''}`}>
-                        <div className="flex items-center">
-                          <div className="w-4 h-4 rounded-full mr-1" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index % chartData.datasets[0].backgroundColor.length] }}></div>
-                          <span>{label}</span>
-                        </div>
-                        <span className="font-semibold">{value.toLocaleString(undefined, { maximumFractionDigits: 3 })}</span>
+          </div>
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row gap-x-40">
+              <div className="w-full md:w-1/2 pr-10">
+                <div className="space-y-2">
+                  {filteredData.map(([label, value], index) => (
+                    <div key={label} className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? 'bg-gray-600' : ''}`}>
+                      <div className="flex items-center">
+                        <div className="w-4 h-4 rounded-full mr-1" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index % chartData.datasets[0].backgroundColor.length] }}></div>
+                        <span>{label}</span>
                       </div>
-                    ))}
-                  </div>
+                      <span className="font-semibold">{value.toLocaleString(undefined, { maximumFractionDigits: 3 })}</span>
+                    </div>
+                  ))}
                 </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                  <div style={{ width: '300px', height: '300px' }}>
-                    <Pie data={chartData} options={chartOptions} />
-                  </div>
+              </div>
+              <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                <div style={{ width: '300px', height: '300px' }}>
+                  <Pie data={chartData} options={chartOptions} />
                 </div>
               </div>
             </div>
           </div>
+        </div>
         
         ) : (
           <p>No ETH stacked</p>

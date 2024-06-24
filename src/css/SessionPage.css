@@ -1,17 +1,7 @@
 .session-bg {
-    background: linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 0%,
-      #214965 80%,
-      #427FA3 100%
-    );
+    background: #05223B;
 }
 
 .session-bg2 {
-    background: linear-gradient(
-      90deg,
-      #00172B 0%,
-      #5E9CBF 40%,
-      #427FA3 100%
-    );
+    background: #05223B;
 }

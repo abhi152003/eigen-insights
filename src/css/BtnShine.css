@@ -7,12 +7,12 @@
 .btnShine::before {
   content: "";
   position: absolute;
-  width: 100px;
+  width: 50px;
   height: 100%;
   background: linear-gradient(
     120deg,
     rgba(255, 255, 255, 0) 30%,
-    #5e9cbf,
+    #fff,
     rgba(255, 255, 255, 0) 70%
   );
   top: 0;

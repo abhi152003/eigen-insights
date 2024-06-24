@@ -462,8 +462,8 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                 <button
                   className={`flex items-center justify-center text-slate-100 font-bold rounded-full p-4 mt-2 w-full ${
                     isLoading
-                      ? "bg-blue-500"
-                      : "bg-blue-shade-200 transition-transform transform hover:scale-105 duration-300"
+                      ? "bg-light-blue"
+                      : "bg-light-cyan transition-transform transform hover:scale-105 duration-300"
                   }`}
                   onClick={handleStartSpaces}
                   disabled={isLoading}

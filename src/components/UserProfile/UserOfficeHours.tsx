@@ -143,7 +143,7 @@ function UserOfficeHours({
   return (
     <div>
       {showComingSoon && (
-        <div className="flex items-center w-fit bg-[#FFFFFF] border border-light-cyan rounded-full px-3 py-1 mb-3 font-poppins">
+        <div className="flex items-center w-fit bg-medium-blue border border-light-cyan rounded-full px-3 py-1 mb-3 font-poppins">
           <p className="text-md text-white mr-2">
             Office hours are currently being developed. In the meantime, please
             enjoy our 1:1 sessions.
@@ -160,10 +160,12 @@ function UserOfficeHours({
         <div className="flex w-fit gap-8 rounded-xl text-sm">
           {selfDelegate === true && (
             <button
-              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 
+              px-6 border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
+                ${
                 searchParams.get("hours") === "schedule"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=schedule")
@@ -175,10 +177,12 @@ function UserOfficeHours({
 
           {selfDelegate === true && (
             <button
-              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3  ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full 
+                px-6 border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
+                ${
                 searchParams.get("hours") === "upcoming"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=upcoming")
@@ -189,10 +193,12 @@ function UserOfficeHours({
           )}
           {selfDelegate === true && (
             <button
-              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
+              className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 
+                px-6 border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
+                ${
                 searchParams.get("hours") === "hosted"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=hosted")
@@ -202,10 +208,12 @@ function UserOfficeHours({
             </button>
           )}
           <button
-            className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 ${
+            className={`py-2 border-[#A7DBF2] border-1 rounded-full p-3 
+              px-6 border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
+              ${
               searchParams.get("hours") === "attended"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=officeHours&hours=attended")

@@ -8,6 +8,7 @@ import time from "@/assets/images/daos/time.png";
 import { PiFlagFill } from "react-icons/pi";
 import { BiSolidShare } from "react-icons/bi";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { CgStopwatch } from "react-icons/cg";
 import Link from "next/link";
 import VideoJS from "@/components/utils/VideoJs";
 import videojs from "video.js";
@@ -179,13 +180,13 @@ function WatchSession({
 
   return (
     <div className="">
-      <div className="rounded-3xl border border-[#CCCCCC] bg-[#F2F2F2]">
+      <div className="rounded-3xl border-2 border-medium-blue bg-light-blue">
         <div
           className={`px-6 pt-4 pb-4 ${
             data.description.length > 0 ? "border-b" : ""
           }  border-[#CCCCCC]`}
         >
-          <div className="text-lg font-semibold pb-3">{data.title}</div>
+          <div className="text-lg font-medium pb-3 text-white">{data.title}</div>
           <div className="flex justify-between text-sm pe-4 pb-4">
             <div className="flex gap-6">
               <div className="flex items-center gap-2 ">
@@ -204,12 +205,12 @@ function WatchSession({
                   />
                 </div>
                 <div
-                  className="text-[#292929] font-semibold"
+                  className="text-white font-medium"
                   // onClick={() => router.push(`${BASE_URL}/${data.dao_name}/${data.host_address}?active=info`)}
                 >
                   {ensHostName}
                 </div>
-                <Link
+                {/* <Link
                   href={
                     data.dao_name === ("optimism" || "Optimism")
                       ? `https://optimism.easscan.org/offchain/attestation/view/${data.uid_host}`
@@ -220,7 +221,7 @@ function WatchSession({
                   target="_blank"
                 >
                   <Image src={view} alt="image" width={15} priority />
-                </Link>
+                </Link> */}
               </div>
 
               <div className="flex items-center gap-1">
@@ -228,20 +229,20 @@ function WatchSession({
                   <Image
                     src={NOLogo}
                     alt="image"
-                    width={20}
+                    width={30}
                     className="rounded-full"
                   />
                 ) : data.dao_name === "avss" ? (
                   <Image
                     src={AVSLogo}
                     alt="image"
-                    width={20}
+                    width={30}
                     className="rounded-full"
                   />
                 ) : (
                   ""
                 )}
-                <div className="text-[#292929] font-semibold capitalize">
+                <div className="text-white font-medium capitalize">
                   {data.dao_name}
                 </div>
               </div>
@@ -249,8 +250,9 @@ function WatchSession({
 
             <div className="flex gap-6">
               <div className="flex items-center gap-1">
-                <Image src={time} alt="image" width={20} priority />
-                <div className="text-[#1E1E1E]">
+                {/* <Image src={time} alt="image" className="text-white" width={20} priority /> */}
+                <CgStopwatch color="#fff" size={20}/>
+                <div className="text-white">
                   {formatTimeAgo(data.slot_time)}
                 </div>
               </div>
@@ -259,15 +261,15 @@ function WatchSession({
                 onClick={() => setModalOpen(true)}
               >
                 <div>
-                  <PiFlagFill color="#FF0000" size={20} />
+                  <PiFlagFill color="#fff" size={20} />
                 </div>
-                <div className="text-[#FF0000]">Report</div>
+                <div className="hover:text-[#ff3838] hover:scale-110 text-white">Report</div>
               </div>
               <div className="flex items-center gap-1 cursor-pointer" onClick={()=>setShareModal(true)}>
                 <div className="scale-x-[-1]">
-                  <BiSolidShare size={20} />
+                  <BiSolidShare size={20} color="#fff" />
                 </div>
-                <div className="text-[#1E1E1E]">Share</div>
+                <div className="text-white">Share</div>
               </div>
             </div>
           </div>
@@ -277,7 +279,7 @@ function WatchSession({
               className="flex items-center border border-[#8E8E8E] bg-white w-fit rounded-md px-3 font-medium py-1 gap-2 cursor-pointer"
               onClick={() => setShowPopup(!showPopup)}
             >
-              <div className="text-[#292929] text-sm">Guest</div>
+              <div className="text-black text-sm">Guest</div>
               <div
                 className={
                   showPopup

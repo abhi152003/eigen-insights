@@ -615,7 +615,7 @@ function MainProfile() {
               </div>
 
             <div className="px-4 text-white">
-                <div className=" flex items-center py-1">
+                <div className=" flex items-center">
                   <div className="font-bold text-lg pr-4">
                     {profileData ? (
                       profileData.metadataName
@@ -628,7 +628,7 @@ function MainProfile() {
                       </>
                     )}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 mt-4">
                     <Link
                       href={twitter}
                       className={`border-[0.5px] border-white rounded-full h-fit p-1 ${
@@ -752,8 +752,10 @@ function MainProfile() {
                     content="Copy"
                     placement="right"
                     closeDelay={1}
-                    showArrow>
-                    <span className="px-2 cursor-pointer" color="#3E3D3D">
+                    showArrow
+                    className="bg-deep-blue text-white"
+                    >
+                    <span className="px-2 cursor-pointer">
                       <IoCopy onClick={() => handleCopy(`${address}`)} />
                     </span>
                   </Tooltip>
@@ -774,7 +776,7 @@ function MainProfile() {
                   ? votes && (
                       <div className="flex gap-4 py-1">
                         <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                          <span className="text-blue-shade-200 font-semibold">
+                          <span className="text-light-cyan font-semibold">
                             {votes.delegatedVotes
                               ? formatNumber(Number(votes.delegatedVotes))
                               : "Fetching "}
@@ -783,13 +785,13 @@ function MainProfile() {
                           delegated tokens
                         </div>
                         <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                          <span className="text-blue-shade-200 font-semibold">
+                          <span className="text-light-cyan font-semibold">
                             {formatNumber(votes.delegatorCount)
                               ? null
                               : "Fetching "}
                           </span>
                           Delegated from
-                          <span className="text-blue-shade-200 font-semibold">
+                          <span className="text-light-cyan font-semibold">
                             &nbsp;
                             {formatNumber(votes.delegatorCount)
                               ? formatNumber(votes.delegatorCount)
@@ -866,7 +868,7 @@ function MainProfile() {
             {/* <button
           className={`border-b-2 py-4 px-2 outline-none ${
             searchParams.get("active") === "claimNft"
-              ? "text-blue-shade-200 font-semibold border-b-2 border-blue-shade-200"
+              ? "text-light-cyan font-semibold border-b-2 border-blue-shade-200"
               : "border-transparent"
           }`}
           onClick={() => router.push(path + "?active=claimNft")}

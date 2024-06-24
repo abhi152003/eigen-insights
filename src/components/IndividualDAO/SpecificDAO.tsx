@@ -94,7 +94,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
                 // onMouseEnter={handleMouseEnter}
                 // onMouseLeave={handleMouseLeave}
               >
-                <div className="flex items-center text-light-cyan text-[40px]">
+                <div className="flex items-center text-light-cyan text-[2.2rem]">
                   {selectedOption.label}
                 </div>
                 <svg
@@ -155,34 +155,34 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
         </div>
       </div>
 
-      <div className="ml-16 my-3 flex gap-12 justify-start rounded-xl text-md">
+      <div className="ml-0 my-2 pl-16 py-4 flex gap-12 justify-start text-base bg-[#D9D9D945]">
         {dao_name === 'Operators' ? 
           <button
             className={` 
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
               searchParams.get("active") === "operatorsList"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                : "text-white border-white"
             }`}
             onClick={() => router.push(path +"?active=operatorsList")}
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             Operators List
           </button> : 
           <button
             className={`
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
               searchParams.get("active") === "avsList"
                 ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3]"
-                : "text-white"
+                : "text-white border-white"
             }`}
             onClick={() => router.push(path +"?active=avsList")}
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000   shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             AVSs List
           </button>
         } 
@@ -191,33 +191,33 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           <button
             className={`
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
               searchParams.get("active") === "operatorsSession"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                : "text-white border-white"
             }`}
             onClick={() =>
               router.push(path + "?active=operatorsSession&session=recorded")
           }
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             Operators Sessions
           </button> :
           <button
             className={`
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group 
               ${
               searchParams.get("active") === "avsSession"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                : "text-white border-white"
             }`}
             onClick={() =>
               router.push(path + "?active=avsSession&session=recorded")
           }
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000   shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             AVSs Sessions
           </button>
         }
@@ -225,17 +225,17 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
         <button
           className={`
             p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-1000  group 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
             ${
             searchParams.get("active") === "officeHours"
-              ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white"
+              ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                : "text-white border-white"
           }`}
           onClick={() =>
             router.push(path + "?active=officeHours&hours=ongoing")
           }
         >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-1000  shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+          
           Office hours
         </button>
       </div>
