@@ -140,7 +140,7 @@ function DaoOfficeHours() {
   return (
     <div className="pt-6 pl-14 pr-6">
       <div className="flex justify-between pe-10">
-        <div className="font-quanty font-medium text-4xl pb-4 pl-2">
+        <div className="font-quanty text-light-cyan font-medium text-4xl pb-4 pl-2">
           <Tooltip
             showArrow
             content={
@@ -163,7 +163,7 @@ function DaoOfficeHours() {
       </div>
 
       {showComingSoon && (
-        <div className="flex items-center w-fit bg-light-blue border border-light-cyan rounded-full px-3 py-1 mb-1 font-poppins">
+        <div className="flex items-center w-fit bg-medium-blue border border-light-cyan rounded-full px-3 py-1 mb-1 font-poppins">
           <p className="text-md text-white mr-2">
             Office hours are currently being developed. In the meantime, please
             enjoy our 1:1 sessions.
@@ -181,7 +181,7 @@ function DaoOfficeHours() {
         <div className="flex gap-8 justify-start rounded-xl text-md">
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "ongoing"
                 ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
@@ -189,12 +189,12 @@ function DaoOfficeHours() {
             }`}
             onClick={() => router.push(path + "?hours=ongoing")}
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             Ongoing
           </button>
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "upcoming"
                 ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
@@ -202,12 +202,12 @@ function DaoOfficeHours() {
             }`}
             onClick={() => router.push(path + "?hours=upcoming")}
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             Upcoming
           </button>
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("hours") === "recorded"
                 ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
@@ -215,7 +215,7 @@ function DaoOfficeHours() {
             }`}
             onClick={() => router.push(path + "?hours=recorded")}
           >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
             Recorded
           </button>
         </div>

@@ -73,9 +73,8 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
       {data ? (
         <div className=" 1.7xl:ps-14 lg:ps-5 ps-4 xl:ps-10">
           <div className="flex justify-between items-center pt-6 pb-3 1.7xl:pe-10 lg:pe-3 pe-2">
-            <div className="font-poppins font-medium text-4xl">
-              <span className="text-black">Eigen</span>{" "}
-              <span className="text-blue-shade-200">Insights</span>
+            <div className="font-poppins font-medium text-3xl ml-3">
+              <span className="text-light-cyan">EigenInsight</span>
             </div>
             <ConnectWalletWithENS />
           </div>

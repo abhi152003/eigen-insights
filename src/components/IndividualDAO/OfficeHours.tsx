@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import Tile from "../utils/Tile";
 import { Oval } from "react-loader-spinner";
+import { IoSearchSharp } from "react-icons/io5";
 
 interface Session {
   _id: string;
@@ -123,30 +124,27 @@ function OfficeHours({ props }: { props: string }) {
 
   return (
     <div>
-      <div
-        style={{ background: "rgba(238, 237, 237, 0.36)" }}
-        className="flex border-[0.5px] border-black w-fit rounded-full my-4 font-poppins"
-      >
+      <div className="searchBox searchShineWidthOfAVSs">
         <input
+          className="searchInput"
           type="text"
-          placeholder="Search"
-          style={{ background: "rgba(238, 237, 237, 0.36)" }}
-          className="pl-5 rounded-full outline-none"
+          name=""
+          placeholder="Search by title or host address"
           value={searchQuery}
           onChange={(e) => handleSearchChange(e.target.value)}
-        ></input>
-        <span className="flex items-center bg-black rounded-full px-5 py-2">
-          <Image src={search} alt="search" width={20} />
-        </span>
+        />
+        <button className="searchButton">
+          <IoSearchSharp className="iconExplore" />
+        </button>
       </div>
 
       <div className="pr-36 pt-3">
-        <div className="flex gap-16 border-1 border-[#7C7C7C] pl-6 rounded-xl text-sm">
+        <div className="my-3 flex gap-16 border-2 border-gray-400 px-6 rounded-xl text-sm">
           <button
             className={`py-2  ${
               searchParams.get("hours") === "ongoing"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-[#A7DBF2] font-medium"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=officeHours&hours=ongoing")
@@ -157,8 +155,8 @@ function OfficeHours({ props }: { props: string }) {
           <button
             className={`py-2 ${
               searchParams.get("hours") === "upcoming"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-[#A7DBF2] font-medium"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=officeHours&hours=upcoming")
@@ -169,8 +167,8 @@ function OfficeHours({ props }: { props: string }) {
           <button
             className={`py-2 ${
               searchParams.get("hours") === "recorded"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-[#A7DBF2] font-medium"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=officeHours&hours=recorded")

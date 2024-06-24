@@ -319,7 +319,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                 Close
               </Button>
               <Button
-                className="btnSave"
+                className="btnSave text-white"
                 onClick={startInstantMeet}
                 isDisabled={confirmSave}
               >

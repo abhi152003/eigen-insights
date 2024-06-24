@@ -123,17 +123,17 @@ function UserSessions({
           {selfDelegate === true && (
             <button
               className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
                 ${
                 searchParams.get("session") === "schedule"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2]  bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=schedule")
               }
             >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
               Schedule
             </button>
           )}
@@ -141,65 +141,65 @@ function UserSessions({
           {selfDelegate === true && (
             <button
               className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
                 ${
                 searchParams.get("session") === "book"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2]  bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=book")
               }
             >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
               Booked
             </button>
           )}
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("session") === "attending"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2]  bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white border-white"
             }`}
             onClick={() =>
               router.push(path + "?active=sessions&session=attending")
             }
           >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+          
             Attending
           </button>
           {selfDelegate === false && (
             <button
               className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
                 ${
                 searchParams.get("session") === "hosted"
-                  ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                  : "text-[#A7DBF2]"
+                  ? "text-[#A7DBF2]  bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=hosted")
               }
             >
-            <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+            
               Hosted
             </button>
           )}
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
               searchParams.get("session") === "attended"
-                ? "text-white bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-[#A7DBF2]"
+                ? "text-[#A7DBF2]  bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white border-white"
             }`}
             onClick={() => 
               router.push(path + "?active=sessions&session=attended")
             }
           >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
+          
             Attended
           </button>
         </div>

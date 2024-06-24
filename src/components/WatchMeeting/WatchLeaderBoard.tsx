@@ -132,7 +132,7 @@ const WatchLeaderBoard = () => {
         )} */}
         <div className="flex justify-between items-center mb-5">
           <div className="flex">
-            <p className="xl:text-base 1.7xl:text-lg font-medium text-blue-shade-100 ml-5">
+            <p className="xl:text-base 1.7xl:text-lg font-medium text-light-cyan ml-5">
               🏆LeaderBoard
             </p>
             {showComingSoon && (
@@ -183,7 +183,7 @@ const WatchLeaderBoard = () => {
                   height={39}
                   className="xl:mr-2 mr-1 ml-3 xl:ml-0"
                 />
-                <p className="font-normal 1.7xl:text-base text-sm">{data.name}</p>
+                <p className="font-normal 1.7xl:text-base text-sm text-medium-blue">{data.name}</p>
               </div>
               <div
                 className={` border rounded-[9px] font-normal text-[13px] py-1 px-6 w-fit h-fit col-span-2 1.7xl:ml-8 ml-3 flex justify-center items-center`}
@@ -207,9 +207,9 @@ const WatchLeaderBoard = () => {
             className="absolute inset-0 backdrop-blur-md"
             onClick={handleClosePopup}
           ></div>
-          <div className="p-7 border z-50 rounded-2xl w-[35vw] h-[80vh] bg-white flex flex-col gap-3">
+          <div className="p-7 border z-50 rounded-2xl w-[35vw] h-[80vh] bg-deep-blue flex flex-col gap-3">
             <div className="flex justify-between ">
-              <p className="text-lg font-medium text-blue-shade-100 ml-5">
+              <p className="text-lg font-medium text-white ml-5">
                 🏆LeaderBoard
               </p>
               {/* <Image src={close} alt='' width={24} height={24} className='cursor-pointer' onClick={handleClosePopup}/> */}
@@ -241,7 +241,7 @@ const WatchLeaderBoard = () => {
                         height={39}
                         className=""
                       />
-                      <p>{data.name}</p>
+                      <p className="text-medium-blue">{data.name}</p>
                     </div>
                     <div
                       className={` border rounded-[9px] font-normal text-[13px] py-1 px-6 w-fit h-fit col-span-2 mr-3 flex justify-center items-center`}

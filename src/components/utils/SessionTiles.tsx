@@ -294,7 +294,8 @@ SessionTileProps) {
         sessionDetails.map((data: SessionData, index: any) => (
           <div
             key={index}
-            className={`flex p-5 rounded-[2rem] cursor-pointer justify-between ${
+            className={`flex p-5 rounded-[2rem] justify-between cursor-pointer bg-midnight-blue border-2 border-white
+              ${
               isEvent === "Recorded" ? "cursor-pointer" : ""
             }`}
             style={{ boxShadow: "0px 4px 26.7px 0px rgba(0, 0, 0, 0.10)" }}
@@ -313,12 +314,12 @@ SessionTileProps) {
               />
 
               <div className="ps-6 pe-12 py-1">
-                <div className="font-semibold text-blue-shade-200 text-xl">
+                <div className="font-medium text-light-cyan text-xl">
                   {data.title}
                 </div>
 
                 <div className="flex space-x-4 py-2">
-                  <div className="bg-[#1E1E1E] border border-[#1E1E1E] text-white rounded-md text-xs px-5 py-1 font-semibold capitalize">
+                  <div className="bg-medium-blue border-1 border-white text-white rounded-md text-xs px-5 py-1 font-medium capitalize">
                     {data.dao_name}
                   </div>
                   {/* <div className="border border-[#1E1E1E] rounded-md text-[#1E1E1E] text-xs px-5 py-1 font-medium">
@@ -332,32 +333,32 @@ SessionTileProps) {
 
                 <div className="flex gap-x-16 text-sm py-3">
                   {data.session_type === "session" ? (
-                    <div className="text-[#3E3D3D]">
-                      <span className="font-semibold">Session - </span>{" "}
-                      <span className="font-semibold">Guest:</span>{" "}
+                    <div className="text-white">
+                      <span className="font-normal">Session - </span>{" "}
+                      <span className="font-normal">Guest:</span>{" "}
                       {formatWalletAddress(data.attendees[0].attendee_address)}
                     </div>
                   ) : (
-                    <div className="text-[#3E3D3D]">
-                      <span className="font-semibold">Instant Meet</span>{" "}
+                    <div className="text-white">
+                      <span className="font-normal">Instant Meet</span>{" "}
                     </div>
                   )}
-                  <div className="text-[#3E3D3D]">
-                    <span className="font-semibold">Host:</span>{" "}
+                  <div className="text-white">
+                    <span className="font-normal">Host:</span>{" "}
                     {formatWalletAddress(data.host_address)}
                   </div>
-                  <div className="text-[#3E3D3D]">
+                  <div className="text-white">
                     {isEvent === "Upcoming" ? (
-                      <span className="font-semibold">Starts at: </span>
+                      <span className="font-normal">Starts at: </span>
                     ) : isEvent === "Recorded" ? (
-                      <span className="font-semibold">Started at: </span>
+                      <span className="font-normal">Started at: </span>
                     ) : null}
                     {formatSlotTimeToLocal(data.slot_time)}
                   </div>
                 </div>
 
                 <div
-                  className={`text-[#1E1E1E] text-sm ${
+                  className={`text-light-cyan text-sm ${
                     expanded[index] ? "" : `${styles.desc} cursor-pointer`
                   }`}
                   onClick={(event) => {
@@ -373,7 +374,7 @@ SessionTileProps) {
             <div className="flex items-end">
               {isSession === "attended" && data.attendees[0]?.attendee_uid && (
                 <button
-                  className="bg-blue-shade-100 text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
+                  className="bg-light-blue text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAttestationOnchain({
@@ -413,7 +414,7 @@ SessionTileProps) {
 
               {isSession === "hosted" && data.uid_host && (
                 <button
-                  className="bg-blue-shade-100 text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
+                  className="bg-light-blue text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAttestationOnchain({

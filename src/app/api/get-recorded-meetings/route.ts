@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         });
 
         const guestInfo = await delegatesCollection.findOne({
-          address: attendees[0].attendee_address,
+          address: attendees[0]?.attendee_address,
           daoName: dao_name,
         });
 

@@ -318,7 +318,7 @@ function DelegatesList({ props }: { props: string }) {
             <Image src={search} alt="search" width={20} />
           </span>
         </div> */}
-        <div className="searchBox searchShineWidthOfAVSs my-1">
+        <div className="searchBox searchShineWidthOfAVSs">
             <input
               className="searchInput"
               type="text"
@@ -333,12 +333,11 @@ function DelegatesList({ props }: { props: string }) {
           </div>
         <div>
           <select
-            style={{ background: "rgba(238, 237, 237, 0.36)" }}
-            className="rounded-full py-2 px-4 outline-none cursor-pointer"
+            className="rounded-full py-2 px-4 outline-none bg-medium-blue cursor-pointer"
             onChange={handleSelectChange}
           >
-            <option className="bg-grayish-blue text-white">Most stakers</option>
-            <option className="bg-grayish-blue text-white">Random</option>
+            <option className="bg-deep-blue text-white">Most stakers</option>
+            <option className="bg-deep-blue text-white">Random</option>
           </select>
         </div>
       </div>
@@ -357,7 +356,7 @@ function DelegatesList({ props }: { props: string }) {
           </div>
         ) : delegateData.delegates.length > 0 ? (
           <div> 
-            <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-10">
+            <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10">
               {delegateData.delegates.map((daos: any, index: number) => (
                 <div
                   onClick={(event) =>{
@@ -400,7 +399,7 @@ function DelegatesList({ props }: { props: string }) {
                         height={100}
                         // layout="fixed"
                         className="rounded-full"
-                        style={{ width: '75px', height: '75px' }} 
+                        style={{ width: '4rem', height: '4rem' }} 
                       ></Image>
 
                       <Image

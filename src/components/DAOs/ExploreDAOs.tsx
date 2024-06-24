@@ -11,12 +11,12 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-import EILogo from "@/assets/images/daos/eigen_logo.png"
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import "../../css/ShineFont.css";
-import "../../css/BtnShine.css"
-import "../../css/SearchShine.css"
-import "../../css/ExploreDAO.css"
-  import { IoSearchSharp } from "react-icons/io5";
+import "../../css/BtnShine.css";
+import "../../css/SearchShine.css";
+import "../../css/ExploreDAO.css";
+import { IoSearchSharp } from "react-icons/io5";
 
 function ExploreDAOs() {
   const dao_info = Object.keys(dao_details).map((key) => {
@@ -67,9 +67,9 @@ function ExploreDAOs() {
     );
     if (formatted === "operators") {
       router.push(`/${formatted}?active=operatorsList`);
-    } else if (formatted === 'avss') {
+    } else if (formatted === "avss") {
       router.push(`/${formatted}?active=avsList`);
-    } else if (formatted === 'analytics') {
+    } else if (formatted === "analytics") {
       router.push(`/${formatted}`);
     }
   };
@@ -126,9 +126,7 @@ function ExploreDAOs() {
     <div className="pt-6 pl-14 pr-14 min-h-screen">
       <div className="">
         <div className="flex justify-between pe-10">
-          <div
-            className="text-light-cyan font-medium text-4xl font-quanty pb-4 ml-3"
-          >
+          <div className="text-light-cyan font-medium text-4xl font-quanty pb-4 ml-3">
             Explore
           </div>
 
@@ -154,7 +152,7 @@ function ExploreDAOs() {
             <Image src={search} alt="search" width={20} height={20} />
           </span> */}
 
-          <div className="searchBox btnShine">
+          <div className="searchBox">
             <input
               className="searchInput"
               type="text"
@@ -164,49 +162,86 @@ function ExploreDAOs() {
               onChange={(e) => handleSearchChange(e.target.value)}
             />
             <button className="searchButton">
-              <IoSearchSharp className="iconExplore"/>
+              <IoSearchSharp className="iconExplore" />
             </button>
           </div>
         </div>
 
-        <div className="flex gap-10 py-8 px-0 font-poppins">
+        {/* <div className="flex gap-10 py-8 px-0 font-poppins"> */}
+        <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10 py-8 font-poppins">
           {daoInfo.length > 0 ? (
             daoInfo.map((daos: any, index: any) => (
+              // <div
+              //   key={daos.name}
+              //   style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
+              //   className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
+              //   onClick={() => handleClick(daos.name, daos.img)}
+              // >
+              //   <div className="flex justify-center">
+              //     <Image
+              //       src={daos.img}
+              //       alt="Image not found"
+              //       width={60}
+              //       height={60}
+              //       style={{ width: "60px", height: "60px" }}
+              //       className="rounded-full pulsate"
+              //     ></Image>
+              //   </div>
+              //   <div className="text-center">
+              //     <div className="py-3">
+              //       <div>
+              //         {daos.name}</div>
+              //       {daos.name === "Operators" ? (
+              //         <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
+              //           {totalOperators} Operators
+              //         </div>
+              //       ) : (
+              //         <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
+              //           {totalAVSs} AVSs
+              //         </div>
+              //       )}
+              //     </div>
+              //   </div>
+              // </div>
+
               <div
-                key={daos.name}
-                style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-                className="flex flex-col gap-3 justify-center px-5 py-7 rounded-2x exploreMainDiv flex-1"
+                className="cursor-pointer group overflow-hidden p-5 duration-1000 hover:duration-1000 relative w-64 h-64 bg-navy-blue rounded-xl"
+                onClick={() => handleClick(daos.name, daos.img)}
               >
-                <div className="flex justify-center">
-                  <Image
-                    src={daos.img}
-                    alt="Image not found"
-                    width={80}
-                    height={80}
-                    style={{ width: "80px", height: "80px" }}
-                    className="rounded-full pulsate"
-                  ></Image>
-                </div>
-                <div className="text-center">
-                  <div className="py-3">
-                    <button className={`w-[300px] my-5 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-5 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group`}
-                    onClick={() => handleClick(daos.name, daos.img)}>
-                    <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-                      {daos.name}</button>
-                    {daos.name === "Operators" ? (
-                      <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
-                        {totalOperators} Operators
-                      </div>
-                    ) : (
-                      <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
-                        {totalAVSs} AVSs
-                      </div>
-                    )}
+                <div className="group-hover:-top-3 bg-transparent -top-12 -left-12 absolute shadow-yellow-300 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
+                <div className="group-hover:top-60 bg-transparent top-40 left-14 absolute shadow-red-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
+                <div className="group-hover:-left-12 bg-transparent top-24 left-56 absolute shadow-sky-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
+                <div className="group-hover:-top-44 bg-transparent top-12 left-12 absolute shadow-red-500 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-12 h-12"></div>
+                <div className="group-hover:left-44 bg-transparent top-12 left-12 absolute shadow-green-600 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-44 h-44"></div>
+                <div className="group-hover:-left-2 bg-transparent -top-24 -left-12 absolute shadow-sky-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-64 h-64"></div>
+                <div className="group-hover:top-44 bg-transparent top-24 left-12 absolute shadow-sky-500 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-4 h-4"></div>
+                <div className="w-full h-full p-3 bg-navy-blue opacity-100 rounded-xl flex-col gap-2 flex justify-center">
+                  <div className="flex justify-center">
+                    <Image
+                      src={daos.img}
+                      alt="Image not found"
+                      width={60}
+                      height={60}
+                      style={{ width: "60px", height: "60px" }}
+                      className="rounded-full pulsate"
+                    ></Image>
+                  </div>
+                  <div className="text-center">
+                    <div className="py-3">
+                      <div className="font-semibold">{daos.name}</div>
+                      {daos.name === "Operators" ? (
+                        <div className="text-sm bg-[#05223B] text-white py-2 rounded-full mt-3">
+                          {totalOperators} Operators
+                        </div>
+                      ) : (
+                        <div className="text-sm bg-[#05223B] text-white py-2 rounded-full mt-3">
+                          {totalAVSs} AVSs
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-              
             ))
           ) : (
             <div className="pl-3 text-xl font-semibold">
@@ -216,22 +251,20 @@ function ExploreDAOs() {
           <div
             // key={daos.name}
             style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv flex-1"
+            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">
               <Image
                 src={EILogo}
                 alt="Image not found"
-                width={80}
-                height={80}
-                style={{ width: '80px', height: '80px' }}
-                className="rounded-full"
+                style={{ width: "60px", height: "60px" }}
+                className="rounded-full pulsate"
               ></Image>
             </div>
             <div className="text-center">
               <div className="py-3">
-                <div className="font-semibold capitalize">Analytics</div>                    
+                <div className="font-semibold capitalize">Analytics</div>
               </div>
             </div>
           </div>

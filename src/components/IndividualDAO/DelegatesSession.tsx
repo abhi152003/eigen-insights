@@ -17,6 +17,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import AttestationModal from "../utils/AttestationModal";
+import { IoSearchSharp } from "react-icons/io5";
 
 interface Session {
   booking_status: string;
@@ -131,28 +132,27 @@ function DelegatesSession({ props }: { props: string }) {
 
   return (
     <div className="font-poppins">
-      <div
-        style={{ background: "rgba(238, 237, 237, 0.36)" }}
-        className="flex border-[0.5px] border-black w-fit rounded-full my-4 font-poppins"
-      >
+
+      <div className="searchBox searchShineWidthOfAVSs">
         <input
+          className="searchInput"
           type="text"
-          placeholder="Search"
-          style={{ background: "rgba(238, 237, 237, 0.36)" }}
-          className="pl-5 rounded-full outline-none"
+          name=""
+          placeholder="Search by title or host address"
           value={searchQuery}
           onChange={(e) => handleSearchChange(e.target.value)}
-        ></input>
-        <span className="flex items-center bg-black rounded-full px-5 py-2">
-          <Image src={search} alt="search" width={20} />
-        </span>
+        />
+        <button className="searchButton">
+          <IoSearchSharp className="iconExplore" />
+        </button>
       </div>
+
       {/* <div>
         <AttestationModal props={true} />
       </div> */}
 
       <div className="pr-36 pt-3">
-        <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm">
+        <div className="my-3 flex w-fit gap-16 border-2 border-gray-400 px-6 rounded-xl text-sm">
           {/* <button
             className={`py-2 ${
               searchParams.get("session") === "upcoming"
@@ -168,8 +168,8 @@ function DelegatesSession({ props }: { props: string }) {
           <button
             className={`py-2 ${
               searchParams.get("session") === "recorded"
-                ? "text-[#3E3D3D] font-bold"
-                : "text-[#7C7C7C]"
+                ? "text-[#A7DBF2] font-medium"
+                : "text-white"
             }`}
             onClick={() =>
               router.push(path + "?active=delegatesSession&session=recorded")

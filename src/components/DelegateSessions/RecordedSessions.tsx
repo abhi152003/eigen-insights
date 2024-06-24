@@ -2,8 +2,8 @@ import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import search from "@/assets/images/daos/search.png";
 import texture1 from "@/assets/images/daos/texture1.png";
-import NOLogo from "@/assets/images/daos/operators.png"
-import AVSLogo from "@/assets/images/daos/avss.png"
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
 import user from "@/assets/images/daos/user3.png";
 import { Tooltip } from "@nextui-org/react";
 import { IoCopy } from "react-icons/io5";
@@ -24,6 +24,8 @@ import user6 from "@/assets/images/user/user6.svg";
 import user7 from "@/assets/images/user/user7.svg";
 import user8 from "@/assets/images/user/user8.svg";
 import user9 from "@/assets/images/user/user9.svg";
+import { IoSearchSharp } from "react-icons/io5";
+import "../../css/SearchShine.css"
 
 interface SessionData {
   session: {
@@ -244,7 +246,7 @@ function RecordedSessions() {
     };
 
     meetingData.forEach((data: SessionData) => {
-      const guestAddress = data.session.attendees[0].attendee_address;
+      const guestAddress = data.session.attendees[0]?.attendee_address;
       const hostAddress = data.session.host_address;
       if (!data.guestInfo?.image && !newRandomUserImages[guestAddress]) {
         newRandomUserImages[guestAddress] = getRandomUserImage();
@@ -282,10 +284,10 @@ function RecordedSessions() {
       const ensNamesMap: any = {};
       for (const data of meetingData) {
         const ensName = await getEnsName(
-          data.session.attendees[0].attendee_address.toLowerCase()
+          data.session.attendees[0]?.attendee_address.toLowerCase()
         );
         if (ensName) {
-          ensNamesMap[data.session.attendees[0].attendee_address] = ensName;
+          ensNamesMap[data.session.attendees[0]?.attendee_address] = ensName;
         }
       }
       console.log("guest ensNamesMap", ensNamesMap);
@@ -300,12 +302,8 @@ function RecordedSessions() {
   return (
     <>
       <div className="pe-10">
-        <div className="flex my-4 items-center gap-4 font-poppins">
-          <div
-            style={{ background: "rgba(238, 237, 237, 0.36)" }}
-            className="flex border-[0.5px] border-black w-1/3 rounded-full"
-          >
-            <input
+        <div className="flex my-3 items-center gap-4 font-poppins">
+            {/* <input
               type="text"
               placeholder="Search by title and host address"
               style={{ background: "rgba(238, 237, 237, 0.36)" }}
@@ -315,24 +313,41 @@ function RecordedSessions() {
             ></input>
             <span className="flex items-center bg-black rounded-full px-5 py-2">
               <Image src={search} alt="search" width={20} />
-            </span>
-          </div>
+            </span> */}
+
+            <div className="searchBox searchShineWidthOfAVSs">
+              <input
+                className="searchInput"
+                type="text"
+                name=""
+                placeholder="Search by title and host address"
+                value={searchQuery}
+                onChange={(e) => handleSearchChange(e.target.value)}
+              />
+              <button className="searchButton">
+                <IoSearchSharp className="iconExplore" />
+              </button>
+            </div>
           <div className="flex space-x-4">
             <button
-              className={`border border-[#CCCCCC] px-6 py-1 rounded-lg text-lg ${
+              className={`p-3 border-[#A7DBF2] border-1
+              border-b-3 font-medium overflow-hidden relative hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group px-4 py-1 rounded-lg flex items-center gap-1.5
+              ${
                 activeButton === "all"
-                  ? "bg-[#8E8E8E] text-white"
-                  : "bg-[#F5F5F5] text-[#3E3D3D]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                : "text-white border-white"
               }`}
               onClick={() => handleFilters("")}
             >
               All
             </button>
             <button
-              className={`border border-[#CCCCCC] px-4 py-1  rounded-lg text-lg flex items-center gap-1.5 ${
+              className={`p-3 border-[#A7DBF2] border-1
+              border-b-3 font-medium overflow-hidden relative hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group px-4 py-1 rounded-lg flex items-center gap-1.5
+              ${
                 activeButton === "operators"
-                  ? "bg-[#8E8E8E] text-white"
-                  : "bg-[#F5F5F5] text-[#3E3D3D]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() => handleFilters("operators")}
             >
@@ -340,14 +355,16 @@ function RecordedSessions() {
               Operators
             </button>
             <button
-              className={`border border-[#CCCCCC] px-4 py-1 rounded-lg text-lg flex items-center gap-1.5 ${
+              className={`p-3 border-[#A7DBF2] border-1
+              border-b-3 font-medium overflow-hidden relative hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group px-4 py-1 rounded-lg flex items-center gap-1.5
+              ${
                 activeButton === "avss"
-                  ? "bg-[#8E8E8E] text-white"
-                  : "bg-[#F5F5F5] text-[#3E3D3D]"
+                  ?"text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
               }`}
               onClick={() => handleFilters("avss")}
             >
-              <Image src={AVSLogo} alt="avss" width={23} className="" />
+              <Image src={AVSLogo} alt="avss" width={23} className="rounded-md" />
               AVSs
             </button>
           </div>
@@ -369,12 +386,13 @@ function RecordedSessions() {
             {meetingData.map((data: any, index: number) => (
               <div
                 key={index}
-                className="border border-[#D9D9D9] rounded-3xl cursor-pointer"
+                className="border-2 border-[#D9D9D9] rounded-3xl cursor-pointer hover:border-light-cyan hover:border-x-4"
                 onClick={() => router.push(`/watch/${data.session.meetingId}`)}
                 onMouseEnter={() => setHoveredVideo(index)}
-                onMouseLeave={() => setHoveredVideo(null)}>
+                onMouseLeave={() => setHoveredVideo(null)}
+              >
                 <div
-                  className={`w-full h-44 rounded-t-3xl bg-black object-cover object-center ${styles.container}`}
+                  className={`w-full h-44 rounded-t-3xl bg-[#D9D9D945] object-cover object-center relative`}
                 >
                   {hoveredVideo === index ? (
                     <div className="relative">
@@ -414,7 +432,7 @@ function RecordedSessions() {
                 </div>
                 <div className="px-4 py-2">
                   <div
-                    className={`font-semibold py-1 ${styles.truncate}`}
+                    className={`ml-1 font-semibold py-1 ${styles.truncate}`}
                     style={{
                       display: "-webkit-box",
                       WebkitBoxOrient: "vertical",
@@ -424,7 +442,7 @@ function RecordedSessions() {
                     {data.session.title}
                   </div>
                   <div className="flex text-sm gap-3 py-1">
-                    <div className="bg-[#F5F5F5] flex items-center py-1 px-3 rounded-md gap-2">
+                    <div className="bg-medium-blue flex items-center py-1 px-3 rounded-md gap-2">
                       <div>
                         {data.session.dao_name === "operators" ? (
                           <Image
@@ -446,7 +464,7 @@ function RecordedSessions() {
                       </div>
                       <div className="capitalize">{data.session.dao_name}</div>
                     </div>
-                    <div className="bg-[#F5F5F5] py-1 px-3 rounded-md">
+                    <div className="bg-medium-blue py-1 px-3 rounded-md">
                       {formatTimeAgo(data.session.slot_time)}
                     </div>
                   </div>
@@ -472,6 +490,7 @@ function RecordedSessions() {
                           placement="right"
                           closeDelay={1}
                           showArrow
+                          className="bg-deep-blue"
                         >
                           <span className="cursor-pointer text-sm">
                             <IoCopy
@@ -491,7 +510,7 @@ function RecordedSessions() {
                             data.guestInfo?.image
                               ? `https://gateway.lighthouse.storage/ipfs/${data.guestInfo.image}`
                               : randomUserImages[
-                                  data.session.attendees[0].attendee_address
+                                  data.session.attendees[0]?.attendee_address
                                 ]
                           }
                           alt="image"
@@ -504,7 +523,7 @@ function RecordedSessions() {
                         Guest:{" "}
                         {
                           ensGuestNames[
-                            data.session.attendees[0].attendee_address
+                            data.session.attendees[0]?.attendee_address
                           ]
                         }
                       </div>
@@ -514,13 +533,14 @@ function RecordedSessions() {
                           placement="right"
                           closeDelay={1}
                           showArrow
+                          className="bg-deep-blue"
                         >
                           <span className="cursor-pointer text-sm">
                             <IoCopy
                               onClick={(event) => {
                                 event.stopPropagation();
                                 handleCopy(
-                                  data.session.attendees[0].attendee_address
+                                  data.session.attendees[0]?.attendee_address
                                 );
                               }}
                             />

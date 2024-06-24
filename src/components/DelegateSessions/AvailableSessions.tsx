@@ -14,10 +14,12 @@ import { Tooltip } from "@nextui-org/react";
 import text1 from "@/assets/images/daos/texture1.png";
 import clockIcn from "@/assets/images/daos/icon_clock.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
-import NOLogo from "@/assets/images/daos/operators.png"
-import AVSLogo from "@/assets/images/daos/avss.png"
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
 import "@/components/DelegateSessions/DelegateSessionsMain.module.css";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
+import { IoSearchSharp } from "react-icons/io5";
+import "../../css/SearchShine.css"
 
 interface Type {
   ensName: string;
@@ -268,15 +270,15 @@ function AvailableSessions() {
       setEnsNames(ensNameMap);
     };
 
-    if (daoInfo.length > 0) {
-      fetchEnsNames();
-    }
+    // if (daoInfo.length > 0) {
+    //   fetchEnsNames();
+    // }
   }, [daoInfo]);
 
   return (
     <div className="pe-10">
       <div className="flex gap-7 bg-[#D9D9D945] p-4 mt-4 rounded-2xl font-poppins">
-        <div
+        {/* <div
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
           className="flex border-[0.5px] border-black w-fit rounded-full  "
         >
@@ -296,29 +298,43 @@ function AvailableSessions() {
               width={20}
             />
           </span>
+        </div> */}
+
+        <div className="searchBox">
+          <input
+            className="searchInput"
+            type="text"
+            name=""
+            placeholder="Search by Address"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          <button className="searchButton">
+            <IoSearchSharp className="iconExplore" />
+          </button>
         </div>
 
         <div className="flex items-center">
           <Tooltip
             showArrow
             content={
-              <div className="font-poppins">
+              <div className="font-poppins text-white">
                 Select a DAO option to view available Delegates of that DAO.
               </div>
             }
             placement="bottom"
-            className="rounded-md bg-opacity-90"
+            className="rounded-md bg-opacity-90 bg-medium-blue"
             closeDelay={1}
           >
             <select
               value={selectedDao}
               // onChange={(e) => setSelectedDao(e.target.value)}
               onChange={handleDaoChange}
-              className="px-3 py-2 rounded-md shadow"
+              className="px-3 py-2 rounded-lg shadow bg-medium-blue cursor-pointer"
             >
-              <option value="All-SESSIONS">All sessions</option>
-              <option value="operators">Operators</option>
-              <option value="avss">AVSs</option>
+              <option className="bg-midnight-blue" value="All-SESSIONS">All sessions</option>
+              <option className="bg-midnight-blue" value="operators">Operators</option>
+              <option className="bg-midnight-blue" value="avss">AVSs</option>
             </select>
           </Tooltip>
         </div>
@@ -332,7 +348,7 @@ function AvailableSessions() {
               </div>
             }
             placement="bottom"
-            className="rounded-md bg-opacity-90"
+            className="rounded-md bg-opacity-90 bg-medium-blue"
             closeDelay={1}
           >
             <input
@@ -341,7 +357,7 @@ function AvailableSessions() {
               onChange={handleDateChange}
               min={formattedDate}
               // onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-2 shadow mr-1 rounded-md"
+              className="px-3 py-2 shadow mr-1 rounded-md bg-medium-blue cursor-pointer"
             />
           </Tooltip>
         </div>
@@ -354,16 +370,16 @@ function AvailableSessions() {
             </div>
           }
           placement="bottom"
-          className="rounded-md bg-opacity-90"
+          className="rounded-md bg-opacity-90 bg-medium-blue"
           closeDelay={1}
         >
           <div className="flex items-center select-container">
             <select
               value={startTime || "Start Time"}
               onChange={handleStartTimeChange}
-              className="px-3 py-2 rounded-md shadow mr-1"
+              className="px-3 py-2 rounded-md shadow mr-1 bg-medium-blue cursor-pointer"
             >
-              <option disabled>Start Time</option>
+              <option className="text-white my-1">Start Time</option>
               {timeOptions.map((time) => (
                 <option key={time} value={time}>
                   {time}
@@ -374,9 +390,9 @@ function AvailableSessions() {
             <select
               value={endTime || "End Time"}
               onChange={handleEndTimeChange}
-              className="px-3 py-2 rounded-md shadow ml-2"
+              className="px-3 py-2 rounded-md shadow ml-2 bg-medium-blue cursor-pointer"
             >
-              <option disabled>End Time</option>
+              <option className="text-white">End Time</option>
               {timeOptions.map((time) => (
                 <option key={time} value={time}>
                   {time}
@@ -386,7 +402,7 @@ function AvailableSessions() {
             {(startTime || endTime) && (
               <button
                 onClick={handleClearTime}
-                className="ml-2 text-red-500 px-3 py-1 rounded-md border border-red-500 hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="ml-2 text-red-500 bg-white px-2 py-1 rounded-md border-red-500 border-2 hover:bg-red-500 hover:text-white hover:scale-100"
               >
                 Clear Time
               </button>

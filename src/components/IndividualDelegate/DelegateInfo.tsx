@@ -455,16 +455,15 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           Offchain
         </button>
       </div> */}
-      <div className="grid grid-cols-4 pe-32 gap-10">
+      <div className="grid grid-cols-4 pe-32 gap-10 px-12">
         {details.length > 0 ? (
           details.map((key, index) => (
             <div
               key={index}
-              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white w-[20rem] rounded-2xl p-7 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
+              className="relative bg-gradient-to-r from-midnight-blue via-deep-blue to-slate-blue text-white rounded-2xl py-7 px-3 transform transition-transform duration-500 hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-blue-500/50 border-2 border-transparent hover:border-white hover:border-dashed hover:border-opacity-50"
               onClick={() => router.push(`${key.ref}`)}
             >
-              {/* <div className="absolute top-2 right-2 h-4 w-4 bg-light-cyan rounded-full animate-ping"></div> */}
-              <div className="font-semibold text-3xl text-center pb-2">
+              <div className="font-semibold text-3xl text-center pb-2 relative z-10">
                 {isSessionHostedLoading &&
                 isSessionAttendedLoading &&
                 isOfficeHoursHostedLoading &&
@@ -481,7 +480,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                   key.number
                 )}
               </div>
-              <div className="text-center text-sm">{key.desc}</div>
+              <div className="text-center text-sm relative z-10">{key.desc}</div>
             </div>
           ))
         ) : (
@@ -492,7 +491,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-          <div className="bg-light-blue p-4">
+          <div className="p-4">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Total</h2>
               <div className="text-right">
