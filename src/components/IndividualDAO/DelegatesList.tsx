@@ -475,7 +475,10 @@ function DelegatesList({ props }: { props: string }) {
                           WalletOpen(daos.address);
                         }}
                       >
-                        <span className="hover-text">Stake</span>
+                        {props === "operators" ?
+                          <span className="hover-text">Delegate</span> :
+                          <span className="hover-text">Stake</span>
+                        }
                       </button>
                     </div>
                   </div>

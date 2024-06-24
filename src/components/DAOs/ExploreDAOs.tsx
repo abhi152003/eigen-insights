@@ -61,6 +61,8 @@ function ExploreDAOs() {
   const handleClick = (name: string, img: StaticImageData) => {
     const formatted = name.toLowerCase();
     const localData = JSON.parse(localStorage.getItem("visitedDao") || "{}");
+    // only store operators and avss, not analytics
+    if (formatted === "operators" || formatted === "avss")
     localStorage.setItem(
       "visitedDao",
       JSON.stringify({ ...localData, [formatted]: [formatted, img] })
@@ -205,6 +207,7 @@ function ExploreDAOs() {
               // </div>
 
               <div
+                key={daos.name}
                 className="cursor-pointer group overflow-hidden p-5 duration-1000 hover:duration-1000 relative w-64 h-64 bg-navy-blue rounded-xl"
                 onClick={() => handleClick(daos.name, daos.img)}
               >

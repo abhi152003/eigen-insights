@@ -13,9 +13,8 @@ import {
   ThreeDots,
 } from "react-loader-spinner";
 
-
-import { Bar, Pie, Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { Bar, Pie, Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 import { Toaster, toast } from "react-hot-toast";
 import { IoCopy } from "react-icons/io5";
 import Image from "next/image";
@@ -23,12 +22,17 @@ import NOLogo from "@/assets/images/daos/operators.png";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
 import styles from "@/components/IndividualDelegate/DelegateVotes.module.css";
-import { Button, Dropdown, Pagination, Tooltip as CopyToolTip } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  Pagination,
+  Tooltip as CopyToolTip,
+} from "@nextui-org/react";
 import copy from "copy-to-clipboard";
 
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
-import "../../css/ImagePulse.css"
+import "../../css/ImagePulse.css";
 
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
@@ -38,8 +42,15 @@ interface Type {
   individualDelegate: string;
 }
 
-function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string, delegateInfo: any }) {
-
+function DelegateInfo({
+  props,
+  desc,
+  delegateInfo,
+}: {
+  props: Type;
+  desc: string;
+  delegateInfo: any;
+}) {
   const [loading, setLoading] = useState(true);
   const [isDataLoading, setDataLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -61,38 +72,42 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
 
-
-  
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
-  
+
     setDataLoading(true);
-    const options = { method: 'GET' };
+    const options = { method: "GET" };
     const avsOperatorsRes = await fetch(
       `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
       options
     );
-    
+
     const newAvsOperators = await avsOperatorsRes.json();
-  
+
     if (newAvsOperators.data.length === 0) {
       setHasMore(false);
     } else {
-      setAVSOperators(prevOperators => [...prevOperators, ...newAvsOperators.data]);
-      setCurrentPage(prevPage => prevPage + 12);
+      setAVSOperators((prevOperators) => [
+        ...prevOperators,
+        ...newAvsOperators.data,
+      ]);
+      setCurrentPage((prevPage) => prevPage + 12);
     }
-  
+
     setDataLoading(false);
     setInitialLoad(false);
   }, [currentPage, hasMore, isDataLoading, props.individualDelegate]);
 
   useEffect(() => {
-    if (props.daoDelegates === 'avss' && initialLoad) {
+    if (props.daoDelegates === "avss" && initialLoad) {
       fetchData();
     }
   }, [fetchData, props.daoDelegates, initialLoad]);
-  
-  const debounce = (func: { (): void; apply?: any; }, delay: number | undefined) => {
+
+  const debounce = (
+    func: { (): void; apply?: any },
+    delay: number | undefined
+  ) => {
     let timeoutId: string | number | NodeJS.Timeout | undefined;
     return (...args: any) => {
       clearTimeout(timeoutId);
@@ -101,17 +116,19 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       }, delay);
     };
   };
-  
+
   const handleScroll = useCallback(() => {
     if (initialLoad) return;
-    
+
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     const threshold = 100;
-    if (scrollTop + clientHeight >= scrollHeight - threshold && !isDataLoading) {
+    if (
+      scrollTop + clientHeight >= scrollHeight - threshold &&
+      !isDataLoading
+    ) {
       fetchData();
     }
   }, [fetchData, initialLoad, isDataLoading]);
-  
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -356,7 +373,9 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
 
   type FilteredData = [string, number];
 
-  const filteredData: FilteredData[] = Object.entries(delegateInfo.tvl.tvlStrategies)
+  const filteredData: FilteredData[] = Object.entries(
+    delegateInfo.tvl.tvlStrategies
+  )
     .filter(([key, value]) => value !== 0 && key !== "Eigen")
     .map(([key, value]) => [key, value as number]);
 
@@ -369,46 +388,46 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
     labels: labels,
     datasets: [
       {
-        label: 'TVL Strategies',
+        label: "TVL Strategies",
         data: dataValues,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
-          'rgba(255, 83, 64, 0.6)',
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(153, 102, 255, 0.6)",
+          "rgba(199, 199, 199, 0.6)",
+          "rgba(255, 159, 64, 0.6)",
+          "rgba(83, 102, 255, 0.6)",
+          "rgba(132, 206, 86, 0.6)",
+          "rgba(192, 192, 75, 0.6)",
+          "rgba(199, 83, 64, 0.6)",
+          "rgba(102, 153, 255, 0.6)",
+          "rgba(255, 83, 64, 0.6)",
         ],
         borderColor: [
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(75, 192, 192, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(153, 102, 255, 0.6)',
-          'rgba(199, 199, 199, 0.6)',
-          'rgba(255, 159, 64, 0.6)',
-          'rgba(83, 102, 255, 0.6)',
-          'rgba(132, 206, 86, 0.6)',
-          'rgba(192, 192, 75, 0.6)',
-          'rgba(199, 83, 64, 0.6)',
-          'rgba(102, 153, 255, 0.6)',
-          'rgba(255, 83, 64, 0.6)',
-        ],     
-        borderWidth: 2
-      }
-    ]
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(153, 102, 255, 0.6)",
+          "rgba(199, 199, 199, 0.6)",
+          "rgba(255, 159, 64, 0.6)",
+          "rgba(83, 102, 255, 0.6)",
+          "rgba(132, 206, 86, 0.6)",
+          "rgba(192, 192, 75, 0.6)",
+          "rgba(199, 83, 64, 0.6)",
+          "rgba(102, 153, 255, 0.6)",
+          "rgba(255, 83, 64, 0.6)",
+        ],
+        borderWidth: 2,
+      },
+    ],
   };
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const totalEth = delegateInfo.tvl.tvlRestaking
+  const totalEth = delegateInfo.tvl.tvlRestaking;
 
   const chartData = {
     labels: filteredData.map(([label]) => label),
@@ -416,25 +435,45 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       {
         data: filteredData.map(([_, value]) => value),
         backgroundColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
         borderColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
-        borderWidth: 1
-      }
-    ]
+        borderWidth: 1,
+      },
+    ],
   };
 
   const chartOptions = {
     plugins: {
       legend: {
-        display: false
-      }
+        display: false,
+      },
     },
     onHover: (event: any, chartElement: any) => {
       if (chartElement.length > 0) {
@@ -442,7 +481,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       } else {
         setHoveredIndex(null);
       }
-    }
+    },
   };
 
   const handleCopy = (addr: string) => {
@@ -479,37 +518,35 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           </div>
         )}
       </div>
-      <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm mb-6">
+      <div className="flex gap-16 text-sm py-3 mb-6 items-center justify-center">
         <button
           className={`
-              p-9 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
-            ${
-            activeButton === "onchain"
-              ? "text-light-cyan"
-                : "text-white font-bold"
-          } `}
+              ml-[-90px] p-9 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
+             ${
+               activeButton === "onchain"
+                 ? "text-light-cyan"
+                 : "text-white font-bold border-white"
+             } `}
           onClick={() => fetchAttestation("onchain")}
         >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-100 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Onchain
         </button>
         <button
-          className={`
-            p-5 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+          className={` 
+              ml-[-30px] p-5 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
             ${
-            activeButton === "offchain"
-              ? "text-light-cyan"
-                : "text-white font-bold"
-          }`}
+              activeButton === "offchain"
+                ? "text-light-cyan"
+                : "text-white font-bold border-white"
+            }`}
           onClick={() => fetchAttestation("offchain")}
         >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
           Offchain
         </button>
       </div>
-      <div className="grid grid-cols-4 pe-32 gap-10">
+      <div className="grid grid-cols-4 pe-32 gap-10 px-12">
         {details.length > 0 ? (
           details.map((key, index) => (
             <div
@@ -522,17 +559,21 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                 isSessionAttendedLoading &&
                 isOfficeHoursHostedLoading &&
                 isOfficeHoursAttendedLoading ? (
-                  <div className="flex items-center justify-center -ml-12">
-                    <InfinitySpin
-                      width="100"
-                      color="#FFFFFF"
+                  <div className="flex items-center justify-center">
+                    <RotatingLines
+                      visible={true}
+                      width="36"
+                      strokeColor="grey"
+                      ariaLabel="oval-loading"
                     />
                   </div>
                 ) : (
                   key.number
                 )}
               </div>
-              <div className="text-center text-sm relative z-10">{key.desc}</div>
+              <div className="text-center text-sm relative z-10">
+                {key.desc}
+              </div>
             </div>
           ))
         ) : (
@@ -543,45 +584,66 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-          <div className="p-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Total</h2>
-              <div className="text-right">
-                <p className="text-2xl font-bold">{totalEth.toLocaleString(undefined, { maximumFractionDigits: 3 })} ETH</p>
+            <div className="p-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Total</h2>
+                <div className="text-right">
+                  <p className="text-2xl font-bold">
+                    {totalEth.toLocaleString(undefined, {
+                      maximumFractionDigits: 3,
+                    })}{" "}
+                    ETH
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="p-6">
-            <div className="flex flex-col md:flex-row gap-x-40">
-              <div className="w-full md:w-1/2 pr-10">
-                <div className="space-y-2">
-                  {filteredData.map(([label, value], index) => (
-                    <div key={label} className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? 'bg-gray-600' : ''}`}>
-                      <div className="flex items-center">
-                        <div className="w-4 h-4 rounded-full mr-1" style={{ backgroundColor: chartData.datasets[0].backgroundColor[index % chartData.datasets[0].backgroundColor.length] }}></div>
-                        <span>{label}</span>
+            <div className="p-6">
+              <div className="flex flex-col md:flex-row gap-x-40">
+                <div className="w-full md:w-1/2 pr-10">
+                  <div className="space-y-2">
+                    {filteredData.map(([label, value], index) => (
+                      <div
+                        key={label}
+                        className={`flex justify-between items-center rounded-md ${
+                          hoveredIndex === index ? "bg-gray-600" : ""
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div
+                            className="w-4 h-4 rounded-full mr-1"
+                            style={{
+                              backgroundColor:
+                                chartData.datasets[0].backgroundColor[
+                                  index %
+                                    chartData.datasets[0].backgroundColor.length
+                                ],
+                            }}
+                          ></div>
+                          <span>{label}</span>
+                        </div>
+                        <span className="font-semibold">
+                          {value.toLocaleString(undefined, {
+                            maximumFractionDigits: 3,
+                          })}
+                        </span>
                       </div>
-                      <span className="font-semibold">{value.toLocaleString(undefined, { maximumFractionDigits: 3 })}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                <div style={{ width: '300px', height: '300px' }}>
-                  <Pie data={chartData} options={chartOptions} />
+                <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                  <div style={{ width: "300px", height: "300px" }}>
+                    <Pie data={chartData} options={chartOptions} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
         ) : (
           <p>No ETH stacked</p>
         )}
       </div>
-      
-      {props.daoDelegates === 'avss' ? 
-      (
+
+      {props.daoDelegates === "avss" ? (
         <div>
           <h1 className="mt-10 mb-5 font-bold text-3xl">Node Operators</h1>
           <div className="py-8 pe-14 font-poppins">
@@ -598,12 +660,14 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                 />
               </div>
             ) : avsOperators.length > 0 ? (
-              <div> 
+              <div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-3 gap-10">
                   {avsOperators.map((daos: any, index: number) => (
                     <div
                       key={index}
-                      onClick={() => router.push(`/operators/${daos.address}?active=info`)}
+                      onClick={() =>
+                        router.push(`/operators/${daos.address}?active=info`)
+                      }
                       className="p-5 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue h-full"
                       style={{
                         boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
@@ -623,9 +687,12 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                         <div className="relative w-20 h-20 flex-shrink-0 mr-4">
                           <Image
                             src={
-                              daos.metadataLogo ?? 
-                              (props.daoDelegates === "operators" ? NOLogo : 
-                              props.daoDelegates === "avss" ? AVSLogo : "")
+                              daos.metadataLogo ??
+                              (props.daoDelegates === "operators"
+                                ? NOLogo
+                                : props.daoDelegates === "avss"
+                                ? AVSLogo
+                                : "")
                             }
                             alt="Logo"
                             layout="fill"
@@ -635,8 +702,11 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                         </div>
                         <div>
                           <h3 className="font-semibold text-lg">
-                            {daos.metadataName ?? 
-                            `${daos.address.slice(0, 6)}...${daos.address.slice(-4)}`}
+                            {daos.metadataName ??
+                              `${daos.address.slice(
+                                0,
+                                6
+                              )}...${daos.address.slice(-4)}`}
                           </h3>
                           <div className="flex justify-start items-center gap-2 pb-2 pt-1">
                             {daos.address.slice(0, 6) +
@@ -661,15 +731,18 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="flex flex-col flex-grow">
                         {daos.metadataDescription ? (
-                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">{daos.metadataDescription}</p>
+                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">
+                            {daos.metadataDescription}
+                          </p>
                         ) : (
-                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">No description provided</p>
-                        )
-                        }
-                        
+                          <p className="text-sm flex-grow mb-6 line-clamp-3 border-t-1 pt-2 border-[#a0a0a0]">
+                            No description provided
+                          </p>
+                        )}
+
                         <div className="text-sm border-t-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
                           <span className="text-light-cyan font-semibold">
                             {daos.totalStakers}&nbsp;
@@ -731,8 +804,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
         </div>
       ) : (
         ""
-      )
-      } 
+      )}
     </div>
   );
 }
