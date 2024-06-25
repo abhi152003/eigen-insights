@@ -438,8 +438,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  rounded-full bg-black text-black p-[6px] hover:bg-[#34ABE2] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaTelegram color="white" className="w-3 h-3" />
-                        <FaTelegram color="white" className="w-2 h-2" />
+                        <FaTelegram color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <Link
@@ -451,8 +450,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  bg-black rounded-full text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaDiscord color="white" className="w-3 h-3" />
-                        <FaDiscord color="white" className="w-2 h-2" />
+                        <FaDiscord color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <Link
@@ -463,8 +461,8 @@ function SpecificDelegate({ props }: { props: Type }) {
                       style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
-                        <FiExternalLink color="white" className="w-2 h-2" />
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-light-cyan hover:text-white hover:cursor-pointer hover:scale-125">
+                        <FiExternalLink color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <div>
@@ -598,8 +596,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                   searchParams.get("active") === "info"
                     ?  " border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                    : "text-white border-white"
                 }`}
               onClick={() => router.push(path + "?active=info")}
             >
@@ -607,12 +603,11 @@ function SpecificDelegate({ props }: { props: Type }) {
             </button>
             {props.daoDelegates === 'avss' ? (
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+                className={`border-b-2 py-3 px-2
                   ${
                     searchParams.get("active") === "analytics"
-                      ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                      : "text-white border-white"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
                   }`}
                 onClick={() => router.push(path + "?active=analytics")}
               >
@@ -622,14 +617,11 @@ function SpecificDelegate({ props }: { props: Type }) {
               ""
             )} 
             <button
-              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+              className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "delegatesSession"
-                    ?  " border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                    : "text-white border-white"
+                    ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
@@ -641,10 +633,8 @@ function SpecificDelegate({ props }: { props: Type }) {
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "officeHours"
-                    ?" border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                    : "text-white border-white"
+                    ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")

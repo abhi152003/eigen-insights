@@ -254,9 +254,11 @@ function Sidebar() {
                   // <FaUser className="w-4 h-4 "/>
                   // </div>
                   <div
-                    className={`p-[12px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
+                  className={`p-[13px] mx-1 cursor-pointer ${styles.image_hover} rounded-full border border-white`}
                   >
-                    <PiWalletFill className="w-5 h-5" />
+                    <FaUser
+                      className="w-4 h-4"
+                    />
                   </div>
                 ) : (
                   <ConnectWallet />
