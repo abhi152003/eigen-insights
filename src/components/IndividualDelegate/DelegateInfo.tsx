@@ -33,6 +33,7 @@ import copy from "copy-to-clipboard";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
 import "../../css/ImagePulse.css";
+import OperatorsAnalytics from "./OperatorsAnalytics";
 
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
@@ -651,8 +652,8 @@ function DelegateInfo({
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}
@@ -780,8 +781,8 @@ function DelegateInfo({
                 {isDataLoading && (
                   <div className="flex items-center justify-center my-4">
                     <BallTriangle
-                      height={100}
-                      width={100}
+                      height={70}
+                      width={70}
                       radius={5}
                       color="#FFFFFF"
                       ariaLabel="ball-triangle-loading"

@@ -28,7 +28,7 @@ import screenImghover from "@/assets/images/instant-meet/screenImghover.svg";
 import chatImg from "@/assets/images/instant-meet/chat.png";
 import chatImghover from "@/assets/images/instant-meet/chatImghover.svg";
 import heroImg from "@/assets/images/instant-meet/instant-meet-hero.svg";
-import "../../css/InstantMeet.css"
+import "../../css/InstantMeet.css";
 
 interface instantMeetProps {
   isDelegate: boolean;
@@ -66,20 +66,17 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
   const startInstantMeet = async () => {
     setConfirmSave(true);
     const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
-  
+
     if (!createRoomUrl) {
-      console.error(' environment variable is not set.');
+      console.error(" environment variable is not set.");
       return null;
     }
-    const res = await fetch(
-      createRoomUrl,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await fetch(createRoomUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const result = await res.json();
     const roomId = await result.data;
     console.log("Instant meet: ", roomId);
@@ -327,8 +324,8 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                   <div className="flex items-center justify-center">
                     <ThreeCircles
                       visible={true}
-                      height="60"
-                      width="60"
+                      height="50"
+                      width="50"
                       color="#FFFFFF"
                       ariaLabel="three-circles-loading"
                       wrapperStyle={{}}

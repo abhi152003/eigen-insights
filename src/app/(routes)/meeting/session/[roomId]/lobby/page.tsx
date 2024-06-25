@@ -250,7 +250,6 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
   }, [params.roomId, isAllowToEnter, notAllowedMessage, meetingStatus]);
 
   useEffect(() => {
-  
     const fetchData = async () => {
       try {
         const myHeaders = new Headers();
@@ -441,8 +440,8 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                         <div className="flex items-center justify-center top-10">
                           <ThreeCircles
                             visible={true}
-                            height="60"
-                            width="60"
+                            height="50"
+                            width="50"
                             color="#FFFFFF"
                             ariaLabel="three-circles-loading"
                             wrapperStyle={{}}
@@ -508,8 +507,8 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                   <div className="flex items-center justify-center pt-10">
                     <ThreeCircles
                       visible={true}
-                      height="80"
-                      width="80"
+                      height="50"
+                      width="50"
                       color="#FFFFFF"
                       ariaLabel="three-circles-loading"
                       wrapperStyle={{}}

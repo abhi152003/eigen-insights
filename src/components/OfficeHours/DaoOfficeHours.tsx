@@ -15,9 +15,9 @@ import { Tooltip } from "@nextui-org/react";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { RxCross2 } from "react-icons/rx";
 import { IoSearchSharp } from "react-icons/io5";
-import "../../css/SearchShine.css"
-import "../../css/BtnShine.css"
-import "../../css/ShineFont.css"
+import "../../css/SearchShine.css";
+import "../../css/BtnShine.css";
+import "../../css/ShineFont.css";
 
 interface Type {
   img: StaticImageData;
@@ -183,39 +183,36 @@ function DaoOfficeHours() {
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
-              searchParams.get("hours") === "ongoing"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white"
-            }`}
+                searchParams.get("hours") === "ongoing"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white"
+              }`}
             onClick={() => router.push(path + "?hours=ongoing")}
           >
-            
             Ongoing
           </button>
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
-              searchParams.get("hours") === "upcoming"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white border-white"
-            }`}
+                searchParams.get("hours") === "upcoming"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
+              }`}
             onClick={() => router.push(path + "?hours=upcoming")}
           >
-            
             Upcoming
           </button>
           <button
             className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group
               ${
-              searchParams.get("hours") === "recorded"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white border-white"
-            }`}
+                searchParams.get("hours") === "recorded"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
+              }`}
             onClick={() => router.push(path + "?hours=recorded")}
           >
-            
             Recorded
           </button>
         </div>
@@ -257,8 +254,8 @@ function DaoOfficeHours() {
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}
@@ -278,8 +275,8 @@ function DaoOfficeHours() {
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}
@@ -299,8 +296,8 @@ function DaoOfficeHours() {
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}

@@ -295,9 +295,7 @@ SessionTileProps) {
           <div
             key={index}
             className={`flex p-5 rounded-[2rem] justify-between cursor-pointer bg-midnight-blue border-2 border-white
-              ${
-              isEvent === "Recorded" ? "cursor-pointer" : ""
-            }`}
+              ${isEvent === "Recorded" ? "cursor-pointer" : ""}`}
             style={{ boxShadow: "0px 4px 26.7px 0px rgba(0, 0, 0, 0.10)" }}
             // onClick={() => openModal(index)}
             onClick={
@@ -396,8 +394,8 @@ SessionTileProps) {
                     <div className="flex items-center justify-center px-3">
                       <ThreeCircles
                         visible={true}
-                        height="60"
-                        width="60"
+                        height="50"
+                        width="50"
                         color="#FFFFFF"
                         ariaLabel="three-circles-loading"
                         wrapperStyle={{}}
@@ -437,8 +435,8 @@ SessionTileProps) {
                     <div className="flex items-center justify-center px-3">
                       <ThreeCircles
                         visible={true}
-                        height="60"
-                        width="60"
+                        height="50"
+                        width="50"
                         color="#FFFFFF"
                         ariaLabel="three-circles-loading"
                         wrapperStyle={{}}

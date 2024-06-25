@@ -9,7 +9,12 @@ import EILogo from "@/assets/images/daos/eigen_logo.png";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import { Button, Dropdown, Pagination, Tooltip } from "@nextui-org/react";
-import { BallTriangle, Oval, RotatingLines, ThreeCircles } from "react-loader-spinner";
+import {
+  BallTriangle,
+  Oval,
+  RotatingLines,
+  ThreeCircles,
+} from "react-loader-spinner";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
@@ -21,9 +26,9 @@ import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
-import "../../css/AVSsList.css"
-import "../../css/ImagePulse.css"
-import Avss from '@/assets/images/sidebar/avss.webp'
+import "../../css/AVSsList.css";
+import "../../css/ImagePulse.css";
+import Avss from "@/assets/images/sidebar/avss.webp";
 
 interface Result {
   _id: string;
@@ -42,11 +47,13 @@ interface Result {
   tvl: any;
 }
 
-
-
 function DelegatesList({ props }: { props: string }) {
-  const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({ delegates: [] });
-  const [tempData, setTempData] = useState<{ delegates: any[] }>({ delegates: [] });
+  const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({
+    delegates: [],
+  });
+  const [tempData, setTempData] = useState<{ delegates: any[] }>({
+    delegates: [],
+  });
   const { openChainModal } = useChainModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
   const { openConnectModal } = useConnectModal();
@@ -66,7 +73,13 @@ function DelegatesList({ props }: { props: string }) {
   // const [clickedTileIndex,setClickedTileIndex]=useState(null);
 
   const fetchData = useCallback(
-    async (props: any, currentPage: number, selectedValue: any, setDelegateData: (arg0: (prevData: any) => { delegates: any[]; }) => void, setTempData: (arg0: (prevData: any) => { delegates: any[]; }) => void) => {
+    async (
+      props: any,
+      currentPage: number,
+      selectedValue: any,
+      setDelegateData: (arg0: (prevData: any) => { delegates: any[] }) => void,
+      setTempData: (arg0: (prevData: any) => { delegates: any[] }) => void
+    ) => {
       try {
         setDataLoading(true);
         const res = await fetch(
@@ -79,10 +92,16 @@ function DelegatesList({ props }: { props: string }) {
         if (Array.isArray(data)) {
           const delegates = data;
           setDelegateData((prevData) => ({
-            delegates: currentPage === 0 ? delegates : [...prevData.delegates, ...delegates],
+            delegates:
+              currentPage === 0
+                ? delegates
+                : [...prevData.delegates, ...delegates],
           }));
           setTempData((prevData) => ({
-            delegates: currentPage === 0 ? delegates : [...prevData.delegates, ...delegates],
+            delegates:
+              currentPage === 0
+                ? delegates
+                : [...prevData.delegates, ...delegates],
           }));
         } else {
           console.error(data.message);
@@ -93,7 +112,6 @@ function DelegatesList({ props }: { props: string }) {
         console.log(error);
       } finally {
         setDataLoading(false);
-        
       }
     },
     []
@@ -102,12 +120,18 @@ function DelegatesList({ props }: { props: string }) {
   useEffect(() => {
     const loadPageData = async () => {
       try {
-        await fetchData(props, currentPage, selectedValue, setDelegateData, setTempData);
+        await fetchData(
+          props,
+          currentPage,
+          selectedValue,
+          setDelegateData,
+          setTempData
+        );
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     loadPageData();
   }, [currentPage, selectedValue, props, fetchData]);
 
@@ -122,22 +146,24 @@ function DelegatesList({ props }: { props: string }) {
       // console.log(delegateData);
       setIsSearching(true);
       window.removeEventListener("scroll", handleScroll);
-      
+
       try {
-        const res = await fetch(`/api/get-search-data?q=${query}&prop=${props}`);
+        const res = await fetch(
+          `/api/get-search-data?q=${query}&prop=${props}`
+        );
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }
         const data: Result[] | { message: string } = await res.json();
         if (Array.isArray(data)) {
-          setDelegateData({ delegates: data });;
+          setDelegateData({ delegates: data });
         } else {
           console.error(data.message);
         }
       } catch (error) {
-        console.error('Search error:', error);
+        console.error("Search error:", error);
       }
-      
+
       setPageLoading(false);
     } else {
       // console.log("in else");
@@ -148,7 +174,10 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
-  const debounce = (func: { (): void; apply?: any; }, delay: number | undefined) => {
+  const debounce = (
+    func: { (): void; apply?: any },
+    delay: number | undefined
+  ) => {
     let timeoutId: string | number | NodeJS.Timeout | undefined;
     return (...args: any) => {
       clearTimeout(timeoutId);
@@ -157,11 +186,14 @@ function DelegatesList({ props }: { props: string }) {
       }, delay);
     };
   };
-  
+
   const handleScroll = debounce(() => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     const threshold = 100;
-    if (!isDataLoading && scrollTop + clientHeight >= scrollHeight - threshold) {
+    if (
+      !isDataLoading &&
+      scrollTop + clientHeight >= scrollHeight - threshold
+    ) {
       setCurrentPage((prev) => prev + 25);
     }
   }, 200);
@@ -188,14 +220,12 @@ function DelegatesList({ props }: { props: string }) {
   //   setCirclePosition({ x, y });
   //   setClickedTileIndex(index);
   //   console.log(circlePosition);
-      
+
   //   setTimeout(() => {
   //     setClickedTileIndex(null);
   //   }, 1500); // Adjust the time as needed
 
-
   // };
-
 
   const WalletOpen = async (to: string) => {
     const adr = await walletClient.getAddresses();
@@ -251,7 +281,7 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
-  const handleSelectChange = async (event: { target: { value: any; }; }) => {
+  const handleSelectChange = async (event: { target: { value: any } }) => {
     const value = event.target.value;
     setSelectedValue(value);
     setCurrentPage(0);
@@ -297,7 +327,15 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
-  console.log("delegateDataaaaaaa",delegateData);
+  console.log("delegateDataaaaaaa", delegateData);
+
+  const handleClick = (address: any) => {
+    if (props === "operators") {
+      window.open(`https://app.eigenlayer.xyz/operator/${address}`);
+    } else if (props === "avss") {
+      window.open(`https://app.eigenlayer.xyz/avs/${address}`);
+    }
+  };
 
   return (
     <div>
@@ -319,18 +357,18 @@ function DelegatesList({ props }: { props: string }) {
           </span>
         </div> */}
         <div className="searchBox searchShineWidthOfAVSs">
-            <input
-              className="searchInput"
-              type="text"
-              name=""
-              placeholder="Search by Address or ENS Name"
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-            />
-            <button className="searchButton">
-              <IoSearchSharp className="iconExplore"/>
-            </button>
-          </div>
+          <input
+            className="searchInput"
+            type="text"
+            name=""
+            placeholder="Search by Address or ENS Name"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          <button className="searchButton">
+            <IoSearchSharp className="iconExplore" />
+          </button>
+        </div>
         <div>
           <select
             className="rounded-full py-2 px-4 outline-none bg-medium-blue cursor-pointer"
@@ -347,8 +385,8 @@ function DelegatesList({ props }: { props: string }) {
           <div className="flex items-center justify-center">
             <ThreeCircles
               visible={true}
-              height="60"
-              width="60"
+              height="50"
+              width="50"
               color="#FFFFFF"
               ariaLabel="three-circles-loading"
               wrapperStyle={{}}
@@ -356,19 +394,18 @@ function DelegatesList({ props }: { props: string }) {
             />
           </div>
         ) : delegateData.delegates.length > 0 ? (
-          <div> 
+          <div>
             <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10">
               {delegateData.delegates.map((daos: any, index: number) => (
                 <div
-                  onClick={(event) =>{
+                  onClick={(event) => {
                     // handleMouseMove(event,index);
-                    router.push(`/${props}/${daos.address}?active=info  `)
+                    router.push(`/${props}/${daos.address}?active=info  `);
                   }}
                   key={index}
                   style={{
                     boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
                   }}
-                  
                   className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue"
                 >
                   {/* {clickedTileIndex === index && (
@@ -400,7 +437,7 @@ function DelegatesList({ props }: { props: string }) {
                         height={100}
                         // layout="fixed"
                         className="rounded-full"
-                        style={{ width: '4rem', height: '4rem' }} 
+                        style={{ width: "4rem", height: "4rem" }}
                       ></Image>
 
                       <Image
@@ -470,15 +507,15 @@ function DelegatesList({ props }: { props: string }) {
                         className=" text-white font-poppins w-full rounded-[4px] text-sm btnStake
                         p-3 border-[#A7DBF2] border-1 px-6 
               border-b-4 font-medium overflow-hidden py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
-                        onClick={(event) => {
-                          event.stopPropagation(); // Prevent event propagation to parent container
-                          WalletOpen(daos.address);
+                        onClick={() => {
+                          handleClick(daos.address);
                         }}
                       >
-                        {props === "operators" ?
-                          <span className="hover-text">Delegate</span> :
+                        {props === "operators" ? (
+                          <span className="hover-text">Delegate</span>
+                        ) : (
                           <span className="hover-text">Stake</span>
-                        }
+                        )}
                       </button>
                     </div>
                   </div>
@@ -499,12 +536,12 @@ function DelegatesList({ props }: { props: string }) {
                 </div>
               ))}
             </div>
-            
-            {isDataLoading && (
+
+            {isDataLoading && props === "operators" && (
               <div className="flex items-center justify-center my-4">
                 <BallTriangle
-                  height={100}
-                  width={100}
+                  height={70}
+                  width={70}
                   radius={5}
                   color="#FFFFFF"
                   ariaLabel="ball-triangle-loading"

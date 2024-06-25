@@ -578,11 +578,11 @@ const BottomBar: React.FC<BottomBarProps> = () => {
             </div>
 
             <div className="flex mb-2 bg-slate-100 rounded-sm px-2 py-1 justify-between items-center">
-              <div>{"app.chora.club" + path}</div>
+              <div>{"eigeninsight.vercel.app" + path}</div>
               <div className="pl-5 cursor-pointer">
                 <IoCopy
                   onClick={() =>
-                    handleCopy("https://app.chora.club" + `${path}`)
+                    handleCopy("https://eigeninsight.vercel.app/" + `${path}`)
                   }
                 />
               </div>

@@ -78,8 +78,8 @@ function Tile({
         dataLoading ? (
           <ThreeCircles
             visible={true}
-            height="60"
-            width="60"
+            height="50"
+            width="50"
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}
@@ -188,8 +188,8 @@ function Tile({
                         <>
                           <ThreeCircles
                             visible={true}
-                            height="60"
-                            width="60"
+                            height="50"
+                            width="50"
                             color="#FFFFFF"
                             ariaLabel="three-circles-loading"
                             wrapperStyle={{}}

@@ -3,14 +3,14 @@ import DelegateSessionsMain from "@/components/DelegateSessions/DelegateSessions
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app.chora.club/"),
+  metadataBase: new URL("https://eigeninsight.vercel.app/"),
   title: "Eigen Insight",
   description: "Discover. Learn. Engage.",
   openGraph: {
     title: "Available Delegates",
     description:
       "Explore available delegates by DAO, date, and time to book sessions and unlock Web3 opportunities.",
-    url: "https://app.chora.club/available-delegates",
+    url: "https://eigeninsight.vercel.app/available-delegates",
     siteName: "Eigen Insight",
     images: [
       {

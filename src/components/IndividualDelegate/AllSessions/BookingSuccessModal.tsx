@@ -17,7 +17,7 @@ function BookingSuccessModal({
 
   const shareOnTwitter = () => {
     const url = encodeURIComponent(
-      `https://app.chora.club/available-delegates`
+      `https://eigeninsight.vercel.app/available-delegates`
     );
     const text = encodeURIComponent(
       `Hello Geeks! 🎉\nJust booked my session on @EigenInsights and can't wait to learn more about the #Web3 ecosystem from the experienced Delegate!🌐\n👉 ${decodeURIComponent(

@@ -129,23 +129,24 @@ function Analytics() {
   };
 
   const totalPages = Math.ceil(total / take);
-  
+
   // // Create labels and data arrays
   // const labels = filteredData.map(([key, value]) => key);
   // const dataValues = filteredData.map(([key, value]) => value);
-
-  const filteredData = Object.entries(restakeTVL).filter(
-    ([key, value]) => value !== 0 && key !== "Eigen"
-  ).map(([key, value]) => [key, value as number]);;
+  const filteredData = Object.entries(restakeTVL)
+    .filter(([key, value]) => value !== 0 && key !== "Eigen")
+    .map(([key, value]) => [key, value as number]);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [operatorsHoveredIndex, setOperatorsHoveredIndex] = useState<number | null>(null);
+  const [operatorsHoveredIndex, setOperatorsHoveredIndex] = useState<
+    number | null
+  >(null);
 
-  console.log(avsOperators)
+  console.log(avsOperators);
 
   const filteredOperatorsData = avsOperators
-  .filter(({ operatorsCount }) => operatorsCount !== 0)
-  .map(({ name, operatorsCount }) => [name, operatorsCount as number]);
+    .filter(({ operatorsCount }) => operatorsCount !== 0)
+    .map(({ name, operatorsCount }) => [name, operatorsCount as number]);
 
   const chartData = {
     labels: filteredData.map(([label]) => label),
@@ -153,18 +154,38 @@ function Analytics() {
       {
         data: filteredData.map(([_, value]) => value),
         backgroundColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
         borderColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
-        borderWidth: 1
-      }
-    ]
+        borderWidth: 1,
+      },
+    ],
   };
 
   const operatorsChartData = {
@@ -173,25 +194,45 @@ function Analytics() {
       {
         data: filteredOperatorsData.map(([_, value]) => value),
         backgroundColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
         borderColor: [
-          '#3498db', '#2ecc71', '#9b59b6', '#f1c40f', '#e74c3c',
-          '#1abc9c', '#34495e', '#95a5a6', '#d35400', '#c0392b',
-          '#16a085', '#8e44ad', '#2c3e50'
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
         ],
-        borderWidth: 1
-      }
-    ]
+        borderWidth: 1,
+      },
+    ],
   };
 
   const tvlChartOptions = {
     plugins: {
       legend: {
-        display: false
-      }
+        display: false,
+      },
     },
     onHover: (event: any, chartElement: any) => {
       if (chartElement.length > 0) {
@@ -199,14 +240,14 @@ function Analytics() {
       } else {
         setHoveredIndex(null);
       }
-    }
+    },
   };
 
   const operatorsChartOptions = {
     plugins: {
       legend: {
-        display: false
-      }
+        display: false,
+      },
     },
     onHover: (event: any, chartElement: any) => {
       if (chartElement.length > 0) {
@@ -214,7 +255,7 @@ function Analytics() {
       } else {
         setOperatorsHoveredIndex(null);
       }
-    }
+    },
   };
 
   // Define the data for the Pie chart
@@ -352,17 +393,15 @@ function Analytics() {
     );
   };
 
-
-
   return (
     <div className="p-20">
       <h1 className="text-4xl text-center pb-7">Analytics</h1>
       {isPageLoading && (
-        <div className="flex items-center justify-center pt-10">
+        <div className="flex items-center justify-center pt-40">
           <ThreeCircles
             visible={true}
-            height="60"
-            width="60"
+            height="50"
+            width="50"
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}
@@ -468,8 +507,7 @@ function Analytics() {
                       <h2 className="text-xl font-bold">Total</h2>
                       <div className="text-right">
                         <p className="text-2xl font-bold">
-                          {totalOperators}{" "}
-                          Operators
+                          {totalOperators} Operators
                         </p>
                       </div>
                     </div>
@@ -478,39 +516,46 @@ function Analytics() {
                     <div className="flex flex-col md:flex-row gap-x-40">
                       <div className="w-full md:w-1/2 pr-10">
                         <div className="space-y-2">
-                          {filteredOperatorsData.map(([label, value], index) => (
-                            <div
-                              key={label}
-                              className={`flex justify-between items-center rounded-md ${
-                                operatorsHoveredIndex === index ? "bg-gray-600" : ""
-                              }`}
-                            >
-                              <div className="flex items-center">
-                                <div
-                                  className="w-4 h-4 rounded-full mr-1"
-                                  style={{
-                                    backgroundColor:
-                                      chartData.datasets[0].backgroundColor[
-                                        index %
-                                          chartData.datasets[0].backgroundColor
-                                            .length
-                                      ],
-                                  }}
-                                ></div>
-                                <span>{label}</span>
+                          {filteredOperatorsData.map(
+                            ([label, value], index) => (
+                              <div
+                                key={label}
+                                className={`flex justify-between items-center rounded-md ${
+                                  operatorsHoveredIndex === index
+                                    ? "bg-gray-600"
+                                    : ""
+                                }`}
+                              >
+                                <div className="flex items-center">
+                                  <div
+                                    className="w-4 h-4 rounded-full mr-1"
+                                    style={{
+                                      backgroundColor:
+                                        chartData.datasets[0].backgroundColor[
+                                          index %
+                                            chartData.datasets[0]
+                                              .backgroundColor.length
+                                        ],
+                                    }}
+                                  ></div>
+                                  <span>{label}</span>
+                                </div>
+                                <span className="font-semibold">
+                                  {value.toLocaleString(undefined, {
+                                    maximumFractionDigits: 3,
+                                  })}
+                                </span>
                               </div>
-                              <span className="font-semibold">
-                                {value.toLocaleString(undefined, {
-                                  maximumFractionDigits: 3,
-                                })}
-                              </span>
-                            </div>
-                          ))}
+                            )
+                          )}
                         </div>
                       </div>
                       <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
                         <div style={{ width: "300px", height: "300px" }}>
-                          <Pie data={operatorsChartData} options={operatorsChartOptions} />
+                          <Pie
+                            data={operatorsChartData}
+                            options={operatorsChartOptions}
+                          />
                         </div>
                       </div>
                     </div>

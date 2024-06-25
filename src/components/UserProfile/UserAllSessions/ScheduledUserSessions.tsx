@@ -10,7 +10,7 @@ import { Tooltip } from "@nextui-org/react";
 import SchedulingSuccessModal from "./SchedulingSuccessModal";
 import { RxCross2 } from "react-icons/rx";
 import AddEmailModal from "@/components/utils/AddEmailModal";
-import '../../../css/SessionPage.css'
+import "../../../css/SessionPage.css";
 
 import Image from "next/image";
 
@@ -642,9 +642,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
           </button>
 
           <div className="mt-6">
-            <h3 className="text-lg mb-2">
-              Selected Dates for Session:
-            </h3>
+            <h3 className="text-lg mb-2">Selected Dates for Session:</h3>
             <div className="grid gap-4">
               {allData.map((item: any, index: any) => (
                 <div
@@ -691,8 +689,8 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
             {createSessionLoading ? (
               <ThreeCircles
                 visible={true}
-                height="60"
-                width="60"
+                height="50"
+                width="50"
                 color="#FFFFFF"
                 ariaLabel="three-circles-loading"
                 wrapperStyle={{}}
