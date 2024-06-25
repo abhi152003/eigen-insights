@@ -456,7 +456,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
     <div>
       <div
         style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
-        className={`rounded-xl my-7 me-32 py-6 px-7 text-sm ${
+        className={`ml-7 rounded-xl my-3 me-32 py-6 px-5 text-sm bg-deep-blue  ${
           desc ? "" : "min-h-52"
         }`}
       >
@@ -479,37 +479,39 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
           </div>
         )}
       </div>
-      <div className="flex w-fit gap-16 border-1 border-[#7C7C7C] px-6 rounded-xl text-sm mb-6">
-        <button
-          className={`
-              p-9 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
+
+      {/* <div className="flex w-fit gap-16 text-sm py-3 mb-6 ml-10"> */}
+      <div className="flex gap-16 text-sm py-3 mb-6 items-center justify-center">
+          <button
+            className={`
+              ml-[-90px] p-9 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
+             ${
+               activeButton === "onchain"
+                 ? "text-light-cyan"
+                 : "text-white font-bold border-white"
+             } `}
+            onClick={() => fetchAttestation("onchain")}
+          >
+            
+            Onchain
+          </button>
+          <button
+            className={` 
+              ml-[-30px] p-5 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
             ${
-            activeButton === "onchain"
-              ? "text-light-cyan"
-                : "text-white font-bold"
-          } `}
-          onClick={() => fetchAttestation("onchain")}
-        >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-100 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-          Onchain
-        </button>
-        <button
-          className={`
-            p-5 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-4 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-100 outline-none duration-300 group
-            ${
-            activeButton === "offchain"
-              ? "text-light-cyan"
-                : "text-white font-bold"
-          }`}
-          onClick={() => fetchAttestation("offchain")}
-        >
-          <span className="bg-navy-blue shadow-light-cyan absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-70 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"></span>
-          Offchain
-        </button>
-      </div>
-      <div className="grid grid-cols-4 pe-32 gap-10">
+              activeButton === "offchain"
+                ? "text-light-cyan"
+                : "text-white font-bold border-white"
+            }`}
+            onClick={() => fetchAttestation("offchain")}
+          >
+            Offchain
+          </button>
+        </div>
+        
+      <div className="grid grid-cols-4 pe-32 gap-10 px-12">
         {details.length > 0 ? (
           details.map((key, index) => (
             <div
@@ -583,7 +585,7 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
       {props.daoDelegates === 'avss' ? 
       (
         <div>
-          <h1 className="mt-10 mb-5 font-bold text-3xl">Node Operators</h1>
+          <h1 className="mt-10 ml-3 font-medium text-3xl">Node Operators</h1>
           <div className="py-8 pe-14 font-poppins">
             {initialLoad ? (
               <div className="flex items-center justify-center">
@@ -615,7 +617,6 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                           alt="EigenInsights Logo"
                           width={35}
                           height={35}
-                          className="pulsatingImage"
                         />
                       </div>
 
@@ -670,19 +671,19 @@ function DelegateInfo({ props, desc, delegateInfo }: { props: Type; desc: string
                         )
                         }
                         
-                        <div className="text-sm border-t-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
+                        <div className="text-sm border-1 border-[#a0a0a0] py-2 px-2  w-full mb-2 text-left">
                           <span className="text-light-cyan font-semibold">
                             {daos.totalStakers}&nbsp;
                           </span>
                           Total Stakers
                         </div>
-                        <div className="text-sm border-t-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
+                        <div className="text-sm border-1 border-[#a0a0a0] py-2 px-2  w-full mb-2 text-left">
                           <span className="text-light-cyan font-semibold">
                             {daos.tvl.tvlStrategies.ETHx.toFixed(2)}&nbsp;
                           </span>
                           ETH Restaked
                         </div>
-                        <div className="text-sm border-y-1 border-[#a0a0a0] py-2 px-1  w-full mb-2 text-left">
+                        <div className="text-sm border-1 border-[#a0a0a0] py-2 px-2 w-full mb-2 text-left">
                           <span className="text-light-cyan font-semibold">
                             {daos.tvl.tvlStrategies.Eigen.toFixed(2)}&nbsp;
                           </span>

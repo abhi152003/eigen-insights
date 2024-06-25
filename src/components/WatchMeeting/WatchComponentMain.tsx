@@ -16,6 +16,7 @@ import WatchLeaderBoard from "./WatchLeaderBoard";
 import WatchFreeCollect from "./WatchFreeCollect";
 import WatchVideoRecommendation from "./WatchVideoRecommendation";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
+import "../../css/ShineFont.css"
 
 interface AttestationObject {
   attendee_address: string;
@@ -74,7 +75,7 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
         <div className=" 1.7xl:ps-14 lg:ps-5 ps-4 xl:ps-10">
           <div className="flex justify-between items-center pt-6 pb-3 1.7xl:pe-10 lg:pe-3 pe-2">
             <div className="font-poppins font-medium text-3xl ml-3">
-              <span className="text-light-cyan">EigenInsight</span>
+              <span className="shineFont">EigenInsight</span>
             </div>
             <ConnectWalletWithENS />
           </div>

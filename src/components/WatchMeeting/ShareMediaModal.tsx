@@ -90,15 +90,15 @@ function ShareMediaModal({
           className="absolute inset-0 backdrop-blur-md"
           onClick={toggleModal}
         ></div>
-        <div className="p-5 border z-50 rounded-2xl bg-white flex flex-col gap-3 relative">
-          <div className="bg-black rounded-full size-5 p-px flex justify-center items-center absolute top-5 right-5">
+        <div className="p-5 border z-50 rounded-2xl bg-deep-blue flex flex-col gap-3 relative">
+          <div className="bg-light-blue rounded-full size-5 p-px flex justify-center items-center absolute top-5 right-5">
             <IoClose
-              className="cursor-pointer w-5 h-5 text-white "
+              className="cursor-pointer w-5 h-5 text-white hover:text-black hover:scale-110"
               onClick={toggleModal}
             />
           </div>
 
-          <p className="flex items-center justify-center font-medium text-[28px]">
+          <p className="text-white flex items-center justify-center font-medium text-[28px]">
             Share
           </p>
           <div className="flex gap-4 justify-center items-center my-5">
@@ -109,7 +109,7 @@ function ShareMediaModal({
               <FaWhatsapp className="text-white bg-green-shade-200 size-10 " />
             </div>
             <div onClick={shareOnFacebook}>
-              <FaFacebook className="text-blue-shade-100 bg-white size-[72px] cursor-pointer" />
+              <FaFacebook className="text-blue-shade-100 rounded-full bg-white size-[72px] cursor-pointer" />
             </div>
             <div
               className="bg-black rounded-full size-[72px]  flex justify-center items-center cursor-pointer"
@@ -118,7 +118,7 @@ function ShareMediaModal({
               <RiTwitterXLine className="text-white bg-black size-10 " />
             </div>
             <div
-              className="bg-black-shade-900 rounded-full size-[72px] p-3 flex justify-center items-center cursor-pointer"
+              className="bg-gray-500 rounded-full size-[72px] p-3 flex justify-center items-center cursor-pointer"
               onClick={shareOnMail}
             >
               <TbMailFilled className="text-white size-8" />
@@ -127,10 +127,10 @@ function ShareMediaModal({
           <div
             className={`bg-black-shade-800 rounded-lg py-2.5 px-3 gap-28 flex justify-between items-center`}
           >
-            <p className="text-sm font-light ">{link}</p>
+            <p className="text-sm font-light text-black">{link}</p>
             <IoCopy
               className={`cursor-pointer ${
-                copySuccess ? "text-blue-shade-100" : ""
+                copySuccess ? "text-deep-blue" : "text-black hover:scale-110 hover:text-slate-blue"
               }`}
               onClick={handleCopy}
             />

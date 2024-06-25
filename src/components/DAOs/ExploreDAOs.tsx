@@ -140,18 +140,6 @@ function ExploreDAOs() {
           style={{ background: "rgba(238, 237, 237, 0.36)" }}
           className="flex border-[0.5px] border-black w-fit rounded-full my-3 font-poppins"
         >
-          {/* <input
-            type="text"
-            placeholder="Search"
-            style={{ background: "rgba(238, 237, 237, 0.36)" }}
-            className="pl-5 rounded-full outline-none"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-          ></input>
-          <span className="flex items-center bg-black rounded-full px-6 py-3">
-            <Image src={search} alt="search" width={20} height={20} />
-          </span> */}
-
           <div className="searchBox">
             <input
               className="searchInput"
@@ -167,14 +155,15 @@ function ExploreDAOs() {
           </div>
         </div>
 
-        {/* <div className="flex gap-10 py-8 px-0 font-poppins"> */}
         <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-10 py-8 font-poppins">
           {daoInfo.length > 0 ? (
             daoInfo.map((daos: any, index: any) => (
               // <div
               //   key={daos.name}
               //   style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-              //   className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
+              //   className="px-5 py-7 rounded-2xl cursor-pointer
+              //   border-1 border-white bg-midnight-blue
+              //   exploreMainDiv"
               //   onClick={() => handleClick(daos.name, daos.img)}
               // >
               //   <div className="flex justify-center">
@@ -184,19 +173,20 @@ function ExploreDAOs() {
               //       width={60}
               //       height={60}
               //       style={{ width: "60px", height: "60px" }}
-              //       className="rounded-full pulsate"
+              //       className="rounded-full"
               //     ></Image>
               //   </div>
               //   <div className="text-center">
               //     <div className="py-3">
-              //       <div>
-              //         {daos.name}</div>
+              //       <div className="font-semibold">
+              //         {daos.name}
+              //       </div>
               //       {daos.name === "Operators" ? (
-              //         <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
+              //         <div className="text-sm bg-gray-600 py-2 rounded-md mt-3">
               //           {totalOperators} Operators
               //         </div>
               //       ) : (
-              //         <div className="text-sm bg-[#05223B] py-2 rounded-full mt-3">
+              //         <div className="text-sm bg-gray-600 py-2 rounded-md mt-3">
               //           {totalAVSs} AVSs
               //         </div>
               //       )}
@@ -205,17 +195,16 @@ function ExploreDAOs() {
               // </div>
 
               <div
-                className="cursor-pointer group overflow-hidden p-5 duration-1000 hover:duration-1000 relative w-64 h-64 bg-navy-blue rounded-xl"
+                key={daos.name}
+                className="rounded-2xl
+                border-1 border-white duration-500 group overflow-hidden relative text-neutral-50 p-4 w-64 h-64 flex flex-col justify-evenly cursor-pointer dark-blue-shadow"
                 onClick={() => handleClick(daos.name, daos.img)}
               >
-                <div className="group-hover:-top-3 bg-transparent -top-12 -left-12 absolute shadow-yellow-300 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
-                <div className="group-hover:top-60 bg-transparent top-40 left-14 absolute shadow-red-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
-                <div className="group-hover:-left-12 bg-transparent top-24 left-56 absolute shadow-sky-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-24 h-24"></div>
-                <div className="group-hover:-top-44 bg-transparent top-12 left-12 absolute shadow-red-500 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-12 h-12"></div>
-                <div className="group-hover:left-44 bg-transparent top-12 left-12 absolute shadow-green-600 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-44 h-44"></div>
-                <div className="group-hover:-left-2 bg-transparent -top-24 -left-12 absolute shadow-sky-800 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-64 h-64"></div>
-                <div className="group-hover:top-44 bg-transparent top-24 left-12 absolute shadow-sky-500 shadow-inner rounded-xl transition-all ease-in-out group-hover:duration-1000 duration-1000 w-4 h-4"></div>
-                <div className="w-full h-full p-3 bg-navy-blue opacity-100 rounded-xl flex-col gap-2 flex justify-center">
+                <div className="absolute blur duration-500 group-hover:blur-none w-72 h-72 rounded-full group-hover:translate-x-12 group-hover:translate-y-12 bg-sky-900 right-1 -bottom-24"></div>
+                <div className="absolute blur duration-500 group-hover:blur-none w-12 h-12 rounded-full group-hover:translate-x-12 group-hover:translate-y-2 bg-sky-600 right-12 bottom-12"></div>
+                <div className="absolute blur duration-500 group-hover:blur-none w-36 h-36 rounded-full group-hover:translate-x-12 group-hover:-translate-y-12 bg-indigo-900 right-1 -top-12"></div>
+                <div className="absolute blur duration-500 group-hover:blur-none w-24 h-24 bg-indigo-800 rounded-full group-hover:-translate-x-12"></div>
+                <div className="z-10 flex flex-col justify-evenly w-full h-full">
                   <div className="flex justify-center">
                     <Image
                       src={daos.img}
@@ -223,18 +212,20 @@ function ExploreDAOs() {
                       width={60}
                       height={60}
                       style={{ width: "60px", height: "60px" }}
-                      className="rounded-full pulsate"
+                      className="rounded-full"
                     ></Image>
                   </div>
                   <div className="text-center">
                     <div className="py-3">
-                      <div className="font-semibold">{daos.name}</div>
+                      <div className="font-semibold capitalize">
+                        {daos.name}
+                      </div>
                       {daos.name === "Operators" ? (
-                        <div className="text-sm bg-[#05223B] text-white py-2 rounded-full mt-3">
+                        <div className="text-sm text-white bg-navy-blue py-2 rounded-md mt-3">
                           {totalOperators} Operators
                         </div>
                       ) : (
-                        <div className="text-sm bg-[#05223B] text-white py-2 rounded-full mt-3">
+                        <div className="text-sm text-white bg-navy-blue py-2 rounded-md mt-3">
                           {totalAVSs} AVSs
                         </div>
                       )}
@@ -251,7 +242,9 @@ function ExploreDAOs() {
           <div
             // key={daos.name}
             style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className="px-5 py-7 rounded-2xl cursor-pointer exploreMainDiv"
+            className="px-5 py-7 rounded-2xl cursor-pointer 
+                border-1 border-white
+                exploreMainDiv"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">
@@ -259,7 +252,7 @@ function ExploreDAOs() {
                 src={EILogo}
                 alt="Image not found"
                 style={{ width: "60px", height: "60px" }}
-                className="rounded-full pulsate"
+                className="rounded-full"
               ></Image>
             </div>
             <div className="text-center">

@@ -20,6 +20,9 @@ import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
 import { useRouter } from "next-nprogress-bar";
 import ButtonWithCircle from "../Circle/ButtonWithCircle";
+import { FaUser } from "react-icons/fa";
+import { PiWalletFill } from "react-icons/pi";
+import { SiGitbook } from "react-icons/si";
 
 function Sidebar() {
   const router = useRouter();
@@ -171,12 +174,22 @@ function Sidebar() {
                       onClick={() => handleBadgeClick(data[0])}
                     >
                       <Tooltip
-                        content={<div className="capitalize">{data[0] === 'operators' ? 'Operators' : 'AVSs'}</div>}
+                        content={
+                          <div className="capitalize">
+                            {data[0] === "operators" ? "Operators" : "AVSs"}
+                          </div>
+                        }
                         placement="right"
                         className="rounded-md bg-opacity-90 bg-light-blue"
                         closeDelay={1}
                       >
-                        <Link href={data[0] === 'operators' ? `/${data[0]}?active=operatorsList`: `/${data[0]}?active=avsList`}>
+                        <Link
+                          href={
+                            data[0] === "operators"
+                              ? `/${data[0]}?active=operatorsList`
+                              : `/${data[0]}?active=avsList`
+                          }
+                        >
                           <Image
                             key={index}
                             src={data[1]}
@@ -204,17 +217,22 @@ function Sidebar() {
             <Tooltip
               content={<div className="capitalize">Git Book</div>}
               placement="right"
-              className="rounded-md bg-opacity-90 bg-light-blue"
+              className="rounded-full bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
               <Link href={""}>
-              <Image
+                {/* <Image
                 src={gitbook}
                 alt="image"
                 width={40}
-                className={`text-light-blue xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer border-1 border-white rounded-full`}
-              />
-
+                height={30}
+                className={`text-light-blue xl:w-15 xl:h-11 2xl:w-14 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer border-1 border-white rounded-full`}
+              /> */}
+                <div
+                  className={`p-[14px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
+                >
+                  <SiGitbook className="w-4 h-4" />
+                </div>
               </Link>
             </Tooltip>
 
@@ -226,12 +244,20 @@ function Sidebar() {
                 closeDelay={1}
               >
                 {isPageLoading || sessionLoading ? (
-                  <Image
-                    src={user}
-                    alt={"image"}
-                    width={40}
-                    className={`cursor-pointer opacity-80 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer"`}
-                  />
+                  // <Image
+                  //   src={user}
+                  //   alt={"image"}
+                  //   width={40}
+                  //   className={`cursor-pointer opacity-80 xl:w-10 xl:h-10 2xl:w-10 2xl:h-10 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer"`}
+                  // />
+                  // <div className={`p-[13px] cursor-pointer ${styles.image_hover} rounded-full border border-white`}>
+                  // <FaUser className="w-4 h-4 "/>
+                  // </div>
+                  <div
+                    className={`p-[12px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
+                  >
+                    <PiWalletFill className="w-5 h-5" />
+                  </div>
                 ) : (
                   <ConnectWallet />
                 )}
@@ -243,13 +269,23 @@ function Sidebar() {
                 className="rounded-md bg-opacity-90 bg-light-blue"
                 closeDelay={1}
               >
-                <Image
+                {/* <Image
                   src={user}
                   alt={"image"}
                   width={40}
                   className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
                   onClick={() => router.push(`/profile/${address}?active=info`)}
-                />
+                /> */}
+                <div
+                  className={`p-[13px] mx-1 cursor-pointer ${styles.image_hover} rounded-full border border-white`}
+                >
+                  <FaUser
+                    className="w-4 h-4"
+                    onClick={() =>
+                      router.push(`/profile/${address}?active=info`)
+                    }
+                  />
+                </div>
               </Tooltip>
             )}
           </div>

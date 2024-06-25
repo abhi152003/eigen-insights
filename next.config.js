@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ['mainnet-ethereum-avs-metadata.s3.amazonaws.com'],
     remotePatterns: [
       { hostname: "l2beat.com" },
       { hostname: "s3.amazonaws.com" },

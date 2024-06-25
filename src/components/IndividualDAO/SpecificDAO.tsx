@@ -19,13 +19,13 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
   const path = usePathname();
   let dao_name: string;
 
-  if (path.slice(1) === 'operators') {
-    dao_name = 'Operators'
+  if (path.slice(1) === "operators") {
+    dao_name = "Operators";
   } else {
-    dao_name = 'AVSs'
+    dao_name = "AVSs";
   }
 
-  console.log(dao_name)
+  console.log(dao_name);
   const searchParams = useSearchParams();
 
   const logoMapping: any = {
@@ -69,22 +69,22 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
       JSON.stringify({ ...localData, [formatted]: [formatted, option.image] })
     );
 
-    if (formatted === 'operators') {
+    if (formatted === "operators") {
       router.push(`/${formatted}?active=operatorsList`);
     } else {
       router.push(`/${formatted}?active=avsList`);
     }
   };
 
-  console.log(selectedOption)
-  console.log('paramssssssss',searchParams.get("active") === "operatorsList")
+  console.log(selectedOption);
+  console.log("paramssssssss", searchParams.get("active") === "operatorsList");
 
   return (
     <div className="font-poppins py-6" id="secondSection">
       <div className="pr-8 pb-3 pl-16">
         <div className="flex items-center justify-between pe-10">
           <div
-            className="relative"
+            className="relative z-50"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -146,7 +146,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
             <ConnectWalletWithENS />
           </div>
         </div>
-        <div className="py-5 pr-8">
+        <div className="pt-3 pb-1 pr-8">
           {props.daoDelegates === "operators"
             ? dao_details.operators.description
             : props.daoDelegates === "avss"
@@ -155,101 +155,134 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
         </div>
       </div>
 
-      <div className="ml-0 my-2 pl-16 py-4 flex gap-12 justify-start text-base bg-[#D9D9D945]">
-        {dao_name === 'Operators' ? 
+      <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
+        {dao_name === "Operators" ? (
           <button
             className={` 
-              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
-              searchParams.get("active") === "operatorsList"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
-                : "text-white border-white"
-            }`}
-            onClick={() => router.push(path +"?active=operatorsList")}
+                searchParams.get("active") === "operatorsList"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                  : "text-white border-white"
+              }`}
+            onClick={() => router.push(path + "?active=operatorsList")}
           >
-            
             Operators List
-          </button> : 
+          </button>
+        ) : (
           <button
             className={`
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
-              searchParams.get("active") === "avsList"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3]"
-                : "text-white border-white"
-            }`}
-            onClick={() => router.push(path +"?active=avsList")}
+                searchParams.get("active") === "avsList"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3]"
+                  : "text-white border-white"
+              }`}
+            onClick={() => router.push(path + "?active=avsList")}
           >
-            
             AVSs List
           </button>
-        } 
+        )}
 
-        {dao_name === 'Operators' ? 
+        {dao_name === "Operators" ? (
           <button
             className={`
-              p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
-              searchParams.get("active") === "operatorsSession"
-                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
-                : "text-white border-white"
-            }`}
+                searchParams.get("active") === "operatorsSession"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                  : "text-white border-white"
+              }`}
             onClick={() =>
               router.push(path + "?active=operatorsSession&session=recorded")
-          }
+            }
           >
-            
             Operators Sessions
-          </button> :
+          </button>
+        ) : (
           <button
             className={`
               p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group 
               ${
-              searchParams.get("active") === "avsSession"
+                searchParams.get("active") === "avsSession"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                  : "text-white border-white"
+              }`}
+            onClick={() =>
+              router.push(path + "?active=avsSession&session=recorded")
+            }
+          >
+            AVSs Sessions
+          </button>
+        )}
+
+        {dao_name === "Operators" ? (
+          <button
+            className={`
+            mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
+            ${
+              searchParams.get("active") === "officeHours"
                 ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
                 : "text-white border-white"
             }`}
             onClick={() =>
-              router.push(path + "?active=avsSession&session=recorded")
-          }
+              router.push(path + "?active=officeHours&hours=ongoing")
+            }
           >
-            
-            AVSs Sessions
+            Office hours
           </button>
-        }
-        
-        <button
+        ) : (
+          <button
+            className={`
+            p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
+            ${
+              searchParams.get("active") === "officeHours"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+                : "text-white border-white"
+            }`}
+            onClick={() =>
+              router.push(path + "?active=officeHours&hours=ongoing")
+            }
+          >
+            Office hours
+          </button>
+        )}
+
+        {/* <button
           className={`
             p-3 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
             ${
-            searchParams.get("active") === "officeHours"
-              ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
+              searchParams.get("active") === "officeHours"
+                ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
                 : "text-white border-white"
-          }`}
+            }`}
           onClick={() =>
             router.push(path + "?active=officeHours&hours=ongoing")
           }
         >
-          
           Office hours
-        </button>
+        </button> */}
       </div>
 
       <div className="py-6 ps-16">
-      {searchParams.get("active") === "operatorsList" || searchParams.get("active") === "avsList" ? (
-        <DelegatesList props={props.daoDelegates} />
-      ) : searchParams.get("active") === "operatorsSession" || searchParams.get("active") === "avsSession" ? (
-        <DelegatesSession props={props.daoDelegates} />
-      ) : searchParams.get("active") === "officeHours" ? (
-        <OfficeHours props={props.daoDelegates} />
-      ) : (
-        ""
-      )}
+        {searchParams.get("active") === "operatorsList" ||
+        searchParams.get("active") === "avsList" ? (
+          <DelegatesList props={props.daoDelegates} />
+        ) : searchParams.get("active") === "operatorsSession" ||
+          searchParams.get("active") === "avsSession" ? (
+          <DelegatesSession props={props.daoDelegates} />
+        ) : searchParams.get("active") === "officeHours" ? (
+          <OfficeHours props={props.daoDelegates} />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

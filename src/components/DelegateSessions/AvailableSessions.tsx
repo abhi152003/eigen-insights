@@ -19,7 +19,7 @@ import AVSLogo from "@/assets/images/daos/avss.png";
 import "@/components/DelegateSessions/DelegateSessionsMain.module.css";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 import { IoSearchSharp } from "react-icons/io5";
-import "../../css/SearchShine.css"
+import "../../css/SearchShine.css";
 
 interface Type {
   ensName: string;
@@ -332,9 +332,15 @@ function AvailableSessions() {
               onChange={handleDaoChange}
               className="px-3 py-2 rounded-lg shadow bg-medium-blue cursor-pointer"
             >
-              <option className="bg-midnight-blue" value="All-SESSIONS">All sessions</option>
-              <option className="bg-midnight-blue" value="operators">Operators</option>
-              <option className="bg-midnight-blue" value="avss">AVSs</option>
+              <option className="bg-midnight-blue" value="All">
+                All
+              </option>
+              <option className="bg-midnight-blue" value="operators">
+                Operators
+              </option>
+              <option className="bg-midnight-blue" value="avss">
+                AVSs
+              </option>
             </select>
           </Tooltip>
         </div>
@@ -357,7 +363,7 @@ function AvailableSessions() {
               onChange={handleDateChange}
               min={formattedDate}
               // onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-2 shadow mr-1 rounded-md bg-medium-blue cursor-pointer"
+              className="px-3 py-2 shadow mr-1 rounded-md bg-medium-blue cursor-pointer text-white"
             />
           </Tooltip>
         </div>
@@ -409,6 +415,152 @@ function AvailableSessions() {
             )}
           </div>
         </Tooltip>
+      </div>
+
+      <div
+        // key={index}
+        style={{
+          boxShadow: "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
+        }}
+        className="rounded-3xl flex flex-col bg-deep-blue my-8"
+      >
+        <div className="flex items-center mb-4 border-b-2 py-5 px-5 rounded-tl-3xl rounded-tr-3xl">
+          <div
+            className="relative object-cover rounded-3xl"
+            style={{
+              backgroundColor: "#fcfcfc",
+              border: "2px solid #E9E9E9 ",
+            }}
+          >
+            <div className="w-32 h-32 flex items-center justify-content ">
+              <div className="flex justify-center items-center w-32 h-32">
+                <Image
+                  src={EILogo ? EILogo : NOLogo}
+                  alt="user"
+                  width={256}
+                  height={256}
+                  className={
+                    EILogo ? "w-32 h-32 rounded-3xl" : "w-20 h-20 rounded-3xl"
+                  }
+                />
+              </div>
+
+              <Image
+                src={EILogo}
+                alt="EigenInsights Logo"
+                className="absolute top-0 right-0"
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  marginTop: "10px",
+                  marginRight: "10px",
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="w-3/4 ml-4">
+            <div className="text-light-cyan text-lg font-semibold mb-1">
+              TestName or Address
+            </div>
+            <div className="text-sm flex">
+              <div>0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a</div>
+              <div className="items-center">
+                <Tooltip
+                  content="Copy"
+                  placement="right"
+                  closeDelay={1}
+                  showArrow
+                  className="bg-midnight-blue text-white"
+                >
+                  <div className="pl-2 pt-[2px] cursor-pointer" color="#3E3D3D">
+                    <IoCopy
+                    // onClick={() =>
+                    //   handleCopy()
+                    // }
+                    className="text-white hover:text-light-cyan"
+                    />
+                  </div>
+                </Tooltip>
+                <Toaster
+                  toastOptions={{
+                    style: {
+                      fontSize: "14px",
+                      backgroundColor: "#3E3D3D",
+                      color: "#fff",
+                      boxShadow: "none",
+                      borderRadius: "50px",
+                      padding: "3px 5px",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div className="mt-2 bg-midnight-blue border-1 border-white text-white rounded-md text-xs px-4 py-1 font-semibold w-fit capitalize">
+              Test Name
+            </div>
+            <div>
+              <div
+                className="text-[#4F4F4F] rounded-md mt-3"
+                style={{
+                  overflowX: "auto",
+                  overflowY: "hidden",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                }}
+              >
+                <div style={{ display: "flex" }}>
+                  <div
+                    // key={index}
+                    className="text-midnight-blue bg-white rounded-2xl font-semibold text-small border-[0.5px] border-[#D9D9D9] px-4 py-1"
+                  >
+                    {/* {new Date(date).toLocaleString().split(",")[0]} */}
+                    13/12/11
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center px-5 pb-3">
+          <Image
+            alt="clockIcn"
+            width={20}
+            height={20}
+            src={clockIcn}
+            priority
+            className="mt-[2px] text-light-cyan"
+          />
+          <div className="w-[60%]">
+            <span className="text-base font-semibold text-light-cyan ml-1">
+              Available for 10 minutes
+            </span>
+          </div>
+          <div className="w-[40%] flex justify-end ">
+            {/* <button
+                      onClick={() =>
+                        router.push(
+                          `/${daos.dao_name}/${daos.userAddress}?active=delegatesSession&session=book `
+                        )
+                      }
+                      className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] relative  hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    >
+                      <span className="relative">Book Session</span>
+                      <span className="absolute top-0 left-0 w-full h-full bg-white opacity-0 transition-opacity duration-300"></span>
+                    </button> */}
+            <button
+              // onClick={() =>
+              //   router.push(
+              //     `/${daos.session.dao_name}/${daos.session.userAddress}?active=delegatesSession&session=book`
+              //   )
+              // }
+              className="bg-medium-blue text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] hover:bg-slate-blue focus:outline-none focus:ring-2 focus:ring-gray-400 font-medium"
+            >
+              Book Session
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="pt-8 font-poppins">

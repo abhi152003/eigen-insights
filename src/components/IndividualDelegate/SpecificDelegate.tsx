@@ -348,15 +348,8 @@ function SpecificDelegate({ props }: { props: Type }) {
         <div className="font-poppins">
           <div className="flex ps-14 py-5 justify-between">
             <div className="flex">
-              {/* <Image
-            src={delegateInfo?.profilePicture || user}
-            alt="user"
-            width={256}
-            height={256}
-            className="w-40 rounded-3xl"
-          /> */}
               <div
-                className="mt-5 relative object-cover h-40 rounded-3xl"
+                className="mt-1 relative object-cover h-50 rounded-3xl"
                 style={{
                   backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
@@ -401,7 +394,7 @@ function SpecificDelegate({ props }: { props: Type }) {
               </div>
               <div className="px-4">
                 <div className="flex items-center py-1">
-                  <div className="font-bold text-lg pr-4">
+                  <div className="font-semibold text-base pr-4 mt-2">
                     {delegateInfo?.metadataName ||
                       delegateInfo.metadataName ||
                       displayName || (
@@ -422,7 +415,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="rounded-full bg-gray text-black p-[6px] hover:text-white hover:cursor-pointer hover:bg-black hover:scale-125">
-                        <FaXTwitter color="white" className="w-2 h-2" />
+                        <FaXTwitter color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <Link
@@ -434,7 +427,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  rounded-full bg-black text-black p-[6px] hover:bg-[#34ABE2] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaTelegram color="white" className="w-2 h-2" />
+                      <FaTelegram color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <Link
@@ -446,7 +439,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       target="_blank"
                     >
                       <div className="  bg-black rounded-full text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FaDiscord color="white" className="w-2 h-2" />
+                      <FaDiscord color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <Link
@@ -457,13 +450,13 @@ function SpecificDelegate({ props }: { props: Type }) {
                       style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FiExternalLink color="white"className="w-2 h-2" />
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-light-blue hover:text-white hover:cursor-pointer hover:scale-125">
+                      <FiExternalLink color="white"className="w-3 h-3" />
                       </div>
                     </Link>
                     <div>
                       <button
-                        className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                        className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 btnShineWallet"
                         onClick={() =>
                           handleDelegateVotes(`${props.individualDelegate}`)
                         }
@@ -577,30 +570,35 @@ function SpecificDelegate({ props }: { props: Type }) {
             </div>
           </div>
 
-          {/* <div className="flex gap-12 pl-16 justify-center">
-            
-          </div> */}
-
-          <div className="ml-0 my-2 pl-16 py-4 flex gap-12 justify-start text-base bg-[#D9D9D945]">
+          <div className="mt-3 ml-0 pl-16 flex gap-12 justify-start text-base bg-[#D9D9D945]">
             <button
-              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+              className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "info"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                : "text-white border-white"
+                    ?  " border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
                 }`}
               onClick={() => router.push(path + "?active=info")}
             >
               Info
             </button>
             <button
-              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+              className={`border-b-2 py-3 px-2
+                ${
+                  searchParams.get("active") === "nodeOperators"
+                    ?  " border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
+                }`}
+              onClick={() => router.push(path + "?active=nodeOperators")}
+            >
+              Node Operators
+            </button>
+            <button
+              className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "delegatesSession"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                : "text-white border-white"
+                    ?  " border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
@@ -609,12 +607,11 @@ function SpecificDelegate({ props }: { props: Type }) {
               Sessions
             </button>
             <button
-              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+              className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "officeHours"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
-                : "text-white border-white"
+                    ?" border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")

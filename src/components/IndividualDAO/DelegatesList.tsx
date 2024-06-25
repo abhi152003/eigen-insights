@@ -21,8 +21,6 @@ import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
-import "../../css/AVSsList.css"
-import "../../css/ImagePulse.css"
 import Avss from '@/assets/images/sidebar/avss.webp'
 
 interface Result {
@@ -406,7 +404,7 @@ function DelegatesList({ props }: { props: string }) {
                       <Image
                         src={EILogo}
                         alt="EigenInsights Logo"
-                        className="absolute top-7 right-4 pulsatingImage"
+                        className="absolute top-7 right-4"
                         style={{
                           width: "35px",
                           height: "35px",
@@ -475,7 +473,7 @@ function DelegatesList({ props }: { props: string }) {
                           WalletOpen(daos.address);
                         }}
                       >
-                        <span className="hover-text">Stake</span>
+                        <span className="hover-text">Delegate</span>
                       </button>
                     </div>
                   </div>

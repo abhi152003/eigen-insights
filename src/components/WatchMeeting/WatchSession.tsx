@@ -180,7 +180,7 @@ function WatchSession({
 
   return (
     <div className="">
-      <div className="rounded-3xl border-2 border-medium-blue bg-light-blue">
+      <div className="rounded-3xl border-2 border-white bg-deep-blue">
         <div
           className={`px-6 pt-4 pb-4 ${
             data.description.length > 0 ? "border-b" : ""
@@ -261,15 +261,15 @@ function WatchSession({
                 onClick={() => setModalOpen(true)}
               >
                 <div>
-                  <PiFlagFill color="#fff" size={20} />
+                  <PiFlagFill color="#ff3838" size={20} />
                 </div>
-                <div className="hover:text-[#ff3838] hover:scale-110 text-white">Report</div>
+                <div className="text-[#ff3838] hover:scale-110">Report</div>
               </div>
               <div className="flex items-center gap-1 cursor-pointer" onClick={()=>setShareModal(true)}>
                 <div className="scale-x-[-1]">
                   <BiSolidShare size={20} color="#fff" />
                 </div>
-                <div className="text-white">Share</div>
+                <div className="text-white hover:scale-110">Share</div>
               </div>
             </div>
           </div>

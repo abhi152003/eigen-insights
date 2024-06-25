@@ -698,7 +698,7 @@ function MainProfile() {
                                   </div>
                                   
                                   {[
-                                    { label: "Display name", icon: <MdDriveFileRenameOutline />, value: displayName, onChange: (e: { target: { value: string; }; }) => handleInputChange("displayName", e.target.value) },
+                                    { label: "Display name", icon: <MdDriveFileRenameOutline className="hover:bg-green-400 hover:scale-125"/>, value: displayName, onChange: (e: { target: { value: string; }; }) => handleInputChange("displayName", e.target.value) },
                                     { label: "Email", icon: <MdOutlineMail />, value: emailId, onChange: (e: { target: { value: string; }; }) => handleInputChange("emailId", e.target.value) },
                                     { label: "X (Formerly Twitter)", icon: <FaXTwitter />, value: twitter, onChange: (e: { target: { value: string; }; }) => handleInputChange("twitter", e.target.value) },
                                     { label: "Discourse", icon: <FaDiscourse />, value: discourse, onChange: (e: { target: { value: string; }; }) => handleInputChange("discourse", e.target.value) },

@@ -3,6 +3,10 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import wallet from "../../assets/images/sidebar/new_wallet.png";
 import Image from "next/image";
+import styles from "../../components/MainSidebar/sidebar.module.css";
+import { PiWalletFill } from "react-icons/pi";
+import { Badge, Tooltip } from "@nextui-org/react";
+
 export const ConnectWallet = () => {
   return (
     <ConnectButton.Custom>
@@ -37,15 +41,20 @@ export const ConnectWallet = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type="button">
-                    <Image
-                      className="cursor-pointer xl:w-10 xl:h-10 2xl:w-10 2xl:h-10 2.5xl:w-14 2.5xl:h-14 border border-white rounded-full object-cover"
-                      src={wallet}
-                      alt="Wallet icon"
-                      width={56}
-                      height={56}
-                    />
-                  </button>
+                  <Tooltip
+                    content={<div className="capitalize">Wallet</div>}
+                    placement="right"
+                    className="rounded-md bg-opacity-90 bg-light-blue"
+                    closeDelay={1}
+                  >
+                    <button onClick={openConnectModal} type="button">
+                      <div
+                        className={`p-[12px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
+                      >
+                        <PiWalletFill className="w-5 h-5" />
+                      </div>
+                    </button>
+                  </Tooltip>
                 );
               }
               if (chain.unsupported) {
@@ -57,46 +66,20 @@ export const ConnectWallet = () => {
               }
               return (
                 <div style={{ display: "flex", gap: 12 }}>
-                  {/* <button
-                    onClick={openChainModal}
-                    style={{ display: "flex", alignItems: "center" }}
-                    type="button"
+                  <Tooltip
+                    content={<div className="capitalize">Wallet</div>}
+                    placement="right"
+                    className="rounded-md bg-opacity-90 bg-light-blue"
+                    closeDelay={1}
                   >
-                    {chain.hasIcon && (
+                    <button onClick={openAccountModal} type="button">
                       <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 12,
-                          height: 12,
-                          borderRadius: 999,
-                          overflow: "hidden",
-                          marginRight: 4,
-                        }}
+                        className={`p-[12px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
                       >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? "Chain icon"}
-                            src={chain.iconUrl}
-                            style={{ width: 12, height: 12 }}
-                          />
-                        )}
+                        <PiWalletFill className="w-5 h-5" />
                       </div>
-                    )}
-                    {chain.name}
-                  </button> */}
-                  <button onClick={openAccountModal} type="button">
-                    {/* {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""} */}
-                    <Image
-                      className="cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14"
-                      src={wallet}
-                      alt=""
-                      width={40}
-                      // style={{ width: "40px", height: "40px" }}
-                    />
-                  </button>
+                    </button>
+                  </Tooltip>
                 </div>
               );
             })()}

@@ -5,8 +5,8 @@ const WatchCollectibleInfo = () => {
   const [showComingSoon, setShowComingSoon] = useState(true);
   return (
     <div className="rounded-3xl border border-black-shade-200 font-poppins ">
-      <div className="flex w-full rounded-t-3xl bg-blue-shade-400 py-3 pl-6">
-        <p className="font-medium xl:text-base 1.7xl:text-lg text-medium-blue">
+      <div className="flex w-full rounded-t-3xl bg-midnight-blue py-3 pl-6">
+        <p className="font-medium xl:text-base 1.7xl:text-lg text-white">
           Collectibles Info
         </p>
         {showComingSoon && (

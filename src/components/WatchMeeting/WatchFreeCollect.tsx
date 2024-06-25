@@ -7,6 +7,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoArrowUpOutline } from "react-icons/io5";
 import styles from "./WatchSession.module.css";
 import { RxCross2 } from "react-icons/rx";
+import operators from "../../assets/images/sidebar/operators.webp"
 
 const WatchFreeCollect = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,10 +121,10 @@ const WatchFreeCollect = () => {
             <p className="mx-6 font-normal text-xs mb-2 text-white">
               Pay Using
             </p>
-            <div className="flex justify-between mx-6 items-center bg-light-blue py-1 border border-black-shade-400 px-3 rounded-xl">
+            <div className="flex justify-between mx-6 items-center bg-midnight-blue py-1 border border-black-shade-400 px-3 rounded-xl">
               <div className="flex gap-2">
                 <Image
-                  src={op}
+                  src={operators}
                   alt=""
                   width={29}
                   height={29}
@@ -131,7 +132,7 @@ const WatchFreeCollect = () => {
                 />
                 <div className="flex flex-col justify-center items-start">
                   <p className="font-normal text-xs text-white">Operators</p>
-                  <p className="font-normal text-[10px] text-gray-900">
+                  <p className="font-normal text-[10px] text-white">
                     0.0002314
                   </p>
                 </div>

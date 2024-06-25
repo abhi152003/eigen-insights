@@ -88,14 +88,14 @@ function ReportOptionModal({
           ></div>
           <div className="z-50 bg-white rounded-3xl min-w-96 border-2 overflow-hidden">
             <div className="flex justify-between items-center p-4 border-b">
-              <div className="text-xl font-bold text-gray-900">
+              <div className="text-xl font-medium text-gray-900">
                 Report video
               </div>
               <button
                 className="text-gray-500 hover:text-gray-800"
                 onClick={toggleModal}
               >
-                <RxCross2 size={20} />
+                <RxCross2 size={20} className="hover:text-medium-blue" />
               </button>
             </div>
             <div className="p-4 text-gray-900">
@@ -131,7 +131,7 @@ function ReportOptionModal({
                     disabled={!selectedCategory}
                     className={`px-4 py-2 rounded font-semibold ${
                       selectedCategory
-                        ? "text-blue-shade-100 hover:text-blue-shade-200"
+                        ? "text-medium-blue hover:text-midnight-blue"
                         : "text-gray-500 cursor-not-allowed"
                     }`}
                   >

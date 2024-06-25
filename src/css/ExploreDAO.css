@@ -1,4 +1,4 @@
-.exploreMainDiv {
+/* .exploreMainDiv {
     border-radius: 15px;
     background-color: #05223B;
     display: flex;
@@ -45,4 +45,8 @@
       box-shadow: 0 0 10px rgba(0, 23, 43, 0.3);
     }
   }
-  
+   */
+
+.dark-blue-shadow:hover {
+  box-shadow: 0 4px 20px 0px rgba(94, 156, 191, 0.7), 0 4px 20px 0px rgba(94, 156, 191, 0.5);
+}
