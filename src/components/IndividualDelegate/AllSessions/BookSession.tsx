@@ -31,8 +31,38 @@ interface Type {
 const StyledTimePickerContainer = styled.div`
   div > ul {
     height: 400px;
+    border-radius: 5px;
+    text-align: center;
   }
 `;
+
+const theme = {
+  primary: "#A7DBF2",
+  secondary: "#05223B",
+  background: "#427FA3",
+  buttons: {
+    disabled: {
+      color: '#A7DBF2',
+      background: '#f0f0f0'
+    },
+    confirm: {
+      color: '#fff',
+      background: 'slategrey',
+      hover: {
+        color: '',
+        background: 'lightslategrey'
+      }
+    }
+  },
+  feedback: {
+    success: {
+      color: "#29aba4",
+    },
+    failed: {
+      color: "#eb7260",
+    },
+  },
+};
 
 function BookSession({ props }: { props: Type }) {
   const { openConnectModal } = useConnectModal();
@@ -569,7 +599,7 @@ function BookSession({ props }: { props: Type }) {
               width: "fit-content",
             }}
           >
-            <StyledTimePickerContainer>
+            <StyledTimePickerContainer className="bg-midnight-blue text-white">
               <DayTimeScheduler
                 allowedDates={allowedDates}
                 timeSlotSizeMinutes={timeSlotSizeMinutes}
@@ -580,6 +610,8 @@ function BookSession({ props }: { props: Type }) {
                 timeSlotValidator={(slotTime: any) =>
                   timeSlotValidator(slotTime, dateAndRanges, bookedSlots)
                 }
+                theme={theme}
+                className="text-white"
               />
             </StyledTimePickerContainer>
           </div>
