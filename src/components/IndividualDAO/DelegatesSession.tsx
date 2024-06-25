@@ -71,7 +71,7 @@ function DelegatesSession({ props }: { props: string }) {
               return session.meeting_status === "Upcoming";
             } else if (searchParams.get("session") === "recorded") {
               return session.meeting_status === "Recorded";
-            } 
+            }
           });
           // console.log("filtered", filtered);
           setSearchQuery("");
@@ -132,7 +132,6 @@ function DelegatesSession({ props }: { props: string }) {
 
   return (
     <div className="font-poppins">
-
       <div className="searchBox searchShineWidthOfAVSs">
         <input
           className="searchInput"
@@ -185,8 +184,8 @@ function DelegatesSession({ props }: { props: string }) {
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}
@@ -207,8 +206,8 @@ function DelegatesSession({ props }: { props: string }) {
               <div className="flex items-center justify-center">
                 <ThreeCircles
                   visible={true}
-                  height="60"
-                  width="60"
+                  height="50"
+                  width="50"
                   color="#FFFFFF"
                   ariaLabel="three-circles-loading"
                   wrapperStyle={{}}

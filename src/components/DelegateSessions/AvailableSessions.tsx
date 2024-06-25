@@ -20,6 +20,7 @@ import "@/components/DelegateSessions/DelegateSessionsMain.module.css";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
+import "../../css/SearchShine.css";
 
 interface Type {
   ensName: string;
@@ -568,8 +569,8 @@ function AvailableSessions() {
           <div className="flex items-center justify-center m-6">
             <ThreeCircles
               visible={true}
-              height="60"
-              width="60"
+              height="50"
+              width="50"
               color="#FFFFFF"
               ariaLabel="three-circles-loading"
               wrapperStyle={{}}

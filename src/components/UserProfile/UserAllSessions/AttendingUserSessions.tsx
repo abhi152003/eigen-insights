@@ -93,8 +93,8 @@ function AttendingUserSessions({ daoName }: { daoName: string }) {
         <div className="flex items-center justify-center">
           <ThreeCircles
             visible={true}
-            height="60"
-            width="60"
+            height="50"
+            width="50"
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}

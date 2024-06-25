@@ -40,7 +40,8 @@ const nextConfig = {
       { hostname: "a41-official.github.io" },
       { hostname: "s3-eigenlayer-metadata.s3.amazonaws.com" },
       { hostname: "aethos-avs-metadata.s3.us-east-2.amazonaws.com" },
-      { hostname: "i.ibb.co" }
+      { hostname: "i.ibb.co" },
+      { hostname: "mainnet-ethereum-avs-metadata.s3.amazonaws.com"}
     ],
   },
   reactStrictMode: false,

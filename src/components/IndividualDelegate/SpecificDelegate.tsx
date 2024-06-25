@@ -30,6 +30,7 @@ import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 import "../../css/ConnectWallet.css";
 import { FaTelegram } from "react-icons/fa";
 import { FaXTwitter, FaDiscord } from "react-icons/fa6";
+import OperatorsAnalytics from "./OperatorsAnalytics";
 
 interface Type {
   daoDelegates: string;
@@ -197,53 +198,63 @@ function SpecificDelegate({ props }: { props: Type }) {
     toast("Address Copied");
   };
 
-  const handleDelegateVotes = async (to: string) => {
-    let address;
-    let address1;
-
-    try {
-      address = await walletClient.getAddresses();
-      address1 = address[0];
-    } catch (error) {
-      console.error("Error getting addresses:", error);
-      toast.error("Please connect your MetaMask wallet!");
-      return;
-    }
-
-    if (!address1) {
-      toast.error("Please connect your MetaMask wallet!");
-      return;
-    }
-
-    console.log(address);
-    console.log(address1);
-
-    let chainAddress;
-
-    console.log("walletClient?.chain?.network", walletClient?.chain?.network);
-
-    if (walletClient?.chain === "") {
-      toast.error("Please connect your wallet!");
-    } else {
-      if (walletClient?.chain?.network === props.daoDelegates) {
-        const delegateTx = await walletClient.writeContract({
-          address: chainAddress,
-          abi: dao_abi.abi,
-          functionName: "delegate",
-          args: [to],
-          account: address1,
-        });
-
-        console.log(delegateTx);
-      } else {
-        toast.error("Please switch to appropriate network to delegate!");
-
-        if (openChainModal) {
-          openChainModal();
-        }
-      }
+  const handleClick = () => {
+    if (props.daoDelegates === "operators") {
+      window.open(
+        `https://app.eigenlayer.xyz/operator/${props.individualDelegate}`
+      );
+    } else if (props.daoDelegates === "avss") {
+      window.open(`https://app.eigenlayer.xyz/avs/${props.individualDelegate}`);
     }
   };
+
+  // const handleDelegateVotes = async (to: string) => {
+  //   let address;
+  //   let address1;
+
+  //   try {
+  //     address = await walletClient.getAddresses();
+  //     address1 = address[0];
+  //   } catch (error) {
+  //     console.error("Error getting addresses:", error);
+  //     toast.error("Please connect your MetaMask wallet!");
+  //     return;
+  //   }
+
+  //   if (!address1) {
+  //     toast.error("Please connect your MetaMask wallet!");
+  //     return;
+  //   }
+
+  //   console.log(address);
+  //   console.log(address1);
+
+  //   let chainAddress;
+
+  //   console.log("walletClient?.chain?.network", walletClient?.chain?.network);
+
+  //   if (walletClient?.chain === "") {
+  //     toast.error("Please connect your wallet!");
+  //   } else {
+  //     if (walletClient?.chain?.network === props.daoDelegates) {
+  //       const delegateTx = await walletClient.writeContract({
+  //         address: chainAddress,
+  //         abi: dao_abi.abi,
+  //         functionName: "delegate",
+  //         args: [to],
+  //         account: address1,
+  //       });
+
+  //       console.log(delegateTx);
+  //     } else {
+  //       toast.error("Please switch to appropriate network to delegate!");
+
+  //       if (openChainModal) {
+  //         openChainModal();
+  //       }
+  //     }
+  //   }
+  // };
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -332,11 +343,11 @@ function SpecificDelegate({ props }: { props: Type }) {
   return (
     <>
       {isPageLoading && (
-        <div className="flex items-center justify-center pt-10">
+        <div className="flex items-center justify-center h-screen">
           <ThreeCircles
             visible={true}
-            height="60"
-            width="60"
+            height="50"
+            width="50"
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}
@@ -428,6 +439,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     >
                       <div className="  rounded-full bg-black text-black p-[6px] hover:bg-[#34ABE2] hover:text-white hover:cursor-pointer hover:scale-125">
                       <FaTelegram color="white" className="w-3 h-3" />
+                        <FaTelegram color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
@@ -440,6 +452,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     >
                       <div className="  bg-black rounded-full text-black p-[6px] hover:bg-[#5562EA] hover:text-white hover:cursor-pointer hover:scale-125">
                       <FaDiscord color="white" className="w-3 h-3" />
+                        <FaDiscord color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <Link
@@ -450,19 +463,26 @@ function SpecificDelegate({ props }: { props: Type }) {
                       style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-light-blue hover:text-white hover:cursor-pointer hover:scale-125">
-                      <FiExternalLink color="white"className="w-3 h-3" />
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-pink-500 hover:text-white hover:cursor-pointer hover:scale-125">
+                        <FiExternalLink color="white" className="w-2 h-2" />
                       </div>
                     </Link>
                     <div>
-                      <button
-                        className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 btnShineWallet"
-                        onClick={() =>
-                          handleDelegateVotes(`${props.individualDelegate}`)
-                        }
-                      >
-                        Stake
-                      </button>
+                      {props.daoDelegates === "operators" ? (
+                        <button
+                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                          onClick={() => handleClick()}
+                        >
+                          Delegate
+                        </button>
+                      ) : (
+                        <button
+                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                          onClick={() => handleClick()}
+                        >
+                          Stake
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -522,12 +542,12 @@ function SpecificDelegate({ props }: { props: Type }) {
                           : 0}
                         &nbsp;
                       </span>
-                      ETH 
+                      ETH
                     </div>
                   </div>
-                  
+
                   <div>
-                    {props.daoDelegates === "avss" && 
+                    {props.daoDelegates === "avss" && (
                       <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
                         <span className="text-light-cyan font-semibold">
                           {delegateInfo?.totalOperators
@@ -537,20 +557,21 @@ function SpecificDelegate({ props }: { props: Type }) {
                         </span>
                         total operators
                       </div>
-                    }
+                    )}
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                       TVL Restaked
                       <span className="text-light-cyan font-semibold">
                         &nbsp;
                         {delegateInfo?.tvl.tvl
-                          ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                          ? parseFloat(
+                              (delegateInfo?.tvl.tvlRestaking).toFixed(2)
+                            )
                           : 0}
                         &nbsp;
                       </span>
                       ETH
                     </div>
                   </div>
-                  
                 </div>
 
                 {/* <div className="pt-2">
@@ -577,28 +598,38 @@ function SpecificDelegate({ props }: { props: Type }) {
                   searchParams.get("active") === "info"
                     ?  " border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                    : "text-white border-white"
                 }`}
               onClick={() => router.push(path + "?active=info")}
             >
               Info
             </button>
+            {props.daoDelegates === 'avss' ? (
+              <button
+                className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
+                  ${
+                    searchParams.get("active") === "analytics"
+                      ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                      : "text-white border-white"
+                  }`}
+                onClick={() => router.push(path + "?active=analytics")}
+              >
+                Analytics
+              </button>
+            ) : (
+              ""
+            )} 
             <button
-              className={`border-b-2 py-3 px-2
-                ${
-                  searchParams.get("active") === "nodeOperators"
-                    ?  " border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                }`}
-              onClick={() => router.push(path + "?active=nodeOperators")}
-            >
-              Node Operators
-            </button>
-            <button
-              className={`border-b-2 py-3 px-2
+              className={`p-3 border-[#A7DBF2] border-1 rounded-full px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
                 ${
                   searchParams.get("active") === "delegatesSession"
                     ?  " border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                    : "text-white border-white"
                 }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
@@ -612,6 +643,8 @@ function SpecificDelegate({ props }: { props: Type }) {
                   searchParams.get("active") === "officeHours"
                     ?" border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] "
+                    : "text-white border-white"
                 }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")
@@ -628,6 +661,9 @@ function SpecificDelegate({ props }: { props: Type }) {
                 delegateInfo={delegateInfo}
                 desc={delegateInfo.metadataDescription}
               />
+            )}
+            {searchParams.get("active") === "analytics" && (
+              <OperatorsAnalytics />
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />

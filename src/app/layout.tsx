@@ -33,7 +33,7 @@ const quanty = localFonts({
 //   },
 // };
 export const metadata: Metadata = {
-  metadataBase: new URL("https://app.chora.club/"),
+  metadataBase: new URL("https://eigeninsight.vercel.app/"),
   title: "EigenInsight",
   description: "Discover. Learn. Engage.",
   icons: {

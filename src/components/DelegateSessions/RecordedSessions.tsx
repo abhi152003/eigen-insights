@@ -25,7 +25,7 @@ import user7 from "@/assets/images/user/user7.svg";
 import user8 from "@/assets/images/user/user8.svg";
 import user9 from "@/assets/images/user/user9.svg";
 import { IoSearchSharp } from "react-icons/io5";
-import "../../css/SearchShine.css"
+import "../../css/SearchShine.css";
 
 interface SessionData {
   session: {
@@ -303,7 +303,7 @@ function RecordedSessions() {
     <>
       <div className="pe-10">
         <div className="flex my-3 items-center gap-4 font-poppins">
-            {/* <input
+          {/* <input
               type="text"
               placeholder="Search by title and host address"
               style={{ background: "rgba(238, 237, 237, 0.36)" }}
@@ -315,19 +315,19 @@ function RecordedSessions() {
               <Image src={search} alt="search" width={20} />
             </span> */}
 
-            <div className="searchBox searchShineWidthOfAVSs">
-              <input
-                className="searchInput"
-                type="text"
-                name=""
-                placeholder="Search by title and host address"
-                value={searchQuery}
-                onChange={(e) => handleSearchChange(e.target.value)}
-              />
-              <button className="searchButton">
-                <IoSearchSharp className="iconExplore" />
-              </button>
-            </div>
+          <div className="searchBox searchShineWidthOfAVSs">
+            <input
+              className="searchInput"
+              type="text"
+              name=""
+              placeholder="Search by title and host address"
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+            />
+            <button className="searchButton">
+              <IoSearchSharp className="iconExplore" />
+            </button>
+          </div>
           <div className="flex space-x-4">
             <button
               className={`p-3 border-[#A7DBF2] border-1
@@ -335,7 +335,7 @@ function RecordedSessions() {
               ${
                 activeButton === "all"
                   ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
-                : "text-white border-white"
+                  : "text-white border-white"
               }`}
               onClick={() => handleFilters("")}
             >
@@ -359,12 +359,17 @@ function RecordedSessions() {
               border-b-3 font-medium overflow-hidden relative hover:brightness-100 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-300 group px-4 py-1 rounded-lg flex items-center gap-1.5
               ${
                 activeButton === "avss"
-                  ?"text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
                   : "text-white border-white"
               }`}
               onClick={() => handleFilters("avss")}
             >
-              <Image src={AVSLogo} alt="avss" width={23} className="rounded-md" />
+              <Image
+                src={AVSLogo}
+                alt="avss"
+                width={23}
+                className="rounded-md"
+              />
               AVSs
             </button>
           </div>
@@ -374,8 +379,8 @@ function RecordedSessions() {
           <div className="flex items-center justify-center m-6">
             <ThreeCircles
               visible={true}
-              height="60"
-              width="60"
+              height="50"
+              width="50"
               color="#FFFFFF"
               ariaLabel="three-circles-loading"
               wrapperStyle={{}}

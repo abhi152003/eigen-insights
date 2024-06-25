@@ -246,39 +246,6 @@ const Home = ({ params }: { params: { roomId: string } }) => {
                   : null}
               </div>
               {isChatOpen && <Chat />}
-              {/* {meetingDetailsVisible && (
-              <div className="absolute bottom-20 bg-white shadow-md p-4 rounded-lg text-black">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold">
-                    Your meeting&apos;s ready
-                  </h3>
-                  <button
-                    onClick={() => setMeetingDetailsVisible(false)}
-                    className="p-2 hover:bg-slate-100 hover:rounded-full"
-                  >
-                    <RxCross2 size={20} />
-                  </button>
-                </div>
-
-                <div className="pb-3 text-sm">
-                  Or share this meeting link with others that you want in the
-                  meeting
-                </div>
-
-                <div className="flex mb-2 bg-slate-100 rounded-sm px-2 py-1 justify-between items-center">
-                  <div>{"https://app.chora.club" + path}</div>
-                  <div className="pl-5 cursor-pointer">
-                    <IoCopy
-                      onClick={() =>
-                        handleCopy("https://app.chora.club" + `${path}`)
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="text-sm py-2">Joined in as {address}</div>
-              </div>
-            )} */}
             </div>
             <BottomBar />
             <Prompts />
@@ -312,8 +279,8 @@ const Home = ({ params }: { params: { roomId: string } }) => {
                   <div className="flex items-center justify-center pt-10">
                     <ThreeCircles
                       visible={true}
-                      height="80"
-                      width="80"
+                      height="50"
+                      width="50"
                       color="#FFFFFF"
                       ariaLabel="three-circles-loading"
                       wrapperStyle={{}}

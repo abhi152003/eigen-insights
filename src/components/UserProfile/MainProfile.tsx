@@ -16,8 +16,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import NOLogo from "@/assets/images/daos/operators.png"
-import AVSLogo from "@/assets/images/daos/avss.png"
+import NOLogo from "@/assets/images/daos/operators.png";
+import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
 import {
   Modal,
@@ -40,10 +40,10 @@ import InstantMeet from "./InstantMeet";
 import { useSession } from "next-auth/react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
-import '../../css/MainProfile.css'
+import "../../css/MainProfile.css";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { MdOutlineMail } from "react-icons/md";
-import { FaDiscourse } from "react-icons/fa6"
+import { FaDiscourse } from "react-icons/fa6";
 import { RiFolderUserLine } from "react-icons/ri";
 import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
 
@@ -101,7 +101,7 @@ function MainProfile() {
     total: any;
     uploaded: any;
   }
-  
+
   useEffect(() => {
     // console.log("path", path);
     if (isConnected && session && path.includes("profile/undefined")) {
@@ -172,17 +172,19 @@ function MainProfile() {
   };
 
   useEffect(() => {
-    const checkDelegateStatus = async() => {
+    const checkDelegateStatus = async () => {
       try {
-        const res = await fetch(`/api/get-search-data?q=${address}&prop=operators`);
+        const res = await fetch(
+          `/api/get-search-data?q=${address}&prop=operators`
+        );
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }
         const data: Result[] | { message: string } = await res.json();
         if (Array.isArray(data)) {
-          console.log("dataaaaaaaa", data[0])
-          setProfileData(data[0])
-          setWebsite(data[0].metadataWebsite)
+          console.log("dataaaaaaaa", data[0]);
+          setProfileData(data[0]);
+          setWebsite(data[0].metadataWebsite);
           setDisplayImage(data[0].metadataLogo);
           setDescription(data[0].metadataDescription);
           setDisplayName(data[0].metadataName);
@@ -195,13 +197,12 @@ function MainProfile() {
           }
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
-    checkDelegateStatus()
-  }, [address, selfDelegate])
-
+    checkDelegateStatus();
+  }, [address, selfDelegate]);
 
   // Pass the address of whom you want to delegate the voting power to
   const handleDelegateVotes = async (to: string) => {
@@ -209,7 +210,7 @@ function MainProfile() {
       const addr = await walletClient.getAddresses();
       const address1 = addr[0];
 
-      const contractAddress = ""
+      const contractAddress = "";
       console.log("Contract", contractAddress);
       console.log("Wallet Client", walletClient);
       const delegateTx = await walletClient.writeContract({
@@ -552,7 +553,6 @@ function MainProfile() {
     const fetchData = async () => {
       console.log("Description", description);
       try {
-
         // console.log("Desc.", description)
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -575,14 +575,13 @@ function MainProfile() {
                 style={{
                   backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
-                }}>
+                }}
+              >
                 <div className="w-40 h-40 flex items-center justify-content ">
                   <div className="flex justify-center items-center w-40 h-40">
                     <Image
                       src={
-                        (displayImage
-                          ? displayImage
-                          : "") ||
+                        (displayImage ? displayImage : "") ||
                         (daoName === "operators"
                           ? NOLogo
                           : daoName === "avss"
@@ -614,7 +613,7 @@ function MainProfile() {
                 </div>
               </div>
 
-            <div className="px-4 text-white">
+              <div className="px-4 text-white">
                 <div className=" flex items-center">
                   <div className="font-bold text-lg pr-4">
                     {profileData ? (
@@ -635,7 +634,8 @@ function MainProfile() {
                         twitter == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "white" }}
-                      target="_blank">
+                      target="_blank"
+                    >
                       <FaXTwitter color="#7C7C7C" size={12} />
                     </Link>
                     <Link
@@ -644,7 +644,8 @@ function MainProfile() {
                         discord == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "white" }}
-                      target="_blank">
+                      target="_blank"
+                    >
                       <FaDiscord color="#7C7C7C" size={12} />
                     </Link>
                     <Link
@@ -653,18 +654,21 @@ function MainProfile() {
                         github == "" ? "hidden" : ""
                       }`}
                       style={{ backgroundColor: "white" }}
-                      target="_blank">
+                      target="_blank"
+                    >
                       <FaGithub color="#7C7C7C" size={12} />
                     </Link>
                     <Tooltip
                       content="Update your Profile"
                       className="rounded-md bg-opacity-90 bg-light-blue"
                       placement="right"
-                      showArrow>
+                      showArrow
+                    >
                       <span
                         className="border-[0.5px] border-white rounded-full h-fit p-1 cursor-pointer"
                         style={{ backgroundColor: "white" }}
-                        onClick={onOpen}>
+                        onClick={onOpen}
+                      >
                         <FaPencil color="#3e3d3d" size={12} />
                       </span>
                     </Tooltip>
@@ -687,23 +691,91 @@ function MainProfile() {
                                     <label className="text-sm font-medium flex gap-2 items-center mb-1">
                                       Upload Profile Image:
                                       <div className="border border-white rounded-full bg-white text-black p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer">
-                                        <RiFolderUserLine className="w-4 h-4"/>
+                                        <RiFolderUserLine className="w-4 h-4" />
                                       </div>
                                     </label>
                                     <input
                                       type="file"
                                       className="w-full text-sm"
-                                      onChange={(e) => uploadImage(e.target.files)}
+                                      onChange={(e) =>
+                                        uploadImage(e.target.files)
+                                      }
                                     />
                                   </div>
-                                  
+
                                   {[
-                                    { label: "Display name", icon: <MdDriveFileRenameOutline className="hover:bg-green-400 hover:scale-125"/>, value: displayName, onChange: (e: { target: { value: string; }; }) => handleInputChange("displayName", e.target.value) },
-                                    { label: "Email", icon: <MdOutlineMail />, value: emailId, onChange: (e: { target: { value: string; }; }) => handleInputChange("emailId", e.target.value) },
-                                    { label: "X (Formerly Twitter)", icon: <FaXTwitter />, value: twitter, onChange: (e: { target: { value: string; }; }) => handleInputChange("twitter", e.target.value) },
-                                    { label: "Discourse", icon: <FaDiscourse />, value: discourse, onChange: (e: { target: { value: string; }; }) => handleInputChange("discourse", e.target.value) },
-                                    { label: "Discord", icon: <FaDiscord />, value: discord, onChange: (e: { target: { value: string; }; }) => handleInputChange("discord", e.target.value) },
-                                    { label: "Github", icon: <FaGithub />, value: github, onChange: (e: { target: { value: string; }; }) => handleInputChange("github", e.target.value) },
+                                    {
+                                      label: "Display name",
+                                      icon: <MdDriveFileRenameOutline />,
+                                      value: displayName,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "displayName",
+                                          e.target.value
+                                        ),
+                                    },
+                                    {
+                                      label: "Email",
+                                      icon: <MdOutlineMail />,
+                                      value: emailId,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "emailId",
+                                          e.target.value
+                                        ),
+                                    },
+                                    {
+                                      label: "X (Formerly Twitter)",
+                                      icon: <FaXTwitter />,
+                                      value: twitter,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "twitter",
+                                          e.target.value
+                                        ),
+                                    },
+                                    {
+                                      label: "Discourse",
+                                      icon: <FaDiscourse />,
+                                      value: discourse,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "discourse",
+                                          e.target.value
+                                        ),
+                                    },
+                                    {
+                                      label: "Discord",
+                                      icon: <FaDiscord />,
+                                      value: discord,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "discord",
+                                          e.target.value
+                                        ),
+                                    },
+                                    {
+                                      label: "Github",
+                                      icon: <FaGithub />,
+                                      value: github,
+                                      onChange: (e: {
+                                        target: { value: string };
+                                      }) =>
+                                        handleInputChange(
+                                          "github",
+                                          e.target.value
+                                        ),
+                                    },
                                   ].map((field, index) => (
                                     <div key={index}>
                                       <label className="text-sm font-medium flex gap-2 items-center mb-1">
@@ -754,7 +826,7 @@ function MainProfile() {
                     closeDelay={1}
                     showArrow
                     className="bg-deep-blue text-white"
-                    >
+                  >
                     <span className="px-2 cursor-pointer">
                       <IoCopy onClick={() => handleCopy(`${address}`)} />
                     </span>
@@ -809,7 +881,8 @@ function MainProfile() {
                     {/* pass address of whom you want to delegate the voting power to */}
                     <button
                       className="bg-deep-blue font-bold text-white rounded-full my-2 px-8 py-[10px] btn-bd"
-                      onClick={() => handleDelegateVotes(`${address}`)}>
+                      onClick={() => handleDelegateVotes(`${address}`)}
+                    >
                       Become Delegate
                     </button>
                   </div>
@@ -828,7 +901,8 @@ function MainProfile() {
                   ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                   : "border-transparent"
               }`}
-              onClick={() => router.push(path + "?active=info")}>
+              onClick={() => router.push(path + "?active=info")}
+            >
               Info
             </button>
             <button
@@ -839,7 +913,8 @@ function MainProfile() {
               }`}
               onClick={() =>
                 router.push(path + "?active=sessions&session=schedule")
-              }>
+              }
+            >
               Sessions
             </button>
             <button
@@ -850,7 +925,8 @@ function MainProfile() {
               }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=schedule")
-              }>
+              }
+            >
               Office Hours
             </button>
 
@@ -861,7 +937,8 @@ function MainProfile() {
                     ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
                     : "border-transparent"
                 }`}
-                onClick={() => router.push(path + "?active=instant-meet")}>
+                onClick={() => router.push(path + "?active=instant-meet")}
+              >
                 Instant Meet
               </button>
             )}
@@ -930,8 +1007,8 @@ function MainProfile() {
           <div className="flex items-center justify-center pt-10">
             <ThreeCircles
               visible={true}
-              height="60"
-              width="60"
+              height="50"
+              width="50"
               color="#FFFFFF"
               ariaLabel="three-circles-loading"
               wrapperStyle={{}}

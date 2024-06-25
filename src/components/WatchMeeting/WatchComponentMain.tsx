@@ -80,7 +80,7 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
             <ConnectWalletWithENS />
           </div>
 
-          <div className="grid grid-cols-3 gap-y-4 gap-x-4 1.7xl:gap-x-6 pt-6 relative 1.7xl:pr-14 pr-4 lg:pr-5 xl-pr-10"> 
+          <div className="grid grid-cols-3 gap-y-4 gap-x-4 1.7xl:gap-x-6 pt-6 relative 1.7xl:pr-14 pr-4 lg:pr-5 xl-pr-10">
             {/* Left side */}
             <div className="sticky top-10 z-10 col-span-2 space-y-5 font-poppins pb-10 ">
               <WatchSessionVideo data={data} collection={collection} />
@@ -114,8 +114,8 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
         <div className="flex items-center justify-center mt-5">
           <ThreeCircles
             visible={true}
-            height="60"
-            width="60"
+            height="50"
+            width="50"
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}

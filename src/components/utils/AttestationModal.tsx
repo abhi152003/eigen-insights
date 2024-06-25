@@ -22,7 +22,7 @@ function AttestationModal({
   // console.log("Attestation modal");
 
   const shareOnTwitter = () => {
-    const url = encodeURIComponent(`https://app.chora.club/`);
+    const url = encodeURIComponent(`https://eigeninsight.vercel.app/`);
     const text = encodeURIComponent(
       `Just attended an amazing session on #Web3 in @EigenInsights! Learned so much and got a deeper understanding of ecosystem. Feeling inspired and ready to dive in!🚀 \n👉 ${decodeURIComponent(
         url

@@ -61,6 +61,8 @@ function ExploreDAOs() {
   const handleClick = (name: string, img: StaticImageData) => {
     const formatted = name.toLowerCase();
     const localData = JSON.parse(localStorage.getItem("visitedDao") || "{}");
+    // only store operators and avss, not analytics
+    if (formatted === "operators" || formatted === "avss")
     localStorage.setItem(
       "visitedDao",
       JSON.stringify({ ...localData, [formatted]: [formatted, img] })

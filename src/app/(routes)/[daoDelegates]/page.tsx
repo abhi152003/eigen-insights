@@ -26,7 +26,7 @@ export async function generateMetadata(
   const delegateMetadata = metadataConfig[daoDelegates];
 
   return {
-    metadataBase: new URL("https://app.chora.club/"),
+    metadataBase: new URL("https://eigeninsight.vercel.app/"),
     title: "Eigen Insight",
     description: "Discover. Learn. Engage.",
   };
