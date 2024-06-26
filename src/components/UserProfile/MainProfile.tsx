@@ -676,7 +676,7 @@ function MainProfile() {
                       <Modal
                         isOpen={isOpen}
                         onOpenChange={onOpenChange}
-                        className="font-poppins modal-bg"
+                        className="font-poppins modal-bg py-4"
                         size="3xl"
                       >
                         <ModalContent className="max-h-[95vh]">
@@ -1004,7 +1004,7 @@ function MainProfile() {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-center pt-10">
+          <div className="flex items-center justify-center" style={{ height: '100vh' }}>
             <ThreeCircles
               visible={true}
               height="50"

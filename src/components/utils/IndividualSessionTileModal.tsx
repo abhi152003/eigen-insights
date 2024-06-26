@@ -92,14 +92,13 @@ function IndividualSessionTileModal({
               <table className="table-auto w-full">
                 <tbody>
                   <tr>
-                    <td className="font-semibold pr-4">DAO Name:</td>
                     <td>{dao}</td>
                   </tr>
                   <tr>
                     <td className="font-semibold pr-4">Host:</td>
                     <td>
                       {host}{" "}
-                      <a
+                      {/* <a
                         href={
                           dao === "optimism" || "Optimism"
                             ? `https://optimism-sepolia.easscan.org/offchain/attestation/view/${host_attestation}`
@@ -112,7 +111,7 @@ function IndividualSessionTileModal({
                         style={{ color: "blue" }}
                       >
                         View↗️
-                      </a>
+                      </a> */}
                     </td>
                   </tr>
                   <tr>

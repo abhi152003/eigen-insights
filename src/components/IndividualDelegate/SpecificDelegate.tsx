@@ -31,6 +31,8 @@ import "../../css/ConnectWallet.css";
 import { FaTelegram } from "react-icons/fa";
 import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import OperatorsAnalytics from "./OperatorsAnalytics";
+import Operators from "./Operators";
+import Attestations from "./Attestations";
 
 interface Type {
   daoDelegates: string;
@@ -465,23 +467,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                         <FiExternalLink color="white" className="w-3 h-3" />
                       </div>
                     </Link>
-                    <div>
-                      {props.daoDelegates === "operators" ? (
-                        <button
-                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
-                          onClick={() => handleClick()}
-                        >
-                          Delegate
-                        </button>
-                      ) : (
-                        <button
-                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
-                          onClick={() => handleClick()}
-                        >
-                          Stake
-                        </button>
-                      )}
-                    </div>
                   </div>
                 </div>
 
@@ -520,7 +505,25 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
                 </div>
 
-                <div className="flex gap-3 py-1">
+                <div className="mt-5">
+                  {props.daoDelegates === "operators" ? (
+                    <button
+                      className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                      onClick={() => handleClick()}
+                    >
+                      Delegate
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                      onClick={() => handleClick()}
+                    >
+                      Stake
+                    </button>
+                  )}
+                </div>
+
+                {/* <div className="flex gap-3 py-1">
                   <div>
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
                       <span className="text-light-cyan font-semibold">
@@ -570,7 +573,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                       ETH
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* <div className="pt-2">
                   <button
@@ -594,14 +597,29 @@ function SpecificDelegate({ props }: { props: Type }) {
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "info"
-                    ?  " border-light-cyan text-light-cyan font-semibold"
+                    ? " border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
                 }`}
               onClick={() => router.push(path + "?active=info")}
             >
               Info
             </button>
-            {props.daoDelegates === 'avss' ? (
+            {props.daoDelegates === "avss" ? (
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "operators"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=operators")}
+              >
+                Node Operators
+              </button>
+            ) : (
+              ""
+            )}
+            {props.daoDelegates === "avss" ? (
               <button
                 className={`border-b-2 py-3 px-2
                   ${
@@ -615,13 +633,13 @@ function SpecificDelegate({ props }: { props: Type }) {
               </button>
             ) : (
               ""
-            )} 
+            )}
             <button
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "delegatesSession"
                     ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
@@ -634,13 +652,24 @@ function SpecificDelegate({ props }: { props: Type }) {
                 ${
                   searchParams.get("active") === "officeHours"
                     ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")
               }
             >
               Office Hours
+            </button>
+            <button
+              className={`border-b-2 py-3 px-2
+                ${
+                  searchParams.get("active") === "attestations"
+                    ? "border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
+                }`}
+              onClick={() => router.push(path + "?active=attestations")}
+            >
+              Attestations
             </button>
           </div>
 
@@ -652,14 +681,20 @@ function SpecificDelegate({ props }: { props: Type }) {
                 desc={delegateInfo.metadataDescription}
               />
             )}
+            {searchParams.get("active") === "operators" && (
+              <Operators props={props} />
+            )}
             {searchParams.get("active") === "analytics" && (
-              <OperatorsAnalytics />
+              <OperatorsAnalytics props={props} />
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />
             )}
             {searchParams.get("active") === "officeHours" && (
               <DelegateOfficeHrs props={props} />
+            )}
+            {searchParams.get("active") === "attestations" && (
+              <Attestations props={props} delegateInfo={delegateInfo} />
             )}
           </div>
         </div>

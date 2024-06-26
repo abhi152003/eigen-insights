@@ -320,60 +320,60 @@ const BottomBar: React.FC<BottomBarProps> = () => {
     }
   };
 
-  const opBlock = [
-    {
-      title: "Forum",
-      link: "https://gov.optimism.io/",
-    },
-    {
-      title: "Website",
-      link: "https://optimism.io/",
-    },
-    {
-      title: "Block Explorer",
-      link: "https://optimistic.etherscan.io/",
-    },
-    {
-      title: "Optimism Twitter Profile",
-      link: "https://twitter.com/Optimism",
-    },
-    {
-      title: "Optimism DAO Twitter Profile",
-      link: "https://twitter.com/OptimismGov",
-    },
-  ];
+  // const opBlock = [
+  //   {
+  //     title: "Forum",
+  //     link: "https://gov.optimism.io/",
+  //   },
+  //   {
+  //     title: "Website",
+  //     link: "https://optimism.io/",
+  //   },
+  //   {
+  //     title: "Block Explorer",
+  //     link: "https://optimistic.etherscan.io/",
+  //   },
+  //   {
+  //     title: "Optimism Twitter Profile",
+  //     link: "https://twitter.com/Optimism",
+  //   },
+  //   {
+  //     title: "Optimism DAO Twitter Profile",
+  //     link: "https://twitter.com/OptimismGov",
+  //   },
+  // ];
 
-  const arbBlock = [
-    {
-      title: "Forum",
-      link: "https://forum.arbitrum.foundation",
-    },
-    {
-      title: "Website",
-      link: "https://arbitrum.io",
-    },
-    {
-      title: "Arbitrum Foundation Website",
-      link: "https://arbitrum.foundation",
-    },
-    {
-      title: "Block Explorer",
-      link: "https://arbiscan.io",
-    },
-    {
-      title: "Arbitrum Twitter Profile",
-      link: "https://twitter.com/arbitrum",
-    },
-    {
-      title: "Arbitrum DAO Twitter Profile",
-      link: "https://twitter.com/DAO_Arbitrum",
-    },
-  ];
+  // const arbBlock = [
+  //   {
+  //     title: "Forum",
+  //     link: "https://forum.arbitrum.foundation",
+  //   },
+  //   {
+  //     title: "Website",
+  //     link: "https://arbitrum.io",
+  //   },
+  //   {
+  //     title: "Arbitrum Foundation Website",
+  //     link: "https://arbitrum.foundation",
+  //   },
+  //   {
+  //     title: "Block Explorer",
+  //     link: "https://arbiscan.io",
+  //   },
+  //   {
+  //     title: "Arbitrum Twitter Profile",
+  //     link: "https://twitter.com/arbitrum",
+  //   },
+  //   {
+  //     title: "Arbitrum DAO Twitter Profile",
+  //     link: "https://twitter.com/DAO_Arbitrum",
+  //   },
+  // ];
 
   return (
     <div className="w-full flex items-center px-10 justify-between pb-6 font-poppins">
       {/* Bottom Bar Left */}
-      <div>
+      {/* <div>
         {role === "host" ||
         role === "coHost" ||
         role === "speaker" ||
@@ -432,7 +432,7 @@ const BottomBar: React.FC<BottomBarProps> = () => {
           // </OutlineButton>
           <></>
         )}
-      </div>
+      </div> */}
 
       {/* Bottom Bar Center */}
       <div className="flex items-center gap-4">

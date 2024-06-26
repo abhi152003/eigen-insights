@@ -146,7 +146,7 @@ function DaoOfficeHours() {
             content={
               <div className="font-poppins">
                 Find all the current, upcoming, and past office hours hosted by
-                different DAOs, and easily search them by using Title or Host
+                different AVSs, and easily search them by using Title or Host
                 Address.
               </div>
             }

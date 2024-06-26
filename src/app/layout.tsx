@@ -25,17 +25,10 @@ const quanty = localFonts({
   variable: "--font-quanty",
 });
 
-// export const metadata: Metadata = {
-//   title: "eigen insights",
-//   description: "Discover. Learn. Engage.",
-//   icons: {
-//     icon: ["/favicon.png"],
-//   },
-// };
 export const metadata: Metadata = {
   metadataBase: new URL("https://eigeninsight.vercel.app/"),
   title: "EigenInsight",
-  description: "Discover. Learn. Engage.",
+  description: "Empowering EigenLayer with Data, Engagement, and Knowledge",
   icons: {
     icon: ["/favicon.png"],
   },

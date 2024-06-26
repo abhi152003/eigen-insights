@@ -490,13 +490,66 @@ function DelegateInfo({
     toast("Address Copied");
   };
 
-  console.log("avs operatorsassssssssss", avsOperators);
+  // console.log("avs operatorsassssssssss", avsOperators);
 
   return (
     <div>
+      <div className="flex gap-3 py-1">
+        <div>
+          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
+            <span className="text-light-cyan font-semibold">
+              {delegateInfo?.totalStakers
+                ? Number(delegateInfo?.totalStakers)
+                : 0}
+              &nbsp;
+            </span>
+            total stakers
+          </div>
+        </div>
+        <div>
+          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+            TVL
+            <span className="text-light-cyan font-semibold">
+              &nbsp;
+              {delegateInfo?.tvl.tvl
+                ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
+                : 0}
+              &nbsp;
+            </span>
+            ETH
+          </div>
+        </div>
+        <div>
+          {props.daoDelegates === "avss" && (
+            <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
+              <span className="text-light-cyan font-semibold">
+                {delegateInfo?.totalOperators
+                  ? Number(delegateInfo?.totalOperators)
+                  : 0}
+                &nbsp;
+              </span>
+              total operators
+            </div>
+          )}
+        </div>
+        <div>
+          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
+            TVL Restaked
+            <span className="text-light-cyan font-semibold">
+              &nbsp;
+              {delegateInfo?.tvl.tvl
+                ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                : 0}
+              &nbsp;
+            </span>
+            ETH
+          </div>
+        </div>
+      </div>
+
       <div
-        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)" }}
-        className={`ml-7 rounded-xl my-3 me-32 py-6 px-5 text-sm bg-deep-blue  ${
+        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)", width: "95%" }}
+        className={`rounded-xl my-3 py-6 px-5 text-sm bg-deep-blue ${
           desc ? "" : "min-h-52"
         }`}
       >
@@ -521,9 +574,9 @@ function DelegateInfo({
       </div>
 
       {/* <div className="flex w-fit gap-16 text-sm py-3 mb-6 ml-10"> */}
-      <div className="flex gap-16 text-sm py-3 mb-6 items-center justify-center">
-          <button
-            className={`
+      {/* <div className="flex gap-16 text-sm py-3 mb-6 items-center justify-center">
+        <button
+          className={`
               ml-[-90px] p-9 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
              ${
@@ -531,13 +584,12 @@ function DelegateInfo({
                  ? "text-light-cyan"
                  : "text-white font-bold border-white"
              } `}
-            onClick={() => fetchAttestation("onchain")}
-          >
-            
-            Onchain
-          </button>
-          <button
-            className={` 
+          onClick={() => fetchAttestation("onchain")}
+        >
+          Onchain
+        </button>
+        <button
+          className={` 
               ml-[-30px] p-5 border-[#A7DBF2] border-1 rounded-full px-6 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-100 outline-none duration-300 group
             ${
@@ -545,12 +597,12 @@ function DelegateInfo({
                 ? "text-light-cyan"
                 : "text-white font-bold border-white"
             }`}
-            onClick={() => fetchAttestation("offchain")}
-          >
-            Offchain
-          </button>
-        </div>
-        
+          onClick={() => fetchAttestation("offchain")}
+        >
+          Offchain
+        </button>
+      </div>
+
       <div className="grid grid-cols-4 pe-32 gap-10 px-12">
         {details.length > 0 ? (
           details.map((key, index) => (
@@ -584,11 +636,11 @@ function DelegateInfo({
         ) : (
           <div>No data available</div>
         )}
-      </div>
+      </div> */}
 
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
-          <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+          <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4" style={{ width: "100%" }}>
             <div className="p-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Total</h2>
@@ -648,7 +700,7 @@ function DelegateInfo({
         )}
       </div>
 
-      {props.daoDelegates === "avss" ? (
+      {/* {props.daoDelegates === "avss" ? (
         <div>
           <h1 className="mt-10 ml-3 font-medium text-3xl">Node Operators</h1>
           <div className="py-8 pe-14 font-poppins">
@@ -807,7 +859,7 @@ function DelegateInfo({
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 }

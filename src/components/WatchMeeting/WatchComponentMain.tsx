@@ -5,7 +5,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Oval, ThreeCircles } from "react-loader-spinner";
 import search from "@/assets/images/daos/search.png";
 import WatchSession from "./WatchSession";
-import WatchSessionList from "./WatchSessionList";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import styles from "./WatchSession.module.css";
 import WatchSessionVideo from "./WatchSessionVideo";
@@ -14,7 +13,6 @@ import { color } from "framer-motion";
 import WatchCollectibleInfo from "./WatchCollectibleInfo";
 import WatchLeaderBoard from "./WatchLeaderBoard";
 import WatchFreeCollect from "./WatchFreeCollect";
-import WatchVideoRecommendation from "./WatchVideoRecommendation";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import "../../css/ShineFont.css"
 
@@ -111,7 +109,7 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center mt-5">
+        <div className="flex items-center justify-center mt-50">
           <ThreeCircles
             visible={true}
             height="50"

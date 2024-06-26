@@ -163,15 +163,15 @@ SessionTileProps) {
     // const address = await walletClient.getAddresses();
     // console.log(address);
     let token = "";
-    let EASContractAddress = "";
+    // let EASContractAddress = "";
 
-    if (dao === "optimism") {
-      token = "OP";
-      EASContractAddress = "0x4200000000000000000000000000000000000021";
-    } else if (dao === "arbitrum") {
-      token = "ARB";
-      EASContractAddress = "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458";
-    }
+    // if (dao === "optimism") {
+    //   token = "OP";
+    //   EASContractAddress = "0x4200000000000000000000000000000000000021";
+    // } else if (dao === "arbitrum") {
+    //   token = "ARB";
+    //   EASContractAddress = "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458";
+    // }
 
     const data = {
       recipient: address,

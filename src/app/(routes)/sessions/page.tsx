@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://eigeninsight.vercel.app/"),
-  title: "Eigen Insight",
-  description: "Discover. Learn. Engage.",
+  title: "EigenInsight",
+  description: "Empowering EigenLayer with Data, Engagement, and Knowledge",
   openGraph: {
-    title: "Available Delegates",
+    title: "Available AVSs and Node Operators",
     description:
-      "Explore available delegates by DAO, date, and time to book sessions and unlock Web3 opportunities.",
+      "Explore available AVSs and Node Operators by date and time to book sessions and unlock Web3 opportunities.",
     url: "https://eigeninsight.vercel.app/available-delegates",
-    siteName: "Eigen Insight",
+    siteName: "EigenInsight",
     images: [
       {
         url: "https://gateway.lighthouse.storage/ipfs/QmUEoQqvoYbfp9ZD3AHzDNBYTmwovDifVBxWByzr8mMKnT",

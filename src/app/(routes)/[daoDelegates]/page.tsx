@@ -8,13 +8,13 @@ const metadataConfig: any = {
     title: "Operators",
     description:
       "Operators are entities that help run AVS software built on EigenLayer. They register in EigenLayer and allow stakers to delegate to them, then opt in to provide various services (AVSs) built on top of EigenLayer.",
-    image:"",
+    image: "",
   },
   avss: {
     title: "AVSs",
     description:
       "Actively Validated Services (AVSs) are services built on the EigenLayer protocol that leverage Ethereum's shared security.Operators perform validation tasks for AVSs, contributing to the security and integrity of the network.AVSs deliver services to users (AVS Consumers) and the broader Web3 ecosystem.",
-    image:"",
+    image: "",
   },
 };
 
@@ -27,16 +27,15 @@ export async function generateMetadata(
 
   return {
     metadataBase: new URL("https://eigeninsight.vercel.app/"),
-    title: "Eigen Insight",
-    description: "Discover. Learn. Engage.",
+    title: "EigenInsight",
+    description: "Empowering EigenLayer with Data, Engagement, and Knowledge",
   };
 }
 
 function page({ params }: { params: { daoDelegates: string } }) {
   return (
     <div>
-      {params.daoDelegates === "operators" ||
-      params.daoDelegates === "avss" ? (
+      {params.daoDelegates === "operators" || params.daoDelegates === "avss" ? (
         <IndividualDAO props={params} />
       ) : (
         <PageNotFound />

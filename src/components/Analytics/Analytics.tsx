@@ -395,7 +395,7 @@ function Analytics() {
 
   return (
     <div className="p-20">
-      <h1 className="text-4xl text-center pb-7">Analytics</h1>
+      <h1 className="text-5xl text-center pb-7">Analytics</h1>
       {isPageLoading && (
         <div className="flex items-center justify-center pt-40">
           <ThreeCircles
@@ -432,7 +432,7 @@ function Analytics() {
           </div> */}
 
           <div>
-            <h1 className="mt-5">TVL Restaking Distribution</h1>
+            <h1 className="mt-7 text-[2.25rem] font-semibold	">TVL Restaking Distribution</h1>
             <div className="flex justify-center mt-5 pe-14">
               {filteredData.length > 0 ? (
                 <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
@@ -498,7 +498,7 @@ function Analytics() {
           </div>
 
           <div>
-            <h1>Opeators Distribution</h1>
+            <h1 className="mt-7 text-[2.25rem]  font-semibold	">Opeators Distribution</h1>
             <div className="flex justify-center mt-5 pe-14">
               {filteredOperatorsData.length > 0 ? (
                 <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
@@ -568,9 +568,8 @@ function Analytics() {
           </div>
 
           <div className="mt-10">
+            <h1 className="mt-10 text-[1.25rem] font-semibold	">All Withdrawals</h1>
             <div className="mx-auto py-8 overflow-x-auto">
-              <h1 className="mt-10 mb-10">All Withdrawals</h1>
-
               <table className="w-full border-collapse text-center text-white">
                 <thead>
                   <tr className="bg-gray-800">
