@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://eigeninsight.vercel.app/"),
-  title: "Eigen Insight",
-  description: "Discover. Learn. Engage.",
+  title: "EigenInsight",
+  description: "Empowering EigenLayer with Data, Engagement, and Knowledge",
   openGraph: {
     title: "Office Hours",
     description:
-      "Find all the current, upcoming, and past office hours hosted by different DAOs, and easily search them by using Title or Host Address.",
+      "Find all the current, upcoming, and past office hours hosted by different AVSs, and easily search them by using Title or Host Address.",
     url: "https://eigeninsight.vercel.app/office-hours?hours=ongoing",
-    siteName: "Eigen Insight",
+    siteName: "EigenInsight",
     images: [
       {
         url: "https://gateway.lighthouse.storage/ipfs/QmPjZZxacLkRM1kPSBMmyV45MUtCHJPAPYW21cSds8gUet",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 function page() {
   return (
     <div>
-        <DaoOfficeHours />
+      <DaoOfficeHours />
     </div>
   );
 }

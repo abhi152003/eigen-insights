@@ -36,7 +36,7 @@ function FeedbackTile() {
       {isShowing && !isPageLoading && !dataShowing && (
         <div className="bg-[#427FA3] flex justify-center items-center py-2 font-poppins">
           <span className="">
-            Enjoying Eigen Insight? Share your feedback on{" "}
+            Enjoying EigenInsight? Share your feedback on{" "}
             <Link
               target="_blank"
               className="underline"
@@ -55,8 +55,9 @@ function FeedbackTile() {
             .
           </span>
           <div className="flex absolute right-4">
-            <button onClick={handleCloseClick}
-            className="text-light-cyan hover:text-deep-blue"
+            <button
+              onClick={handleCloseClick}
+              className="text-light-cyan hover:text-deep-blue"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,4 +82,3 @@ function FeedbackTile() {
 }
 
 export default FeedbackTile;
-

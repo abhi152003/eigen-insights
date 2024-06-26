@@ -317,7 +317,7 @@ function WatchSession({
                           "........." +
                           attendee.attendee_address.slice(-6)}{" "}
                       </div>
-                      {attendee.attendee_uid ? (
+                      {/* {attendee.attendee_uid ? (
                         <Link
                           href={
                             data.dao_name === ("optimism" || "Optimism")
@@ -332,7 +332,7 @@ function WatchSession({
                         </Link>
                       ) : (
                         <></>
-                      )}
+                      )} */}
                     </div>
                     {index !== data.attendees.length - 1 && (
                       <div className="border border-[#D9D9D9]"></div>

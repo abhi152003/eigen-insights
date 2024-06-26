@@ -96,14 +96,13 @@ function IndividualTileModal({
               <table className="table-auto w-full">
                 <tbody>
                   <tr>
-                    <td className="font-semibold pr-4">DAO Name:</td>
                     <td>{dao}</td>
                   </tr>
                   <tr>
                     <td className="font-semibold pr-4">Host:</td>
                     <td>
                       {host}{" "}
-                      <a
+                      {/* <a
                         href={
                           dao === "optimism" || "Optimism"
                             ? `https://optimism-sepolia.easscan.org/offchain/attestation/view/${host_attestation}`
@@ -117,7 +116,7 @@ function IndividualTileModal({
                         className="px-2"
                       >
                         View↗️
-                      </a>
+                      </a> */}
                     </td>
                   </tr>
                   <tr>
@@ -126,7 +125,7 @@ function IndividualTileModal({
                       {attendees?.map((attendee, index) => (
                         <li className="list-decimal" key={index}>
                           {attendee.attendee_address}
-                          <a
+                          {/* <a
                             href={
                               dao === "optimism" || "Optimism"
                                 ? `https://optimism-sepolia.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
@@ -140,7 +139,7 @@ function IndividualTileModal({
                             className="px-3"
                           >
                             View↗️
-                          </a>
+                          </a> */}
                         </li>
                       ))}
                     </td>

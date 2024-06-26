@@ -20,22 +20,6 @@ function DelegateSessionsMain() {
       <div className="">
         <div className="flex justify-between pt-6 pl-14 pr-14">
           <div className="flex font-quanty font-medium text-4xl text-light-cyan mx-3 pb-4 items-center">
-            {/* <div>
-              <Tooltip
-                showArrow
-                content={
-                  <div className="font-poppins">
-                    Explore available delegates by DAO, date, and time to book
-                    sessions and unlock Web3 opportunities.
-                  </div>
-                }
-                placement="right"
-                className="rounded-md bg-opacity-90 max-w-96"
-                closeDelay={1}
-              >
-                <div> Available Delegates</div>
-              </Tooltip>
-            </div>  */}
             Sessions
           </div>
           <div>
@@ -78,7 +62,7 @@ function DelegateSessionsMain() {
               showArrow
               content={
                 <div className="font-poppins text-white">
-                  Explore available delegates by DAO, date, and time to book
+                  Explore available Operators and AVSs by date and time to book
                   sessions and unlock Web3 opportunities.
                 </div>
               }

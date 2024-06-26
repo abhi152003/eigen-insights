@@ -485,13 +485,13 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
         <div className="w-full md:w-auto min-w-[34vw] h-[38rem] mt-2 p-8 bg-white rounded-2xl shadow-lg session-bg md:ml-[4vmax]">
           <div className="mb-4">
             <label className="text-white flex items-center">
-              Select DAO Name:
+              Select Operators/AVSs :
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
-                    DAO for which the session is to be created. The attestations
-                    will be issued for the selected DAO. The attendees of this
-                    session will seek questions related to the selected DAO.
+                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
+                    Operator/AVS for which the session is to be created. The attestations
+                    will be issued for the selected Operator/AVS. The attendees of this
+                    session will seek questions related to the selected Operator/AVS.
                   </div>
                 }
                 showArrow

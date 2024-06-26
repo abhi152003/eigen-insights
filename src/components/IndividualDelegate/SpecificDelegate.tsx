@@ -31,6 +31,8 @@ import "../../css/ConnectWallet.css";
 import { FaTelegram } from "react-icons/fa";
 import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import OperatorsAnalytics from "./OperatorsAnalytics";
+import Operators from "./Operators";
+import Attestations from "./Attestations";
 
 interface Type {
   daoDelegates: string;
@@ -297,33 +299,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                         <FiExternalLink color="white" className="w-3 h-3" />
                       </div>
                     </Link>
-                    <div>
-                      {props.daoDelegates === "operators" ? (
-                        <button 
-                        className="bg-midnight-blue text-white rounded-full px-8 py-1 mt-[-3px] cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group btnShineWallet"
-                          onClick={() => handleClick()}
-                        >
-                        <span className="relative z-10 text-white group-hover:text-white text-base duration-500">Delegate</span>
-                        <span className="absolute w-full h-full bg-medium-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
-                        <span className="absolute w-full h-full bg-medium-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
-                      </button>
-
-                        // <button
-                        //   className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 mt-[-3px] btnShineWallet"
-                        //   onClick={() => handleClick()}
-                        // >
-                        //   Delegate
-                        // </button>
-                      ) : (
-                        <button
-                          className="bg-midnight-blue text-white rounded-full px-8 py-1 mt-[-3px] cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group btnShineWallet"
-                          onClick={() => handleClick()}
-                        ><span className="relative z-10 text-white group-hover:text-white text-base duration-500">Stake</span>
-                        <span className="absolute w-full h-full bg-medium-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
-                        <span className="absolute w-full h-full bg-medium-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
-                        </button>
-                      )}
-                    </div>
                   </div>
                 </div>
 
@@ -362,7 +337,25 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
                 </div>
 
-                <div className="flex gap-3 py-1">
+                <div className="mt-5">
+                  {props.daoDelegates === "operators" ? (
+                    <button
+                      className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                      onClick={() => handleClick()}
+                    >
+                      Delegate
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                      onClick={() => handleClick()}
+                    >
+                      Stake
+                    </button>
+                  )}
+                </div>
+
+                {/* <div className="flex gap-3 py-1">
                   <div>
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
                       <span className="text-light-cyan text-base font-semibold">
@@ -412,7 +405,18 @@ function SpecificDelegate({ props }: { props: Type }) {
                       ETH
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+                {/* <div className="pt-2">
+                  <button
+                    className="bg-midnight-blue font-bold text-white rounded-full px-8 py-[10px] btnShineWallet"
+                    onClick={() =>
+                      handleDelegateVotes(`${props.individualDelegate}`)
+                    }
+                  >
+                    Stake
+                  </button>
+                </div> */}
               </div>
             </div>
             <div className="pr-[2.2rem]">
@@ -432,6 +436,21 @@ function SpecificDelegate({ props }: { props: Type }) {
             >
               Info
             </button>
+            {props.daoDelegates === "avss" ? (
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "operators"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=operators")}
+              >
+                Node Operators
+              </button>
+            ) : (
+              ""
+            )}
             {props.daoDelegates === "avss" ? (
               <button
                 className={`border-b-2 py-3 px-2
@@ -473,6 +492,17 @@ function SpecificDelegate({ props }: { props: Type }) {
             >
               Office Hours
             </button>
+            <button
+              className={`border-b-2 py-3 px-2
+                ${
+                  searchParams.get("active") === "attestations"
+                    ? "border-light-cyan text-light-cyan font-semibold"
+                    : "border-transparent"
+                }`}
+              onClick={() => router.push(path + "?active=attestations")}
+            >
+              Attestations
+            </button>
           </div>
 
           <div className="py-6 ps-16">
@@ -483,14 +513,20 @@ function SpecificDelegate({ props }: { props: Type }) {
                 desc={delegateInfo.metadataDescription}
               />
             )}
+            {searchParams.get("active") === "operators" && (
+              <Operators props={props} />
+            )}
             {searchParams.get("active") === "analytics" && (
-              <OperatorsAnalytics />
+              <OperatorsAnalytics props={props} />
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />
             )}
             {searchParams.get("active") === "officeHours" && (
               <DelegateOfficeHrs props={props} />
+            )}
+            {searchParams.get("active") === "attestations" && (
+              <Attestations props={props} delegateInfo={delegateInfo} />
             )}
           </div>
         </div>

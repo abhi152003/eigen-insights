@@ -249,9 +249,7 @@ export const bookedSessionTemplate = `
 																<div class="alignment" align="center">
 																	<table class="social-table" width="156px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;">
 																		<tr>
-																			<td style="padding:0 10px 0 10px;"><a href="https://twitter.com/ChoraClub" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/twitter@2x.png" width="32" height="auto" alt="Twitter" title="twitter" style="display: block; height: auto; border: 0;"></a></td>
-																			<td style="padding:0 10px 0 10px;"><a href="https://t.me/choraclub" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/t-only-logo-dark-gray/telegram@2x.png" width="32" height="auto" alt="Telegram" title="Telegram" style="display: block; height: auto; border: 0;"></a></td>
-																			<td style="padding:0 10px 0 10px;"><a href="https://discord.com/invite/mFyeq34cGM" target="_blank"><img src="https://6471c02b65.imgdist.com/pub/bfra/1bwrq0yc/0ct/ujw/hfv/69dc1534-5dc1-4e95-bfc5-35581a60a1a4.png" width="32" height="auto" alt="Discord" title="Discord" style="display: block; height: auto; border: 0;"></a></td>
+																			<td style="padding:0 10px 0 10px;"></td>
 																		</tr>
 																	</table>
 																</div>

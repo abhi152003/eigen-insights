@@ -295,7 +295,7 @@ function AvailableSessions() {
             showArrow
             content={
               <div className="font-poppins text-white">
-                Select a DAO option to view available Delegates of that DAO.
+                Select a Operators/AVSs option to view available sessions
               </div>
             }
             placement="bottom"
@@ -392,6 +392,8 @@ function AvailableSessions() {
           </div>
         </Tooltip>
       </div>
+
+      {/* Remove this component */}
 
       <div
         // key={index}
@@ -579,9 +581,10 @@ function AvailableSessions() {
               <div
                 key={index}
                 style={{
-                  boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
+                  boxShadow:
+                    "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
                 }}
-                className="rounded-3xl flex flex-col bg-white"
+                className="rounded-3xl flex flex-col bg-deep-blue my-8"
               >
                 <div className="flex items-center mb-4 border-b-2 py-5 px-5 rounded-tl-3xl rounded-tr-3xl">
                   <div
@@ -629,7 +632,7 @@ function AvailableSessions() {
                   </div>
 
                   <div className="w-3/4 ml-4">
-                    <div className="text-[#3E3D3D] text-lg font-semibold mb-1">
+                    <div className="text-light-cyan text-lg font-semibold mb-1">
                       {ensNames[daos.userInfo[0].address] ||
                         daos.userInfo[0].displayName ||
                         daos.session.userAddress.slice(0, 6) +
@@ -648,6 +651,7 @@ function AvailableSessions() {
                           placement="right"
                           closeDelay={1}
                           showArrow
+                          className="bg-midnight-blue text-white"
                         >
                           <div
                             className="pl-2 pt-[2px] cursor-pointer"
@@ -657,6 +661,7 @@ function AvailableSessions() {
                               onClick={() =>
                                 handleCopy(`${daos.session.userAddress}`)
                               }
+                              className="text-white hover:text-light-cyan"
                             />
                           </div>
                         </Tooltip>
@@ -674,12 +679,12 @@ function AvailableSessions() {
                         />
                       </div>
                     </div>
-                    <div className="mt-2 bg-[#1E1E1E] border border-[#1E1E1E] text-white rounded-md text-xs px-5 py-1 font-semibold w-fit capitalize">
+                    <div className="mt-2 bg-midnight-blue border-1 border-white text-white rounded-md text-xs px-4 py-1 font-semibold w-fit capitalize">
                       {daos.session.dao_name}
                     </div>
                     <div>
                       <div
-                        className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mt-4 "
+                        className="text-[#4F4F4F] rounded-md mt-3"
                         style={{
                           overflowX: "auto",
                           overflowY: "hidden",
@@ -701,7 +706,7 @@ function AvailableSessions() {
                             .map((date: string, index: number) => (
                               <div
                                 key={index}
-                                className="text-black bg-[#f7f7f7c3] rounded-2xl font-semibold text-small border-[0.5px] border-[#D9D9D9] px-3 py-1 mr-4"
+                                className="text-midnight-blue bg-white rounded-2xl font-semibold text-small border-[0.5px] border-[#D9D9D9] px-4 py-1"
                               >
                                 {new Date(date).toLocaleString().split(",")[0]}
                               </div>

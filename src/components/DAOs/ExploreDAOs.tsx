@@ -255,9 +255,9 @@ function ExploreDAOs() {
                 <div className="font-semibold capitalize">Analytics</div>
               </div>
             </div>
-          </div>
-          </div>
+          </div>          
         </div>
+      </div>
       {showNotification && !isPageLoading && (
         <div
           className={`flex fixed items-center justify-center bottom-9 rounded-full font-poppins text-sm font-medium left-[34%] w-[32rem] ${
