@@ -488,7 +488,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select DAO Name:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
                     DAO for which the session is to be created. The attestations
                     will be issued for the selected DAO. The attendees of this
                     session will seek questions related to the selected DAO.
@@ -513,7 +513,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Time Slot Size:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
                     The duration for which you would be able to take the
                     session. The preferred duration is 30 minutes. And note that
                     the selected time slot size will apply to all the selected
@@ -545,7 +545,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Date:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
                     It is based on your timezone.
                   </div>
                 }
@@ -572,7 +572,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               Select Available Time:
               <Tooltip
                 content={
-                  <div className="font-poppins p-2 bg-gray-800 text-white rounded-md max-w-[35vw]">
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
                     Session start time and end time based on your timezone.
                   </div>
                 }
@@ -590,7 +590,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 <label className="text-white mt-4">Start Time</label>
                 <div className="relative">
                   <select
-                    className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
+                    className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-medium-blue text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
                     value={selectedStartTime}
                     onChange={handleStartTimeChange}
                   >
@@ -611,7 +611,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 <label className="text-white mt-2">End Time</label>
                 <div className="relative">
                   <select
-                    className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
+                    className="appearance-none border border-gray-300 rounded px-3 py-2 mt-1 w-full bg-white dark:bg-medium-blue text-gray-800 dark:text-gray-300 focus:outline-none focus:border-blue-400 dark:focus:border-blue-400 transition duration-300 ease-in-out"
                     value={selectedEndTime}
                     onChange={handleEndTimeChange}
                   >
@@ -683,9 +683,10 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               createSessionLoading
                 ? "bg-green-400 cursor-not-allowed"
                 : "bg-[#427FA3] hover:bg-[#214965]"
-            } text-white font-bold py-3 px-4 rounded-3xl mt-4 w-[160px] flex justify-center items-center`}
+            } mt-3 w-fit flex justify-center items-center bg-midnight-blue text-white rounded-full cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group text-base py-3 px-12`}
             disabled={createSessionLoading}
           >
+            <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
             {createSessionLoading ? (
               <ThreeCircles
                 visible={true}
@@ -698,7 +699,9 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               />
             ) : (
               "Create Session"
-            )}
+            )}</span>
+             <span className="absolute w-full h-full bg-light-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+             <span className="absolute w-full h-full bg-light-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
           </button>
 
           <Toaster

@@ -145,44 +145,6 @@ function SpecificDelegate({ props }: { props: Type }) {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const checkDelegateStatus = async () => {
-  //     setIsPageLoading(true);
-  //     //   const addr = await walletClient.getAddresses();
-  //     //   const address1 = addr[0];
-  //     let delegateTxAddr = "";
-  //     const contractAddress = ""
-  //     try {
-  //       const delegateTx = await publicClient.readContract({
-  //         address: contractAddress,
-  //         abi: dao_abi.abi,
-  //         functionName: "delegates",
-  //         args: [addressFromUrl],
-  //         // account: address1,
-  //       });
-  //       console.log("Delegate tx", delegateTx);
-  //       delegateTxAddr = delegateTx;
-  //       if (delegateTxAddr.toLowerCase() === addressFromUrl?.toLowerCase()) {
-  //         console.log("Delegate comparison: ", delegateTx, addressFromUrl);
-  //         setSelfDelegate(true);
-  //       }
-  //       setIsPageLoading(false);
-  //     } catch (error) {
-  //       console.error("Error in reading contract", error);
-  //       setIsPageLoading(false);
-  //     }
-  //   };
-  //   checkDelegateStatus();
-  // }, []);
-
-  // if (isPageLoading) {
-  //   return null;
-  // }
-
-  // if (!isDelegate && !selfDelegate && !isPageLoading) {
-  //   return <div>No such Delegate for this address</div>;
-  // }
-
   const formatNumber = (number: number) => {
     if (number >= 1000000) {
       return (number / 1000000).toFixed(2) + "m";
@@ -208,137 +170,6 @@ function SpecificDelegate({ props }: { props: Type }) {
     }
   };
 
-  // const handleDelegateVotes = async (to: string) => {
-  //   let address;
-  //   let address1;
-
-  //   try {
-  //     address = await walletClient.getAddresses();
-  //     address1 = address[0];
-  //   } catch (error) {
-  //     console.error("Error getting addresses:", error);
-  //     toast.error("Please connect your MetaMask wallet!");
-  //     return;
-  //   }
-
-  //   if (!address1) {
-  //     toast.error("Please connect your MetaMask wallet!");
-  //     return;
-  //   }
-
-  //   console.log(address);
-  //   console.log(address1);
-
-  //   let chainAddress;
-
-  //   console.log("walletClient?.chain?.network", walletClient?.chain?.network);
-
-  //   if (walletClient?.chain === "") {
-  //     toast.error("Please connect your wallet!");
-  //   } else {
-  //     if (walletClient?.chain?.network === props.daoDelegates) {
-  //       const delegateTx = await walletClient.writeContract({
-  //         address: chainAddress,
-  //         abi: dao_abi.abi,
-  //         functionName: "delegate",
-  //         args: [to],
-  //         account: address1,
-  //       });
-
-  //       console.log(delegateTx);
-  //     } else {
-  //       toast.error("Please switch to appropriate network to delegate!");
-
-  //       if (openChainModal) {
-  //         openChainModal();
-  //       }
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // Fetch data from your backend API to check if the address exists
-
-  //       console.log("Fetching from DB");
-  //       // const dbResponse = await axios.get(`/api/profile/${address}`);
-
-  //       const myHeaders = new Headers();
-  //       myHeaders.append("Content-Type", "application/json");
-
-  //       const raw = JSON.stringify({
-  //         address: props.individualDelegate,
-  //         daoName: props.daoDelegates,
-  //       });
-
-  //       const requestOptions: any = {
-  //         method: "POST",
-  //         headers: myHeaders,
-  //         body: raw,
-  //         redirect: "follow",
-  //       };
-  //       const res = await fetch(
-  //         `/api/profile/${props.individualDelegate}`,
-  //         requestOptions
-  //       );
-
-  //       const dbResponse = await res.json();
-  //       console.log("db Response", dbResponse);
-  //       if (
-  //         dbResponse &&
-  //         Array.isArray(dbResponse.data) &&
-  //         dbResponse.data.length > 0
-  //       ) {
-  //         // Iterate over each item in the response data array
-  //         for (const item of dbResponse.data) {
-  //           // Check if address and daoName match
-  //           // console.log("Item: ", item);
-
-  //           // if (
-  //           //   item.daoName === dao &&
-  //           //   item.address === props.individualDelegate
-  //           // ) {
-  //           // console.log("Data found in the database", item);
-  //           // Data found in the database, set the state accordingly
-  //           // setResponseFromDB(true);
-  //           setDisplayImage(item.image);
-  //           setDescription(item.description);
-  //           setDisplayName(item.displayName);
-  //           // setEmailId(item.emailId);
-
-  //           setSocials({
-  //             twitter: item.socialHandles.twitter,
-  //             discord: item.socialHandles.discord,
-  //             discourse: item.socialHandles.discourse,
-  //             website: item.socialHandles.website,
-  //           });
-  //           // Exit the loop since we found a match
-  //           //   break;
-  //           // }
-  //         }
-  //       } else {
-  //         console.log(
-  //           "Data not found in the database, fetching from third-party API"
-  //         );
-  //         // Data not found in the database, fetch data from the third-party API
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [chain, props.individualDelegate]);
-
-  // useEffect(() => {
-  //   const fetchEnsName = async () => {
-  //     const ensName = await getEnsNameOfUser(props.individualDelegate);
-  //     setDisplayEnsName(ensName);
-  //   };
-  //   fetchEnsName();
-  // }, [chain, props.individualDelegate]);
-
   console.log(delegateInfo);
   return (
     <>
@@ -351,7 +182,7 @@ function SpecificDelegate({ props }: { props: Type }) {
             color="#FFFFFF"
             ariaLabel="three-circles-loading"
             wrapperStyle={{}}
-            wrapperClass=""
+            // wrapperclassName=""
           />
         </div>
       )}
@@ -362,11 +193,12 @@ function SpecificDelegate({ props }: { props: Type }) {
               <div
                 className="mt-1 relative object-cover h-50 rounded-3xl"
                 style={{
-                  backgroundColor: "#fcfcfc",
-                  border: "2px solid #E9E9E9 ",
+                  border: "4px solid ##A7DBF2",
+                  boxShadow:
+                    "0 4px 20px 0px rgba(94, 156, 191, 0.7), 0 4px 20px 0px rgba(94, 156, 191, 0.5)",
                 }}
               >
-                <div className="w-50 h-50 flex items-center justify-content ">
+                <div className="w-50 h-50 flex items-center justify-center ">
                   <div className="flex justify-center items-center w-40 h-40">
                     <Image
                       src={
@@ -384,8 +216,8 @@ function SpecificDelegate({ props }: { props: Type }) {
                       objectFit="cover"
                       className={
                         displayImage || delegateInfo?.metadataLogo
-                          ? "w-50 h-50 rounded-3xl"
-                          : "w-20 h-20 rounded-3xl"
+                          ? "static w-30 h-30 rounded-3xl imgFix"
+                          : "static w-20 h-20 rounded-3xl imgFix"
                       }
                     />
                   </div>
@@ -461,24 +293,34 @@ function SpecificDelegate({ props }: { props: Type }) {
                       style={{ backgroundColor: "black" }}
                       target="_blank"
                     >
-                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-light-cyan hover:text-white hover:cursor-pointer hover:scale-125">
+                      <div className="  rounded-full bg-black text-black p-[6px] hover:bg-medium-blue hover:text-white hover:cursor-pointer hover:scale-125">
                         <FiExternalLink color="white" className="w-3 h-3" />
                       </div>
                     </Link>
                     <div>
                       {props.daoDelegates === "operators" ? (
-                        <button
-                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                        <button 
+                        className="bg-midnight-blue text-white rounded-full px-8 py-1 mt-[-3px] cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group btnShineWallet"
                           onClick={() => handleClick()}
                         >
-                          Delegate
-                        </button>
+                        <span className="relative z-10 text-white group-hover:text-white text-base duration-500">Delegate</span>
+                        <span className="absolute w-full h-full bg-medium-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+                        <span className="absolute w-full h-full bg-medium-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
+                      </button>
+
+                        // <button
+                        //   className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 mt-[-3px] btnShineWallet"
+                        //   onClick={() => handleClick()}
+                        // >
+                        //   Delegate
+                        // </button>
                       ) : (
                         <button
-                          className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
+                          className="bg-midnight-blue text-white rounded-full px-8 py-1 mt-[-3px] cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group btnShineWallet"
                           onClick={() => handleClick()}
-                        >
-                          Stake
+                        ><span className="relative z-10 text-white group-hover:text-white text-base duration-500">Stake</span>
+                        <span className="absolute w-full h-full bg-medium-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+                        <span className="absolute w-full h-full bg-medium-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
                         </button>
                       )}
                     </div>
@@ -523,7 +365,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 <div className="flex gap-3 py-1">
                   <div>
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-                      <span className="text-light-cyan font-semibold">
+                      <span className="text-light-cyan text-base font-semibold">
                         {delegateInfo?.totalStakers
                           ? Number(delegateInfo?.totalStakers)
                           : 0}
@@ -533,7 +375,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </div>
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                       TVL
-                      <span className="text-light-cyan font-semibold">
+                      <span className="text-light-cyan text-base font-semibold">
                         &nbsp;
                         {delegateInfo?.tvl.tvl
                           ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
@@ -547,7 +389,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                   <div>
                     {props.daoDelegates === "avss" && (
                       <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-                        <span className="text-light-cyan font-semibold">
+                        <span className="text-light-cyan text-base font-semibold">
                           {delegateInfo?.totalOperators
                             ? Number(delegateInfo?.totalOperators)
                             : 0}
@@ -558,7 +400,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     )}
                     <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
                       TVL Restaked
-                      <span className="text-light-cyan font-semibold">
+                      <span className="text-light-cyan text-base font-semibold">
                         &nbsp;
                         {delegateInfo?.tvl.tvl
                           ? parseFloat(
@@ -571,17 +413,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </div>
                   </div>
                 </div>
-
-                {/* <div className="pt-2">
-                  <button
-                    className="bg-midnight-blue font-bold text-white rounded-full px-8 py-[10px] btnShineWallet"
-                    onClick={() =>
-                      handleDelegateVotes(`${props.individualDelegate}`)
-                    }
-                  >
-                    Stake
-                  </button>
-                </div> */}
               </div>
             </div>
             <div className="pr-[2.2rem]">
@@ -594,14 +425,14 @@ function SpecificDelegate({ props }: { props: Type }) {
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "info"
-                    ?  " border-light-cyan text-light-cyan font-semibold"
+                    ? " border-light-cyan text-light-cyan font-semibold"
                     : "border-transparent"
                 }`}
               onClick={() => router.push(path + "?active=info")}
             >
               Info
             </button>
-            {props.daoDelegates === 'avss' ? (
+            {props.daoDelegates === "avss" ? (
               <button
                 className={`border-b-2 py-3 px-2
                   ${
@@ -615,13 +446,13 @@ function SpecificDelegate({ props }: { props: Type }) {
               </button>
             ) : (
               ""
-            )} 
+            )}
             <button
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "delegatesSession"
                     ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=delegatesSession&session=book")
@@ -634,7 +465,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 ${
                   searchParams.get("active") === "officeHours"
                     ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
+                    : "border-transparent"
                 }`}
               onClick={() =>
                 router.push(path + "?active=officeHours&hours=ongoing")

@@ -41,3 +41,10 @@
     left: 100%;
   }
 }
+
+.imgFix {
+  position: absolute !important;
+  height: 90% !important;
+  width: 90% !important;
+  margin: auto auto !important;
+}

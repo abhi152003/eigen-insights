@@ -11,7 +11,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-import EILogo from "@/assets/images/daos/eigen_logo.png";
+import EILogo from "@/assets/images/daos/analyticsEigen.jpeg";
 import "../../css/ShineFont.css";
 import "../../css/BtnShine.css";
 import "../../css/SearchShine.css";
@@ -198,15 +198,11 @@ function ExploreDAOs() {
 
               <div
                 key={daos.name}
-                className="rounded-2xl
-                border-1 border-white duration-500 group overflow-hidden relative text-neutral-50 p-4 w-64 h-64 flex flex-col justify-evenly cursor-pointer dark-blue-shadow"
+                className="px-5 py-7 rounded-2xl cursor-pointer
+                border-1 border-white bg-midnight-blue
+                 exploreMainDiv dark-blue-shadow"
                 onClick={() => handleClick(daos.name, daos.img)}
               >
-                <div className="absolute blur duration-500 group-hover:blur-none w-72 h-72 rounded-full group-hover:translate-x-12 group-hover:translate-y-12 bg-sky-900 right-1 -bottom-24"></div>
-                <div className="absolute blur duration-500 group-hover:blur-none w-12 h-12 rounded-full group-hover:translate-x-12 group-hover:translate-y-2 bg-sky-600 right-12 bottom-12"></div>
-                <div className="absolute blur duration-500 group-hover:blur-none w-36 h-36 rounded-full group-hover:translate-x-12 group-hover:-translate-y-12 bg-indigo-900 right-1 -top-12"></div>
-                <div className="absolute blur duration-500 group-hover:blur-none w-24 h-24 bg-indigo-800 rounded-full group-hover:-translate-x-12"></div>
-                <div className="z-10 flex flex-col justify-evenly w-full h-full">
                   <div className="flex justify-center">
                     <Image
                       src={daos.img}
@@ -223,30 +219,27 @@ function ExploreDAOs() {
                         {daos.name}
                       </div>
                       {daos.name === "Operators" ? (
-                        <div className="text-sm text-white bg-navy-blue py-2 rounded-md mt-3">
-                          {totalOperators} Operators
+                        <div className="text-sm text-white py-2 rounded-md mt-3 hover:border-2 hover:border-white">
+                          <span className="text-light-cyan font-bold">{totalOperators}</span> Operators
                         </div>
                       ) : (
-                        <div className="text-sm text-white bg-navy-blue py-2 rounded-md mt-3">
-                          {totalAVSs} AVSs
+                        <div className="text-sm text-white py-2 rounded-md mt-3 hover:bottom-2 hover:border-white">
+                          <span className="text-light-cyan font-bold">{totalAVSs}</span> AVSs
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
-              </div>
             ))
           ) : (
             <div className="pl-3 text-xl font-semibold">
               No such Dao available
             </div>
           )}
+
           <div
-            // key={daos.name}
-            style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className="px-5 py-7 rounded-2xl cursor-pointer 
-                border-1 border-white
-                exploreMainDiv"
+            className="rounded-2xl
+                border-1 border-white duration-500 group overflow-hidden relative text-neutral-50 p-4 w-64 h-64 flex flex-col justify-evenly cursor-pointer dark-blue-shadow"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">
@@ -257,44 +250,14 @@ function ExploreDAOs() {
                 className="rounded-full"
               ></Image>
             </div>
-            <div className="text-center">
+            <div className="text-center mt-6">
               <div className="py-3">
                 <div className="font-semibold capitalize">Analytics</div>
               </div>
             </div>
           </div>
-          {/* <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{ boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)" }}
-            className={`px-5 py-7 rounded-2xl cursor-pointer flex items-center justify-center relative transition-all duration-250 ease-in-out ${
-              isHovered ? "border-2 border-gray-600" : ""
-            }`}
-          >
-            <div className="">
-              <FaCirclePlus
-                size={70}
-                className={
-                  isHovered
-                    ? "blur-md transition-all duration-250 ease-in-out text-slate-300"
-                    : "block transition-all duration-250 ease-in-out text-slate-300"
-                }
-              />
-            </div>
-            <Link
-              href={`https://app.deform.cc/form/a401a65c-73c0-49cb-8d96-63e36ef36f88`}
-              target="_blank"
-              className={`absolute inset-0 flex items-center justify-center bottom-0  ${
-                isHovered ? "block" : "hidden"
-              }`}
-            >
-              <span className="text-xl font-semibold text-slate-800">
-                Add your DAO
-              </span>
-            </Link>
-          </div> */}
+          </div>
         </div>
-      </div>
       {showNotification && !isPageLoading && (
         <div
           className={`flex fixed items-center justify-center bottom-9 rounded-full font-poppins text-sm font-medium left-[34%] w-[32rem] ${

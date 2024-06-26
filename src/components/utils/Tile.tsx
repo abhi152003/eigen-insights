@@ -89,7 +89,8 @@ function Tile({
           sessionDetails.map((data: any, index: any) => (
             <div
               key={index}
-              className={`flex p-5 rounded-[2rem] justify-between ${
+              className={`flex p-5 rounded-[2rem] justify-between bg-deep-blue 
+                 ${
                 isEvent === "Recorded" ? "cursor-pointer" : ""
               }`}
               style={{ boxShadow: "0px 4px 26.7px 0px rgba(0, 0, 0, 0.10)" }}
@@ -108,15 +109,15 @@ function Tile({
                 />
 
                 <div className="ps-6 pe-12 py-1">
-                  <div className="font-semibold text-blue-shade-200 text-xl">
+                  <div className="font-semibold text-white text-xl">
                     {data.title}
                   </div>
 
                   <div className="flex space-x-4 py-2">
-                    <div className="bg-[#1E1E1E] border border-[#1E1E1E] text-white rounded-md text-xs px-5 py-1 font-semibold">
+                    <div className="bg-midnight-blue border border-white text-white rounded-md text-sm px-5 py-2 font-semibold flex items-center">
                       {data.dao_name}
                     </div>
-                    <div className="border border-[#1E1E1E] rounded-md text-[#1E1E1E] text-xs px-5 py-1 font-medium">
+                    <div className="border border-white rounded-md text-whitetext-xs px-5 py-2 text-sm flex items-center">
                       {data.attendees ? data.attendees.length : 0} Participants
                     </div>
                   </div>
@@ -127,11 +128,11 @@ function Tile({
 
                   {isOfficeHour ? (
                     <div className="flex gap-x-16 text-sm py-3">
-                      <div className="text-[#3E3D3D]">
+                      <div className="text-light-cyan">
                         <span className="font-semibold">Host:</span>{" "}
                         {data.host_address}
                       </div>
-                      <div className="text-[#3E3D3D]">
+                      <div className="text-white">
                         {isEvent === "Upcoming" ? (
                           <span className="font-semibold">Starts at: </span>
                         ) : isEvent === "Ongoing" ? (

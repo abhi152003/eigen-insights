@@ -25,8 +25,8 @@ import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 import { IoSearchSharp } from "react-icons/io5";
-import "../../css/SearchShine.css";
 import Avss from '@/assets/images/sidebar/avss.webp'
+import "../../css/SearchShine.css";
 
 interface Result {
   _id: string;

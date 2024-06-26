@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import op from "@/assets/images/daos/op.png";
 import upArrow from "@/assets/images/watchmeeting/up-arrow.svg";
@@ -7,12 +7,12 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoArrowUpOutline } from "react-icons/io5";
 import styles from "./WatchSession.module.css";
 import { RxCross2 } from "react-icons/rx";
-import operators from "../../assets/images/sidebar/operators.webp"
+import operators from "../../assets/images/sidebar/operators.webp";
 
 const WatchFreeCollect = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(true);
-  const [number, setNumber]=useState(1);
+  const [number, setNumber] = useState(1);
   const PlusIcon = () => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,8 +21,8 @@ const WatchFreeCollect = () => {
       width="32"
       height="32"
       className="bg-medium-blue"
-      style={{borderRadius: "50%", padding: "4px" , cursor:"pointer"}}
-      onClick={()=>setNumber(number+1)}
+      style={{ borderRadius: "50%", padding: "4px", cursor: "pointer" }}
+      onClick={() => setNumber(number + 1)}
     >
       <path
         fillRule="evenodd"
@@ -40,8 +40,8 @@ const WatchFreeCollect = () => {
       width="32"
       height="32"
       className="bg-medium-blue"
-      style={{borderRadius: "50%", padding: "4px" , cursor:"pointer"}}
-      onClick={()=>setNumber(number>1?number-1:1)}
+      style={{ borderRadius: "50%", padding: "4px", cursor: "pointer" }}
+      onClick={() => setNumber(number > 1 ? number - 1 : 1)}
     >
       <path
         fillRule="evenodd"
@@ -54,30 +54,32 @@ const WatchFreeCollect = () => {
     <div className="rounded-3xl border-2 border-black-shade-200 font-poppins ">
       <div className="flex justify-evenly items-center w-full rounded-t-3xl bg-midnight-blue py-3">
         <div className="flex">
-          <p className="font-medium xl:text-base 1.7xl:text-lg text-white">💸Free</p>
+          <p className="font-medium xl:text-base 1.7xl:text-lg text-white">
+            💸Free
+          </p>
           {showComingSoon && (
-              <div className="flex items-center bg-yellow-100 border border-yellow-400 rounded-full px-2 ml-4">
-                <p className="text-sm text-yellow-700 mr-2">Coming Soon</p>
-                <button
-                  onClick={() => setShowComingSoon(false)}
-                  className="text-yellow-700 hover:text-yellow-800"
-                >
-                  <RxCross2 size={12} />
-                </button>
-              </div>
-            )}
+            <div className="flex items-center bg-yellow-100 border border-yellow-400 rounded-full px-2 ml-4">
+              <p className="text-sm text-yellow-700 mr-2">Coming Soon</p>
+              <button
+                onClick={() => setShowComingSoon(false)}
+                className="text-yellow-700 hover:text-yellow-800"
+              >
+                <RxCross2 size={12} />
+              </button>
+            </div>
+          )}
         </div>
         <div className="px-2 py-1 border-2 border-light-cyan bg-medium-blue w-fit rounded-md">
-          <p className="text-white font-medium text-sm">
-            14320 Collected
-          </p>
+          <p className="text-white font-medium text-sm">14320 Collected</p>
         </div>
       </div>
       <div className="w-full h-[0.1px] bg-black-shade-200"></div>
       <div className="grid grid-cols-2 1.5lg:px-6 px-3">
         <div className="flex items-center">
-          <MinusIcon/>
-          <div className="bg-white text-black py-1 px-4 1.5lg:mx-3 mx-1.5 rounded w-12 flex justify-center">{number}</div>
+          <MinusIcon />
+          <div className="bg-white text-black py-1 px-4 1.5lg:mx-3 mx-1.5 rounded w-12 flex justify-center">
+            {number}
+          </div>
           <PlusIcon />
         </div>
 
@@ -92,7 +94,8 @@ const WatchFreeCollect = () => {
             </button> */}
 
         <button
-          className={`text-black bg-white rounded-full 1.5lg:py-5 py-3 1.5lg:px-6 px-0.5 text-xs font-semibold my-6 ${styles["blob-btn"]
+          className={`text-black bg-white rounded-full 1.5lg:py-5 py-3 1.5lg:px-6 px-0.5 text-xs font-semibold my-6 ${
+            styles["blob-btn"]
           } ${isOpen ? "bg-white" : "bg-white"}`}
           onClick={() => setIsOpen((prev) => !prev)}
         >
@@ -108,15 +111,13 @@ const WatchFreeCollect = () => {
         </button>
       </div>
 
-
-{/* collect menu */}
+      {/* collect menu */}
       <div
         className={`w-full font-poppins ${styles.slideDown} ${
           isOpen ? styles.open : ""
-        }  `} 
+        }  `}
       >
-    
-        {(isOpen || !isOpen) && ( 
+        {(isOpen || !isOpen) && (
           <div className="w-full font-poppins">
             <p className="mx-6 font-normal text-xs mb-2 text-white">
               Pay Using
@@ -156,9 +157,18 @@ const WatchFreeCollect = () => {
                 <p className="font-semibold text-white">0.0004 ETH</p>
               </div>
             </div>
-            <div className="  mx-6 mt-6 flex justify-center items-center">
-              <button className="font-bold text-base w-fit py-3 px-12 bg-midnight-blue text-white flex items-center hover:bg-medium-blue justify-center rounded-full">
+            <div className=" mx-6 mt-6 flex justify-center items-center">
+              {/* <button className="font-bold text-base w-fit py-3 px-12 bg-midnight-blue text-white flex items-center hover:bg-medium-blue justify-center rounded-full">
                 Mint
+              </button> */}
+              <button
+                className="bg-midnight-blue text-white rounded-full cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-white group text-base w-fit py-3 px-12"
+              >
+                <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
+                  Delegate
+                </span>
+                <span className="absolute w-full h-full bg-light-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+                <span className="absolute w-full h-full bg-light-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
               </button>
             </div>
             <div className="flex justify-center items-center my-4">

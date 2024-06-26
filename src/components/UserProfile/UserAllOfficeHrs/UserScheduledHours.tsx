@@ -175,9 +175,9 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
         {error && <div className="text-red-500">{error}</div>}
         <button
           type="submit"
-          className="bg-[#427FA3] hover:bg-[#214965] text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+          className="bg-[#427FA3] hover:bg-[#214965] text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center cursor-pointer overflow-hidden relative z-100 border-2 border-light-cyan group text-sm w-fit mt-2"
           disabled={isSubmitting}
-        >
+        ><span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
           {isSubmitting ? (
             <svg
               className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -202,6 +202,9 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           ) : (
             "Submit"
           )}
+          </span>
+          <span className="absolute w-full h-full bg-midnight-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+                <span className="absolute w-full h-full bg-midnight-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
         </button>
       </form>
     </div>

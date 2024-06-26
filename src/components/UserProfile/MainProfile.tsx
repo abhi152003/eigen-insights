@@ -704,84 +704,18 @@ function MainProfile() {
                                   </div>
 
                                   {[
-                                    {
-                                      label: "Display name",
-                                      icon: <MdDriveFileRenameOutline />,
-                                      value: displayName,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "displayName",
-                                          e.target.value
-                                        ),
-                                    },
-                                    {
-                                      label: "Email",
-                                      icon: <MdOutlineMail />,
-                                      value: emailId,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "emailId",
-                                          e.target.value
-                                        ),
-                                    },
-                                    {
-                                      label: "X (Formerly Twitter)",
-                                      icon: <FaXTwitter />,
-                                      value: twitter,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "twitter",
-                                          e.target.value
-                                        ),
-                                    },
-                                    {
-                                      label: "Discourse",
-                                      icon: <FaDiscourse />,
-                                      value: discourse,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "discourse",
-                                          e.target.value
-                                        ),
-                                    },
-                                    {
-                                      label: "Discord",
-                                      icon: <FaDiscord />,
-                                      value: discord,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "discord",
-                                          e.target.value
-                                        ),
-                                    },
-                                    {
-                                      label: "Github",
-                                      icon: <FaGithub />,
-                                      value: github,
-                                      onChange: (e: {
-                                        target: { value: string };
-                                      }) =>
-                                        handleInputChange(
-                                          "github",
-                                          e.target.value
-                                        ),
-                                    },
+                                    { label: "Display name", icon: <MdDriveFileRenameOutline />, value: displayName, onChange: (e: { target: { value: string; }; }) => handleInputChange("displayName", e.target.value), hoverClass: "hover:bg-[#214965]" },
+                                    { label: "Email", icon: <MdOutlineMail />, value: emailId, onChange: (e: { target: { value: string; }; }) => handleInputChange("emailId", e.target.value), hoverClass: "hover:bg-yellow-400" },
+                                    { label: "X (Formerly Twitter)", icon: <FaXTwitter />, value: twitter, onChange: (e: { target: { value: string; }; }) => handleInputChange("twitter", e.target.value), hoverClass: "hover:bg-black" },
+                                    { label: "Discourse", icon: <FaDiscourse />, value: discourse, onChange: (e: { target: { value: string; }; }) => handleInputChange("discourse", e.target.value), hoverClass: "hover:bg-green-500" },
+                                    { label: "Discord", icon: <FaDiscord />, value: discord, onChange: (e: { target: { value: string; }; }) => handleInputChange("discord", e.target.value), hoverClass: "hover:bg-[#5562EA]" },
+                                    { label: "Github", icon: <FaGithub />, value: github, onChange: (e: { target: { value: string; }; }) => handleInputChange("github", e.target.value), hoverClass: "hover:bg-black" },
                                   ].map((field, index) => (
                                     <div key={index}>
                                       <label className="text-sm font-medium flex gap-2 items-center mb-1">
                                         {field.label}:
-                                        <div className="border border-white rounded-full bg-white text-black p-1 hover:bg-light-blue hover:text-white hover:cursor-pointer">
-                                          {field.icon}
+                                        <div className={`border border-white rounded-full bg-white text-black p-1 ${field.hoverClass} hover:text-white hover:cursor-pointer hover:scale-110`}>
+                                        {React.cloneElement(field.icon, { className: "w-4 h-4" })}
                                         </div>
                                       </label>
                                       <input

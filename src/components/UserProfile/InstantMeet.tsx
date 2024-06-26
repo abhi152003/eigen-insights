@@ -219,7 +219,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                       }}
                     >
                       <div>
-                        <div className="group border rounded-3xl bg-[#E5E5EA] flex items-center justify-center p-8 hover:bg-light-blue hover:shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+                        <div className="relative group border rounded-3xl bg-[#E5E5EA] flex items-center justify-center p-8 hover:bg-light-blue ">
                           <Image
                             alt="{image}"
                             height={60}
@@ -254,10 +254,14 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
               </div>
               <div className="text-center transition-transform transform hover:scale-105 duration-300">
                 <button
-                  className="bg-[#427FA3] py-3 px-6 rounded-full text-white font-semibold"
+                  className="bg-[#214965] mt-3 w-fit flex justify-center items-center text-white rounded-full cursor-pointer font-semibold overflow-hidden relative z-100 border-2 border-light-cyan group text-base py-3 px-8"
                   onClick={onOpen}
                 >
+                  <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
                   Start an instant meet
+                  </span>
+                  <span className="absolute w-full h-full bg-navy-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+                  <span className="absolute w-full h-full bg-navy-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
                 </button>
               </div>
             </div>

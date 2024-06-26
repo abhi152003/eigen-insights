@@ -20,7 +20,8 @@ import "@/components/DelegateSessions/DelegateSessionsMain.module.css";
 import { getEnsNameOfUser } from "../ConnectWallet/ENSResolver";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
-import "../../css/SearchShine.css";
+import "../../css/BtnShine.css";
+import { MdWatchLater } from "react-icons/md";
 
 interface Type {
   ensName: string;
@@ -248,10 +249,6 @@ function AvailableSessions() {
     formattedDate = `${year}-${month}-${day}`;
   }
 
-  // console.log("formattedDate", formattedDate);
-
-  // console.log("currentDate", currentDate);
-
   useEffect(() => {
     const fetchEnsNames = async () => {
       console.log("dao info: ", daoInfo);
@@ -279,28 +276,6 @@ function AvailableSessions() {
   return (
     <div className="pe-10">
       <div className="flex gap-7 bg-[#D9D9D945] p-4 mt-4 rounded-2xl font-poppins">
-        {/* <div
-          style={{ background: "rgba(238, 237, 237, 0.36)" }}
-          className="flex border-[0.5px] border-black w-fit rounded-full  "
-        >
-          <input
-            type="text"
-            placeholder="Search by Address"
-            style={{ background: "rgba(238, 237, 237, 0.36)" }}
-            className="pl-5 rounded-full outline-none text-sm"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-          ></input>
-          <span className="flex items-center bg-black rounded-full px-5 py-2">
-            <Image
-              className="min-w-[25px]"
-              src={search}
-              alt="search"
-              width={20}
-            />
-          </span>
-        </div> */}
-
         <div className="searchBox">
           <input
             className="searchInput"
@@ -421,7 +396,8 @@ function AvailableSessions() {
       <div
         // key={index}
         style={{
-          boxShadow: "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
+          boxShadow:
+            "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
         }}
         className="rounded-3xl flex flex-col bg-deep-blue my-8"
       >
@@ -465,7 +441,7 @@ function AvailableSessions() {
               TestName or Address
             </div>
             <div className="text-sm flex">
-              <div>0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a</div>
+              <div className="ml-[3px]">0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a</div>
               <div className="items-center">
                 <Tooltip
                   content="Copy"
@@ -476,10 +452,10 @@ function AvailableSessions() {
                 >
                   <div className="pl-2 pt-[2px] cursor-pointer" color="#3E3D3D">
                     <IoCopy
-                    // onClick={() =>
-                    //   handleCopy()
-                    // }
-                    className="text-white hover:text-light-cyan"
+                      // onClick={() =>
+                      //   handleCopy()
+                      // }
+                      className="text-white hover:text-light-cyan"
                     />
                   </div>
                 </Tooltip>
@@ -525,41 +501,61 @@ function AvailableSessions() {
         </div>
 
         <div className="flex items-center px-5 pb-3">
-          <Image
-            alt="clockIcn"
-            width={20}
-            height={20}
-            src={clockIcn}
-            priority
-            className="mt-[2px] text-light-cyan"
-          />
+          <MdWatchLater className="w-5 h-5 mt-[1px] text-light-cyan" />
           <div className="w-[60%]">
-            <span className="text-base font-semibold text-light-cyan ml-1">
+            <span className="text-base font-semibold text-light-cyan ml-[6px] mt-[6px]">
               Available for 10 minutes
             </span>
           </div>
           <div className="w-[40%] flex justify-end ">
             {/* <button
-                      onClick={() =>
-                        router.push(
-                          `/${daos.dao_name}/${daos.userAddress}?active=delegatesSession&session=book `
-                        )
-                      }
-                      className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] relative  hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-gray-400"
-                    >
-                      <span className="relative">Book Session</span>
-                      <span className="absolute top-0 left-0 w-full h-full bg-white opacity-0 transition-opacity duration-300"></span>
-                    </button> */}
-            <button
-              // onClick={() =>
-              //   router.push(
-              //     `/${daos.session.dao_name}/${daos.session.userAddress}?active=delegatesSession&session=book`
-              //   )
-              // }
-              className="bg-medium-blue text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] hover:bg-slate-blue focus:outline-none focus:ring-2 focus:ring-gray-400 font-medium"
+              className="bg-medium-blue text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] hover:bg-slate-blue focus:outline-none focus:ring-2 focus:ring-gray-400 font-medium btnNewShine"
             >
               Book Session
-            </button>
+            </button> */}
+            <div
+              className="text-sm w-fit hover:bg-slate-blue font-medium
+              flex items-center justify-center cursor-pointer btnShine"
+            >
+              <div className="relative inline-flex items-center justify-start py-3 pl-4 pr-12 overflow-hidden font-semibold shadow text-medium-blue transition-all duration-150 ease-in-out rounded hover:pl-10 hover:pr-6 bg-gray-50 dark:bg-gray-700 dark:text-white dark:hover:text-gray-200 dark:shadow-none group">
+                <span className="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-light-blue group-hover:h-full"></span>
+                <span className="absolute right-0 pr-4 duration-200 ease-out group-hover:translate-x-12">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    fill="none"
+                    className="w-5 h-5 text-medium-blue"
+                  >
+                    <path
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                    ></path>
+                  </svg>
+                </span>
+                <span className="absolute left-0 pl-2.5 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    fill="none"
+                    className="w-5 h-5 text-white"
+                  >
+                    <path
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                    ></path>
+                  </svg>
+                </span>
+                <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white dark:group-hover:text-gray-200">
+                  Book Session
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -574,7 +570,7 @@ function AvailableSessions() {
               color="#FFFFFF"
               ariaLabel="three-circles-loading"
               wrapperStyle={{}}
-              wrapperClass=""
+              // wrapperclassName=""
             />
           </div>
         ) : daoInfo && daoInfo.length > 0 ? (
@@ -717,38 +713,20 @@ function AvailableSessions() {
                 </div>
 
                 <div className="flex items-center px-5 pb-3">
-                  <Image
-                    alt="clockIcn"
-                    width={20}
-                    height={20}
-                    src={clockIcn}
-                    priority
-                  />
+                  <MdWatchLater className="w-5 h-5 mt-[2px] text-light-cyan" />
                   <div className="w-[60%]">
-                    <span className="text-base font-semibold text-[#0500FF] ml-1">
-                      Available for {`${daos.session.timeSlotSizeMinutes}`}{" "}
-                      minutes
+                    <span className="text-base font-semibold text-light-cyan ml-[6px] mt-1">
+                      Available for 10 minutes
                     </span>
                   </div>
                   <div className="w-[40%] flex justify-end ">
-                    {/* <button
-                      onClick={() =>
-                        router.push(
-                          `/${daos.dao_name}/${daos.userAddress}?active=delegatesSession&session=book `
-                        )
-                      }
-                      className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] relative  hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-gray-400"
-                    >
-                      <span className="relative">Book Session</span>
-                      <span className="absolute top-0 left-0 w-full h-full bg-white opacity-0 transition-opacity duration-300"></span>
-                    </button> */}
                     <button
                       onClick={() =>
                         router.push(
                           `/${daos.session.dao_name}/${daos.session.userAddress}?active=delegatesSession&session=book`
                         )
                       }
-                      className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] hover:bg-[#333333] focus:outline-none focus:ring-2 focus:ring-gray-400 font-medium"
+                      className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] font-medium"
                     >
                       Book Session
                     </button>
