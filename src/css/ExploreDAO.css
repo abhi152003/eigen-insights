@@ -50,3 +50,9 @@
 .dark-blue-shadow:hover {
   box-shadow: 0 4px 20px 0px rgba(94, 156, 191, 0.7), 0 4px 20px 0px rgba(94, 156, 191, 0.5);
 }
+
+.parent-hover-div:hover .child-hover-div {
+  /* background-color: ;  */
+  box-shadow: 0 2px 10px 0px rgba(94, 156, 191, 0.7), 0 2px 10px 0px rgba(94, 156, 191, 0.5);
+
+}

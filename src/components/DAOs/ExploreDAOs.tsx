@@ -11,7 +11,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-import EILogo from "@/assets/images/daos/analyticsEigen.jpeg";
+import EILogo from "@/assets/images/daos/analytics3.png";
 import "../../css/ShineFont.css";
 import "../../css/BtnShine.css";
 import "../../css/SearchShine.css";
@@ -198,9 +198,7 @@ function ExploreDAOs() {
 
               <div
                 key={daos.name}
-                className="px-5 py-7 rounded-2xl cursor-pointer
-                border-1 border-white bg-midnight-blue
-                 exploreMainDiv dark-blue-shadow"
+                className="parent-hover-div px-5 py-7 rounded-2xl cursor-pointer flex flex-col justify-around border-1 border-white bg-midnight-blue dark-blue-shadow"
                 onClick={() => handleClick(daos.name, daos.img)}
               >
                   <div className="flex justify-center">
@@ -219,11 +217,11 @@ function ExploreDAOs() {
                         {daos.name}
                       </div>
                       {daos.name === "Operators" ? (
-                        <div className="text-sm text-white py-2 rounded-md mt-3 hover:border-2 hover:border-white">
+                        <div className="child-hover-div text-sm bg-navy-blue py-2 rounded-md mt-3">
                           <span className="text-light-cyan font-bold">{totalOperators}</span> Operators
                         </div>
                       ) : (
-                        <div className="text-sm text-white py-2 rounded-md mt-3 hover:bottom-2 hover:border-white">
+                        <div className="child-hover-div text-sm bg-navy-blue py-2 rounded-md mt-3">
                           <span className="text-light-cyan font-bold">{totalAVSs}</span> AVSs
                         </div>
                       )}
@@ -238,24 +236,25 @@ function ExploreDAOs() {
           )}
 
           <div
-            className="rounded-2xl
-                border-1 border-white duration-500 group overflow-hidden relative text-neutral-50 p-4 w-64 h-64 flex flex-col justify-evenly cursor-pointer dark-blue-shadow"
+            className="px-5 py-7 rounded-2xl cursor-pointer flex flex-col gap-8 border-1 border-white bg-midnight-blue dark-blue-shadow"
             onClick={() => handleClick("analytics", EILogo)}
           >
             <div className="flex justify-center">
               <Image
                 src={EILogo}
                 alt="Image not found"
-                style={{ width: "60px", height: "60px" }}
+                width={60}
+                height={60}
+                style={{ width: "60px", height: "60px", backgroundColor: "#427FA3" }}
                 className="rounded-full"
               ></Image>
             </div>
-            <div className="text-center mt-6">
+            <div className="text-center">
               <div className="py-3">
                 <div className="font-semibold capitalize">Analytics</div>
               </div>
             </div>
-          </div>          
+          </div>
         </div>
       </div>
       {showNotification && !isPageLoading && (
