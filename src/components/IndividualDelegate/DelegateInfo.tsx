@@ -548,7 +548,7 @@ function DelegateInfo({
       </div>
 
       <div
-        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)", width: "95%" }}
+        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)", width: "96%" }}
         className={`rounded-xl my-3 py-6 px-5 text-sm bg-deep-blue ${
           desc ? "" : "min-h-52"
         }`}

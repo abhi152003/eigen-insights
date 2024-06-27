@@ -415,8 +415,8 @@ function OperatorsAnalytics({ props }: { props: Type }) {
     <div className="flex justify-center w-full">
       <div className="flex flex-col items-center space-y-6 w-full max-w-7xl px-4">
         <div className="inline-flex space-x-2 p-2 bg-gray-100 rounded-lg me-20">
-          {newstatuses.map((status) => (
-              <StatusItem {...status} />
+          {newstatuses.map((status, index) => (
+              <StatusItem {...status} key={index} />
           ))}
         </div>
 

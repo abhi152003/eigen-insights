@@ -172,7 +172,7 @@ function AvailableSessions() {
     const selected = e.target.value;
     // setSelectedDao(selected);
     let filtered: any;
-    if (selected === "ALL-SESSIONS") {
+    if (selected === "All") {
       // setDaoInfo(APIData);
       setSelectedDao(null);
     } else {
@@ -326,7 +326,7 @@ function AvailableSessions() {
             showArrow
             content={
               <div className="font-poppins">
-                Select a date to view available Delegates for that date.
+                Select a date to view available Operators and AVSs for that date.
               </div>
             }
             placement="bottom"
@@ -348,7 +348,7 @@ function AvailableSessions() {
           showArrow
           content={
             <div className="font-poppins">
-              Select a time to view available Delegates for that specific time.
+              Select a time to view available Operators and AVSs for that specific time.
             </div>
           }
           placement="bottom"
