@@ -5,7 +5,7 @@ import { NextResponse, NextRequest } from "next/server";
 // Define the response body type
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -19,7 +19,7 @@ interface Session {
 
 export async function POST(req: NextRequest, res: NextResponse<Session[]>) {
   try {
-    const { dao_name, host_address } = await req.json();
+    const { operator_or_avs, host_address } = await req.json();
 
     // Connect to MongoDB database
     // console.log("Connecting to MongoDB...");
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse<Session[]>) {
     const collection = db.collection("meetings");
 
     const SessionData = await collection
-      .find({ dao_name: dao_name, host_address: host_address })
+      .find({ operator_or_avs: operator_or_avs, host_address: host_address })
       .toArray();
 
     client.close();

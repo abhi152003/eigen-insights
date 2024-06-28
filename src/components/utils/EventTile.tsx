@@ -40,7 +40,7 @@ interface TileProps {
     img: StaticImageData;
     title: string;
     meetingId: string;
-    dao_name: string;
+    operator_or_avs: string;
     booking_status: string;
     meeting_status: string;
     joined_status: boolean;
@@ -173,7 +173,7 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
 
             <div className="flex py-2">
               <div className="capitalize bg-[#1E1E1E] border border-[#1E1E1E] text-white rounded-md text-xs px-5 py-1 font-semibold">
-                {data.dao_name}
+                {data.operator_or_avs}
               </div>
             </div>
 

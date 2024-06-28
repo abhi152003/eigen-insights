@@ -25,7 +25,7 @@ import { MdWatchLater } from "react-icons/md";
 
 interface Type {
   ensName: string;
-  dao_name: string;
+  operator_or_avs: string;
   userAddress: string;
   timeSlotSizeMinutes: number;
   allowedDates: string[];
@@ -107,7 +107,7 @@ function AvailableSessions() {
         console.log("endTimeToSend", endTimeToSend);
 
         const raw = JSON.stringify({
-          dao_name: selectedDao,
+          operator_or_avs: selectedDao,
           date: selectedDate,
           startTime: startTimeToSend ? startTimeToSend : null,
           endTime: endTimeToSend ? endTimeToSend : null,
@@ -176,7 +176,7 @@ function AvailableSessions() {
       // setDaoInfo(APIData);
       setSelectedDao(null);
     } else {
-      // filtered = APIData.filter((item) => item.dao_name === selected);
+      // filtered = APIData.filter((item) => item.operator_or_avs === selected);
       // setDaoInfo(filtered);
       setSelectedDao(selected);
     }
@@ -274,7 +274,7 @@ function AvailableSessions() {
   }, [daoInfo]);
 
   return (
-    <div className="pe-10">
+    <div className="">
       <div className="flex gap-7 bg-[#D9D9D945] p-4 mt-4 rounded-2xl font-poppins">
         <div className="searchBox">
           <input
@@ -384,7 +384,7 @@ function AvailableSessions() {
             {(startTime || endTime) && (
               <button
                 onClick={handleClearTime}
-                className="ml-2 text-red-500 bg-white px-2 py-1 rounded-md border-red-500 border-2 hover:bg-red-500 hover:text-white hover:scale-100"
+                className="ml-2 text-red-500 bg-white px-2 py-[6px] rounded-md border-red-500 border-2 hover:bg-red-500 hover:text-white hover:scale-100"
               >
                 Clear Time
               </button>
@@ -401,7 +401,7 @@ function AvailableSessions() {
           boxShadow:
             "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
         }}
-        className="rounded-3xl flex flex-col bg-deep-blue my-8"
+        className="rounded-3xl flex flex-col bg-deep-blue my-8 w-fit pr-14"
       >
         <div className="flex items-center mb-4 border-b-2 py-5 px-5 rounded-tl-3xl rounded-tr-3xl">
           <div
@@ -503,7 +503,7 @@ function AvailableSessions() {
         </div>
 
         <div className="flex items-center px-5 pb-3">
-          <MdWatchLater className="w-5 h-5 mt-[1px] text-light-cyan" />
+          <MdWatchLater className="w-5 h-5 mt-[1px] text-white" />
           <div className="w-[60%]">
             <span className="text-base font-semibold text-light-cyan ml-[6px] mt-[6px]">
               Available for 10 minutes
@@ -600,9 +600,9 @@ function AvailableSessions() {
                           src={
                             daos.userInfo[0].image
                               ? `https://gateway.lighthouse.storage/ipfs/${daos.userInfo[0].image}`
-                              : daos.session.dao_name === "operators"
+                              : daos.session.operator_or_avs === "operators"
                               ? NOLogo
-                              : daos.session.dao_name === "avss"
+                              : daos.session.operator_or_avs === "avss"
                               ? AVSLogo
                               : EILogo
                           }
@@ -680,7 +680,7 @@ function AvailableSessions() {
                       </div>
                     </div>
                     <div className="mt-2 bg-midnight-blue border-1 border-white text-white rounded-md text-xs px-4 py-1 font-semibold w-fit capitalize">
-                      {daos.session.dao_name}
+                      {daos.session.operator_or_avs}
                     </div>
                     <div>
                       <div
@@ -728,7 +728,7 @@ function AvailableSessions() {
                     <button
                       onClick={() =>
                         router.push(
-                          `/${daos.session.dao_name}/${daos.session.userAddress}?active=delegatesSession&session=book`
+                          `/${daos.session.operator_or_avs}/${daos.session.userAddress}?active=delegatesSession&session=book`
                         )
                       }
                       className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] font-medium"

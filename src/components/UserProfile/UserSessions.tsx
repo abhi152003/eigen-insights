@@ -25,7 +25,7 @@ type Attendee = {
 
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -52,7 +52,7 @@ function UserSessions({
   const [dataLoading, setDataLoading] = useState(true);
   // const [daoName, setDaoName] = useState("");
 
-  let dao_name = "";
+  let operator_or_avs = "";
   const getUserMeetingData = async () => {
     try {
       try {
@@ -64,7 +64,7 @@ function UserSessions({
           },
           body: JSON.stringify({
             address: address,
-            dao_name: daoName,
+            operator_or_avs: daoName,
           }),
         });
 

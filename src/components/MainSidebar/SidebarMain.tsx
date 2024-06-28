@@ -161,7 +161,13 @@ function Sidebar() {
                 storedDao.map((data, index) => (
                   <div
                     key={index}
-                    className="flex flex-col items-center"
+                    className={`flex flex-col items-center rounded-full p-[4px]
+                      ${
+                        pathname.includes(`/${data[0]}`)
+                          ? "border-white border-[2.5px]"
+                          : ""
+                      }
+                      `}
                     onMouseOver={() => handleMouseOver(index)}
                     onMouseOut={() => handleMouseOut(index)}
                   >
@@ -196,11 +202,7 @@ function Sidebar() {
                             width={80}
                             height={80}
                             alt="image"
-                            className={`w-10 h-10 xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 rounded-full cursor-pointer ${
-                              pathname.includes(`/${data[0]}`)
-                                ? "border-white border-[2.5px]"
-                                : ""
-                            } ${styles.image_hover}`}
+                            className={`w-8 h-8 xl:w-9 xl:h-9 2xl:w-10 2xl:h-10 2.5xl:w-12 2.5xl:h-12 rounded-full cursor-pointer ${styles.image_hover}`}
                             priority={true}
                           ></Image>
                         </Link>

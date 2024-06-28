@@ -21,9 +21,9 @@ function SchedulingSuccessModal({
   const [isToolTip, setIsToolTip] = useState(false);
   const shareOnTwitter = () => {
     const userAddress = data.userAddress;
-    const dao_name = data.dao_name;
+    const operator_or_avs = data.operator_or_avs;
     const url = encodeURIComponent(
-      `https://eigeninsight.vercel.app/${dao_name}/${userAddress}?active=delegatesSession&session=book`
+      `https://eigeninsight.vercel.app/${operator_or_avs}/${userAddress}?active=delegatesSession&session=book`
     );
     const text = encodeURIComponent(
       `Hello Web3 Enthusiasts!🎉\nI've opened up some time slots for sessions on @EigenInsights!📅\nDon't miss out – book your session now to learn more about Web3 ecosystem! 📝\n👉 ${decodeURIComponent(
@@ -43,8 +43,8 @@ function SchedulingSuccessModal({
   };
   const CopyUrl = () => {
     const userAddress = data.userAddress;
-    const dao_name = data.dao_name;
-    const url = `https://eigeninsight.vercel.app/${dao_name}/${userAddress}?active=delegatesSession&session=book`;
+    const operator_or_avs = data.operator_or_avs;
+    const url = `https://eigeninsight.vercel.app/${operator_or_avs}/${userAddress}?active=delegatesSession&session=book`;
     copy(url);
     setIsToolTip(true);
     setTimeout(() => {

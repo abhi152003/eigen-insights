@@ -62,7 +62,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           title,
           description,
           meeting_status: "active",
-          dao_name: daoName,
+          operator_or_avs: daoName,
           meetingId: roomId, // Pass the roomId as meetingId
         }),
       });

@@ -17,7 +17,7 @@ interface MeetingRequestBody {
   meeting_status: string;
   joined_status: boolean;
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   title: string;
   description: string;
   session_type: string;
@@ -35,7 +35,7 @@ interface MeetingResponseBody {
     meeting_status: string;
     joined_status: boolean;
     booking_status: string;
-    dao_name: string;
+    operator_or_avs: string;
     title: string;
     description: string;
     session_type: string;
@@ -55,7 +55,7 @@ export async function POST(
     meeting_status,
     joined_status,
     booking_status,
-    dao_name,
+    operator_or_avs,
     title,
     description,
     session_type,
@@ -81,7 +81,7 @@ export async function POST(
       meeting_status,
       joined_status,
       booking_status,
-      dao_name,
+      operator_or_avs,
       title,
       description,
       session_type,

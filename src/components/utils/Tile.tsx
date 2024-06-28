@@ -30,7 +30,7 @@ interface Type {
   desc: string;
   attendee: string;
   video_uri?: string;
-  dao_name: string;
+  operator_or_avs: string;
   host_address: string;
   office_hours_slot: string;
   description: string;
@@ -115,7 +115,7 @@ function Tile({
 
                   <div className="flex space-x-4 py-2">
                     <div className="bg-midnight-blue border border-white text-white rounded-md text-sm px-5 py-2 font-semibold flex items-center">
-                      {data.dao_name}
+                      {data.operator_or_avs}
                     </div>
                     <div className="border border-white rounded-md text-whitetext-xs px-5 py-2 text-sm flex items-center">
                       {data.attendees ? data.attendees.length : 0} Participants
@@ -224,7 +224,7 @@ function Tile({
           date={sessionDetails[selectedTileIndex].office_hours_slot}
           host={sessionDetails[selectedTileIndex].host_address}
           attendees={sessionDetails[selectedTileIndex].attendees}
-          dao={sessionDetails[selectedTileIndex].dao_name}
+          dao={sessionDetails[selectedTileIndex].operator_or_avs}
           host_attestation={sessionDetails[selectedTileIndex].uid_host}
           onClose={closeModal}
         />

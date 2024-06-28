@@ -49,7 +49,7 @@ function UserInfo({
   let sessionAttendingCount = 0;
   let officehoursHostingCount = 0;
   let officehoursAttendingCount = 0;
-  let dao_name = daoName;
+  let operator_or_avs = daoName;
   const [activeButton, setActiveButton] = useState("onchain");
 
   const fetchAttestation = async (buttonType: string) => {
@@ -84,7 +84,7 @@ function UserInfo({
             console.log("item uid: ", item[host_uid_key], host_uid_key);
             if (
               item.meeting_status === "Recorded" &&
-              item.dao_name === dao_name &&
+              item.operator_or_avs === operator_or_avs &&
               item[host_uid_key]
             ) {
               sessionHostingCount++;
@@ -108,7 +108,7 @@ function UserInfo({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            dao_name: dao_name,
+            operator_or_avs: operator_or_avs,
           }),
         });
         const result = await response.json();
@@ -116,7 +116,7 @@ function UserInfo({
           result.data.forEach((item: any) => {
             if (
               item.meeting_status === "Recorded" &&
-              item.dao_name === dao_name &&
+              item.operator_or_avs === operator_or_avs &&
               item.attendees.some((attendee: any) => attendee[attendee_uid_key])
             ) {
               sessionAttendingCount++;
@@ -149,7 +149,7 @@ function UserInfo({
           result.forEach((item: any) => {
             if (
               item.meeting_status === "inactive" &&
-              item.dao_name === dao_name &&
+              item.operator_or_avs === operator_or_avs &&
               item[host_uid_key]
             ) {
               officehoursHostingCount++;
@@ -184,7 +184,7 @@ function UserInfo({
           result.forEach((item: any) => {
             if (
               item.meeting_status === "inactive" &&
-              item.dao_name === dao_name &&
+              item.operator_or_avs === operator_or_avs &&
               item.attendees.some((attendee: any) => attendee[attendee_uid_key])
             ) {
               officehoursAttendingCount++;

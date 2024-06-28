@@ -14,7 +14,7 @@ type Attendee = {
 
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -38,9 +38,9 @@ function DelegateSessions({ props }: { props: Type }) {
 
   const [dataLoading, setDataLoading] = useState(true);
   const [sessionDetails, setSessionDetails] = useState([]);
-  const dao_name = props.daoDelegates;
+  const operator_or_avs = props.daoDelegates;
 
-  // const dao_name = daoName.charAt(0).toUpperCase() + daoName.slice(1);
+  // const operator_or_avs = daoName.charAt(0).toUpperCase() + daoName.slice(1);
 
   const getMeetingData = async () => {
     try {
@@ -48,7 +48,7 @@ function DelegateSessions({ props }: { props: Type }) {
       myHeaders.append("Content-Type", "application/json");
 
       const raw = JSON.stringify({
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
         address: props.individualDelegate,
       });
       // console.log("raw", raw);

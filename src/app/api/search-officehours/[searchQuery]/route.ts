@@ -5,8 +5,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   // console.log("GET req call");
   const query = req.url.split("search-officehours/")[1];
 
-  const { dao_name } = await req.json();
-  console.log("Dao name: ", dao_name);
+  const { operator_or_avs } = await req.json();
+  console.log("Dao name: ", operator_or_avs);
 
   // console.log(user_address);
   try {
@@ -30,9 +30,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
       ],
     };
 
-    if (dao_name) {
+    if (operator_or_avs) {
       filter = {
-        $and: [filter, { dao_name: dao_name }],
+        $and: [filter, { operator_or_avs: operator_or_avs }],
       };
     }
 

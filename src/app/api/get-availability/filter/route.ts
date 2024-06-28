@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 
 interface Type {
   ensName: string;
-  dao_name: string;
+  operator_or_avs: string;
   userAddress: string;
   timeSlotSizeMinutes: number;
   allowedDates: string[];
@@ -20,10 +20,10 @@ interface Type {
 
 export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
   try {
-    const { dao_name, date, startTime, endTime } = await req.json();
+    const { operator_or_avs, date, startTime, endTime } = await req.json();
 
     console.log("Initial Data start=========");
-    console.log("dao_name", dao_name);
+    console.log("operator_or_avs", operator_or_avs);
     console.log("date", date);
     console.log("startTime", startTime);
     console.log("endTime", endTime);
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
       "dateAndRanges.date": { $gte: newDate },
     };
 
-    if (dao_name !== null) query.dao_name = dao_name;
+    if (operator_or_avs !== null) query.operator_or_avs = operator_or_avs;
     if (date !== null) query["dateAndRanges.date"] = date;
 
     const sessionData = await collection.find(query).toArray();
@@ -152,14 +152,14 @@ export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
     // Iterate through each meeting document
     const mergedData = await Promise.all(
       finalSessionData.map(async (session) => {
-        // Extract address and dao_name from the meeting
-        const { userAddress, dao_name } = session;
+        // Extract address and operator_or_avs from the meeting
+        const { userAddress, operator_or_avs } = session;
 
-        // Query delegates collection based on address and dao_name
+        // Query delegates collection based on address and operator_or_avs
         const userInfo = await delegatesCollection
           .find({
             address: userAddress,
-            // daoName: dao_name,
+            // daoName: operator_or_avs,
           })
           .toArray();
 

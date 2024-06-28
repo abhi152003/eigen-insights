@@ -58,9 +58,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     let token = "";
 
-    if (data.dao_name === "optimism") {
+    if (data.operator_or_avs === "optimism") {
       token = "OP";
-    } else if (data.dao_name === "arbitrum") {
+    } else if (data.operator_or_avs === "arbitrum") {
       token = "ARB";
     }
 
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         3,
         data.startTime,
         data.endTime,
-        data.dao_name
+        data.operator_or_avs
       );
       for (const participant of data.participants) {
         await delegateAndSetAttestation(
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           4,
           data.startTime,
           data.endTime,
-          data.dao_name
+          data.operator_or_avs
         );
       }
     } else if (data.meetingType === "session") {
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         1,
         data.startTime,
         data.endTime,
-        data.dao_name
+        data.operator_or_avs
       );
       for (const participant of data.participants) {
         await delegateAndSetAttestation(
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           2,
           data.startTime,
           data.endTime,
-          data.dao_name
+          data.operator_or_avs
         );
       }
     }

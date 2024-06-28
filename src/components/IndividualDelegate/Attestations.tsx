@@ -77,7 +77,7 @@ function Attestations({
               result.data.forEach((item: any) => {
                 if (
                   item.meeting_status === "Recorded" &&
-                  item.dao_name === props.daoDelegates &&
+                  item.operator_or_avs === props.daoDelegates &&
                   item[host_uid_key]
                 ) {
                   sessionHostingCount++;
@@ -104,7 +104,7 @@ function Attestations({
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                  dao_name: props.daoDelegates,
+                  operator_or_avs: props.daoDelegates,
                 }),
               }
             );
@@ -113,7 +113,7 @@ function Attestations({
               result.data.forEach((item: any) => {
                 if (
                   item.meeting_status === "Recorded" &&
-                  item.dao_name === props.daoDelegates &&
+                  item.operator_or_avs === props.daoDelegates &&
                   item.attendees.some((attendee: any) => attendee[attendee_uid_key])
                 ) {
                   sessionAttendingCount++;
@@ -147,7 +147,7 @@ function Attestations({
               result.forEach((item: any) => {
                 if (
                   item.meeting_status === "inactive" &&
-                  item.dao_name === props.daoDelegates &&
+                  item.operator_or_avs === props.daoDelegates &&
                   item[host_uid_key]
                 ) {
                   officehoursHostingCount++;
@@ -181,7 +181,7 @@ function Attestations({
               result.forEach((item: any) => {
                 if (
                   item.meeting_status === "inactive" &&
-                  item.dao_name === props.daoDelegates &&
+                  item.operator_or_avs === props.daoDelegates &&
                   item.attendees.some((attendee: any) => attendee[attendee_uid_key])
                 ) {
                   officehoursAttendingCount++;

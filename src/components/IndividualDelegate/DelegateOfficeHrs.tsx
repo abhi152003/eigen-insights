@@ -16,7 +16,7 @@ interface Session {
   title: string;
   description: string;
   meeting_status: "ongoing" | "active" | "inactive"; // Define the possible statuses
-  dao_name: string;
+  operator_or_avs: string;
   attendees: any[];
 }
 
@@ -29,7 +29,7 @@ function DelegateOfficeHrs({ props }: { props: Type }) {
 
   const [sessionDetails, setSessionDetails] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
-  const dao_name = props.daoDelegates;
+  const operator_or_avs = props.daoDelegates;
   // props.daoDelegates.charAt(0).toUpperCase() + props.daoDelegates.slice(1);
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import user from "@/assets/images/daos/user3.png";
 import view from "@/assets/images/daos/view.png";
 import Image from "next/image";
-import NOLogo from "@/assets/images/daos/operators.png";
+import NOLogo from "@/assets/images/daos/Operator4.jpg";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import time from "@/assets/images/daos/time.png";
 import { PiFlagFill } from "react-icons/pi";
@@ -70,7 +70,7 @@ interface Meeting {
   meetingId: string;
   attendees: Attendee[];
   uid_host: string;
-  dao_name: string;
+  operator_or_avs: string;
   host_address: string;
   joined_status: string | null;
   booking_status: string;
@@ -206,15 +206,15 @@ function WatchSession({
                 </div>
                 <div
                   className="text-white font-medium"
-                  // onClick={() => router.push(`${BASE_URL}/${data.dao_name}/${data.host_address}?active=info`)}
+                  // onClick={() => router.push(`${BASE_URL}/${data.operator_or_avs}/${data.host_address}?active=info`)}
                 >
                   {ensHostName}
                 </div>
                 {/* <Link
                   href={
-                    data.dao_name === ("optimism" || "Optimism")
+                    data.operator_or_avs === ("optimism" || "Optimism")
                       ? `https://optimism.easscan.org/offchain/attestation/view/${data.uid_host}`
-                      : data.dao_name === ("arbitrum" || "Arbitrum")
+                      : data.operator_or_avs === ("arbitrum" || "Arbitrum")
                       ? `https://arbitrum.easscan.org/offchain/attestation/view/${data.uid_host}`
                       : ""
                   }
@@ -225,14 +225,15 @@ function WatchSession({
               </div>
 
               <div className="flex items-center gap-1">
-                {data.dao_name === "operators" ? (
+                {data.operator_or_avs === "operators" ? (
                   <Image
                     src={NOLogo}
                     alt="image"
                     width={30}
+                    style={{width: "60%", height: "60%"}}
                     className="rounded-full"
                   />
-                ) : data.dao_name === "avss" ? (
+                ) : data.operator_or_avs === "avss" ? (
                   <Image
                     src={AVSLogo}
                     alt="image"
@@ -243,7 +244,7 @@ function WatchSession({
                   ""
                 )}
                 <div className="text-white font-medium capitalize">
-                  {data.dao_name}
+                  {data.operator_or_avs}
                 </div>
               </div>
             </div>
@@ -320,9 +321,9 @@ function WatchSession({
                       {/* {attendee.attendee_uid ? (
                         <Link
                           href={
-                            data.dao_name === ("optimism" || "Optimism")
+                            data.operator_or_avs === ("optimism" || "Optimism")
                               ? `https://optimism.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
-                              : data.dao_name === ("arbitrum" || "Arbitrum")
+                              : data.operator_or_avs === ("arbitrum" || "Arbitrum")
                               ? `https://arbitrum.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
                               : ""
                           }

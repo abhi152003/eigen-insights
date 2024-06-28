@@ -16,7 +16,7 @@ import { connectDB } from "@/config/connectDB";
 //   };
 // }
 type network_details = {
-  dao_name: string;
+  operator_or_avs: string;
   network: string;
   discourse: string;
 };

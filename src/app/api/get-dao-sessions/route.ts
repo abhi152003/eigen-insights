@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/config/connectDB";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { dao_name, address } = await req.json();
-  // console.log(dao_name, address);
+  const { operator_or_avs, address } = await req.json();
+  // console.log(operator_or_avs, address);
 
   try {
     const client = await connectDB();
@@ -11,12 +11,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const db = client.db();
     const collection = db.collection("meetings");
 
-    let query: any = { dao_name };
+    let query: any = { operator_or_avs };
 
     // Check if address is provided
     if (address !== "") {
       query = {
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
         host_address: { $regex: new RegExp(`^${address}$`, "i") },
       };
     }

@@ -23,7 +23,7 @@ interface Session {
   title: string;
   description: string;
   meeting_status: "ongoing" | "active" | "inactive"; // Define the possible statuses
-  dao_name: string;
+  operator_or_avs: string;
   attendees: any[];
 }
 
@@ -93,17 +93,17 @@ function UserOfficeHours({
             if (searchParams.get("hours") === "ongoing") {
               return (
                 session.meeting_status === "ongoing" &&
-                session.dao_name === daoName
+                session.operator_or_avs === daoName
               );
             } else if (searchParams.get("hours") === "upcoming") {
               return (
                 session.meeting_status === "active" &&
-                session.dao_name === daoName
+                session.operator_or_avs === daoName
               );
             } else if (searchParams.get("hours") === "hosted") {
               return (
                 session.meeting_status === "inactive" &&
-                session.dao_name === daoName
+                session.operator_or_avs === daoName
               );
             }
           });
@@ -113,7 +113,7 @@ function UserOfficeHours({
             return (
               session.attendees.some(
                 (attendee: any) => attendee.attendee_address === address
-              ) && session.dao_name === daoName
+              ) && session.operator_or_avs === daoName
             );
           });
           setSessionDetails(filteredSessions);

@@ -33,6 +33,7 @@ import copy from "copy-to-clipboard";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
 import "../../css/ImagePulse.css";
+import "../../css/ExploreDAO.css";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 
 // Register ChartJS modules
@@ -180,7 +181,7 @@ function DelegateInfo({
           result.data.forEach((item: any) => {
             if (
               item.meeting_status === "Recorded" &&
-              item.dao_name === props.daoDelegates &&
+              item.operator_or_avs === props.daoDelegates &&
               item[host_uid_key]
             ) {
               sessionHostingCount++;
@@ -207,7 +208,7 @@ function DelegateInfo({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              dao_name: props.daoDelegates,
+              operator_or_avs: props.daoDelegates,
             }),
           }
         );
@@ -216,7 +217,7 @@ function DelegateInfo({
           result.data.forEach((item: any) => {
             if (
               item.meeting_status === "Recorded" &&
-              item.dao_name === props.daoDelegates &&
+              item.operator_or_avs === props.daoDelegates &&
               item.attendees.some((attendee: any) => attendee[attendee_uid_key])
             ) {
               sessionAttendingCount++;
@@ -250,7 +251,7 @@ function DelegateInfo({
           result.forEach((item: any) => {
             if (
               item.meeting_status === "inactive" &&
-              item.dao_name === props.daoDelegates &&
+              item.operator_or_avs === props.daoDelegates &&
               item[host_uid_key]
             ) {
               officehoursHostingCount++;
@@ -284,7 +285,7 @@ function DelegateInfo({
           result.forEach((item: any) => {
             if (
               item.meeting_status === "inactive" &&
-              item.dao_name === props.daoDelegates &&
+              item.operator_or_avs === props.daoDelegates &&
               item.attendees.some((attendee: any) => attendee[attendee_uid_key])
             ) {
               officehoursAttendingCount++;
@@ -490,65 +491,114 @@ function DelegateInfo({
     toast("Address Copied");
   };
 
-  // console.log("avs operatorsassssssssss", avsOperators);
+  const formatTVL = (value: number) => {
+    if (!value) return "0";
+
+    const absValue = Math.abs(value);
+    if (absValue >= 1000) {
+      // Round to 3 decimal places, then format to 2
+      const rounded = Math.round(value / 10) / 100;
+      return rounded.toFixed(2) + "k";
+    }
+    // For values less than 1000, round to 2 decimal places
+    return Math.round(value * 100) / 100;
+  };
 
   return (
     <div>
-      <div className="flex gap-3 py-1">
+      <div className="flex gap-3 py-1 min-h-10">
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-            <span className="text-light-cyan font-semibold">
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            <div className="text-light-cyan font-semibold">
               {delegateInfo?.totalStakers
-                ? Number(delegateInfo?.totalStakers)
+                ? formatTVL(Number(delegateInfo?.totalStakers))
                 : 0}
               &nbsp;
-            </span>
-            total stakers
+            </div>
+            <div>total stakers</div>
           </div>
         </div>
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-            TVL
-            <span className="text-light-cyan font-semibold">
-              &nbsp;
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            <div className="text-light-cyan font-semibold">
               {delegateInfo?.tvl.tvl
-                ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
+                ? formatTVL(Number(delegateInfo?.tvl.tvl))
                 : 0}
               &nbsp;
-            </span>
-            ETH
+            </div>
+            <div>TVL ETH</div>
           </div>
         </div>
         <div>
           {props.daoDelegates === "avss" && (
-            <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-              <span className="text-light-cyan font-semibold">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalOperators
-                  ? Number(delegateInfo?.totalOperators)
+                  ? formatTVL(Number(delegateInfo?.totalOperators))
                   : 0}
                 &nbsp;
-              </span>
-              total operators
+              </div>
+              <div>total operators</div>
             </div>
           )}
         </div>
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-            TVL Restaked
-            <span className="text-light-cyan font-semibold">
+          <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            {/* <div className="text-light-cyan font-semibold">
               &nbsp;
               {delegateInfo?.tvl.tvl
                 ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
                 : 0}
               &nbsp;
-            </span>
-            ETH
+            </div> */}
+            <div className="text-light-cyan font-semibold">
+              {delegateInfo?.tvl.tvl
+                ? formatTVL(delegateInfo?.tvl.tvlRestaking)
+                : 0}
+              &nbsp;
+            </div>
+            <div>TVL Restaked ETH</div>
           </div>
         </div>
       </div>
 
       <div
-        style={{ boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)", width: "95%" }}
+        style={{
+          boxShadow: "0px 4px 30.9px 0px rgba(0, 0, 0, 0.12)",
+          width: "95%",
+        }}
         className={`rounded-xl my-3 py-6 px-5 text-sm bg-deep-blue ${
           desc ? "" : "min-h-52"
         }`}
@@ -640,7 +690,10 @@ function DelegateInfo({
 
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
-          <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4" style={{ width: "100%" }}>
+          <div
+            className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"
+            style={{ width: "100%" }}
+          >
             <div className="p-4">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">Total</h2>

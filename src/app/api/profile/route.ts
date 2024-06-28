@@ -21,7 +21,7 @@ import { NextResponse, NextRequest } from "next/server";
 // }
 
 type network_details = {
-  dao_name: string;
+  operator_or_avs: string;
   network: string;
   discourse: string;
 };
@@ -224,7 +224,7 @@ export async function PUT(
     if (documents.length > 0) {
       const document = documents[0];
       const existingNetworkIndex = document.networks.findIndex(
-        (item: any) => item.dao_name === networks[0].dao_name
+        (item: any) => item.operator_or_avs === networks[0].operator_or_avs
       );
 
       if (existingNetworkIndex !== -1) {

@@ -158,7 +158,7 @@ function MainProfile() {
         github: github,
       },
       networks: {
-        dao_name: daoName,
+        operator_or_avs: daoName,
         network: chain?.name,
         discourse: discourse,
       },
@@ -481,7 +481,7 @@ function MainProfile() {
         },
         networks: [
           {
-            dao_name: daoName,
+            operator_or_avs: daoName,
             network: chain?.name,
             discourse: discourse,
           },
@@ -526,7 +526,7 @@ function MainProfile() {
         },
         networks: [
           {
-            dao_name: daoName,
+            operator_or_avs: daoName,
             network: chain?.name,
             discourse: discourse,
           },

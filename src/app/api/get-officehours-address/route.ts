@@ -9,12 +9,12 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
 }
 
 export async function POST(req: NextRequest, res: NextResponse<OfficeHours[]>) {
   try {
-    // Extract the dao_name from the request body
+    // Extract the operator_or_avs from the request body
     const { address } = await req.json();
 
     // Connect to MongoDB database
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest, res: NextResponse<OfficeHours[]>) {
     const db = client.db();
     const collection = db.collection<OfficeHours>("office_hours");
 
-    // Find office hours documents based on the provided dao_name
+    // Find office hours documents based on the provided operator_or_avs
     const officeHours = await collection
       .find({ host_address: { $regex: new RegExp(`^${address}$`, "i") } })
       .toArray();

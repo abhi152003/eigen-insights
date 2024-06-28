@@ -18,7 +18,7 @@ type Attendee = {
 
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -46,7 +46,7 @@ function AttendingUserSessions({ daoName }: { daoName: string }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          dao_name: daoName,
+          operator_or_avs: daoName,
         }),
       });
 
@@ -68,7 +68,7 @@ function AttendingUserSessions({ daoName }: { daoName: string }) {
                 session.meeting_status !== "Recorded" &&
                 new Date(session.slot_time).toLocaleString() >=
                   currentSlot.toLocaleString()
-                // && session.dao_name === daoName
+                // && session.operator_or_avs === daoName
               );
             });
             console.log("filtered data in attending: ", filteredData);

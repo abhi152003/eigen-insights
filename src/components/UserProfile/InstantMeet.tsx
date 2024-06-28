@@ -89,7 +89,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
     console.log("Modal details: ", modalData);
 
     const requestData = {
-      dao_name: daoName,
+      operator_or_avs: daoName,
       slot_time: dateInfo,
       title: modalData.title,
       description: modalData.description,

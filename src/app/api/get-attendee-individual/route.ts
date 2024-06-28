@@ -9,7 +9,7 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   video_uri: string | null;
   meetingId: string;
   attendees: { attendee_address: string }[];

@@ -8,7 +8,7 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   video_uri: string;
   meetingId: string;
 }
@@ -22,7 +22,7 @@ interface Meeting {
   meeting_status: string;
   joined_status: string | null;
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   title: string;
   description: string;
 }

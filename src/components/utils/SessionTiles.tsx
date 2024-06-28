@@ -49,11 +49,12 @@ interface AttestationData {
 }
 
 interface SessionData {
+  // [x: string]: ReactNode;
   _id: string;
   img: StaticImageData;
   title: string;
   meetingId: string;
-  dao_name: string;
+  operator_or_avs: string;
   booking_status: string;
   meeting_status: string;
   joined_status: boolean;
@@ -318,9 +319,9 @@ SessionTileProps) {
 
                 <div className="flex space-x-4 py-2">
                   <div className="bg-medium-blue border-1 border-white text-white rounded-md text-xs px-5 py-1 font-medium capitalize">
-                    {data.dao_name}
+                    {data.operator_or_avs}
                   </div>
-                  {/* <div className="border border-[#1E1E1E] rounded-md text-[#1E1E1E] text-xs px-5 py-1 font-medium">
+                  {/* <div className="bg-medium-blue border-1 border-white text-white rounded-md text-xs px-5 py-1 font-medium capitalize">
                     {data.participant} Participants
                   </div> */}
                 </div>
@@ -342,14 +343,14 @@ SessionTileProps) {
                     </div>
                   )}
                   <div className="text-white">
-                    <span className="font-normal">Host:</span>{" "}
+                    <span className="font-normal text-light-cyan">Host:</span>{" "}
                     {formatWalletAddress(data.host_address)}
                   </div>
                   <div className="text-white">
                     {isEvent === "Upcoming" ? (
-                      <span className="font-normal">Starts at: </span>
+                      <span className="font-normal text-light-cyan">Starts at: </span>
                     ) : isEvent === "Recorded" ? (
-                      <span className="font-normal">Started at: </span>
+                      <span className="font-normal text-light-cyan">Started at: </span>
                     ) : null}
                     {formatSlotTimeToLocal(data.slot_time)}
                   </div>
@@ -381,7 +382,7 @@ SessionTileProps) {
                       meetingStartTime: data.attestations[0].startTime,
                       meetingEndTime: data.attestations[0].endTime,
                       index,
-                      dao: data.dao_name,
+                      dao: data.operator_or_avs,
                     });
                   }}
                   disabled={
@@ -422,7 +423,7 @@ SessionTileProps) {
                       meetingStartTime: data.attestations[0].startTime,
                       meetingEndTime: data.attestations[0].endTime,
                       index,
-                      dao: data.dao_name,
+                      dao: data.operator_or_avs,
                     });
                   }}
                   disabled={

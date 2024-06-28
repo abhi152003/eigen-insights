@@ -4,7 +4,7 @@ import { sendMail, compileBookedSessionTemplate } from "@/libs/mail";
 
 // Define the request body type
 interface StoreAvailabilityRequestBody {
-  dao_name: string;
+  operator_or_avs: string;
   userAddress: string;
   timeSlotSizeMinutes: number;
   allowedDates: string[];
@@ -23,7 +23,7 @@ interface StoreAvailabilityResponseBody {
   success: boolean;
   data?: {
     _id: string;
-    dao_name: string;
+    operator_or_avs: string;
     userAddress: string;
     timeSlotSizeMinutes: number;
     allowedDates: string[];
@@ -46,7 +46,7 @@ export async function POST(
   res: NextResponse<StoreAvailabilityResponseBody>
 ) {
   const {
-    dao_name,
+    operator_or_avs,
     userAddress,
     timeSlotSizeMinutes,
     allowedDates,
@@ -61,9 +61,9 @@ export async function POST(
     const db = client.db();
     const collection = db.collection("scheduling");
 
-    // Check if a document with the same dao_name, userAddress, and timeSlotSizeMinutes exists
+    // Check if a document with the same operator_or_avs, userAddress, and timeSlotSizeMinutes exists
     const existingDocument = await collection.findOne({
-      dao_name,
+      operator_or_avs,
       userAddress,
       timeSlotSizeMinutes,
     });
@@ -135,7 +135,7 @@ export async function POST(
     } else {
       // Insert new data
       const result = await collection.insertOne({
-        dao_name,
+        operator_or_avs,
         userAddress,
         timeSlotSizeMinutes,
         allowedDates,

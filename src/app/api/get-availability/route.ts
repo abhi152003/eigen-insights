@@ -4,7 +4,7 @@ import { connectDB } from "@/config/connectDB";
 // Define the response body type
 interface Type {
   ensName: string;
-  dao_name: string;
+  operator_or_avs: string;
   userAddress: string;
   timeSlotSizeMinutes: number;
   allowedDates: string[];
@@ -49,10 +49,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
 export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
   try {
-    const { dao_name, userAddress } = await req.json();
+    const { operator_or_avs, userAddress } = await req.json();
 
     console.log("Initial Data start=========");
-    console.log("dao_name", dao_name);
+    console.log("operator_or_avs", operator_or_avs);
     console.log("userAddress", userAddress);
     console.log("Initial Data end=========");
 
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
     }
     console.log("newDate", newDate);
     const query: any = {
-      dao_name: dao_name,
+      operator_or_avs: operator_or_avs,
       userAddress: userAddress,
       "dateAndRanges.date": { $gte: newDate },
     };
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest, res: NextResponse<Type[]>) {
 export async function DELETE(req: NextRequest, res: NextResponse<Type[]>) {
   try {
     const {
-      dao_name,
+      operator_or_avs,
       userAddress,
       timeSlotSizeMinutes,
       date,
@@ -143,7 +143,7 @@ export async function DELETE(req: NextRequest, res: NextResponse<Type[]>) {
     } = await req.json();
 
     console.log("Initial Data start=========");
-    console.log("dao_name", dao_name);
+    console.log("operator_or_avs", operator_or_avs);
     console.log("userAddress", userAddress);
     console.log("timeSlotSizeMinutes", timeSlotSizeMinutes);
     console.log("date", date);
@@ -155,7 +155,7 @@ export async function DELETE(req: NextRequest, res: NextResponse<Type[]>) {
     const db = client.db();
     const collection = db.collection("scheduling");
 
-    const query = { dao_name, userAddress, timeSlotSizeMinutes };
+    const query = { operator_or_avs, userAddress, timeSlotSizeMinutes };
     const document = await collection.findOne(query);
 
     if (!document) {

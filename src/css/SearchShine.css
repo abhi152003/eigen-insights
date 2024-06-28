@@ -1,31 +1,31 @@
 .searchBox {
     display: flex;
-    width: 19vmax;
-    height: 3.125vmax;
+    width: 300px;
+    height: 43px;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5vmax;
+    gap: 0.5rem;
     background: white;
     color: black;
     font-weight: bold;
-    border-radius: 3.125vmax;
+    border-radius: 3.125rem;
     position: relative;
 }
 
 .searchShineWidthOfcHour {
-  width: 25vmax;
+  width: 400px;
 }
 
 .searchShineWidthOfAVSs {
-  width: 25vmax;
+  width: 400px;
 }
 
 .searchButton {
     color: white;
     position: absolute;
-    right: 0.5vmax;
-    width: 2.5vmax;
-    height: 2.5vmax;
+    right: 8px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background: var(--gradient-2, linear-gradient(90deg, #1A1A1A 0%, #11334D 50%, #5E9CBF 100%));
     border: 0;
@@ -46,18 +46,18 @@
 }
   
 .searchInput {
-    width: 25vmax;
+    width: 400px;
     overflow: visible;
     border: none;
     background: none;
     outline: none;
     color: black;
-    font-size: 1.13vmax;
+    font-size: 1rem;
     padding: 24px 46px 24px 26px;
 }
 
 .iconExplore {
-    width: 1.8vmax;
+    width: 20px;
     margin: auto;
     height: auto;
 }

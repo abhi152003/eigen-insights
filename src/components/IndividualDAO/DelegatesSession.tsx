@@ -21,7 +21,7 @@ import { IoSearchSharp } from "react-icons/io5";
 
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -38,14 +38,14 @@ function DelegatesSession({ props }: { props: string }) {
   const router = useRouter();
   const path = usePathname();
   const searchParams = useSearchParams();
-  const dao_name = props;
+  const operator_or_avs = props;
 
   const [sessionDetails, setSessionDetails] = useState([]);
   const [tempSession, setTempSession] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  // console.log("propspropsprops", dao_name);
+  // console.log("propspropsprops", operator_or_avs);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +55,7 @@ function DelegatesSession({ props }: { props: string }) {
           method: "POST",
           redirect: "follow",
           body: JSON.stringify({
-            dao_name: dao_name,
+            operator_or_avs: operator_or_avs,
             address: "",
           }),
         };
@@ -100,7 +100,7 @@ function DelegatesSession({ props }: { props: string }) {
     if (query.length > 0) {
       setDataLoading(true);
       const raw = JSON.stringify({
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
       });
 
       const requestOptions: any = {

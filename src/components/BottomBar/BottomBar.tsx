@@ -236,11 +236,11 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       meetingType = 0;
     }
 
-    let dao_name = "";
+    let operator_or_avs = "";
     if (chain?.name === "Optimism") {
-      dao_name = "optimism";
+      operator_or_avs = "optimism";
     } else if (chain?.name === "Arbitrum One") {
-      dao_name = "arbitrum";
+      operator_or_avs = "arbitrum";
     }
 
     try {
@@ -252,7 +252,7 @@ const BottomBar: React.FC<BottomBarProps> = () => {
         body: JSON.stringify({
           roomId: roomId,
           meetingType: meetingType,
-          dao_name: dao_name,
+          operator_or_avs: operator_or_avs,
         }),
       };
       // console.log("req optionnnn", requestOptions);

@@ -27,7 +27,7 @@ export async function GET() {
 //   meeting_status: boolean;
 //   joined_status: boolean;
 //   booking_status: boolean;
-//   dao_name: string;
+//   operator_or_avs: string;
 //   title: string;
 //   description: string;
 //   uid_host: string;

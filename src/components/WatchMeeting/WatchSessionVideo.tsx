@@ -51,7 +51,7 @@ interface Meeting {
   meetingId: string;
   attendees: Attendee[];
   uid_host: string;
-  dao_name: string;
+  operator_or_avs: string;
   host_address: string;
   joined_status: string | null;
   booking_status: string;

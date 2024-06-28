@@ -9,7 +9,7 @@ interface OfficeHoursRequestBody {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   video_uri: string;
   meetingId: string;
 }
@@ -23,7 +23,7 @@ interface OfficeHoursResponseBody {
     office_hours_slot: string;
     title: string;
     description: string;
-    dao_name: string;
+    operator_or_avs: string;
     meeting_status: string;
     video_uri: string;
     meetingId: string;
@@ -41,7 +41,7 @@ export async function POST(
     title,
     description,
     meeting_status,
-    dao_name,
+    operator_or_avs,
     video_uri,
     meetingId,
   }: OfficeHoursRequestBody = await req.json();
@@ -64,7 +64,7 @@ export async function POST(
       title,
       description,
       meeting_status,
-      dao_name,
+      operator_or_avs,
       video_uri,
       meetingId,
     });
