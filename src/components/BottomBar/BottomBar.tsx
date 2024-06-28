@@ -222,6 +222,33 @@ const BottomBar: React.FC<BottomBarProps> = () => {
     }
   };
 
+  let operator_or_avs = "";
+
+  useEffect(() => {
+    const checkOperatorOrAVS = async () => {
+      try {
+        const operatorsRes = await fetch(
+          `/api/get-search-data?q=${address}&prop=operators`
+        );
+        if (!operatorsRes.ok) {
+          throw new Error(`Error: ${operatorsRes.status}`);
+        }
+        const data: Result[] | { message: string } = await operatorsRes.json();
+        if (Array.isArray(data)) {
+          if (data.length > 0) {
+            operator_or_avs = "operators"
+          } else {
+            operator_or_avs = "avss"
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    checkOperatorOrAVS();
+  }, [address]);
+
   const handleEndCall = async (endMeet: string) => {
     setIsLoading(true);
     // Check if the user is the host
@@ -252,37 +279,12 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       meetingType = 0;
     }
 
-    let operator_or_avs = "";
+    
     // if (chain?.name === "Optimism") {
     //   operator_or_avs = "optimism";
     // } else if (chain?.name === "Arbitrum One") {
     //   operator_or_avs = "arbitrum";
     // }
-
-    useEffect(() => {
-      const checkOperatorOrAVS = async () => {
-        try {
-          const operatorsRes = await fetch(
-            `/api/get-search-data?q=${address}&prop=operators`
-          );
-          if (!operatorsRes.ok) {
-            throw new Error(`Error: ${operatorsRes.status}`);
-          }
-          const data: Result[] | { message: string } = await operatorsRes.json();
-          if (Array.isArray(data)) {
-            if (data.length > 0) {
-              operator_or_avs = "operators"
-            } else {
-              operator_or_avs = "avss"
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-  
-      checkOperatorOrAVS();
-    }, [address]);
 
     try {
       const requestOptions = {
