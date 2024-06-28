@@ -17,15 +17,15 @@ import "../../css/SearchShine.css";
 function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
   const router = useRouter();
   const path = usePathname();
-  let dao_name: string;
+  let operator_or_avs: string;
 
   if (path.slice(1) === "operators") {
-    dao_name = "Operators";
+    operator_or_avs = "Operators";
   } else {
-    dao_name = "AVSs";
+    operator_or_avs = "AVSs";
   }
 
-  console.log(dao_name);
+  console.log(operator_or_avs);
   const searchParams = useSearchParams();
 
   const logoMapping: any = {
@@ -34,12 +34,12 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
     // Add more mappings as needed
   };
 
-  const selectedLogo = logoMapping[dao_name] || operators_logo;
+  const selectedLogo = logoMapping[operator_or_avs] || operators_logo;
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
-    value: dao_name,
-    label: dao_name,
+    value: operator_or_avs,
+    label: operator_or_avs,
     image: selectedLogo,
   });
 
@@ -128,7 +128,9 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
                     <div key={index}>
                       <div
                         className={`option flex items-center cursor-pointer px-3 py-2 rounded-lg transition duration-1000  ease-in-out transform hover:scale-105 capitalize ${
-                          option.label === dao_name ? "text-light-cyan" : ""
+                          option.label === operator_or_avs
+                            ? "text-light-cyan"
+                            : ""
                         }`}
                         onClick={() => selectOption(option)}
                       >
@@ -156,7 +158,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
       </div>
 
       <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
-        {dao_name === "Operators" ? (
+        {operator_or_avs === "Operators" ? (
           <button
             className={` 
               mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -186,7 +188,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           </button>
         )}
 
-        {dao_name === "Operators" ? (
+        {operator_or_avs === "Operators" ? (
           <button
             className={`
               mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -220,7 +222,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           </button>
         )}
 
-        {dao_name === "Operators" ? (
+        {operator_or_avs === "Operators" ? (
           <button
             className={`
             mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 

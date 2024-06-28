@@ -30,7 +30,7 @@ interface Type {
   desc: string;
   attendee: string;
   video_uri?: string;
-  dao_name: string;
+  operator_or_avs: string;
   host_address: string;
   office_hours_slot: string;
   description: string;
@@ -90,9 +90,7 @@ function Tile({
             <div
               key={index}
               className={`flex p-5 rounded-[2rem] justify-between bg-deep-blue 
-                 ${
-                isEvent === "Recorded" ? "cursor-pointer" : ""
-              }`}
+                 ${isEvent === "Recorded" ? "cursor-pointer" : ""}`}
               style={{ boxShadow: "0px 4px 26.7px 0px rgba(0, 0, 0, 0.10)" }}
               // onClick={() => openModal(index)}
               onClick={
@@ -115,7 +113,7 @@ function Tile({
 
                   <div className="flex space-x-4 py-2">
                     <div className="bg-midnight-blue border border-white text-white rounded-md text-sm px-5 py-2 font-semibold flex items-center">
-                      {data.dao_name}
+                      {data.operator_or_avs}
                     </div>
                     <div className="border border-white rounded-md text-whitetext-xs px-5 py-2 text-sm flex items-center">
                       {data.attendees ? data.attendees.length : 0} Participants
@@ -224,8 +222,8 @@ function Tile({
           date={sessionDetails[selectedTileIndex].office_hours_slot}
           host={sessionDetails[selectedTileIndex].host_address}
           attendees={sessionDetails[selectedTileIndex].attendees}
-          dao={sessionDetails[selectedTileIndex].dao_name}
-          host_attestation={sessionDetails[selectedTileIndex].uid_host}
+          dao={sessionDetails[selectedTileIndex].operator_or_avs}
+          // host_attestation={sessionDetails[selectedTileIndex].uid_host}
           onClose={closeModal}
         />
       ) : null}

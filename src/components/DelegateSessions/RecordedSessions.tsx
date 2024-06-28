@@ -199,7 +199,7 @@ function RecordedSessions() {
     if (params) {
       setActiveButton(params);
       const filtered = searchMeetingData.filter((item: any) => {
-        return item.session.dao_name.includes(params);
+        return item.session.operator_or_avs.includes(params);
       });
 
       setMeetingData(filtered);
@@ -450,14 +450,14 @@ function RecordedSessions() {
                   <div className="flex text-sm gap-3 py-1">
                     <div className="bg-medium-blue flex items-center py-1 px-3 rounded-md gap-2">
                       <div>
-                        {data.session.dao_name === "operators" ? (
+                        {data.session.operator_or_avs === "operators" ? (
                           <Image
                             src={NOLogo}
                             alt="image"
                             width={20}
                             className="rounded-full"
                           />
-                        ) : data.session.dao_name === "avss" ? (
+                        ) : data.session.operator_or_avs === "avss" ? (
                           <Image
                             src={AVSLogo}
                             alt="image"
@@ -468,7 +468,9 @@ function RecordedSessions() {
                           ""
                         )}
                       </div>
-                      <div className="capitalize">{data.session.dao_name}</div>
+                      <div className="capitalize">
+                        {data.session.operator_or_avs}
+                      </div>
                     </div>
                     <div className="bg-medium-blue py-1 px-3 rounded-md">
                       {formatTimeAgo(data.session.slot_time)}

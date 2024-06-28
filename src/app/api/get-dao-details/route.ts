@@ -23,7 +23,7 @@ interface DAOData {
   _id: {
     $oid: string;
   };
-  dao_name: string;
+  operator_or_avs: string;
   chain_name: string;
   description: string;
   contract_address: string;

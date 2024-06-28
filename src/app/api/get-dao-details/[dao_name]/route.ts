@@ -3,12 +3,12 @@ import { MongoClient, MongoClientOptions } from "mongodb";
 import { connectDB } from "@/config/connectDB";
 
 type Params = {
-  dao_name: string;
+  operator_or_avs: string;
 };
 
 export async function GET(req: NextRequest, context: { params: Params }) {
-  const dao_name = context.params.dao_name;
-  console.log(dao_name);
+  const operator_or_avs = context.params.operator_or_avs;
+  console.log(operator_or_avs);
   try {
     // Connect to MongoDB
     console.log("Connecting to MongoDB...");
@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, context: { params: Params }) {
     const db = client.db();
     const collection = db.collection("dao_details");
 
-    const documents = await collection.find({ dao_name }).toArray();
+    const documents = await collection.find({ operator_or_avs }).toArray();
 
     client.close();
 

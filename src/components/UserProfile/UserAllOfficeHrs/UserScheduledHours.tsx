@@ -19,20 +19,17 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
 
   const createRandomRoom = async () => {
     const createRoomUrl = process.env.NEXT_PUBLIC_CREATE_ROOM;
-  
+
     if (!createRoomUrl) {
-      console.error('NEXT_PUBLIC_CREATE_ROOM environment variable is not set.');
+      console.error("NEXT_PUBLIC_CREATE_ROOM environment variable is not set.");
       return null;
     }
-    const res = await fetch(
-      createRoomUrl,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res = await fetch(createRoomUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const result = await res.json();
     const roomId = await result.data;
     return roomId;
@@ -62,7 +59,7 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           title,
           description,
           meeting_status: "active",
-          dao_name: daoName,
+          operator_or_avs: daoName,
           meetingId: roomId, // Pass the roomId as meetingId
         }),
       });
@@ -177,34 +174,35 @@ const UserScheduledHours = ({ daoName }: { daoName: string }) => {
           type="submit"
           className="bg-[#427FA3] hover:bg-[#214965] text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center cursor-pointer overflow-hidden relative z-100 border-2 border-light-cyan group text-sm w-fit mt-2"
           disabled={isSubmitting}
-        ><span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
-          {isSubmitting ? (
-            <svg
-              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 4.418 3.582 8 8 8v-4c-2.22 0-4.239-.905-5.708-2.369l1.416-1.416zm16.294-7.58A7.962 7.962 0 0120 12h4c0-4.418-3.582-8-8-8v4c2.219 0 4.238.904 5.707 2.369l-1.413 1.414z"
-              ></path>
-            </svg>
-          ) : (
-            "Submit"
-          )}
+        >
+          <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
+            {isSubmitting ? (
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 4.418 3.582 8 8 8v-4c-2.22 0-4.239-.905-5.708-2.369l1.416-1.416zm16.294-7.58A7.962 7.962 0 0120 12h4c0-4.418-3.582-8-8-8v4c2.219 0 4.238.904 5.707 2.369l-1.413 1.414z"
+                ></path>
+              </svg>
+            ) : (
+              "Submit"
+            )}
           </span>
           <span className="absolute w-full h-full bg-midnight-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
-                <span className="absolute w-full h-full bg-midnight-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
+          <span className="absolute w-full h-full bg-midnight-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
         </button>
       </form>
     </div>

@@ -6,7 +6,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const user_address = req.url.split("get-session-data/")[1];
   // console.log(user_address);
 
-  const { dao_name } = await req.json();
+  const { operator_or_avs } = await req.json();
 
   try {
     // Connect to MongoDB
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         "attendees.attendee_address": {
           $regex: new RegExp(`^${user_address}$`, "i"),
         },
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
       })
       .toArray();
     // console.log("Documents found:", documents);

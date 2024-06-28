@@ -5,8 +5,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
   // console.log("GET req call");
   const query = req.url.split("search-session/")[1];
 
-  const { dao_name } = await req.json();
-  // console.log("Dao name: ", dao_name);
+  const { operator_or_avs } = await req.json();
+  // console.log("Dao name: ", operator_or_avs);
 
   // console.log(user_address);
   try {
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
               { host_address: { $regex: `\\b${query}`, $options: "i" } },
             ],
           },
-          { dao_name: dao_name }, // Condition for matching dao_name
+          { operator_or_avs: operator_or_avs }, // Condition for matching operator_or_avs
         ],
       })
       .toArray();

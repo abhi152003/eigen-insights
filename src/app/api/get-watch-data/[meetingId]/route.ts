@@ -27,13 +27,13 @@ export async function GET(req: NextRequest, context: { params: Params }) {
     if (meetingsDocuments.length > 0) {
       const mergedData = await Promise.all(
         meetingsDocuments.map(async (session) => {
-          // Extract address and dao_name from the meeting
-          const { host_address, dao_name, attendees } = session;
+          // Extract address and operator_or_avs from the meeting
+          const { host_address, operator_or_avs, attendees } = session;
 
-          // Query delegates collection based on address and dao_name
+          // Query delegates collection based on address and operator_or_avs
           const hostInfo = await delegatesCollection.findOne({
             address: host_address,
-            // daoName: dao_name,
+            // daoName: operator_or_avs,
           });
 
           const attendeesProfileDetails = await Promise.all(
@@ -62,13 +62,13 @@ export async function GET(req: NextRequest, context: { params: Params }) {
     } else if (officeHoursDocuments.length > 0) {
       const mergedData = await Promise.all(
         officeHoursDocuments.map(async (session) => {
-          // Extract address and dao_name from the meeting
-          const { host_address, dao_name } = session;
+          // Extract address and operator_or_avs from the meeting
+          const { host_address, operator_or_avs } = session;
 
-          // Query delegates collection based on address and dao_name
+          // Query delegates collection based on address and operator_or_avs
           const hostInfo = await delegatesCollection.findOne({
             address: host_address,
-            daoName: dao_name,
+            daoName: operator_or_avs,
           });
           const attendeesProfileDetails = await Promise.all(
             session.attendees.map(async (attendee: any) => {

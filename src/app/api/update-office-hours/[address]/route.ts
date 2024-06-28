@@ -16,7 +16,7 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   meetingId: string;
 }
 
@@ -75,7 +75,7 @@ export async function PUT(
       office_hours_slot: currentSlotDate,
       title: lastActiveOfficeHours.title,
       description: lastActiveOfficeHours.description,
-      dao_name: lastActiveOfficeHours.dao_name,
+      operator_or_avs: lastActiveOfficeHours.operator_or_avs,
       meeting_status: "active",
       meetingId: roomId, // Insert roomId into the document
     });

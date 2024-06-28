@@ -32,7 +32,8 @@ import { FaTelegram } from "react-icons/fa";
 import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 import Operators from "./Operators";
-import Attestations from "./Attestations";
+import Avss from "./Avss";
+// import Attestations from "./Attestations";
 
 interface Type {
   daoDelegates: string;
@@ -451,6 +452,21 @@ function SpecificDelegate({ props }: { props: Type }) {
             ) : (
               ""
             )}
+            {props.daoDelegates === "operators" ? (
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "avss"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=avss")}
+              >
+                AVSs
+              </button>
+            ) : (
+              ""
+            )}
             {props.daoDelegates === "avss" ? (
               <button
                 className={`border-b-2 py-3 px-2
@@ -492,17 +508,6 @@ function SpecificDelegate({ props }: { props: Type }) {
             >
               Office Hours
             </button>
-            <button
-              className={`border-b-2 py-3 px-2
-                ${
-                  searchParams.get("active") === "attestations"
-                    ? "border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                }`}
-              onClick={() => router.push(path + "?active=attestations")}
-            >
-              Attestations
-            </button>
           </div>
 
           <div className="py-6 ps-16">
@@ -516,6 +521,9 @@ function SpecificDelegate({ props }: { props: Type }) {
             {searchParams.get("active") === "operators" && (
               <Operators props={props} />
             )}
+            {searchParams.get("active") === "avss" && (props.daoDelegates === "operators") ? (
+              <Avss props={props} />
+            ) : ("")}
             {searchParams.get("active") === "analytics" && (
               <OperatorsAnalytics props={props} />
             )}
@@ -524,9 +532,6 @@ function SpecificDelegate({ props }: { props: Type }) {
             )}
             {searchParams.get("active") === "officeHours" && (
               <DelegateOfficeHrs props={props} />
-            )}
-            {searchParams.get("active") === "attestations" && (
-              <Attestations props={props} delegateInfo={delegateInfo} />
             )}
           </div>
         </div>

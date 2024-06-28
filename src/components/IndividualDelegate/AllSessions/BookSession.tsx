@@ -42,17 +42,17 @@ const theme = {
   background: "#427FA3",
   buttons: {
     disabled: {
-      color: '#A7DBF2',
-      background: '#f0f0f0'
+      color: "#A7DBF2",
+      background: "#f0f0f0",
     },
     confirm: {
-      color: '#fff',
-      background: 'slategrey',
+      color: "#fff",
+      background: "slategrey",
       hover: {
-        color: '',
-        background: 'lightslategrey'
-      }
-    }
+        color: "",
+        background: "lightslategrey",
+      },
+    },
   },
   feedback: {
     success: {
@@ -82,7 +82,7 @@ function BookSession({ props }: { props: Type }) {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [dateInfo, setDateInfo] = useState();
   const [modalData, setModalData] = useState({
-    dao_name: "",
+    operator_or_avs: "",
     date: "",
     title: "",
     description: "",
@@ -361,7 +361,7 @@ function BookSession({ props }: { props: Type }) {
     let roomId = await createRandomRoom();
 
     const requestData = {
-      dao_name: props.daoDelegates,
+      operator_or_avs: props.daoDelegates,
       slot_time: dateInfo,
       title: modalData.title,
       description: modalData.description,
@@ -400,7 +400,7 @@ function BookSession({ props }: { props: Type }) {
 
     // Reset modal data
     setModalData({
-      dao_name: "",
+      operator_or_avs: "",
       date: "",
       title: "",
       description: "",

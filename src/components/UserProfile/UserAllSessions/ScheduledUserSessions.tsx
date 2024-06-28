@@ -21,7 +21,7 @@ interface dataToStore {
   timeSlotSizeMinutes: number;
   allowedDates: any;
   dateAndRanges: any;
-  dao_name: string;
+  operator_or_avs: string;
 }
 
 function ScheduledUserSessions({ daoName }: { daoName: string }) {
@@ -173,7 +173,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
       timeSlotSizeMinutes: timeSlotSizeMinutes,
       allowedDates: allowedDates,
       dateAndRanges: dateAndRanges,
-      dao_name: daoName,
+      operator_or_avs: daoName,
     };
     setFinalData(dataToStore);
 
@@ -489,9 +489,9 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               <Tooltip
                 content={
                   <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
-                    Operator/AVS for which the session is to be created. The attestations
-                    will be issued for the selected Operator/AVS. The attendees of this
-                    session will seek questions related to the selected Operator/AVS.
+                    Operator/AVS for which the session is to be created.
+                    The attendees of this session will seek questions related to
+                    the selected Operator/AVS.
                   </div>
                 }
                 showArrow
@@ -687,21 +687,22 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
             disabled={createSessionLoading}
           >
             <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
-            {createSessionLoading ? (
-              <ThreeCircles
-                visible={true}
-                height="50"
-                width="50"
-                color="#FFFFFF"
-                ariaLabel="three-circles-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            ) : (
-              "Create Session"
-            )}</span>
-             <span className="absolute w-full h-full bg-light-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
-             <span className="absolute w-full h-full bg-light-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
+              {createSessionLoading ? (
+                <ThreeCircles
+                  visible={true}
+                  height="50"
+                  width="50"
+                  color="#FFFFFF"
+                  ariaLabel="three-circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              ) : (
+                "Create Session"
+              )}
+            </span>
+            <span className="absolute w-full h-full bg-light-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
+            <span className="absolute w-full h-full bg-light-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
           </button>
 
           <Toaster

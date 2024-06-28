@@ -8,6 +8,8 @@ import { Chart, ArcElement, Title, Tooltip } from "chart.js";
 import { formatEther } from "ethers";
 import { Oval, ThreeCircles } from "react-loader-spinner";
 import "../../app/globals.css";
+import { IoSearchSharp } from "react-icons/io5";
+import { useAccount } from "wagmi";
 
 interface Share {
   strategyAddress: string;
@@ -258,6 +260,42 @@ function Analytics() {
     },
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleWithdrawalAddress = async () => {
+    const { address } = useAccount();
+    if (address) {
+      setSearchQuery(address);
+    }
+  };
+
+  const handleSearchChange = async (query: string) => {
+    // console.log("query: ", query.length);
+    // console.log("queryyyyyyyy",query)
+    setSearchQuery(query);
+
+    if (query.length > 0) {
+      // console.log("Delegate data: ", query, delegateData);
+      // console.log(delegateData);
+
+      try {
+        const res = await fetch(`/api/search-withdrawal-data?address=${query}`);
+        if (!res.ok) {
+          throw new Error(`Error: ${res.status}`);
+        }
+        const data = await res.json();
+        console.log("dataaaaaaaaa", data);
+        setWithdrawals(data);
+      } catch (error) {
+        console.error("Search error:", error);
+      }
+    } else {
+      // console.log("in else");
+      console.log("data not comingggggg");
+      // setDelegateData({ ...delegateData, delegates: tempData.delegates });
+    }
+  };
+
   // Define the data for the Pie chart
   // const restakeData = {
   //   labels: labels,
@@ -394,7 +432,7 @@ function Analytics() {
   };
 
   return (
-    <div className="p-20">
+    <div className="p-20 -mt-20">
       <h1 className="text-5xl text-center pb-7">Analytics</h1>
       {isPageLoading && (
         <div className="flex items-center justify-center pt-40">
@@ -432,7 +470,9 @@ function Analytics() {
           </div> */}
 
           <div>
-            <h1 className="mt-7 text-[2.25rem] font-semibold	">TVL Restaking Distribution</h1>
+            <h1 className="mt-7 text-[2.25rem] font-semibold	">
+              TVL Restaking Distribution
+            </h1>
             <div className="flex justify-center mt-5 pe-14">
               {filteredData.length > 0 ? (
                 <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
@@ -498,7 +538,9 @@ function Analytics() {
           </div>
 
           <div>
-            <h1 className="mt-7 text-[2.25rem]  font-semibold	">Opeators Distribution</h1>
+            <h1 className="mt-7 text-[2.25rem]  font-semibold	">
+              Operators Distribution
+            </h1>
             <div className="flex justify-center mt-5 pe-14">
               {filteredOperatorsData.length > 0 ? (
                 <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
@@ -568,7 +610,32 @@ function Analytics() {
           </div>
 
           <div className="mt-10">
-            <h1 className="mt-10 text-[1.25rem] font-semibold	">All Withdrawals</h1>
+            <h1 className="mt-10 text-[1.25rem] font-semibold	">
+              All Withdrawals
+            </h1>
+
+            <div className="flex">
+              <div className="searchBox searchShineWidthOfAVSs mb-5 mt-5">
+                <input
+                  className="searchInput"
+                  type="text"
+                  name=""
+                  placeholder="Search by Address"
+                  value={searchQuery}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+                <button className="searchButton">
+                  <IoSearchSharp className="iconExplore" />
+                </button>
+              </div>
+              <button
+                onClick={handleWithdrawalAddress}
+                className="border border-white rounded-lg h-8 px-2 justify-center mt-5"
+              >
+                Get All My Withdrawals
+              </button>
+            </div>
+
             <div className="mx-auto py-8 overflow-x-auto">
               <table className="w-full border-collapse text-center text-white">
                 <thead>

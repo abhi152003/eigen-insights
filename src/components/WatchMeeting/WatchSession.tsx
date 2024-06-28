@@ -17,7 +17,7 @@ import ReportOptionModal from "./ReportOptionModal";
 import { getEnsName } from "../ConnectWallet/ENSResolver";
 import { useRouter } from "next-nprogress-bar";
 import "./WatchSession.module.css";
-import ShareMediaModal from './ShareMediaModal'
+import ShareMediaModal from "./ShareMediaModal";
 import { BASE_URL } from "@/config/constants";
 import { Toaster } from "react-hot-toast";
 
@@ -70,7 +70,7 @@ interface Meeting {
   meetingId: string;
   attendees: Attendee[];
   uid_host: string;
-  dao_name: string;
+  operator_or_avs: string;
   host_address: string;
   joined_status: string | null;
   booking_status: string;
@@ -98,12 +98,12 @@ function WatchSession({
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
   const [ensHostName, setEnsHostName] = useState<string | null>(null);
-  const [shareModal,setShareModal]=useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const router = useRouter();
 
-  const handleShareClose =()=>{
+  const handleShareClose = () => {
     setShareModal(false);
-  }
+  };
 
   useEffect(() => {
     if (contentRef.current) {
@@ -186,7 +186,9 @@ function WatchSession({
             data.description.length > 0 ? "border-b" : ""
           }  border-[#CCCCCC]`}
         >
-          <div className="text-lg font-medium pb-3 text-white">{data.title}</div>
+          <div className="text-lg font-medium pb-3 text-white">
+            {data.title}
+          </div>
           <div className="flex justify-between text-sm pe-4 pb-4">
             <div className="flex gap-6">
               <div className="flex items-center gap-2 ">
@@ -206,15 +208,15 @@ function WatchSession({
                 </div>
                 <div
                   className="text-white font-medium"
-                  // onClick={() => router.push(`${BASE_URL}/${data.dao_name}/${data.host_address}?active=info`)}
+                  // onClick={() => router.push(`${BASE_URL}/${data.operator_or_avs}/${data.host_address}?active=info`)}
                 >
                   {ensHostName}
                 </div>
                 {/* <Link
                   href={
-                    data.dao_name === ("optimism" || "Optimism")
+                    data.operator_or_avs === ("optimism" || "Optimism")
                       ? `https://optimism.easscan.org/offchain/attestation/view/${data.uid_host}`
-                      : data.dao_name === ("arbitrum" || "Arbitrum")
+                      : data.operator_or_avs === ("arbitrum" || "Arbitrum")
                       ? `https://arbitrum.easscan.org/offchain/attestation/view/${data.uid_host}`
                       : ""
                   }
@@ -225,14 +227,14 @@ function WatchSession({
               </div>
 
               <div className="flex items-center gap-1">
-                {data.dao_name === "operators" ? (
+                {data.operator_or_avs === "operators" ? (
                   <Image
                     src={NOLogo}
                     alt="image"
                     width={30}
                     className="rounded-full"
                   />
-                ) : data.dao_name === "avss" ? (
+                ) : data.operator_or_avs === "avss" ? (
                   <Image
                     src={AVSLogo}
                     alt="image"
@@ -243,7 +245,7 @@ function WatchSession({
                   ""
                 )}
                 <div className="text-white font-medium capitalize">
-                  {data.dao_name}
+                  {data.operator_or_avs}
                 </div>
               </div>
             </div>
@@ -251,7 +253,7 @@ function WatchSession({
             <div className="flex gap-6">
               <div className="flex items-center gap-1">
                 {/* <Image src={time} alt="image" className="text-white" width={20} priority /> */}
-                <CgStopwatch color="#fff" size={20}/>
+                <CgStopwatch color="#fff" size={20} />
                 <div className="text-white">
                   {formatTimeAgo(data.slot_time)}
                 </div>
@@ -265,7 +267,10 @@ function WatchSession({
                 </div>
                 <div className="text-[#ff3838] hover:scale-110">Report</div>
               </div>
-              <div className="flex items-center gap-1 cursor-pointer" onClick={()=>setShareModal(true)}>
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={() => setShareModal(true)}
+              >
                 <div className="scale-x-[-1]">
                   <BiSolidShare size={20} color="#fff" />
                 </div>
@@ -320,9 +325,9 @@ function WatchSession({
                       {/* {attendee.attendee_uid ? (
                         <Link
                           href={
-                            data.dao_name === ("optimism" || "Optimism")
+                            data.operator_or_avs === ("optimism" || "Optimism")
                               ? `https://optimism.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
-                              : data.dao_name === ("arbitrum" || "Arbitrum")
+                              : data.operator_or_avs === ("arbitrum" || "Arbitrum")
                               ? `https://arbitrum.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
                               : ""
                           }
@@ -356,7 +361,7 @@ function WatchSession({
               >
                 {data.description}
               </div> */}
-               <div
+              <div
                 ref={contentRef}
                 className={`max-h-full transition-max-height duration-500 ease-in-out overflow-hidden ${
                   isExpanded ? "max-h-full" : "max-h-24 line-clamp-3"
@@ -402,7 +407,11 @@ function WatchSession({
       />
 
       {shareModal && (
-        <ShareMediaModal isOpen={shareModal} onClose={handleShareClose} data={data}/>
+        <ShareMediaModal
+          isOpen={shareModal}
+          onClose={handleShareClose}
+          data={data}
+        />
       )}
     </div>
   );

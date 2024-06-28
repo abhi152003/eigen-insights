@@ -37,7 +37,7 @@ interface Session {
   title: string;
   description: string;
   meeting_status: "ongoing" | "active" | "inactive"; // Define the possible statuses
-  dao_name: string;
+  operator_or_avs: string;
 }
 
 function DaoOfficeHours() {
@@ -106,7 +106,7 @@ function DaoOfficeHours() {
       const requestOptions: any = {
         method: "POST",
         body: JSON.stringify({
-          dao_name: null,
+          operator_or_avs: null,
         }),
         redirect: "follow",
       };

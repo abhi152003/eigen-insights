@@ -21,9 +21,9 @@ function SchedulingSuccessModal({
   const [isToolTip, setIsToolTip] = useState(false);
   const shareOnTwitter = () => {
     const userAddress = data.userAddress;
-    const dao_name = data.dao_name;
+    const operator_or_avs = data.operator_or_avs;
     const url = encodeURIComponent(
-      `https://eigeninsight.vercel.app/${dao_name}/${userAddress}?active=delegatesSession&session=book`
+      `https://eigeninsight.vercel.app/${operator_or_avs}/${userAddress}?active=delegatesSession&session=book`
     );
     const text = encodeURIComponent(
       `Hello Web3 Enthusiasts!🎉\nI've opened up some time slots for sessions on @EigenInsights!📅\nDon't miss out – book your session now to learn more about Web3 ecosystem! 📝\n👉 ${decodeURIComponent(
@@ -43,8 +43,8 @@ function SchedulingSuccessModal({
   };
   const CopyUrl = () => {
     const userAddress = data.userAddress;
-    const dao_name = data.dao_name;
-    const url = `https://eigeninsight.vercel.app/${dao_name}/${userAddress}?active=delegatesSession&session=book`;
+    const operator_or_avs = data.operator_or_avs;
+    const url = `https://eigeninsight.vercel.app/${operator_or_avs}/${userAddress}?active=delegatesSession&session=book`;
     copy(url);
     setIsToolTip(true);
     setTimeout(() => {
@@ -72,7 +72,8 @@ function SchedulingSuccessModal({
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div
               className="absolute inset-0 backdrop-blur-md"
-              onClick={toggleModal}></div>
+              onClick={toggleModal}
+            ></div>
             <div className="z-50 bg-white rounded-3xl max-w-5xl border-2 overflow-hidden">
               <Confetti recycle={false} />
               <div className="flex justify-between items-center px-8 py-4 border-b">
@@ -81,7 +82,8 @@ function SchedulingSuccessModal({
                 </h2>
                 <button
                   className="text-gray-500 hover:text-gray-800"
-                  onClick={toggleModal}>
+                  onClick={toggleModal}
+                >
                   <RxCross2 size={20} />
                 </button>
               </div>
@@ -106,16 +108,18 @@ function SchedulingSuccessModal({
                     <span className="px-2 justify-end">
                       <button
                         className="bg-blue-shade-200 text-white rounded-full px-4 py-2 flex items-center space-x-1"
-                        onClick={CopyUrl}>
+                        onClick={CopyUrl}
+                      >
                         Copy Url
                         <BsCopy className="ml-2" />
                       </button>
                     </span>
-                  </Tooltip>    
+                  </Tooltip>
 
                   <button
                     className="bg-black text-white rounded-full px-4 py-2 flex items-center space-x-1"
-                    onClick={shareOnTwitter}>
+                    onClick={shareOnTwitter}
+                  >
                     Share on Twitter
                     <BsTwitterX className="ml-2" />
                   </button>

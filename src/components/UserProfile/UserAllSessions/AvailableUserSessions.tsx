@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNetwork, useAccount } from "wagmi";
 import { CirclesWithBar, Grid } from "react-loader-spinner";
 import { motion, AnimatePresence } from "framer-motion";
-import '../../../css/SessionPage.css'
+import "../../../css/SessionPage.css";
 
 interface AvailableUserSessionsProps {
   daoName: string;
@@ -35,7 +35,7 @@ function AvailableUserSessions({
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-          dao_name: daoName,
+          operator_or_avs: daoName,
           userAddress: address,
         });
 
@@ -88,7 +88,7 @@ function AvailableUserSessions({
               title="15 Minutes"
               slotSize={15}
               address={address}
-              dao_name={daoName}
+              operator_or_avs={daoName}
               data={data.filter((item: any) => item.timeSlotSizeMinutes === 15)}
               setData={setData}
             />
@@ -98,7 +98,7 @@ function AvailableUserSessions({
               title="30 Minutes"
               slotSize={30}
               address={address}
-              dao_name={daoName}
+              operator_or_avs={daoName}
               data={data.filter((item: any) => item.timeSlotSizeMinutes === 30)}
               setData={setData}
             />
@@ -108,7 +108,7 @@ function AvailableUserSessions({
               title="45 Minutes"
               slotSize={45}
               address={address}
-              dao_name={daoName}
+              operator_or_avs={daoName}
               data={data.filter((item: any) => item.timeSlotSizeMinutes === 45)}
               setData={setData}
             />
@@ -142,7 +142,7 @@ function TimeSlotTable({
   data,
   slotSize,
   address,
-  dao_name,
+  operator_or_avs,
   setData,
 }: any) {
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -162,7 +162,7 @@ function TimeSlotTable({
       myHeaders.append("Content-Type", "application/json");
 
       const raw = JSON.stringify({
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
         userAddress: address,
         timeSlotSizeMinutes: slotSize,
         date: date,

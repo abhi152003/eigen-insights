@@ -9,16 +9,16 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
 }
 
 export async function POST(req: NextRequest, res: NextResponse<OfficeHours[]>) {
   try {
-    // Extract the dao_name from the request body
-    const { dao_name } = await req.json();
+    // Extract the operator_or_avs from the request body
+    const { operator_or_avs } = await req.json();
 
-    // Validate the dao_name
-    if (!dao_name || typeof dao_name !== "string") {
+    // Validate the operator_or_avs
+    if (!operator_or_avs || typeof operator_or_avs !== "string") {
       return NextResponse.json(
         { error: "Invalid chain name parameter" },
         { status: 400 }
@@ -32,8 +32,8 @@ export async function POST(req: NextRequest, res: NextResponse<OfficeHours[]>) {
     const db = client.db();
     const collection = db.collection<OfficeHours>("office_hours");
 
-    // Find office hours documents based on the provided dao_name
-    const officeHours = await collection.find({ dao_name: dao_name }).toArray();
+    // Find office hours documents based on the provided operator_or_avs
+    const officeHours = await collection.find({ operator_or_avs: operator_or_avs }).toArray();
 
     client.close();
 

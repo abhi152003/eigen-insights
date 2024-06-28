@@ -14,7 +14,7 @@ interface Session {
   title: string;
   description: string;
   meeting_status: "ongoing" | "active" | "inactive"; // Define the possible statuses
-  dao_name: string;
+  operator_or_avs: string;
 }
 
 function OfficeHours({ props }: { props: string }) {
@@ -23,8 +23,8 @@ function OfficeHours({ props }: { props: string }) {
   const router = useRouter();
   const path = usePathname();
   const searchParams = useSearchParams();
-  const dao_name = props;
-  // const dao_name = props.charAt(0).toUpperCase() + props.slice(1);
+  const operator_or_avs = props;
+  // const operator_or_avs = props.charAt(0).toUpperCase() + props.slice(1);
 
   const [sessionDetails, setSessionDetails] = useState([]);
   const [tempDetails, setTempDetails] = useState([]);
@@ -38,7 +38,7 @@ function OfficeHours({ props }: { props: string }) {
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
-          dao_name: dao_name,
+          operator_or_avs: operator_or_avs,
         });
 
         const requestOptions: RequestInit = {
@@ -87,7 +87,7 @@ function OfficeHours({ props }: { props: string }) {
     if (query.length > 0) {
       setDataLoading(true);
       const raw = JSON.stringify({
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
       });
 
       const requestOptions: any = {

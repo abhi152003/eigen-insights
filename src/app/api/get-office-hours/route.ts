@@ -10,7 +10,7 @@ interface OfficeHours {
   title: string;
   description: string;
   meeting_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   office_hours_status: string;
 }
 

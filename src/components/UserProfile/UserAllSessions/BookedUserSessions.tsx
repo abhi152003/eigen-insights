@@ -13,7 +13,7 @@ import { Oval, ThreeCircles } from "react-loader-spinner";
 
 interface Session {
   booking_status: string;
-  dao_name: string;
+  operator_or_avs: string;
   description: string;
   host_address: string;
   joined_status: string;
@@ -48,7 +48,7 @@ function BookedUserSessions({ daoName }: { daoName: string }) {
 
         filteredData = result.data.filter(
           (session: Session) =>
-            session.dao_name === daoName &&
+            session.operator_or_avs === daoName &&
             session.meeting_status !== "Recorded" &&
             new Date(session.slot_time).toLocaleString() >=
               currentSlot.toLocaleString()

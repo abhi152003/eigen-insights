@@ -12,7 +12,6 @@ interface Participant {
   displayName: string;
   joinedAt: string;
   exitedAt: string;
-  attestation: string; // Added attestation field
 }
 
 interface MeetingTimePerEOA {
@@ -54,8 +53,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const {
       roomId,
       meetingType,
-      dao_name,
-    }: { roomId: string; meetingType: number; dao_name: string } =
+      operator_or_avs,
+    }: { roomId: string; meetingType: number; operator_or_avs: string } =
       await req.json();
 
     if (!roomId) {
@@ -191,7 +190,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (participantMeetingTime >= minimumAttendanceTime) {
         participantsWithSufficientAttendance.push({
           ...participant,
-          attestation: "pending",
         });
       }
     }
@@ -211,7 +209,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     ) {
       combinedParticipantLists.flat().forEach((participant) => {
         if (participant.displayName === hostData.address) {
-          hosts.push({ ...participant, attestation: "pending" });
+          hosts.push({ ...participant});
         }
       });
     }
@@ -252,8 +250,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       startTime: earliestStartTimeEpoch,
       endTime: latestEndTimeEpoch,
       meetingType: meetingTypeName,
-      attestation: "pending",
-      dao_name: dao_name,
+      operator_or_avs: operator_or_avs,
       // video_uri,
     };
 
@@ -280,7 +277,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         startTime: earliestStartTimeEpoch,
         endTime: latestEndTimeEpoch,
         meetingType: meetingTypeName,
-        dao_name: dao_name,
+        operator_or_avs: operator_or_avs,
       },
       { status: 200 }
     );

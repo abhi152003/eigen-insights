@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/config/connectDB";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { address, dao_name } = await req.json();
+  const { address, operator_or_avs } = await req.json();
 
   //   console.log("address", address);
-  //   console.log("dao_name", dao_name);
+  //   console.log("operator_or_avs", operator_or_avs);
 
   try {
     const client = await connectDB();
@@ -13,11 +13,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     try {
       const db = client.db();
       const meetingsCollection = db.collection("meetings");
-      const attestationsCollection = db.collection("attestation");
 
       const hostedMeetings = await meetingsCollection
         .find({
-          dao_name,
+          operator_or_avs,
           host_address: address,
           meeting_status: "Recorded",
         })
@@ -27,15 +26,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         hostedMeetings.map(async (meeting) => {
           const { meetingId } = meeting;
 
-          // Find documents in the "attestation" collection with matching roomId
-          const attestations = await attestationsCollection
-            .find({ roomId: meetingId })
-            .toArray();
-
-          // Merge attestation documents into the meeting document
           const mergedMeeting = {
             ...meeting,
-            attestations,
           };
 
           return mergedMeeting;
@@ -44,7 +36,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
       const attendedMeetings = await meetingsCollection
         .find({
-          dao_name,
+          operator_or_avs,
           meeting_status: "Recorded",
           "attendees.attendee_address": address,
         })
@@ -54,15 +46,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         attendedMeetings.map(async (meeting) => {
           const { meetingId } = meeting;
 
-          // Find documents in the "attestation" collection with matching roomId
-          const attestations = await attestationsCollection
-            .find({ roomId: meetingId })
-            .toArray();
-
-          // Merge attestation documents into the meeting document
           const mergedMeeting = {
             ...meeting,
-            attestations,
           };
 
           return mergedMeeting;

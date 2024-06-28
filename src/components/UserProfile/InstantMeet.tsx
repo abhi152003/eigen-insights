@@ -89,7 +89,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
     console.log("Modal details: ", modalData);
 
     const requestData = {
-      dao_name: daoName,
+      operator_or_avs: daoName,
       slot_time: dateInfo,
       title: modalData.title,
       description: modalData.description,
@@ -258,7 +258,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                   onClick={onOpen}
                 >
                   <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
-                  Start an instant meet
+                    Start an instant meet
                   </span>
                   <span className="absolute w-full h-full bg-navy-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
                   <span className="absolute w-full h-full bg-navy-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>

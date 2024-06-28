@@ -33,6 +33,22 @@ import copy from "copy-to-clipboard";
 
 type BottomBarProps = {};
 
+interface Result {
+  _id: string;
+  address: string;
+  metadataName: string;
+  metadataDescription: string;
+  metadataDiscord: string | null;
+  metadataLogo: string;
+  metadataTelegram: string | null;
+  metadataWebsite: string;
+  metadataX: string;
+  tags: string[];
+  shares: any[];
+  totalOperators: number;
+  totalStakers: number;
+}
+
 const BottomBar: React.FC<BottomBarProps> = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isRecording, setIsRecording] = useState<boolean>(false);
@@ -236,12 +252,37 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       meetingType = 0;
     }
 
-    let dao_name = "";
-    if (chain?.name === "Optimism") {
-      dao_name = "optimism";
-    } else if (chain?.name === "Arbitrum One") {
-      dao_name = "arbitrum";
-    }
+    let operator_or_avs = "";
+    // if (chain?.name === "Optimism") {
+    //   operator_or_avs = "optimism";
+    // } else if (chain?.name === "Arbitrum One") {
+    //   operator_or_avs = "arbitrum";
+    // }
+
+    useEffect(() => {
+      const checkOperatorOrAVS = async () => {
+        try {
+          const operatorsRes = await fetch(
+            `/api/get-search-data?q=${address}&prop=operators`
+          );
+          if (!operatorsRes.ok) {
+            throw new Error(`Error: ${operatorsRes.status}`);
+          }
+          const data: Result[] | { message: string } = await operatorsRes.json();
+          if (Array.isArray(data)) {
+            if (data.length > 0) {
+              operator_or_avs = "operators"
+            } else {
+              operator_or_avs = "avss"
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+  
+      checkOperatorOrAVS();
+    }, [address]);
 
     try {
       const requestOptions = {
@@ -252,7 +293,7 @@ const BottomBar: React.FC<BottomBarProps> = () => {
         body: JSON.stringify({
           roomId: roomId,
           meetingType: meetingType,
-          dao_name: dao_name,
+          operator_or_avs: operator_or_avs,
         }),
       };
       // console.log("req optionnnn", requestOptions);
@@ -263,27 +304,6 @@ const BottomBar: React.FC<BottomBarProps> = () => {
     } catch (error) {
       console.error("Error handling end call:", error);
     }
-
-    // try {
-    //   toast.success("Giving Attestations");
-    //   const response = await fetch(`/api/get-attest-data`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       roomId: roomId,
-    //     }),
-    //   });
-    //   const response_data = await response.json();
-    //   console.log("Updated", response_data);
-    //   if (response_data.success) {
-    //     toast.success("Attestation successful");
-    //   }
-    // } catch (e) {
-    //   console.log("Error in attestation: ", e);
-    //   toast.error("Attestation denied");
-    // }
 
     if (meetingCategory === "officehours") {
       try {

@@ -25,7 +25,7 @@ import { MdWatchLater } from "react-icons/md";
 
 interface Type {
   ensName: string;
-  dao_name: string;
+  operator_or_avs: string;
   userAddress: string;
   timeSlotSizeMinutes: number;
   allowedDates: string[];
@@ -107,7 +107,7 @@ function AvailableSessions() {
         console.log("endTimeToSend", endTimeToSend);
 
         const raw = JSON.stringify({
-          dao_name: selectedDao,
+          operator_or_avs: selectedDao,
           date: selectedDate,
           startTime: startTimeToSend ? startTimeToSend : null,
           endTime: endTimeToSend ? endTimeToSend : null,
@@ -176,7 +176,7 @@ function AvailableSessions() {
       // setDaoInfo(APIData);
       setSelectedDao(null);
     } else {
-      // filtered = APIData.filter((item) => item.dao_name === selected);
+      // filtered = APIData.filter((item) => item.operator_or_avs === selected);
       // setDaoInfo(filtered);
       setSelectedDao(selected);
     }
@@ -326,7 +326,8 @@ function AvailableSessions() {
             showArrow
             content={
               <div className="font-poppins">
-                Select a date to view available Operators and AVSs for that date.
+                Select a date to view available Operators and AVSs for that
+                date.
               </div>
             }
             placement="bottom"
@@ -348,7 +349,8 @@ function AvailableSessions() {
           showArrow
           content={
             <div className="font-poppins">
-              Select a time to view available Operators and AVSs for that specific time.
+              Select a time to view available Operators and AVSs for that
+              specific time.
             </div>
           }
           placement="bottom"
@@ -443,7 +445,9 @@ function AvailableSessions() {
               TestName or Address
             </div>
             <div className="text-sm flex">
-              <div className="ml-[3px]">0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a</div>
+              <div className="ml-[3px]">
+                0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a
+              </div>
               <div className="items-center">
                 <Tooltip
                   content="Copy"
@@ -600,9 +604,9 @@ function AvailableSessions() {
                           src={
                             daos.userInfo[0].image
                               ? `https://gateway.lighthouse.storage/ipfs/${daos.userInfo[0].image}`
-                              : daos.session.dao_name === "operators"
+                              : daos.session.operator_or_avs === "operators"
                               ? NOLogo
-                              : daos.session.dao_name === "avss"
+                              : daos.session.operator_or_avs === "avss"
                               ? AVSLogo
                               : EILogo
                           }
@@ -680,7 +684,7 @@ function AvailableSessions() {
                       </div>
                     </div>
                     <div className="mt-2 bg-midnight-blue border-1 border-white text-white rounded-md text-xs px-4 py-1 font-semibold w-fit capitalize">
-                      {daos.session.dao_name}
+                      {daos.session.operator_or_avs}
                     </div>
                     <div>
                       <div
@@ -728,7 +732,7 @@ function AvailableSessions() {
                     <button
                       onClick={() =>
                         router.push(
-                          `/${daos.session.dao_name}/${daos.session.userAddress}?active=delegatesSession&session=book`
+                          `/${daos.session.operator_or_avs}/${daos.session.userAddress}?active=delegatesSession&session=book`
                         )
                       }
                       className="bg-black text-white py-4 px-6 rounded-[36px] text-sm w-[11rem] font-medium"
