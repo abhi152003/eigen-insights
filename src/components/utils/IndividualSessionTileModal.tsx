@@ -120,7 +120,7 @@ function IndividualSessionTileModal({
                       {attendees?.map((attendee, index) => (
                         <li className="list-decimal" key={index}>
                           {attendee.attendee_address}
-                          {attendee.attendee_uid ? (
+                          {/* {attendee.attendee_uid ? (
                             <a
                               href={
                                 dao === "optimism" || "Optimism"
@@ -138,7 +138,7 @@ function IndividualSessionTileModal({
                             </a>
                           ) : (
                             <></>
-                          )}
+                          )} */}
                         </li>
                       ))}
                     </td>

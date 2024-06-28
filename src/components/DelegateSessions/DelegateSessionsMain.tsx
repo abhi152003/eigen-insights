@@ -70,7 +70,7 @@ function DelegateSessionsMain() {
               className="rounded-md bg-deep-blue bg-opacity-90 max-w-96"
               closeDelay={1}
             >
-              <div>Available Operators /AVSs</div>
+              <div>Available Operators and AVSs</div>
             </Tooltip>
           </button>
         </div>
