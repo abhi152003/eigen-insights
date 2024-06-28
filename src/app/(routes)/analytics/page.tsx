@@ -10,7 +10,7 @@ import DelegateSessionsMain from "@/components/DelegateSessions/DelegateSessions
 import DaoOfficeHours from "@/components/OfficeHours/DaoOfficeHours";
 import SessionPage from "@/app/(routes)/sessions/page"
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const path = usePathname();
@@ -78,4 +78,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

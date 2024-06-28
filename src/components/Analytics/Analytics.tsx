@@ -263,9 +263,22 @@ function Analytics() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleWithdrawalAddress = async () => {
-    const { address } = useAccount();
+    // const { address } = useAccount();
+    const address = "0xa7d6ba4ff9f7f820e5245affb1ea09db28b61d6a"
     if (address) {
       setSearchQuery(address);
+    }
+
+    try {
+      const res = await fetch(`/api/search-withdrawal-data?address=${address}`);
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+      const data = await res.json();
+      console.log("dataaaaaaaaa", data);
+      setWithdrawals(data);
+    } catch (error) {
+      console.error("Search error:", error);
     }
   };
 
@@ -630,7 +643,7 @@ function Analytics() {
               </div>
               <button
                 onClick={handleWithdrawalAddress}
-                className="border border-white rounded-lg h-8 px-2 justify-center mt-5"
+                className="border border-white rounded-lg h-8 px-2 justify-center mt-6 ml-10"
               >
                 Get All My Withdrawals
               </button>
