@@ -2,8 +2,8 @@ import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import search from "@/assets/images/daos/search.png";
 import texture1 from "@/assets/images/daos/texture1.png";
-import NOLogo from "@/assets/images/daos/operators.png";
-import AVSLogo from "@/assets/images/daos/avss.png";
+import NOLogo from "@/assets/images/daos/Operator4.jpg";
+import AVSLogo from "@/assets/images/daos/AVSs3 New.png";
 import user from "@/assets/images/daos/user3.png";
 import { Tooltip } from "@nextui-org/react";
 import { IoCopy } from "react-icons/io5";
@@ -301,19 +301,8 @@ function RecordedSessions() {
 
   return (
     <>
-      <div className="pe-10">
+      <div className="">
         <div className="flex my-3 items-center gap-4 font-poppins">
-          {/* <input
-              type="text"
-              placeholder="Search by title and host address"
-              style={{ background: "rgba(238, 237, 237, 0.36)" }}
-              className="pl-5 rounded-full outline-none w-full"
-              value={searchQuery}
-              onChange={(e) => handleSearchChange(e.target.value)}
-            ></input>
-            <span className="flex items-center bg-black rounded-full px-5 py-2">
-              <Image src={search} alt="search" width={20} />
-            </span> */}
 
           <div className="searchBox searchShineWidthOfAVSs">
             <input
@@ -468,9 +457,7 @@ function RecordedSessions() {
                           ""
                         )}
                       </div>
-                      <div className="capitalize">
-                        {data.session.operator_or_avs}
-                      </div>
+                      <div className="capitalize">{data.session.dao_name}</div>
                     </div>
                     <div className="bg-medium-blue py-1 px-3 rounded-md">
                       {formatTimeAgo(data.session.slot_time)}

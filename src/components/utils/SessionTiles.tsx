@@ -49,6 +49,7 @@ interface AttestationData {
 }
 
 interface SessionData {
+  // [x: string]: ReactNode;
   _id: string;
   img: StaticImageData;
   title: string;
@@ -320,7 +321,7 @@ SessionTileProps) {
                   <div className="bg-medium-blue border-1 border-white text-white rounded-md text-xs px-5 py-1 font-medium capitalize">
                     {data.operator_or_avs}
                   </div>
-                  {/* <div className="border border-[#1E1E1E] rounded-md text-[#1E1E1E] text-xs px-5 py-1 font-medium">
+                  {/* <div className="bg-medium-blue border-1 border-white text-white rounded-md text-xs px-5 py-1 font-medium capitalize">
                     {data.participant} Participants
                   </div> */}
                 </div>
@@ -342,14 +343,14 @@ SessionTileProps) {
                     </div>
                   )}
                   <div className="text-white">
-                    <span className="font-normal">Host:</span>{" "}
+                    <span className="font-normal text-light-cyan">Host:</span>{" "}
                     {formatWalletAddress(data.host_address)}
                   </div>
                   <div className="text-white">
                     {isEvent === "Upcoming" ? (
-                      <span className="font-normal">Starts at: </span>
+                      <span className="font-normal text-light-cyan">Starts at: </span>
                     ) : isEvent === "Recorded" ? (
-                      <span className="font-normal">Started at: </span>
+                      <span className="font-normal text-light-cyan">Started at: </span>
                     ) : null}
                     {formatSlotTimeToLocal(data.slot_time)}
                   </div>

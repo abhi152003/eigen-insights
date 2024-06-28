@@ -1,5 +1,5 @@
-import operators_logo from "@/assets/images/daos/Operator1.jpg";
-import avss_logo from "@/assets/images/daos/AVSs1.jpg";
+import operators_logo from "@/assets/images/daos/Operator4.jpg";
+import avss_logo from "@/assets/images/daos/AVSs3 New.png";
 
 export const dao_details: any = {
   operators: {

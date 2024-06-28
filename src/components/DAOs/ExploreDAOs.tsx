@@ -11,7 +11,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-import EILogo from "@/assets/images/daos/analytics3.png";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
 import "../../css/ShineFont.css";
 import "../../css/BtnShine.css";
 import "../../css/SearchShine.css";
@@ -205,9 +205,7 @@ function ExploreDAOs() {
                     <Image
                       src={daos.img}
                       alt="Image not found"
-                      width={60}
-                      height={60}
-                      style={{ width: "60px", height: "60px" }}
+                      style={{ width: "50px", height: "50px" }}
                       className="rounded-full"
                     ></Image>
                   </div>
@@ -245,13 +243,13 @@ function ExploreDAOs() {
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "60px", height: "60px", backgroundColor: "#427FA3" }}
+                style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
               ></Image>
             </div>
             <div className="text-center">
-              <div className="py-3">
-                <div className="font-semibold capitalize">Analytics</div>
+              <div className="py-2">
+                <div className="font-semibold capitalize">Eigen Layer</div>
               </div>
             </div>
           </div>

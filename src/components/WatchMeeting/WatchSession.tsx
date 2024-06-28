@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import user from "@/assets/images/daos/user3.png";
 import view from "@/assets/images/daos/view.png";
 import Image from "next/image";
-import NOLogo from "@/assets/images/daos/operators.png";
+import NOLogo from "@/assets/images/daos/Operator4.jpg";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import time from "@/assets/images/daos/time.png";
 import { PiFlagFill } from "react-icons/pi";
@@ -232,6 +232,7 @@ function WatchSession({
                     src={NOLogo}
                     alt="image"
                     width={30}
+                    style={{width: "60%", height: "60%"}}
                     className="rounded-full"
                   />
                 ) : data.operator_or_avs === "avss" ? (

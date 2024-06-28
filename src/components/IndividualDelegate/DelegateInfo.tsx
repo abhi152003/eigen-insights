@@ -33,6 +33,7 @@ import copy from "copy-to-clipboard";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
 import "../../css/ImagePulse.css";
+import "../../css/ExploreDAO.css";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 
 // Register ChartJS modules
@@ -189,109 +190,109 @@ function DelegateInfo({
   //     }
   //   };
 
-  //   const sessionAttended = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `/api/get-session-data/${props.individualDelegate}`,
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify({
-  //             operator_or_avs: props.daoDelegates,
-  //           }),
-  //         }
-  //       );
-  //       const result = await response.json();
-  //       if (result.success) {
-  //         result.data.forEach((item: any) => {
-  //           if (
-  //             item.meeting_status === "Recorded" &&
-  //             item.operator_or_avs === props.daoDelegates &&
-  //             item.attendees.some((attendee: any) => attendee[attendee_uid_key])
-  //           ) {
-  //             sessionAttendingCount++;
-  //           }
-  //           // console.log("op attended count: ", sessionAttendingCount);
-  //           setSessionAttendCount(sessionAttendingCount);
-  //           setSessionAttendedLoading(false);
-  //         });
-  //       } else {
-  //         setSessionAttendedLoading(false);
-  //       }
-  //     } catch (e) {
-  //       console.log("Error: ", e);
-  //     }
-  //   };
+    // const sessionAttended = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `/api/get-session-data/${props.individualDelegate}`,
+    //       {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify({
+    //           dao_name: props.daoDelegates,
+    //         }),
+    //       }
+    //     );
+    //     const result = await response.json();
+    //     if (result.success) {
+    //       result.data.forEach((item: any) => {
+    //         if (
+    //           item.meeting_status === "Recorded" &&
+    //           item.dao_name === props.daoDelegates &&
+    //           item.attendees.some((attendee: any) => attendee[attendee_uid_key])
+    //         ) {
+    //           sessionAttendingCount++;
+    //         }
+    //         // console.log("op attended count: ", sessionAttendingCount);
+    //         setSessionAttendCount(sessionAttendingCount);
+    //         setSessionAttendedLoading(false);
+    //       });
+    //     } else {
+    //       setSessionAttendedLoading(false);
+    //     }
+    //   } catch (e) {
+    //     console.log("Error: ", e);
+    //   }
+    // };
 
-  //   const officeHoursHosted = async () => {
-  //     try {
-  //       const response = await fetch(`/api/get-officehours-address`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           address: props.individualDelegate,
-  //         }),
-  //       });
-  //       const result = await response.json();
-  //       // console.log("office hours result: ", result);
-  //       if (result.length > 0) {
-  //         result.forEach((item: any) => {
-  //           if (
-  //             item.meeting_status === "inactive" &&
-  //             item.operator_or_avs === props.daoDelegates &&
-  //             item[host_uid_key]
-  //           ) {
-  //             officehoursHostingCount++;
-  //           }
-  //           // console.log("office hours host count: ", officehoursHostingCount);
-  //           setOfficehoursHostCount(officehoursHostingCount);
-  //           setOfficeHoursHostedLoading(false);
-  //         });
-  //       } else {
-  //         setOfficeHoursHostedLoading(false);
-  //       }
-  //     } catch (e) {
-  //       console.log("Error: ", e);
-  //     }
-  //   };
+    // const officeHoursHosted = async () => {
+    //   try {
+    //     const response = await fetch(`/api/get-officehours-address`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         address: props.individualDelegate,
+    //       }),
+    //     });
+    //     const result = await response.json();
+    //     // console.log("office hours result: ", result);
+    //     if (result.length > 0) {
+    //       result.forEach((item: any) => {
+    //         if (
+    //           item.meeting_status === "inactive" &&
+    //           item.dao_name === props.daoDelegates &&
+    //           item[host_uid_key]
+    //         ) {
+    //           officehoursHostingCount++;
+    //         }
+    //         // console.log("office hours host count: ", officehoursHostingCount);
+    //         setOfficehoursHostCount(officehoursHostingCount);
+    //         setOfficeHoursHostedLoading(false);
+    //       });
+    //     } else {
+    //       setOfficeHoursHostedLoading(false);
+    //     }
+    //   } catch (e) {
+    //     console.log("Error: ", e);
+    //   }
+    // };
 
-  //   const officeHoursAttended = async () => {
-  //     try {
-  //       const response = await fetch(`/api/get-attendee-individual`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           attendee_address: props.individualDelegate,
-  //         }),
-  //       });
-  //       const result = await response.json();
-  //       // console.log("office hours attended result: ", result);
-  //       if (result.length > 0) {
-  //         result.forEach((item: any) => {
-  //           if (
-  //             item.meeting_status === "inactive" &&
-  //             item.operator_or_avs === props.daoDelegates &&
-  //             item.attendees.some((attendee: any) => attendee[attendee_uid_key])
-  //           ) {
-  //             officehoursAttendingCount++;
-  //           }
-  //           // console.log("officehours attended: ", officehoursAttendingCount);
-  //           setOfficehoursAttendCount(officehoursAttendingCount);
-  //           setOfficeHoursAttendedLoading(false);
-  //         });
-  //       } else {
-  //         setOfficeHoursAttendedLoading(false);
-  //       }
-  //     } catch (e) {
-  //       console.log("Error: ", e);
-  //     }
-  //   };
+    // const officeHoursAttended = async () => {
+    //   try {
+    //     const response = await fetch(`/api/get-attendee-individual`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         attendee_address: props.individualDelegate,
+    //       }),
+    //     });
+    //     const result = await response.json();
+    //     // console.log("office hours attended result: ", result);
+    //     if (result.length > 0) {
+    //       result.forEach((item: any) => {
+    //         if (
+    //           item.meeting_status === "inactive" &&
+    //           item.dao_name === props.daoDelegates &&
+    //           item.attendees.some((attendee: any) => attendee[attendee_uid_key])
+    //         ) {
+    //           officehoursAttendingCount++;
+    //         }
+    //         // console.log("officehours attended: ", officehoursAttendingCount);
+    //         setOfficehoursAttendCount(officehoursAttendingCount);
+    //         setOfficeHoursAttendedLoading(false);
+    //       });
+    //     } else {
+    //       setOfficeHoursAttendedLoading(false);
+    //     }
+    //   } catch (e) {
+    //     console.log("Error: ", e);
+    //   }
+    // };
 
   //   sessionHosted();
   //   sessionAttended();
@@ -482,59 +483,105 @@ function DelegateInfo({
     toast("Address Copied");
   };
 
-  // console.log("avs operatorsassssssssss", avsOperators);
+  const formatTVL = (value: number) => {
+    if (!value) return "0";
+
+    const absValue = Math.abs(value);
+    if (absValue >= 1000) {
+      // Round to 3 decimal places, then format to 2
+      const rounded = Math.round(value / 10) / 100;
+      return rounded.toFixed(2) + "k";
+    }
+    // For values less than 1000, round to 2 decimal places
+    return Math.round(value * 100) / 100;
+  };
 
   return (
     <div>
-      <div className="flex gap-3 py-1">
+      <div className="flex gap-3 py-1 min-h-10">
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-            <span className="text-light-cyan font-semibold">
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            <div className="text-light-cyan font-semibold">
               {delegateInfo?.totalStakers
-                ? Number(delegateInfo?.totalStakers)
+                ? formatTVL(Number(delegateInfo?.totalStakers))
                 : 0}
               &nbsp;
-            </span>
-            total stakers
+            </div>
+            <div>total stakers</div>
           </div>
         </div>
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-            TVL
-            <span className="text-light-cyan font-semibold">
-              &nbsp;
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            <div className="text-light-cyan font-semibold">
               {delegateInfo?.tvl.tvl
-                ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
+                ? formatTVL(Number(delegateInfo?.tvl.tvl))
                 : 0}
               &nbsp;
-            </span>
-            ETH
+            </div>
+            <div>TVL ETH</div>
           </div>
         </div>
         <div>
           {props.daoDelegates === "avss" && (
-            <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-              <span className="text-light-cyan font-semibold">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalOperators
-                  ? Number(delegateInfo?.totalOperators)
+                  ? formatTVL(Number(delegateInfo?.totalOperators))
                   : 0}
                 &nbsp;
-              </span>
-              total operators
+              </div>
+              <div>total operators</div>
             </div>
           )}
         </div>
         <div>
-          <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-            TVL Restaked
-            <span className="text-light-cyan font-semibold">
+          <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+            <Image
+              src={EILogo}
+              alt="Image not found"
+              width={60}
+              height={60}
+              style={{ width: "53px", height: "53px" }}
+              className="rounded-full"
+            ></Image>
+            {/* <div className="text-light-cyan font-semibold">
               &nbsp;
               {delegateInfo?.tvl.tvl
                 ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
                 : 0}
               &nbsp;
-            </span>
-            ETH
+            </div> */}
+            <div className="text-light-cyan font-semibold">
+              {delegateInfo?.tvl.tvl
+                ? formatTVL(delegateInfo?.tvl.tvlRestaking)
+                : 0}
+              &nbsp;
+            </div>
+            <div>TVL Restaked ETH</div>
           </div>
         </div>
       </div>

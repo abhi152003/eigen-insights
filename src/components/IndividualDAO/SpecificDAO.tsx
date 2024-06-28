@@ -128,9 +128,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
                     <div key={index}>
                       <div
                         className={`option flex items-center cursor-pointer px-3 py-2 rounded-lg transition duration-1000  ease-in-out transform hover:scale-105 capitalize ${
-                          option.label === operator_or_avs
-                            ? "text-light-cyan"
-                            : ""
+                          option.label === operator_or_avs ? "text-light-cyan" : ""
                         }`}
                         onClick={() => selectOption(option)}
                       >

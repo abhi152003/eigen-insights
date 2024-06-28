@@ -478,6 +478,17 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
     setShowGetMailModal(false);
   };
 
+  // const handleButtonClick = () => {
+  //   toast("Coming soon 🚀");
+  // };
+
+  const handleSelectChange = (event: { target: { value: any; }; }) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === "operators" || selectedValue === "avss") {
+      toast("Coming soon 🚀");
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-6 1.5lg:gap-20 md:px-20">
@@ -503,9 +514,20 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 </span>
               </Tooltip>
             </label>
-            <div className="border border-gray-300 rounded px-3 py-2 mt-1 w-full capitalize">
-              {daoName}
-            </div>
+            {/* <div className="border border-gray-300 rounded px-3 py-2 mt-1 w-full capitalize"> */}
+            <select
+              id="dropdown"
+              name="options"
+              className="border border-gray-300 rounded px-3 py-2 mt-1 w-full capitalize bg-white text-black"
+              onChange={handleSelectChange}
+            >
+              <option value="eigenlayer" selected>
+                EigenLayer
+              </option>
+              <option value="operators">Operators</option>
+              <option value="avss">AVSs</option>
+            </select>
+            {/* </div> */}
           </div>
 
           <div className="mb-4">
@@ -708,7 +730,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
           <Toaster
             toastOptions={{
               style: {
-                fontSize: "14px",
+                fontSize: "16px",
                 backgroundColor: "#3E3D3D",
                 color: "#fff",
                 boxShadow: "none",

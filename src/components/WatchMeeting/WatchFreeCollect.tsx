@@ -7,7 +7,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoArrowUpOutline } from "react-icons/io5";
 import styles from "./WatchSession.module.css";
 import { RxCross2 } from "react-icons/rx";
-import operators from "../../assets/images/sidebar/operators.webp";
+import operators from "../../assets/images/daos/Operator4.jpg";
 
 const WatchFreeCollect = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -127,8 +127,7 @@ const WatchFreeCollect = () => {
                 <Image
                   src={operators}
                   alt=""
-                  width={29}
-                  height={29}
+                  style={{width: "40%", height: "40%"}}
                   className="my-2"
                 />
                 <div className="flex flex-col justify-center items-start">

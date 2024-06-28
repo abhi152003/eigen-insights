@@ -274,7 +274,7 @@ function AvailableSessions() {
   }, [daoInfo]);
 
   return (
-    <div className="pe-10">
+    <div className="">
       <div className="flex gap-7 bg-[#D9D9D945] p-4 mt-4 rounded-2xl font-poppins">
         <div className="searchBox">
           <input
@@ -386,7 +386,7 @@ function AvailableSessions() {
             {(startTime || endTime) && (
               <button
                 onClick={handleClearTime}
-                className="ml-2 text-red-500 bg-white px-2 py-1 rounded-md border-red-500 border-2 hover:bg-red-500 hover:text-white hover:scale-100"
+                className="ml-2 text-red-500 bg-white px-2 py-[6px] rounded-md border-red-500 border-2 hover:bg-red-500 hover:text-white hover:scale-100"
               >
                 Clear Time
               </button>
@@ -403,7 +403,7 @@ function AvailableSessions() {
           boxShadow:
             "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
         }}
-        className="rounded-3xl flex flex-col bg-deep-blue my-8"
+        className="rounded-3xl flex flex-col bg-deep-blue my-8 w-fit pr-14"
       >
         <div className="flex items-center mb-4 border-b-2 py-5 px-5 rounded-tl-3xl rounded-tr-3xl">
           <div
@@ -507,7 +507,7 @@ function AvailableSessions() {
         </div>
 
         <div className="flex items-center px-5 pb-3">
-          <MdWatchLater className="w-5 h-5 mt-[1px] text-light-cyan" />
+          <MdWatchLater className="w-5 h-5 mt-[1px] text-white" />
           <div className="w-[60%]">
             <span className="text-base font-semibold text-light-cyan ml-[6px] mt-[6px]">
               Available for 10 minutes
