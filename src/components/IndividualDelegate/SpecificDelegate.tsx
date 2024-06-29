@@ -33,9 +33,8 @@ import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 import Operators from "./Operators";
 import Avss from "./Avss";
-// import Attestations from "./Attestations";
-import client from "@/utils/urqlClient";
-import { ApolloProvider } from "@apollo/client";
+import client from "../utils/urlqClient";
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 
 interface Type {
   daoDelegates: string;
@@ -521,15 +520,20 @@ function SpecificDelegate({ props }: { props: Type }) {
               />
             )}
             {searchParams.get("active") === "operators" && (
-              <Operators props={props} />
+              <ApolloProvider client={client}>
+                <Operators props={props} />
+              </ApolloProvider>
             )}
-            {searchParams.get("active") === "avss" && (props.daoDelegates === "operators") ? (
+            {searchParams.get("active") === "avss" &&
+            props.daoDelegates === "operators" ? (
               <Avss props={props} />
-            ) : ("")}
+            ) : (
+              ""
+            )}
             {searchParams.get("active") === "analytics" && (
-              
+              <ApolloProvider client={client}>
                 <OperatorsAnalytics props={props} />
-              
+              </ApolloProvider>
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />

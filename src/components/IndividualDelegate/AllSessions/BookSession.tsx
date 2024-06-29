@@ -673,7 +673,7 @@ function BookSession({ props }: { props: Type }) {
                     >
                       <MdCancel size={25} />
                     </button>
-                    <h2 className="text-blue-shade-200 font-semibold text-base">
+                    <h2 className="text-light-cyan font-semibold text-base">
                       Get Notified About Your Session Request
                     </h2>
                     <p className="text-gray-500 text-sm">
@@ -723,7 +723,7 @@ function BookSession({ props }: { props: Type }) {
                 Cancel
               </button> */}
                 <button
-                  className="bg-blue-shade-200 text-white px-8 py-3 font-semibold rounded-full"
+                  className="bg-light-blue text-white px-8 py-3 font-semibold rounded-full"
                   onClick={checkBeforeApiCall}
                   disabled={confirmSave}
                 >

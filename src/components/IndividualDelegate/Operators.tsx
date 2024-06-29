@@ -132,7 +132,6 @@ function Operators({ props }: { props: Type }) {
       window.addEventListener("scroll", handleScroll);
     }
   };
-
   console.log("avsssssss", avsOperators);
   return (
     <div>
@@ -166,7 +165,7 @@ function Operators({ props }: { props: Type }) {
                   <IoSearchSharp className="iconExplore" />
                 </button>
               </div>
-              <table className="min-w-full bg-midnight-blue">
+              <table className="min-w-full bg-midnight-blue overflow-x-auto">
                 <thead>
                   <tr className="bg-sky-blue bg-opacity-10">
                     <th className="px-4 py-2 text-left">Operator</th>
@@ -175,6 +174,7 @@ function Operators({ props }: { props: Type }) {
                     <th className="px-4 py-2 text-right">Total Stakers</th>
                     <th className="px-4 py-2 text-right">ETH Restaked</th>
                     <th className="px-4 py-2 text-right">EIGEN Restaked</th>
+                    <th className="px-4 py-2 text-right">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -241,6 +241,9 @@ function Operators({ props }: { props: Type }) {
                       </td>
                       <td className="px-4 py-2 text-right">
                         {dao.tvl.tvlStrategies.Eigen.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-2 text-right">
+                        Active
                       </td>
                     </tr>
                   ))}

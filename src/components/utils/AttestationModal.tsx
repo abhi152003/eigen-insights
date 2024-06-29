@@ -69,10 +69,10 @@ function AttestationModal({
                   </h2>
                 </div>
                 {/* <div className="justify-around space-x-8 py-5">
-                  <button className="border-2 border-blue-shade-200 bg-blue-shade-200 rounded-full text-white px-8 py-3 font-bold text-sm">
+                  <button className="border-2 border-blue-shade-200 bg-light-blue rounded-full text-white px-8 py-3 font-bold text-sm">
                     On-chain
                   </button>
-                  <button className="border-2 border-blue-shade-200 rounded-full text-blue-shade-200 px-8 py-3 font-bold text-sm">
+                  <button className="border-2 border-blue-shade-200 rounded-full text-light-cyan px-8 py-3 font-bold text-sm">
                     Off-chain
                   </button>
                 </div> */}

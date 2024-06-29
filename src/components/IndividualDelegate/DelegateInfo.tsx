@@ -483,24 +483,36 @@ function DelegateInfo({
     toast("Address Copied");
   };
 
-  const formatTVL = (value: number) => {
+  const formatTVL = (value: number): string => {
     if (!value) return "0";
-
+  
     const absValue = Math.abs(value);
-    if (absValue >= 1000) {
-      // Round to 3 decimal places, then format to 2
-      const rounded = Math.round(value / 10) / 100;
-      return rounded.toFixed(2) + "k";
+    
+    // Function to round to 2 decimal places
+    const roundToTwo = (num: number): number => {
+      return Math.round(num * 100) / 100;
+    };
+  
+    if (absValue >= 1000000) {
+      // For millions, use 'm'
+      const millions = absValue / 1000000;
+      return roundToTwo(millions).toFixed(2) + "m";
+    } else if (absValue >= 1000) {
+      // For thousands, use 'k'
+      const thousands = absValue / 1000;
+      return roundToTwo(thousands).toFixed(2) + "k";
     }
-    // For values less than 1000, round to 2 decimal places
-    return Math.round(value * 100) / 100;
+    
+    // For values less than 1000, just round to 2 decimal places
+    return roundToTwo(absValue).toFixed(2);
   };
 
   return (
     <div>
-      <div className="flex gap-3 py-1 min-h-10">
+      <div className="pe-16">
+      <div className="flex gap-3 py-1 min-h-10 justify-center">
         <div>
-          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
             <Image
               src={EILogo}
               alt="Image not found"
@@ -519,7 +531,7 @@ function DelegateInfo({
           </div>
         </div>
         <div>
-          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
             <Image
               src={EILogo}
               alt="Image not found"
@@ -539,7 +551,7 @@ function DelegateInfo({
         </div>
         <div>
           {props.daoDelegates === "avss" && (
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5 hover:cursor-pointer tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
                 src={EILogo}
                 alt="Image not found"
@@ -559,7 +571,7 @@ function DelegateInfo({
           )}
         </div>
         <div>
-          <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 hover:cursor-pointer tvlDiv">
+          <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
             <Image
               src={EILogo}
               alt="Image not found"
@@ -585,6 +597,7 @@ function DelegateInfo({
           </div>
         </div>
       </div>
+    </div>
 
       <div
         style={{

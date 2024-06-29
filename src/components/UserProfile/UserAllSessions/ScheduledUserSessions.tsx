@@ -478,16 +478,12 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
     setShowGetMailModal(false);
   };
 
-  // const handleButtonClick = () => {
-  //   toast("Coming soon 🚀");
+  // const handleSelectChange = (event: { target: { value: any; }; }) => {
+  //   const selectedValue = event.target.value;
+  //   if (selectedValue === "operators" || selectedValue === "avss") {
+  //     toast("Coming soon 🚀");
+  //   }
   // };
-
-  const handleSelectChange = (event: { target: { value: any; }; }) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "operators" || selectedValue === "avss") {
-      toast("Coming soon 🚀");
-    }
-  };
 
   return (
     <>
@@ -514,20 +510,18 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
                 </span>
               </Tooltip>
             </label>
-            {/* <div className="border border-gray-300 rounded px-3 py-2 mt-1 w-full capitalize"> */}
             <select
               id="dropdown"
               name="options"
               className="border border-gray-300 rounded px-3 py-2 mt-1 w-full capitalize bg-white text-black"
-              onChange={handleSelectChange}
             >
               <option value="eigenlayer" selected>
                 EigenLayer
               </option>
-              <option value="operators">Operators</option>
-              <option value="avss">AVSs</option>
+              <option value="operators" disabled className="cursor-not-allowed">Operators - Coming soon 🚀
+              </option>
+              <option value="avss" disabled className="cursor-not-allowed">AVSs - Coming soon 🚀</option>
             </select>
-            {/* </div> */}
           </div>
 
           <div className="mb-4">
@@ -669,7 +663,7 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               {allData.map((item: any, index: any) => (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
+                  className="bg-white text-black p-4 rounded-lg shadow-md flex justify-between items-center"
                 >
                   <div>
                     <p className="text-white">{item.date}</p>

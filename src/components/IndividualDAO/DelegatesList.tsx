@@ -25,7 +25,7 @@ import dao_abi from "../../artifacts/Dao.sol/GovernanceToken.json";
 import { useAccount } from "wagmi";
 import WalletAndPublicClient from "@/helpers/signer";
 import { IoSearchSharp } from "react-icons/io5";
-import Avss from '@/assets/images/sidebar/avss.webp'
+import Avss from "@/assets/images/sidebar/avss.webp";
 import "../../css/SearchShine.css";
 
 interface Result {
@@ -335,25 +335,33 @@ function DelegatesList({ props }: { props: string }) {
     }
   };
 
+  const formatTVL = (value: number): string => {
+    if (!value) return "0";
+
+    const absValue = Math.abs(value);
+
+    // Function to round to 2 decimal places
+    const roundToTwo = (num: number): number => {
+      return Math.round(num * 100) / 100;
+    };
+
+    if (absValue >= 1000000) {
+      // For millions, use 'm'
+      const millions = absValue / 1000000;
+      return roundToTwo(millions).toFixed(2) + "m";
+    } else if (absValue >= 1000) {
+      // For thousands, use 'k'
+      const thousands = absValue / 1000;
+      return roundToTwo(thousands).toFixed(2) + "k";
+    }
+
+    // For values less than 1000, just round to 2 decimal places
+    return roundToTwo(absValue).toFixed(2);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between pe-10">
-        {/* <div
-          style={{ background: "rgba(238, 237, 237, 0.36)" }}
-          className="flex border-[0.5px] border-black w-1/3 rounded-full my-3 font-poppins"
-        >
-          <input
-            type="text"
-            placeholder="Search by Address or ENS Name"
-            style={{ background: "rgba(238, 237, 237, 0.36)" }}
-            className="pl-5 pr-3 rounded-full outline-none w-full"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-          ></input>
-          <span className="flex items-center bg-black rounded-full px-5 py-2">
-            <Image src={search} alt="search" width={20} />
-          </span>
-        </div> */}
         <div className="searchBox searchShineWidthOfAVSs">
           <input
             className="searchInput"
@@ -406,18 +414,6 @@ function DelegatesList({ props }: { props: string }) {
                   }}
                   className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue"
                 >
-                  {/* {clickedTileIndex === index && (
-                    <div
-                    className="absolute bg-blue-200 rounded-full animate-ping"
-                    style={{
-                    width: "30px",
-                    height: "30px",
-                    left: `${circlePosition.x -10}px`,
-                    top: `${circlePosition.y - 10}px`,
-                    zIndex: "9999",
-                   }}
-                   ></div>
-                  )} */}
                   <div className="flex items-center justify-around">
                     <div className="flex justify-center">
                       <Image
@@ -491,8 +487,11 @@ function DelegatesList({ props }: { props: string }) {
                           </Tooltip>
                         </div>
                         <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
-                          <span className="text-light-cyan font-semibold">
+                          {/* <span className="text-light-cyan font-semibold">
                             {daos.totalStakers}&nbsp;
+                          </span> */}
+                          <span className="text-light-cyan font-semibold">
+                            {formatTVL(Number(daos.totalStakers))}&nbsp;
                           </span>
                           total stakers
                         </div>
@@ -510,10 +509,10 @@ function DelegatesList({ props }: { props: string }) {
                         }}
                       >
                         {props === "operators" ? (
-                        <span className="hover-text">Delegate</span>
-                      ) : (
-                        <span className="hover-text">Stake</span>
-                      )}
+                          <span className="hover-text">Delegate</span>
+                        ) : (
+                          <span className="hover-text">Stake</span>
+                        )}
                       </button>
                     </div>
                   </div>

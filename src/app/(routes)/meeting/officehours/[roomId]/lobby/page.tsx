@@ -304,7 +304,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
             </div>
             <div className="flex items-center w-full">
               <button
-                className="flex items-center justify-center bg-blue-shade-100 text-slate-100 rounded-md p-2 mt-2 w-full"
+                className="flex items-center justify-center bg-deep-blue text-white rounded-md p-2 mt-2 w-full"
                 onClick={() => handleStartSpaces()}
               >
                 {isJoining ? "Joining Spaces..." : "Start meeting"}
@@ -345,7 +345,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                 <Link
                   // onClick={() => push(`/profile/${address}?active=info`)}
                   href={`/profile/${address}?active=info`}
-                  className="px-6 py-3 bg-white text-blue-shade-200 rounded-full shadow-lg hover:bg-blue-shade-200 hover:text-white transition duration-300 ease-in-out"
+                  className="px-6 py-3 bg-white text-black rounded-full shadow-lg hover:bg-light-blue hover:text-white transition duration-300 ease-in-out"
                 >
                   Back to Profile
                 </Link>

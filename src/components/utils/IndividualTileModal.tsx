@@ -62,13 +62,13 @@ function IndividualTileModal({
         </span>
         <div
           ref={modalRef}
-          className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full"
+          className="inline-block align-bottom bg-white text-black rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full"
           style={{
             maxWidth: "calc(80% + 50px)",
             maxHeight: "calc(80% + 50px)",
           }}
         >
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="bg-white text-black px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
               <div className="sm:w-3/5 mx-auto flex items-center justify-center bg-blue-100 rounded-lg">
                 <video
@@ -156,7 +156,7 @@ function IndividualTileModal({
             <button
               onClick={onClose}
               type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-shade-200 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-light-blue text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
               style={{ borderRadius: "20px" }}
             >
               Close

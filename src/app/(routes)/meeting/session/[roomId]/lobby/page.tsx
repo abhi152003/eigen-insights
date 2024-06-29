@@ -310,19 +310,19 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
       {isAllowToEnter ? (
         <div className="h-screen">
           {popupVisibility && (
-            <div className="flex items-center justify-center">
-              <div className="absolute bg-white text-[#3E3D3D] flex justify-center items-center py-2 font-poppins font-semibold w-1/4 rounded-md top-6 drop-shadow-xl">
-                <div className="flex absolute left-2">
+            <div className="mt-3 flex items-center justify-center">
+              <div className="bg-white text-[#3E3D3D] flex gap-2 justify-center items-center py-2 font-poppins font-semibold w-fit rounded-md drop-shadow-xl">
+                <div className="flex ml-2">
                   <Image
                     alt="record-left"
                     width={25}
                     height={25}
                     src={record}
-                    className="w-5 h-5 ml-2"
+                    className="w-5 h-5 mr-2"
                   />
                 </div>
                 <div className="">This meeting is being recorded.</div>
-                <div className="flex absolute right-2">
+                <div className="flex mr-2">
                   <button
                     onClick={() => setPopupVisibility(false)}
                     className="p-1 bg-[#3E3D3D] rounded-full text-white text-bold"
@@ -333,9 +333,9 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
               </div>
             </div>
           )}
-          <main className="flex h-screen flex-col items-center justify-center bg-lobby text-slate-100 font-poppins">
-            <div className="flex flex-col items-center justify-center gap-4 w-1/3 mt-14">
-              <div className="text-center flex items-center justify-center bg-slate-100 w-full rounded-2xl py-28">
+          <main className="flex flex-col items-center justify-center text-slate-100 font-poppins">
+            <div className="flex flex-col items-center justify-center gap-4 w-1/3 mt-4">
+              <div className="text-center flex items-center justify-center bg-slate-100 w-full rounded-2xl py-20">
                 <div className="relative">
                   <Image
                     src={avatarUrl}
@@ -414,7 +414,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
               </div>
               {isDisconnected ? <ConnectWalletWithENS /> : null}
               <div className="flex items-center w-full flex-col">
-                <div className="flex flex-col justify-center w-full gap-1 text-[#3E3D3D] font-semibold">
+                <div className="flex flex-col justify-center w-full gap-1 text-light-blue font-semibold">
                   Display name
                   <div className="flex w-full items-center rounded-[10px] border px-3 text-slate-300 outline-none border-white-800 backdrop-blur-[400px] focus-within:border-slate-600 gap-">
                     <div className="mr-2">
@@ -435,7 +435,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                     placeholder="Enter your name"
                     className="flex-1 bg-transparent py-3 outline-none text-black"
                   /> */}
-                    <div className="flex-1 bg-transparent py-3 outline-none text-[#7C7C7C]">
+                    <div className="flex-1 bg-transparent py-3 outline-none text-white">
                       {isLoading ? (
                         <div className="flex items-center justify-center top-10">
                           <ThreeCircles
@@ -459,10 +459,10 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
               </div>
               <div className="flex items-center w-1/2">
                 <button
-                  className={`flex items-center justify-center text-slate-100 font-bold rounded-full p-4 mt-2 w-full ${
+                  className={`flex items-center justify-center text-slate-100 font-semibold rounded-full p-3 w-full ${
                     isLoading
-                      ? "bg-light-blue"
-                      : "bg-light-cyan transition-transform transform hover:scale-105 duration-300"
+                      ? "bg-light-blue text-white"
+                      : "bg-deep-blue text-white transition-transform transform hover:scale-105 duration-300"
                   }`}
                   onClick={handleStartSpaces}
                   disabled={isLoading}
@@ -494,7 +494,7 @@ const Lobby = ({ params }: { params: { roomId: string } }) => {
                 <Link
                   // onClick={() => push(`/profile/${address}?active=info`)}
                   href={`/profile/${address}?active=info`}
-                  className="px-6 py-3 bg-white text-blue-shade-200 rounded-full shadow-lg hover:bg-blue-shade-200 hover:text-white transition duration-300 ease-in-out"
+                  className="px-6 py-3 bg-white text-black rounded-full shadow-lg hover:bg-light-blue hover:text-white transition duration-300 ease-in-out"
                 >
                   Back to Profile
                 </Link>

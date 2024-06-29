@@ -127,7 +127,7 @@ const WatchFreeCollect = () => {
                 <Image
                   src={operators}
                   alt=""
-                  style={{width: "40%", height: "40%"}}
+                  style={{width: "8%", height: "8%"}}
                   className="my-2"
                 />
                 <div className="flex flex-col justify-center items-start">

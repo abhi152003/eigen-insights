@@ -44,7 +44,7 @@ function AddEmailModal({
           ></div>
           <div className="relative">
             <div
-              className="z-[70] absolute bg-white rounded-full p-3 -top-14 left-1/2 transform -translate-x-1/2"
+              className="z-[70] absolute bg-white text-black rounded-full p-3 -top-14 left-1/2 transform -translate-x-1/2"
               style={{
                 boxShadow: "0px 0px 45px -17px rgba(0,0,0,0.75)",
               }}
@@ -61,7 +61,7 @@ function AddEmailModal({
             >
               <div className="items-center justify-center px-8 py-20 ">
                 <div className="w-3/4 mx-auto text-center">
-                  <h2 className="text-blue-shade-200 font-semibold text-3xl my-4">
+                  <h2 className="text-light-cyan font-semibold text-3xl my-4">
                     Get Notified When Your Session is Booked
                   </h2>
                   <p className="text-gray-600 text-lg mb-4">

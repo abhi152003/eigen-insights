@@ -62,7 +62,7 @@ function AvailableUserSessions({
   }, [daoName, address, scheduledSuccess === true]);
 
   return (
-    <div className="w-full md:w-auto min-w-[34vw] h-[38rem] mt-2 p-8 bg-white rounded-2xl shadow-lg session-bg">
+    <div className="w-full md:w-auto min-w-[34vw] h-[38rem] mt-2 p-8 bg-white text-black rounded-2xl shadow-lg session-bg">
       <h1 className="text-white font-semibold text-2xl flex justify-center items-center">
         Your Scheduled Availability
       </h1>
@@ -251,7 +251,7 @@ function TimeSlotTable({
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
-                  className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center"
+                  className="bg-white text-black shadow-md rounded-lg p-4 flex justify-between items-center"
                 >
                   <div>
                     <p className="font-semibold">

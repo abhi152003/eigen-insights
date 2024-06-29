@@ -230,7 +230,7 @@ function UserUpcomingHours() {
                 />
 
                 <div className="ps-6 pe-12 py-1">
-                  <div className="font-semibold text-blue-shade-200 text-lg">
+                  <div className="font-semibold text-light-cyan text-lg">
                     {data.title}
                   </div>
 

@@ -14,28 +14,68 @@ import { gql, useQuery } from '@apollo/client';
 
 const GET_DATA = gql`
   query MyQuery {
-    avss(where: {id: "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0"}) {
-      registrationsCount
-      registrations(where: {}, orderBy: registeredTimestamp, orderDirection: asc) {
-        status
-        registeredTimestamp
-        operator {
-          id
-          totalShares
-        }
+  avss(where: {id: "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0"}) {
+    registrationsCount
+    registrations(where: {}, orderBy: registeredTimestamp, orderDirection: asc) {
+      status
+      registeredTimestamp
+      operator {
+        id
+        totalShares
       }
     }
   }
+}
 `;
+
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface Type {
   daoDelegates: string;
   individualDelegate: string;
 }
 
-function OperatorsAnalytics({ props }: { props: Type }) {
+interface OperatorData {
+  __typename: string;
+  status: number;
+  registeredTimestamp: string;
+  operator: {
+    __typename: string;
+    id: string;
+    totalShares: string;
+  };
+}
 
-  console.log("Graph Key:", process.env.NEXT_PUBLIC_GRAPH_KEY);
+interface ChartDataPoint {
+  x: number;
+  y: number;
+}
+
+
+function OperatorsAnalytics({ props }: { props: Type }) {
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
 
   const { loading, error, data } = useQuery(GET_DATA);
 
@@ -45,7 +85,63 @@ function OperatorsAnalytics({ props }: { props: Type }) {
     return <p>Error: {error.message}</p>;
   }
 
-  console.log("Data from GraphQL:", data);
+  console.log("Data from GraphQL:", data.avss[0].registrations);
+
+
+  const processedData = data.avss[0].registrations.map((item: { registeredTimestamp: string; operator: { totalShares: string; }; }) => ({
+    timestamp: parseInt(item.registeredTimestamp),
+    shares: parseFloat(item.operator.totalShares) / 1e18 // Convert Wei to ETH
+  })).sort((a: { timestamp: number; }, b: { timestamp: number; }) => a.timestamp - b.timestamp);
+
+  // Convert timestamps to days since the first timestamp
+  const startDate = new Date(processedData[0].timestamp * 1000);
+  const chartData: ChartDataPoint[] = processedData.map((item: { timestamp: number; shares: any; }) => ({
+    x: Math.floor((new Date(item.timestamp * 1000).getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)),
+    y: item.shares
+  }));
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Operator Shares Over Time',
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Days Since First Registration'
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Total Shares (ETH)'
+        },
+        ticks: {
+          callback: function(value: number) {
+            return value.toLocaleString();
+          }
+        }
+      }
+    }
+  };
+
+  const chartDataConfig = {
+    datasets: [
+      {
+        label: 'Total Shares',
+        data: chartData,
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      },
+    ],
+  };
 
   return (
     // <div className="flex justify-center">
@@ -122,7 +218,7 @@ function OperatorsAnalytics({ props }: { props: Type }) {
           ))}
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-hidden me-16">
+        <div className="bg-white text-black rounded-lg shadow-md p-6 w-full overflow-hidden me-16">
           <div className="flex space-x-4 mb-4 overflow-x-auto">
             {newStatuses.map((status, index) => (
               <button key={index} onClick={() => setActiveFilter(status.label)}>
@@ -169,6 +265,9 @@ function OperatorsAnalytics({ props }: { props: Type }) {
           </div>
         </div>
       </div> */}
+      <div style={{ width: '100%', height: '400px' }}>
+        {/* <Line options={chartOptions} data={chartDataConfig} /> */}
+      </div>
     </div>
   );
 }
