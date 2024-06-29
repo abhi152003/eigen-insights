@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
   }
 
   const query = req.nextUrl.searchParams.get('q');
-  const operatorAddress = req.nextUrl.searchParams.get('operatorAddress');
+  const avsAddress = req.nextUrl.searchParams.get('avsAddress');
 
   if (!query) {
     console.log('No query parameter');
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
         { address: regex },
         { metadataName: regex }
       ],
-      avs_address: operatorAddress 
+      avs_address: avsAddress 
     });
     const batchedResults = await cursor.toArray();
     const results: Result[] = batchedResults.flatMap(batch => batch);

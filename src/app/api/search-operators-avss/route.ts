@@ -50,13 +50,15 @@ export async function GET(req: NextRequest) {
     collection = db.collection('avs_operators');
 
     const regex = new RegExp(query, 'i'); // 'i' for case-insensitive
-    const cursor = collection.find({
+    const filter = {
       $or: [
         { avs_address: regex },
         { avs_name: regex }
       ],
-      adrress: operatorAddress 
-    });
+      ...(operatorAddress !== null && { address: operatorAddress })
+    };
+    
+    const cursor = collection.find(filter);
     const batchedResults = await cursor.toArray();
     console.log(batchedResults)
     const results: Result[] = batchedResults.flatMap(batch => batch);

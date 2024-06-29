@@ -9,6 +9,8 @@ import HuddleContextProvider from "@/components/ClientComponents/HuddleContextPr
 import { useEffect } from "react";
 import Script from "next/script";
 import ProgressBarProvider from "@/components/ProgressBarProvider/ProgressBarProvider";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/utils/urqlClient";
 
 const poppins = Poppins({
   subsets: ["latin"],

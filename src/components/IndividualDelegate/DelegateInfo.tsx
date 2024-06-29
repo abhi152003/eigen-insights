@@ -300,28 +300,28 @@ function DelegateInfo({
   //   officeHoursAttended();
   // };
 
-  const details = [
-    {
-      number: sessionHostCount,
-      desc: "Sessions hosted",
-      ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=hosted`,
-    },
-    {
-      number: sessionAttendCount,
-      desc: "Sessions attended",
-      ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=attended`,
-    },
-    {
-      number: officehoursHostCount,
-      desc: "Office Hours hosted",
-      ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=hosted`,
-    },
-    {
-      number: officehoursAttendCount,
-      desc: "Office Hours attended",
-      ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=attended`,
-    },
-  ];
+  // const details = [
+  //   {
+  //     number: sessionHostCount,
+  //     desc: "Sessions hosted",
+  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=hosted`,
+  //   },
+  //   {
+  //     number: sessionAttendCount,
+  //     desc: "Sessions attended",
+  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=attended`,
+  //   },
+  //   {
+  //     number: officehoursHostCount,
+  //     desc: "Office Hours hosted",
+  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=hosted`,
+  //   },
+  //   {
+  //     number: officehoursAttendCount,
+  //     desc: "Office Hours attended",
+  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=attended`,
+  //   },
+  // ];
   useEffect(() => {
     const fetchData = async () => {
       try {

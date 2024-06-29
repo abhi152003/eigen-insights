@@ -282,7 +282,7 @@ function UserInfo({
             Offchain
           </button>
         </div> */}
-        <div className="grid grid-cols-4 pe-32 gap-10">
+        {/* <div className="grid grid-cols-4 pe-32 gap-10">
           {blocks.length > 0 ? (
             // blocks.map((key, index) => (
             //   <div
@@ -352,7 +352,7 @@ function UserInfo({
           ) : (
             <div>No data available</div>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div

@@ -34,6 +34,8 @@ import OperatorsAnalytics from "./OperatorsAnalytics";
 import Operators from "./Operators";
 import Avss from "./Avss";
 // import Attestations from "./Attestations";
+import client from "@/utils/urqlClient";
+import { ApolloProvider } from "@apollo/client";
 
 interface Type {
   daoDelegates: string;
@@ -525,7 +527,9 @@ function SpecificDelegate({ props }: { props: Type }) {
               <Avss props={props} />
             ) : ("")}
             {searchParams.get("active") === "analytics" && (
-              <OperatorsAnalytics props={props} />
+              
+                <OperatorsAnalytics props={props} />
+              
             )}
             {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />
