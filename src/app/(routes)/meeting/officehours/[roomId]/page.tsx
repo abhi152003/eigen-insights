@@ -22,7 +22,6 @@ import { toast } from "react-hot-toast";
 import { Role } from "@huddle01/server-sdk/auth";
 import Chat from "@/components/Chat/Chat";
 import { useAccount } from "wagmi";
-import AttestationModal from "@/components/utils/AttestationModal";
 import { Oval, TailSpin, ThreeCircles } from "react-loader-spinner";
 import Link from "next/link";
 
@@ -230,9 +229,6 @@ const Home = ({ params }: { params: { roomId: string } }) => {
             {isChatOpen && <Chat />}
           </div>
           <Prompts />
-          {modalOpen && (
-            <AttestationModal isOpen={modalOpen} onClose={handleModalClose} />
-          )}
         </section>
       ) : (
         <>

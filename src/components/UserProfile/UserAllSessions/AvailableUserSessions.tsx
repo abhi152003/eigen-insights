@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNetwork, useAccount } from "wagmi";
 import { CirclesWithBar, Grid } from "react-loader-spinner";
 import { motion, AnimatePresence } from "framer-motion";
-import '../../../css/SessionPage.css'
+import "../../../css/SessionPage.css";
 
 interface AvailableUserSessionsProps {
   daoName: string;

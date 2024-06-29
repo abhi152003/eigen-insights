@@ -16,7 +16,6 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import AttestationModal from "../utils/AttestationModal";
 import { IoSearchSharp } from "react-icons/io5";
 
 interface Session {
@@ -145,10 +144,6 @@ function DelegatesSession({ props }: { props: string }) {
           <IoSearchSharp className="iconExplore" />
         </button>
       </div>
-
-      {/* <div>
-        <AttestationModal props={true} />
-      </div> */}
 
       <div className="pr-36 pt-3">
         <div className="my-3 flex w-fit gap-16 border-2 border-gray-400 px-6 rounded-xl text-sm">

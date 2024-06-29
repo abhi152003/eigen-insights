@@ -13,7 +13,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
     try {
       const db = client.db();
       const meetingsCollection = db.collection("meetings");
-      const attestationsCollection = db.collection("attestation");
 
       const hostedMeetings = await meetingsCollection
         .find({
@@ -27,15 +26,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         hostedMeetings.map(async (meeting) => {
           const { meetingId } = meeting;
 
-          // Find documents in the "attestation" collection with matching roomId
-          const attestations = await attestationsCollection
-            .find({ roomId: meetingId })
-            .toArray();
-
-          // Merge attestation documents into the meeting document
           const mergedMeeting = {
             ...meeting,
-            attestations,
           };
 
           return mergedMeeting;
@@ -54,15 +46,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         attendedMeetings.map(async (meeting) => {
           const { meetingId } = meeting;
 
-          // Find documents in the "attestation" collection with matching roomId
-          const attestations = await attestationsCollection
-            .find({ roomId: meetingId })
-            .toArray();
-
-          // Merge attestation documents into the meeting document
           const mergedMeeting = {
             ...meeting,
-            attestations,
           };
 
           return mergedMeeting;

@@ -12,7 +12,6 @@ interface Participant {
   displayName: string;
   joinedAt: string;
   exitedAt: string;
-  attestation: string; // Added attestation field
 }
 
 interface MeetingTimePerEOA {
@@ -191,7 +190,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (participantMeetingTime >= minimumAttendanceTime) {
         participantsWithSufficientAttendance.push({
           ...participant,
-          attestation: "pending",
         });
       }
     }
@@ -211,7 +209,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     ) {
       combinedParticipantLists.flat().forEach((participant) => {
         if (participant.displayName === hostData.address) {
-          hosts.push({ ...participant, attestation: "pending" });
+          hosts.push({ ...participant});
         }
       });
     }
@@ -252,7 +250,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       startTime: earliestStartTimeEpoch,
       endTime: latestEndTimeEpoch,
       meetingType: meetingTypeName,
-      attestation: "pending",
       operator_or_avs: operator_or_avs,
       // video_uri,
     };

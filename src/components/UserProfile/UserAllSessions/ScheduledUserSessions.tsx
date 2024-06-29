@@ -496,9 +496,9 @@ function ScheduledUserSessions({ daoName }: { daoName: string }) {
               <Tooltip
                 content={
                   <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[35vw]">
-                    Operator/AVS for which the session is to be created. The attestations
-                    will be issued for the selected Operator/AVS. The attendees of this
-                    session will seek questions related to the selected Operator/AVS.
+                    Operator/AVS for which the session is to be created.
+                    The attendees of this session will seek questions related to
+                    the selected Operator/AVS.
                   </div>
                 }
                 showArrow

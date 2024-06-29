@@ -17,7 +17,7 @@ import ReportOptionModal from "./ReportOptionModal";
 import { getEnsName } from "../ConnectWallet/ENSResolver";
 import { useRouter } from "next-nprogress-bar";
 import "./WatchSession.module.css";
-import ShareMediaModal from './ShareMediaModal'
+import ShareMediaModal from "./ShareMediaModal";
 import { BASE_URL } from "@/config/constants";
 import { Toaster } from "react-hot-toast";
 
@@ -98,12 +98,12 @@ function WatchSession({
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
   const [ensHostName, setEnsHostName] = useState<string | null>(null);
-  const [shareModal,setShareModal]=useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const router = useRouter();
 
-  const handleShareClose =()=>{
+  const handleShareClose = () => {
     setShareModal(false);
-  }
+  };
 
   useEffect(() => {
     if (contentRef.current) {
@@ -169,7 +169,9 @@ function WatchSession({
             data.description.length > 0 ? "border-b" : ""
           }  border-[#CCCCCC]`}
         >
-          <div className="text-lg font-medium pb-3 text-white">{data.title}</div>
+          <div className="text-lg font-medium pb-3 text-white">
+            {data.title}
+          </div>
           <div className="flex justify-between text-sm pe-4 pb-4">
             <div className="flex gap-6">
               <div className="flex items-center gap-2 ">
@@ -222,7 +224,7 @@ function WatchSession({
             <div className="flex gap-6">
               <div className="flex items-center gap-1">
                 {/* <Image src={time} alt="image" className="text-white" width={20} priority /> */}
-                <CgStopwatch color="#fff" size={20}/>
+                <CgStopwatch color="#fff" size={20} />
                 <div className="text-white">
                   {formatTimeAgo(data.slot_time)}
                 </div>
@@ -236,7 +238,10 @@ function WatchSession({
                 </div>
                 <div className="text-[#ff3838] hover:scale-110">Report</div>
               </div>
-              <div className="flex items-center gap-1 cursor-pointer" onClick={()=>setShareModal(true)}>
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={() => setShareModal(true)}
+              >
                 <div className="scale-x-[-1]">
                   <BiSolidShare size={20} color="#fff" />
                 </div>
@@ -311,7 +316,7 @@ function WatchSession({
               >
                 {data.description}
               </div> */}
-               <div
+              <div
                 ref={contentRef}
                 className={`max-h-full transition-max-height duration-500 ease-in-out overflow-hidden ${
                   isExpanded ? "max-h-full" : "max-h-24 line-clamp-3"
@@ -357,7 +362,11 @@ function WatchSession({
       />
 
       {shareModal && (
-        <ShareMediaModal isOpen={shareModal} onClose={handleShareClose} data={data}/>
+        <ShareMediaModal
+          isOpen={shareModal}
+          onClose={handleShareClose}
+          data={data}
+        />
       )}
     </div>
   );

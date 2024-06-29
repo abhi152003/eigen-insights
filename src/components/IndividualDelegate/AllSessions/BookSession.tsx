@@ -42,17 +42,17 @@ const theme = {
   background: "#427FA3",
   buttons: {
     disabled: {
-      color: '#A7DBF2',
-      background: '#f0f0f0'
+      color: "#A7DBF2",
+      background: "#f0f0f0",
     },
     confirm: {
-      color: '#fff',
-      background: 'slategrey',
+      color: "#fff",
+      background: "slategrey",
       hover: {
-        color: '',
-        background: 'lightslategrey'
-      }
-    }
+        color: "",
+        background: "lightslategrey",
+      },
+    },
   },
   feedback: {
     success: {

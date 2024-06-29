@@ -72,7 +72,7 @@ function ExploreDAOs() {
     } else if (formatted === "avss") {
       router.push(`/${formatted}?active=avsList`);
     } else if (formatted === "analytics") {
-      router.push(`/${formatted}`);
+      router.push(`/${formatted}?eigenlayer=analytics`);
     }
   };
 

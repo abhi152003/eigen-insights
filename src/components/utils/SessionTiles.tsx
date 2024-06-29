@@ -5,15 +5,15 @@ import text2 from "@/assets/images/daos/texture2.png";
 import IndividualSessionTileModal from "./IndividualSessionTileModal";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
-import {
-  SchemaEncoder,
-  SchemaRegistry,
-  createOffchainURL,
-  EAS,
-  Delegated,
-  ZERO_BYTES32,
-  NO_EXPIRATION,
-} from "@ethereum-attestation-service/eas-sdk";
+// import {
+//   SchemaEncoder,
+//   SchemaRegistry,
+//   createOffchainURL,
+//   EAS,
+//   Delegated,
+//   ZERO_BYTES32,
+//   NO_EXPIRATION,
+// } from "@ethereum-attestation-service/eas-sdk";
 import { useNetwork, useAccount } from "wagmi";
 import styles from "./Tile.module.css";
 import { ethers } from "ethers";
@@ -31,7 +31,7 @@ interface Participant {
   walletAddress: string | null;
   joinedAt: string;
   exitedAt: string;
-  attestation: string;
+  // attestation: string;
 }
 
 interface AttestationData {
@@ -45,7 +45,7 @@ interface AttestationData {
   startTime: number;
   endTime: number;
   meetingType: string;
-  attestation: string;
+  // attestation: string;
 }
 
 interface SessionData {
@@ -65,7 +65,7 @@ interface SessionData {
   session_type: string;
   uid_host: string;
   onchain_host_uid: string;
-  attestations: AttestationData[];
+  // attestations: AttestationData[];
 }
 
 interface SessionTileProps {
@@ -145,132 +145,132 @@ SessionTileProps) {
     setExpanded((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  const handleAttestationOnchain = async ({
-    meetingId,
-    meetingType,
-    meetingStartTime,
-    meetingEndTime,
-    index,
-    dao,
-  }: AttestationDataParams) => {
-    setIsClaiming((prev: any) => ({ ...prev, [index]: true }));
-    if (
-      typeof window.ethereum === "undefined" ||
-      !window.ethereum.isConnected()
-    ) {
-      console.log("not connected");
-    }
+  // const handleAttestationOnchain = async ({
+  //   meetingId,
+  //   meetingType,
+  //   meetingStartTime,
+  //   meetingEndTime,
+  //   index,
+  //   dao,
+  // }: AttestationDataParams) => {
+  //   setIsClaiming((prev: any) => ({ ...prev, [index]: true }));
+  //   if (
+  //     typeof window.ethereum === "undefined" ||
+  //     !window.ethereum.isConnected()
+  //   ) {
+  //     console.log("not connected");
+  //   }
 
-    // const address = await walletClient.getAddresses();
-    // console.log(address);
-    let token = "";
-    // let EASContractAddress = "";
+  //   // const address = await walletClient.getAddresses();
+  //   // console.log(address);
+  //   let token = "";
+  //   // let EASContractAddress = "";
 
-    // if (dao === "optimism") {
-    //   token = "OP";
-    //   EASContractAddress = "0x4200000000000000000000000000000000000021";
-    // } else if (dao === "arbitrum") {
-    //   token = "ARB";
-    //   EASContractAddress = "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458";
-    // }
+  //   // if (dao === "optimism") {
+  //   //   token = "OP";
+  //   //   EASContractAddress = "0x4200000000000000000000000000000000000021";
+  //   // } else if (dao === "arbitrum") {
+  //   //   token = "ARB";
+  //   //   EASContractAddress = "0xbD75f629A22Dc1ceD33dDA0b68c546A1c035c458";
+  //   // }
 
-    const data = {
-      recipient: address,
-      meetingId: `${meetingId}/${token}`,
-      meetingType: meetingType,
-      startTime: meetingStartTime,
-      endTime: meetingEndTime,
-      daoName: dao,
-    };
+  //   const data = {
+  //     recipient: address,
+  //     meetingId: `${meetingId}/${token}`,
+  //     meetingType: meetingType,
+  //     startTime: meetingStartTime,
+  //     endTime: meetingEndTime,
+  //     daoName: dao,
+  //   };
 
-    // Configure the request options
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Add any other headers required by your API
-      },
-      body: JSON.stringify(data),
-    };
+  //   // Configure the request options
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       // Add any other headers required by your API
+  //     },
+  //     body: JSON.stringify(data),
+  //   };
 
-    // try {
-    //   // Make the API call with the provided JSON data
-    //   const res = await fetch("/api/attest-onchain", requestOptions);
+  //   // try {
+  //   //   // Make the API call with the provided JSON data
+  //   //   const res = await fetch("/api/attest-onchain", requestOptions);
 
-    //   // Check if the request was successful
-    //   if (!res.ok) {
-    //     throw new Error(`HTTP error! status: ${res.status}`);
-    //   }
+  //   //   // Check if the request was successful
+  //   //   if (!res.ok) {
+  //   //     throw new Error(`HTTP error! status: ${res.status}`);
+  //   //   }
 
-    //   // Parse the response as JSON
-    //   const attestationObject = await res.json();
+  //   //   // Parse the response as JSON
+  //   //   const attestationObject = await res.json();
 
-    //   // console.log(attestationObject);
-    //   const provider = new ethers.BrowserProvider(window?.ethereum);
+  //   //   // console.log(attestationObject);
+  //   //   const provider = new ethers.BrowserProvider(window?.ethereum);
 
-    //   const eas = new EAS(EASContractAddress);
-    //   const signer = await provider.getSigner();
-    //   console.log("the wallet2 obj", signer);
-    //   eas.connect(signer);
-    //   console.log("obj created");
-    //   console.log("eas obj", eas);
-    //   const schemaUID =
-    //     "0xf9e214a80b66125cad64453abe4cef5263be3a7f01760d0cc72789236fca2b5d";
-    //   const tx = await eas.attestByDelegation({
-    //     schema: schemaUID,
-    //     data: {
-    //       recipient: attestationObject.delegatedAttestation.message.recipient,
-    //       expirationTime:
-    //         attestationObject.delegatedAttestation.message.expirationTime,
-    //       revocable: attestationObject.delegatedAttestation.message.revocable,
-    //       refUID: attestationObject.delegatedAttestation.message.refUID,
-    //       data: attestationObject.delegatedAttestation.message.data,
-    //     },
-    //     signature: attestationObject.delegatedAttestation.signature,
-    //     attester: "0x7B2C5f70d66Ac12A25cE4c851903436545F1b741",
-    //   });
-    //   const newAttestationUID = await tx.wait();
-    //   console.log("New attestation UID: ", newAttestationUID);
+  //   //   const eas = new EAS(EASContractAddress);
+  //   //   const signer = await provider.getSigner();
+  //   //   console.log("the wallet2 obj", signer);
+  //   //   eas.connect(signer);
+  //   //   console.log("obj created");
+  //   //   console.log("eas obj", eas);
+  //   //   const schemaUID =
+  //   //     "0xf9e214a80b66125cad64453abe4cef5263be3a7f01760d0cc72789236fca2b5d";
+  //   //   const tx = await eas.attestByDelegation({
+  //   //     schema: schemaUID,
+  //   //     data: {
+  //   //       recipient: attestationObject.delegatedAttestation.message.recipient,
+  //   //       expirationTime:
+  //   //         attestationObject.delegatedAttestation.message.expirationTime,
+  //   //       revocable: attestationObject.delegatedAttestation.message.revocable,
+  //   //       refUID: attestationObject.delegatedAttestation.message.refUID,
+  //   //       data: attestationObject.delegatedAttestation.message.data,
+  //   //     },
+  //   //     signature: attestationObject.delegatedAttestation.signature,
+  //   //     attester: "0x7B2C5f70d66Ac12A25cE4c851903436545F1b741",
+  //   //   });
+  //   //   const newAttestationUID = await tx.wait();
+  //   //   console.log("New attestation UID: ", newAttestationUID);
 
-    //   if (newAttestationUID) {
-    //     try {
-    //       const myHeaders = new Headers();
-    //       myHeaders.append("Content-Type", "application/json");
+  //   //   if (newAttestationUID) {
+  //   //     try {
+  //   //       const myHeaders = new Headers();
+  //   //       myHeaders.append("Content-Type", "application/json");
 
-    //       const raw = JSON.stringify({
-    //         meetingId: meetingId,
-    //         meetingType: meetingType,
-    //         uidOnchain: newAttestationUID,
-    //         address: address,
-    //       });
-    //       const requestOptions: any = {
-    //         method: "PUT",
-    //         headers: myHeaders,
-    //         body: raw,
-    //         redirect: "follow",
-    //       };
-    //       const response = await fetch(
-    //         `/api/update-attestation-uid`,
-    //         requestOptions
-    //       );
-    //       const responseData = await response.json();
-    //       console.log("responseData", responseData);
-    //       if (responseData.success) {
-    //         console.log("On-chain attestation Claimed");
-    //         setIsClaimed((prev) => ({ ...prev, [index]: true }));
-    //         setIsClaiming((prev) => ({ ...prev, [index]: false }));
-    //       }
-    //     } catch (e) {
-    //       console.error(e);
-    //       setIsClaiming((prev) => ({ ...prev, [index]: false }));
-    //     }
-    //   }
-    // } catch (error) {
-    //   // Handle any errors that occur during the fetch operation
-    //   console.error("Error:", error);
-    //   setIsClaiming((prev) => ({ ...prev, [index]: false }));
-    // }
-  };
+  //   //       const raw = JSON.stringify({
+  //   //         meetingId: meetingId,
+  //   //         meetingType: meetingType,
+  //   //         uidOnchain: newAttestationUID,
+  //   //         address: address,
+  //   //       });
+  //   //       const requestOptions: any = {
+  //   //         method: "PUT",
+  //   //         headers: myHeaders,
+  //   //         body: raw,
+  //   //         redirect: "follow",
+  //   //       };
+  //   //       const response = await fetch(
+  //   //         `/api/update-attestation-uid`,
+  //   //         requestOptions
+  //   //       );
+  //   //       const responseData = await response.json();
+  //   //       console.log("responseData", responseData);
+  //   //       if (responseData.success) {
+  //   //         console.log("On-chain attestation Claimed");
+  //   //         setIsClaimed((prev) => ({ ...prev, [index]: true }));
+  //   //         setIsClaiming((prev) => ({ ...prev, [index]: false }));
+  //   //       }
+  //   //     } catch (e) {
+  //   //       console.error(e);
+  //   //       setIsClaiming((prev) => ({ ...prev, [index]: false }));
+  //   //     }
+  //   //   }
+  //   // } catch (error) {
+  //   //   // Handle any errors that occur during the fetch operation
+  //   //   console.error("Error:", error);
+  //   //   setIsClaiming((prev) => ({ ...prev, [index]: false }));
+  //   // }
+  // };
 
   const [isTextOverflow, setIsTextOverflow] = useState<{
     [index: number]: boolean;
@@ -374,17 +374,17 @@ SessionTileProps) {
               {isSession === "attended" && data.attendees[0]?.attendee_uid && (
                 <button
                   className="bg-light-blue text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAttestationOnchain({
-                      meetingId: data.meetingId,
-                      meetingType: 2,
-                      meetingStartTime: data.attestations[0].startTime,
-                      meetingEndTime: data.attestations[0].endTime,
-                      index,
-                      dao: data.operator_or_avs,
-                    });
-                  }}
+                  // onClick={(e) => {
+                  //   e.stopPropagation();
+                  //   handleAttestationOnchain({
+                  //     meetingId: data.meetingId,
+                  //     meetingType: 2,
+                  //     meetingStartTime: data.attestations[0].startTime,
+                  //     meetingEndTime: data.attestations[0].endTime,
+                  //     index,
+                  //     dao: data.operator_or_avs,
+                  //   });
+                  // }}
                   disabled={
                     !!data.attendees[0].onchain_attendee_uid ||
                     isClaiming[index] ||
@@ -415,17 +415,17 @@ SessionTileProps) {
               {isSession === "hosted" && data.uid_host && (
                 <button
                   className="bg-light-blue text-white text-sm py-1 px-3 rounded-full font-semibold outline-none"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAttestationOnchain({
-                      meetingId: data.meetingId,
-                      meetingType: 1,
-                      meetingStartTime: data.attestations[0].startTime,
-                      meetingEndTime: data.attestations[0].endTime,
-                      index,
-                      dao: data.operator_or_avs,
-                    });
-                  }}
+                  // onClick={(e) => {
+                  //   e.stopPropagation();
+                  //   handleAttestationOnchain({
+                  //     meetingId: data.meetingId,
+                  //     meetingType: 1,
+                  //     meetingStartTime: data.attestations[0].startTime,
+                  //     meetingEndTime: data.attestations[0].endTime,
+                  //     index,
+                  //     dao: data.operator_or_avs,
+                  //   });
+                  // }}
                   disabled={
                     !!data.onchain_host_uid ||
                     isClaiming[index] ||

@@ -1,26 +1,17 @@
 import { useRouter } from "next-nprogress-bar";
 import React, { useCallback, useEffect, useState } from "react";
-import { BallTriangle, ThreeCircles } from "react-loader-spinner";
-import Image from "next/image";
-import NOLogo from "@/assets/images/daos/operators.png";
-import AVSLogo from "@/assets/images/daos/avss.png";
-import EILogo from "@/assets/images/daos/eigen_logo.png";
-import {
-  Button,
-  Dropdown,
-  Pagination,
-  Tooltip as CopyToolTip,
-} from "@nextui-org/react";
 import { IoCopy, IoSearchSharp } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
+import Image from "next/image";
+import { ThreeCircles } from "react-loader-spinner";
 
 interface Type {
   daoDelegates: string;
   individualDelegate: string;
 }
 
-function Operators({ props }: { props: Type }) {
+function Avss({ props }: { props: Type }) {
   const [isDataLoading, setDataLoading] = useState<boolean>(false);
   const router = useRouter();
   const [avsOperators, setAVSOperators] = useState<any[]>([]);
@@ -28,27 +19,48 @@ function Operators({ props }: { props: Type }) {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
 
+  //   const fetchData = useCallback(async () => {
+  //     if (!hasMore || isDataLoading) return;
+
+  //     setDataLoading(true);
+  //     const options = { method: "GET" };
+  //     const avsOperatorsRes = await fetch(
+  //       `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
+  //       options
+  //     );
+
+  //     const newAvsOperators = await avsOperatorsRes.json();
+
+  //     if (newAvsOperators.data.length === 0) {
+  //       setHasMore(false);
+  //     } else {
+  //       setAVSOperators((prevOperators) => [
+  //         ...prevOperators,
+  //         ...newAvsOperators.data,
+  //       ]);
+  //       setCurrentPage((prevPage) => prevPage + 12);
+  //     }
+
+  //     setDataLoading(false);
+  //     setInitialLoad(false);
+  //   }, [currentPage, hasMore, isDataLoading]);
+
+  const [operatorsAvss, setOperatorsAvss] = useState<any[]>([]);
+
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
 
     setDataLoading(true);
     const options = { method: "GET" };
-    const avsOperatorsRes = await fetch(
-      `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
+    const operatorsAvssRes = await fetch(
+      `/api/get-operators-avss?operatorAddress=${props.individualDelegate}`,
       options
     );
 
-    const newAvsOperators = await avsOperatorsRes.json();
+    const newOperatorsAvss = await operatorsAvssRes.json();
 
-    if (newAvsOperators.data.length === 0) {
-      setHasMore(false);
-    } else {
-      setAVSOperators((prevOperators) => [
-        ...prevOperators,
-        ...newAvsOperators.data,
-      ]);
-      setCurrentPage((prevPage) => prevPage + 12);
-    }
+    console.log("operatorsssssssssssssss", newOperatorsAvss);
+    setOperatorsAvss(newOperatorsAvss);
 
     setDataLoading(false);
     setInitialLoad(false);
@@ -100,7 +112,7 @@ function Operators({ props }: { props: Type }) {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  console.log("avs addresssssss", props.individualDelegate)
+  console.log("avs addresssssss", props.individualDelegate);
 
   const handleSearchChange = async (query: string) => {
     // console.log("query: ", query.length);
@@ -114,29 +126,31 @@ function Operators({ props }: { props: Type }) {
 
       try {
         const res = await fetch(
-          `/api/search-avs-operators?q=${query}&avsAddress=${props.individualDelegate}`
+          `/api/search-operators-avss?q=${query}&operatorAddress=${props.individualDelegate}`
         );
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }
         const data = await res.json();
-        console.log("dataaaaaaaaa", data)
-        setAVSOperators(data)
+        console.log("dataaaaaaaaa", data);
+        setOperatorsAvss(data)
       } catch (error) {
         console.error("Search error:", error);
       }
     } else {
       // console.log("in else");
-      console.log("data not comingggggg")
+      console.log("data not comingggggg");
       // setDelegateData({ ...delegateData, delegates: tempData.delegates });
       window.addEventListener("scroll", handleScroll);
     }
   };
+
   console.log("avsssssss", avsOperators);
+
   return (
     <div>
       <div>
-        <h1 className="mt-10 ml-3 font-medium text-3xl">Node Operators</h1>
+        <h1 className="mt-10 ml-3 font-medium text-3xl">AVSs</h1>
         <div className="py-8 pe-14 font-poppins">
           {initialLoad ? (
             <div className="flex items-center justify-center">
@@ -150,7 +164,7 @@ function Operators({ props }: { props: Type }) {
                 wrapperClass=""
               />
             </div>
-          ) : avsOperators.length > 0 ? (
+          ) : operatorsAvss.length > 0 ? (
             <div className="w-full overflow-x-auto">
               <div className="searchBox searchShineWidthOfAVSs mb-5">
                 <input
@@ -165,30 +179,25 @@ function Operators({ props }: { props: Type }) {
                   <IoSearchSharp className="iconExplore" />
                 </button>
               </div>
-              <table className="min-w-full bg-midnight-blue overflow-x-auto">
+              <table className="min-w-full bg-midnight-blue">
                 <thead>
                   <tr className="bg-sky-blue bg-opacity-10">
-                    <th className="px-4 py-2 text-left">Operator</th>
+                    <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Address</th>
-                    <th className="px-4 py-2 text-left">Description</th>
-                    <th className="px-4 py-2 text-right">Total Stakers</th>
-                    <th className="px-4 py-2 text-right">ETH Restaked</th>
-                    <th className="px-4 py-2 text-right">EIGEN Restaked</th>
-                    <th className="px-4 py-2 text-right">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {avsOperators.map((dao, index) => (
+                  {operatorsAvss.map((dao, index) => (
                     <tr
                       key={index}
                       className="border-b border-gray-700 hover:bg-sky-blue hover:bg-opacity-5 cursor-pointer transition-colors duration-150"
                       onClick={() =>
-                        router.push(`/operators/${dao.address}?active=info`)
+                        router.push(`/avss/${dao.avs_address}?active=info`)
                       }
                     >
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          <div className="relative w-10 h-10 flex-shrink-0 mr-3">
+                          {/* <div className="relative w-10 h-10 flex-shrink-0 mr-3">
                             <Image
                               src={dao.metadataLogo ?? "/placeholder.png"}
                               alt="Logo"
@@ -196,23 +205,23 @@ function Operators({ props }: { props: Type }) {
                               objectFit="cover"
                               className="rounded-full"
                             />
-                          </div>
+                          </div> */}
                           <span className="font-semibold">
-                            {dao.metadataName === ""
-                              ? `${dao.address.slice(
+                            {dao.avs_name
+                              ? dao.avs_name
+                              : `${dao.avs_address.slice(
                                   0,
                                   6
-                                )}...${dao.address.slice(-4)}`
-                              : dao.metadataName}
+                                )}...${dao.avs_address.slice(-4)}`}
                           </span>
                         </div>
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          <span>{`${dao.address.slice(
+                          <span>{`${dao.avs_address.slice(
                             0,
                             6
-                          )}...${dao.address.slice(-4)}`}</span>
+                          )}...${dao.avs_address.slice(-4)}`}</span>
                           <span
                             className="ml-2 cursor-pointer"
                             onClick={(event) => {
@@ -225,26 +234,14 @@ function Operators({ props }: { props: Type }) {
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-2">
+                      {/* <td className="px-4 py-2">
                         <p
                           className="truncate max-w-xs"
                           title={dao.metadataDescription}
                         >
                           {dao.metadataDescription || "No description provided"}
                         </p>
-                      </td>
-                      <td className="px-4 py-2 text-right">
-                        {dao.totalStakers}
-                      </td>
-                      <td className="px-4 py-2 text-right">
-                        {dao.tvl.tvlStrategies.ETHx.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-2 text-right">
-                        {dao.tvl.tvlStrategies.Eigen.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-2 text-right">
-                        Active
-                      </td>
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>
@@ -264,4 +261,4 @@ function Operators({ props }: { props: Type }) {
   );
 }
 
-export default Operators;
+export default Avss;

@@ -326,7 +326,8 @@ function AvailableSessions() {
             showArrow
             content={
               <div className="font-poppins">
-                Select a date to view available Operators and AVSs for that date.
+                Select a date to view available Operators and AVSs for that
+                date.
               </div>
             }
             placement="bottom"
@@ -348,7 +349,8 @@ function AvailableSessions() {
           showArrow
           content={
             <div className="font-poppins">
-              Select a time to view available Operators and AVSs for that specific time.
+              Select a time to view available Operators and AVSs for that
+              specific time.
             </div>
           }
           placement="bottom"
@@ -443,7 +445,9 @@ function AvailableSessions() {
               TestName or Address
             </div>
             <div className="text-sm flex">
-              <div className="ml-[3px]">0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a</div>
+              <div className="ml-[3px]">
+                0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a
+              </div>
               <div className="items-center">
                 {/* <Tooltip
                   placement="right"

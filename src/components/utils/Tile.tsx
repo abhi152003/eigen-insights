@@ -90,9 +90,7 @@ function Tile({
             <div
               key={index}
               className={`flex p-5 rounded-[2rem] justify-between bg-deep-blue 
-                 ${
-                isEvent === "Recorded" ? "cursor-pointer" : ""
-              }`}
+                 ${isEvent === "Recorded" ? "cursor-pointer" : ""}`}
               style={{ boxShadow: "0px 4px 26.7px 0px rgba(0, 0, 0, 0.10)" }}
               // onClick={() => openModal(index)}
               onClick={
@@ -225,7 +223,7 @@ function Tile({
           host={sessionDetails[selectedTileIndex].host_address}
           attendees={sessionDetails[selectedTileIndex].attendees}
           dao={sessionDetails[selectedTileIndex].operator_or_avs}
-          host_attestation={sessionDetails[selectedTileIndex].uid_host}
+          // host_attestation={sessionDetails[selectedTileIndex].uid_host}
           onClose={closeModal}
         />
       ) : null}

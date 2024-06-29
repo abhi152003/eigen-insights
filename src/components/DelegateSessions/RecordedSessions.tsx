@@ -457,7 +457,7 @@ function RecordedSessions() {
                           ""
                         )}
                       </div>
-                      <div className="capitalize">{data.session.operator_or_avs}</div>
+                      <div className="capitalize">{data.session.dao_name}</div>
                     </div>
                     <div className="bg-medium-blue py-1 px-3 rounded-md">
                       {formatTimeAgo(data.session.slot_time)}

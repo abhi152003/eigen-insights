@@ -13,7 +13,7 @@ interface IndividualTileModalProps {
   date: string;
   host: string;
   attendees: AttestationObject[];
-  host_attestation: string;
+  // host_attestation: string;
   onClose: () => void;
 }
 
@@ -25,7 +25,7 @@ function IndividualTileModal({
   host,
   attendees,
   dao,
-  host_attestation,
+  // host_attestation,
   onClose,
 }: IndividualTileModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
