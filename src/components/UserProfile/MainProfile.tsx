@@ -734,7 +734,7 @@ function MainProfile() {
                                   Close
                                 </Button>
                                 <Button
-                                  className="btnSave"
+                                  className="btnSave text-white"
                                   onClick={() => handleSubmit()}
                                 >
                                   {isLoading ? "Saving" : "Save"}

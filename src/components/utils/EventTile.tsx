@@ -167,7 +167,7 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
           />
 
           <div className="ps-6 pe-8 py-1">
-            <div className="font-semibold text-blue-shade-200 text-lg">
+            <div className="font-semibold text-light-cyan text-lg">
               {data.title}
             </div>
 
@@ -269,7 +269,7 @@ function EventTile({ tileIndex, data, isEvent }: TileProps) {
                 </Tooltip>
                 {isOpen && (
                   <div className="font-poppins z-[70] fixed inset-0 flex items-center justify-center backdrop-blur-md">
-                    <div className="bg-white rounded-[41px] overflow-hidden shadow-lg w-1/2">
+                    <div className="bg-white text-black rounded-[41px] overflow-hidden shadow-lg w-1/2">
                       <div className="relative">
                         <div className="flex flex-col gap-1 text-white bg-[#292929] p-4 py-7">
                           <h2 className="text-lg font-semibold mx-4">

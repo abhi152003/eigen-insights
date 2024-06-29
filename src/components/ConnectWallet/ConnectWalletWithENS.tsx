@@ -69,7 +69,7 @@ function ConnectWalletWithENS() {
                       paddingLeft: "10px",
                       paddingRight: "12px",
                       paddingTop: "8px",
-                      paddingBottom: "11px",
+                      paddingBottom: "9px",
                       backgroundColor: "#214965",
                       fontWeight: "bold",
                     }}

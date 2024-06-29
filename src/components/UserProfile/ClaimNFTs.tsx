@@ -46,7 +46,7 @@ function ClaimNFTs() {
             />
 
             <div className="px-6 py-1">
-              <div className="font-semibold text-blue-shade-200 text-lg">
+              <div className="font-semibold text-light-cyan text-lg">
                 {data.title}
               </div>
 

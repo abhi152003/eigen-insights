@@ -141,9 +141,9 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
     {
       image: accessImg,
       hoverImage: accessImghover,
-      title: "Quick Access to DAO Links",
+      title: "Quick Access to Links",
       description:
-        "Access the quick links of DAO directly within the meeting itself,making it easier to reference and share relevant information during your session.",
+        "Access the quick links directly within the meeting itself,making it easier to reference and share relevant information during your session.",
     },
     {
       image: videoImg,
@@ -258,7 +258,7 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                   onClick={onOpen}
                 >
                   <span className="relative z-10 text-white group-hover:text-white text-xl duration-500">
-                  Start an instant meet
+                    Start an instant meet
                   </span>
                   <span className="absolute w-full h-full bg-navy-blue -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-1500"></span>
                   <span className="absolute w-full h-full bg-navy-blue -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-1500"></span>
@@ -304,9 +304,23 @@ function InstantMeet({ isDelegate, selfDelegate, daoName }: instantMeetProps) {
                 required
               />
 
-              <div className="px-1 font-medium">Selected DAO:</div>
-              <div className="outline-none bg-[#D9D9D945] rounded-md px-2 py-1 text-sm capitalize">
-                {daoName}
+              <div className="px-1 font-medium">
+                Select Operators/AVSs :
+                <select
+                  id="dropdown"
+                  name="options"
+                  className="border bg-[#D9D9D945] rounded-md px-2 py-1 mt-3 text-sm w-full capitalize text-white"
+                >
+                  <option value="eigenlayer" selected>
+                    EigenLayer
+                  </option>
+                  <option value="operators" className="cursor-not-allowed" disabled>
+                    Operators - Coming soon 🚀
+                  </option>
+                  <option value="avss" className="cursor-not-allowed" disabled>
+                    AVSs - Coming soon 🚀
+                  </option>
+                </select>
               </div>
             </ModalBody>
             <ModalFooter>

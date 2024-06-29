@@ -220,7 +220,7 @@ const Home = ({ params }: { params: { roomId: string } }) => {
   return (
     <>
       {isAllowToEnter ? (
-        <section className="bg-white flex h-screen text-slate-100 flex-col justify-between overflow-hidden">
+        <section className="bg-white flex h-screen text-black flex-col justify-between overflow-hidden">
           <div className="flex w-full h-[90%]">
             <GridLayout />
             <Sidebar />
@@ -246,7 +246,7 @@ const Home = ({ params }: { params: { roomId: string } }) => {
                 <Link
                   // onClick={() => push(`/profile/${address}?active=info`)}
                   href={`/profile/${address}?active=info`}
-                  className="px-6 py-3 bg-white text-blue-shade-200 rounded-full shadow-lg hover:bg-blue-shade-200 hover:text-white transition duration-300 ease-in-out"
+                  className="px-6 py-3 bg-white text-black rounded-full shadow-lg hover:bg-light-blue hover:text-white transition duration-300 ease-in-out"
                 >
                   Back to Profile
                 </Link>

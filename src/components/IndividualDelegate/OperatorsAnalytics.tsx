@@ -420,7 +420,7 @@ function OperatorsAnalytics({ props }: { props: Type }) {
           ))}
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 w-full overflow-hidden me-16">
+        <div className="bg-white text-black rounded-lg shadow-md p-6 w-full overflow-hidden me-16">
           <div className="flex space-x-4 mb-4 overflow-x-auto">
             {newStatuses.map((status, index) => (
               <button key={index} onClick={() => setActiveFilter(status.label)}>

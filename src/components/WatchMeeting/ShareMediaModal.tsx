@@ -109,7 +109,7 @@ function ShareMediaModal({
               <FaWhatsapp className="text-white bg-green-shade-200 size-10 " />
             </div>
             <div onClick={shareOnFacebook}>
-              <FaFacebook className="text-blue-shade-100 rounded-full bg-white size-[72px] cursor-pointer" />
+              <FaFacebook className="rounded-full bg-white text-black size-[72px] cursor-pointer" />
             </div>
             <div
               className="bg-black rounded-full size-[72px]  flex justify-center items-center cursor-pointer"

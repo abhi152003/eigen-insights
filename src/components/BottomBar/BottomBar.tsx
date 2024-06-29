@@ -383,7 +383,7 @@ const BottomBar: React.FC<BottomBarProps> = () => {
               className="mr-auto flex items-center gap-4 w-44 cursor-pointer"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <div className="bg-blue-shade-200 p-2 rounded-lg">
+              <div className="bg-light-blue p-2 rounded-lg">
                 <PiLinkSimpleBold
                   className="text-white"
                   size={24}

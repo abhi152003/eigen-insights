@@ -97,7 +97,7 @@ const Chat = () => {
           <input
             type="text"
             placeholder="Type a message"
-            className="p-2 rounded-lg w-full bg-white text-sm"
+            className="p-2 rounded-lg w-full bg-white text-black text-sm"
             value={message}
             onChange={handleChange}
             onKeyDown={handleKeyDown}

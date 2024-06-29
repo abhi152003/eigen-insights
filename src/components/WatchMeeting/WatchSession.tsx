@@ -152,23 +152,6 @@ function WatchSession({
     return lines.length;
   };
 
-  // const getLineCount = (text: string) => {
-  //   if (typeof text !== 'string') {
-  //     return 0;
-  //   }
-
-  //   const lines = text.split('\n');
-  //   let lineCount = 0;
-
-  //   for (let line of lines) {
-  //     line = line.trim();
-  //     if (line.length > 0) {
-  //       lineCount++;
-  //     }
-  //   }
-
-  //   return lineCount;
-  // };
   useEffect(() => {
     const fetchEnsName = async () => {
       const name = await getEnsName(data.host_address.toLowerCase());
@@ -206,22 +189,9 @@ function WatchSession({
                 </div>
                 <div
                   className="text-white font-medium"
-                  // onClick={() => router.push(`${BASE_URL}/${data.operator_or_avs}/${data.host_address}?active=info`)}
                 >
                   {ensHostName}
                 </div>
-                {/* <Link
-                  href={
-                    data.operator_or_avs === ("optimism" || "Optimism")
-                      ? `https://optimism.easscan.org/offchain/attestation/view/${data.uid_host}`
-                      : data.operator_or_avs === ("arbitrum" || "Arbitrum")
-                      ? `https://arbitrum.easscan.org/offchain/attestation/view/${data.uid_host}`
-                      : ""
-                  }
-                  target="_blank"
-                >
-                  <Image src={view} alt="image" width={15} priority />
-                </Link> */}
               </div>
 
               <div className="flex items-center gap-1">
@@ -293,7 +263,7 @@ function WatchSession({
             </div>
             {showPopup && (
               <div
-                className="absolute bg-white rounded-xl mt-1 py-2 duration-200 ease-in-out"
+                className="absolute bg-white text-[#1E1E1E] rounded-xl mt-1 py-2 duration-200 ease-in-out"
                 style={{ boxShadow: "0px 4px 9.1px 0px rgba(0,0,0,0.04)" }}
               >
                 {data.attendees.map((attendee, index) => (
@@ -318,22 +288,6 @@ function WatchSession({
                           "........." +
                           attendee.attendee_address.slice(-6)}{" "}
                       </div>
-                      {/* {attendee.attendee_uid ? (
-                        <Link
-                          href={
-                            data.operator_or_avs === ("optimism" || "Optimism")
-                              ? `https://optimism.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
-                              : data.operator_or_avs === ("arbitrum" || "Arbitrum")
-                              ? `https://arbitrum.easscan.org/offchain/attestation/view/${attendee.attendee_uid}`
-                              : ""
-                          }
-                          target="_blank"
-                        >
-                          <Image src={view} alt="image" width={15} priority />
-                        </Link>
-                      ) : (
-                        <></>
-                      )} */}
                     </div>
                     {index !== data.attendees.length - 1 && (
                       <div className="border border-[#D9D9D9]"></div>
@@ -371,7 +325,7 @@ function WatchSession({
 
               {getLineCount(data.description) > 3 && (
                 <button
-                  className="text-sm text-blue-shade-200 mt-2"
+                  className="text-sm text-light-cyan mt-2"
                   onClick={toggleExpansion}
                 >
                   {isExpanded ? "View Less" : "View More"}

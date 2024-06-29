@@ -421,7 +421,7 @@ function RecordedSessions() {
                       className="w-full h-44 rounded-t-3xl object-cover"
                     ></video>
                   )}
-                  <div className="absolute right-2 bottom-2 text-white text-xs bg-white px-1 bg-opacity-30 rounded-sm">
+                  <div className="absolute right-2 bottom-2 text-black text-xs bg-white px-1 bg-opacity-30 rounded-sm">
                     {formatVideoDuration(videoDurations[index] || 0)}
                   </div>
                 </div>

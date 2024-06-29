@@ -352,7 +352,7 @@ function Analytics() {
     totalRestaking,
   }) => {
     return (
-      <div className="flex bg-white rounded-lg shadow-sm overflow-hidden">
+      <div className="flex bg-white text-black rounded-lg shadow-sm overflow-hidden">
         <SummaryItem label="TVL(ETH)" value={totalTVL} isFirst={true} />
         <SummaryItem label="Total Operators" value={totalOperators} />
         <SummaryItem label="Total AVSs" value={totalAVSs} />
