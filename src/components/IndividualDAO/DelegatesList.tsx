@@ -69,6 +69,38 @@ function DelegatesList({ props }: { props: string }) {
   const [selectedValue, setSelectedValue] = useState<string>("Most stakers");
   // const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
   // const [clickedTileIndex,setClickedTileIndex]=useState(null);
+  const [avsData, setAvsData] = useState<any[]>([]);
+
+  const fetchAvsData = useCallback(async () => {
+    try {
+      const response = await fetch("/api/get-avs-names"); // Adjust this endpoint as needed
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data = await response.json();
+      setAvsData(data);
+    } catch (error) {
+      console.error("Error fetching AVS data:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props !== "operators") {
+      fetchAvsData();
+    }
+  }, [props, fetchAvsData]);
+
+  const getAvsName = (address: string) => {
+    const avs = avsData.find(
+      (avs) => avs.avs_contract_address.toLowerCase() === address.toLowerCase()
+    );
+    if (avs) {
+      return avs.avs_name.length > 15
+        ? avs.avs_name.slice(0, 15) + "..."
+        : avs.avs_name;
+    }
+    return null;
+  };
 
   const fetchData = useCallback(
     async (
@@ -448,23 +480,39 @@ function DelegatesList({ props }: { props: string }) {
                     </div>
                     <div className="text-left">
                       <div className="py-3">
-                        <div
-                          className={`font-semibold overflow-hidden ${styles.desc}`}
-                        >
-                          {daos.metadataName == null ? (
-                            <span>
-                              {daos.address.slice(0, 6) +
-                                "..." +
-                                daos.address.slice(-4)}
-                            </span>
-                          ) : (
-                            <span>
-                              {daos.metadataName.length > 15
+                        {props === "operators" ? (
+                          <div
+                            className={`font-semibold overflow-hidden ${styles.desc}`}
+                          >
+                            {daos.metadataName == null ? (
+                              <span>
+                                {daos.address.slice(0, 6) +
+                                  "..." +
+                                  daos.address.slice(-4)}
+                              </span>
+                            ) : (
+                              <span>
+                                {daos.metadataName.length > 15
+                                  ? daos.metadataName.slice(0, 15) + "..."
+                                  : daos.metadataName}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <div
+                            className={`font-semibold overflow-hidden ${styles.desc}`}
+                          >
+                            {getAvsName(daos.address) ||
+                              (daos.metadataName == null
+                                ? daos.address.slice(0, 6) +
+                                  "..." +
+                                  daos.address.slice(-4)
+                                : daos.metadataName.length > 15
                                 ? daos.metadataName.slice(0, 15) + "..."
-                                : daos.metadataName}
-                            </span>
-                          )}
-                        </div>
+                                : daos.metadataName)}
+                          </div>
+                        )}
+
                         <div className="flex justify-start items-center gap-2 pb-2 pt-1">
                           {daos.address.slice(0, 6) +
                             "..." +

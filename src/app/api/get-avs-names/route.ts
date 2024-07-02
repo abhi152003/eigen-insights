@@ -16,16 +16,23 @@ export async function GET(req: NextRequest) {
     }   
 
     try {
-        const dune = new DuneClient("3Ye0oRoE2NSZmqKXWnjhmj8qfw59ITxg");
-        const query_result = await dune.getLatestResult({queryId: 3405606});
+        const key = process.env.NEXT_PUBLIC_DUNE_KEY
+        if (key) {
+          const options = {method: 'GET', headers: {'X-DUNE-API-KEY': key}};
+          const duneRes = fetch('https://api.dune.com/api/v1/eigenlayer/avs-metadata', options)
 
-        return NextResponse.json(query_result, {
+          const resJson = await (await duneRes).json();
+          const data = resJson.result.rows;
+          // console.log(data)
+
+          return NextResponse.json(data, {
             status: 200,
             headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             },
         });
+        }
     } catch (error) {
         console.error('Error fetching data:', error);
         return NextResponse.json({ message: 'Error fetching data' }, { status: 500 });
