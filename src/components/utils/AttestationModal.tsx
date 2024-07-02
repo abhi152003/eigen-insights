@@ -67,9 +67,6 @@ function AttestationModal({
                   <h2 className="text-2xl font-bold text-center">
                     Thanks for joining us!🎉
                   </h2>
-                  <div className="font-medium py-2">
-                    Your attestation will be on its way shortly. 📜✨
-                  </div>
                 </div>
                 {/* <div className="justify-around space-x-8 py-5">
                   <button className="border-2 border-blue-shade-200 bg-light-blue rounded-full text-white px-8 py-3 font-bold text-sm">
@@ -79,32 +76,6 @@ function AttestationModal({
                     Off-chain
                   </button>
                 </div> */}
-                <div className="flex items-center text-blue-shade-100 mt-6">
-                  <FaArrowRight size={10} className="mt-1 mr-1" />
-                  <div className="mr-8">
-                    <Link
-                      href={
-                        "https://app.deform.cc/form/580f4057-b21e-4052-bf93-6b85e28a6032/?page_number=0"
-                      }
-                      target="_blank"
-                      className="ps-[2px] underline font-semibold text-xs"
-                    >
-                      Share Your Feedback!
-                    </Link>
-                  </div>
-                  {/* </div> */}
-
-                  <div>
-                    {/* <div className="flex justify-center"> */}
-                    <button
-                      className="bg-black text-white rounded-full px-4 py-2 flex items-center space-x-1"
-                      onClick={shareOnTwitter}
-                    >
-                      Share on Twitter
-                      <BsTwitterX className="ml-2" />
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

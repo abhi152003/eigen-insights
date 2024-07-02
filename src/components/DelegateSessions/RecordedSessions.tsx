@@ -26,6 +26,7 @@ import user8 from "@/assets/images/user/user8.svg";
 import user9 from "@/assets/images/user/user9.svg";
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
+import staticImg from "@/assets/images/daos/texture1.png";
 
 interface SessionData {
   session: {
@@ -411,7 +412,7 @@ function RecordedSessions() {
                     </div>
                   ) : (
                     <video
-                      poster={`https://gateway.lighthouse.storage/ipfs/${data.session.thumbnail_image}`}
+                      poster={"data:image/png;base64,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"}
                       // poster="https://gateway.lighthouse.storage/ipfs/Qmb1JZZieFSENkoYpVD7HRzi61rQCDfVER3fhnxCvmL1DB"
                       ref={(el: any) => (videoRefs.current[index] = el)}
                       loop
@@ -478,7 +479,10 @@ function RecordedSessions() {
                           className="rounded-full"
                         />
                       </div>
-                      <div>Host: {ensHostNames[data.session.host_address]}</div>
+                      <div>Host: {data.session.host_address.slice(
+                                  0,
+                                  6
+                                )}...${data.session.host_address.slice(-4)}</div>
                       <div>
                         <Tooltip
                           content="Copy"
@@ -498,7 +502,7 @@ function RecordedSessions() {
                         </Tooltip>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 py-1 ps-3 text-sm">
+                    {/* <div className="flex items-center gap-2 py-1 ps-3 text-sm">
                       <div className="">
                         <Image
                           src={
@@ -542,7 +546,7 @@ function RecordedSessions() {
                           </span>
                         </Tooltip>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

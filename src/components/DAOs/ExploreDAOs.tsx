@@ -71,8 +71,8 @@ function ExploreDAOs() {
       router.push(`/${formatted}?active=operatorsList`);
     } else if (formatted === "avss") {
       router.push(`/${formatted}?active=avsList`);
-    } else if (formatted === "analytics") {
-      router.push(`/${formatted}?eigenlayer=analytics`);
+    } else if (formatted === "eigenlayer") {
+      router.push(`/${formatted}?active=analytics`);
     }
   };
 
@@ -235,7 +235,7 @@ function ExploreDAOs() {
 
           <div
             className="px-5 py-7 rounded-2xl cursor-pointer flex flex-col gap-8 border-1 border-white bg-midnight-blue dark-blue-shadow"
-            onClick={() => handleClick("analytics", EILogo)}
+            onClick={() => handleClick("eigenlayer", EILogo)}
           >
             <div className="flex justify-center">
               <Image
