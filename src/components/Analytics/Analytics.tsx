@@ -261,10 +261,11 @@ function Analytics() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-
+  
+  const { address } = useAccount();
+  
   const handleWithdrawalAddress = async () => {
-    // const { address } = useAccount();
-    const address = "0xa7d6ba4ff9f7f820e5245affb1ea09db28b61d6a"
+    
     if (address) {
       setSearchQuery(address);
     }
@@ -486,9 +487,9 @@ function Analytics() {
             <h1 className="mt-7 text-[2.25rem] font-semibold	">
               TVL Restaking Distribution
             </h1>
-            <div className="flex justify-center mt-5 pe-14">
+            <div className="flex justify-center mt-5">
               {filteredData.length > 0 ? (
-                <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                   <div className="p-4">
                     <div className="flex justify-between items-center">
                       <h2 className="text-xl font-bold">Total</h2>
@@ -554,9 +555,9 @@ function Analytics() {
             <h1 className="mt-7 text-[2.25rem]  font-semibold	">
               Operators Distribution
             </h1>
-            <div className="flex justify-center mt-5 pe-14">
+            <div className="flex justify-center mt-5">
               {filteredOperatorsData.length > 0 ? (
-                <div className="w-full max-w-full md:max-w-4xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                   <div className="p-4">
                     <div className="flex justify-between items-center">
                       <h2 className="text-xl font-bold">Total</h2>
@@ -650,7 +651,7 @@ function Analytics() {
             </div>
 
             <div className="mx-auto py-8 overflow-x-auto">
-              <table className="w-full border-collapse text-center text-white">
+              <table className="w-full border-collapse text-center text-white rounded-md">
                 <thead>
                   <tr className="bg-gray-800">
                     <th className="py-2 px-4 border border-gray-700">Block</th>

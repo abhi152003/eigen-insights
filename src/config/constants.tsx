@@ -2,4 +2,4 @@ export const DB_NAME =
   process.env.NODE_ENV == "development" ? "eigen-insights" : "eigen-insights";
 
 export const BASE_URL =
-  process.env.NODE_ENV == "development" ? "http://localhost:3000" : "https://eigeninsight.vercel.app/";
+  process.env.NODE_ENV == "development" ? "http://localhost:3000" : "https://app.eigeninsight.xyz/";

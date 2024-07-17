@@ -5,6 +5,23 @@ import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import { ThreeCircles } from "react-loader-spinner";
+import { useQuery } from "urql";
+
+const GET_DATA = `
+  query MyQuery {
+  avss(where: {id: "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0"}) {
+    registrationsCount
+    registrations(where: {}, orderBy: registeredTimestamp, orderDirection: asc) {
+      status
+      registeredTimestamp
+      operator {
+        id
+        totalShares
+      }
+    }
+  }
+}
+`;
 
 interface Type {
   daoDelegates: string;
@@ -18,6 +35,7 @@ function Avss({ props }: { props: Type }) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
+
 
   //   const fetchData = useCallback(async () => {
   //     if (!hasMore || isDataLoading) return;
@@ -98,12 +116,12 @@ function Avss({ props }: { props: Type }) {
     }
   }, [fetchData, initialLoad, isDataLoading]);
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [handleScroll]);
 
   const handleCopy = (addr: string) => {
     copy(addr);
@@ -133,7 +151,7 @@ function Avss({ props }: { props: Type }) {
         }
         const data = await res.json();
         console.log("dataaaaaaaaa", data);
-        setOperatorsAvss(data)
+        setOperatorsAvss(data);
       } catch (error) {
         console.error("Search error:", error);
       }
@@ -151,6 +169,19 @@ function Avss({ props }: { props: Type }) {
     <div>
       <div>
         <h1 className="mt-10 ml-3 font-medium text-3xl">AVSs</h1>
+        <div className="searchBox searchShineWidthOfAVSs -mb-7 mt-5">
+          <input
+            className="searchInput"
+            type="text"
+            name=""
+            placeholder="Search by Address or ENS Name"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          <button className="searchButton">
+            <IoSearchSharp className="iconExplore" />
+          </button>
+        </div>
         <div className="py-8 pe-14 font-poppins">
           {initialLoad ? (
             <div className="flex items-center justify-center">
@@ -166,19 +197,6 @@ function Avss({ props }: { props: Type }) {
             </div>
           ) : operatorsAvss.length > 0 ? (
             <div className="w-full overflow-x-auto">
-              <div className="searchBox searchShineWidthOfAVSs mb-5">
-                <input
-                  className="searchInput"
-                  type="text"
-                  name=""
-                  placeholder="Search by Address or ENS Name"
-                  value={searchQuery}
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                />
-                <button className="searchButton">
-                  <IoSearchSharp className="iconExplore" />
-                </button>
-              </div>
               <table className="min-w-full bg-midnight-blue">
                 <thead>
                   <tr className="bg-sky-blue bg-opacity-10">
@@ -226,7 +244,7 @@ function Avss({ props }: { props: Type }) {
                             className="ml-2 cursor-pointer"
                             onClick={(event) => {
                               event.stopPropagation();
-                              handleCopy(dao.address);
+                              handleCopy(dao.avs_address);
                             }}
                             title="Copy address"
                           >
@@ -249,10 +267,10 @@ function Avss({ props }: { props: Type }) {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center pt-10">
-              <div className="text-5xl">☹️</div>{" "}
+              {/* <div className="text-5xl">☹️</div>{" "}
               <div className="pt-4 font-semibold text-lg">
                 Oops, no such result available!
-              </div>
+              </div> */}
             </div>
           )}
         </div>

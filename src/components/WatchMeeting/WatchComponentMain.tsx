@@ -109,7 +109,7 @@ function WatchComponentMain({ props }: { props: { id: string } }) {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center mt-50">
+        <div className="flex justify-center items-center h-screen">
           <ThreeCircles
             visible={true}
             height="50"

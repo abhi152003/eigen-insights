@@ -30,6 +30,9 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
+import { connectDB } from "@/config/connectDB";
+import { TSidebarView } from "../store/slices/createHandlerSlice";
+import { TPromptView } from "../store/slices/createHandlerSlice";
 
 type BottomBarProps = {};
 
@@ -73,17 +76,17 @@ const BottomBar: React.FC<BottomBarProps> = () => {
   const { startScreenShare, stopScreenShare, shareStream, videoTrack } =
     useLocalScreenShare();
 
-  const sidebarView = useStore((state) => state.sidebar.sidebarView);
+  const sidebarView = useStore((state: { sidebar: { sidebarView: string; }; }) => state.sidebar.sidebarView);
 
-  const isChatOpen = useStore((state) => state.isChatOpen);
-  const setIsChatOpen = useStore((state) => state.setIsChatOpen);
+  const isChatOpen = useStore((state: { isChatOpen: boolean; }) => state.isChatOpen);
+  const setIsChatOpen = useStore((state: { setIsChatOpen: (val: boolean) => void; }) => state.setIsChatOpen);
 
-  const newMessage = useStore((state) => state.hasNewMessage);
-  const setHasNewMessage = useStore((state) => state.setHasNewMessage);
+  const newMessage = useStore((state: { hasNewMessage: boolean; }) => state.hasNewMessage);
+  const setHasNewMessage = useStore((state: { setHasNewMessage: (val: boolean) => void; }) => state.setHasNewMessage);
 
-  const setSidebarView = useStore((state) => state.setSidebarView);
+  const setSidebarView = useStore((state: { setSidebarView: (val: TSidebarView) => void; }) => state.setSidebarView);
 
-  const setPromptView = useStore((state) => state.setPromptView);
+  const setPromptView = useStore((state: { setPromptView: (val: TPromptView) => void; }) => state.setPromptView);
 
   const { role, metadata, updateRole, peerId: localPeerId } = useLocalPeer();
 
@@ -200,9 +203,9 @@ const BottomBar: React.FC<BottomBarProps> = () => {
         const data: Result[] | { message: string } = await operatorsRes.json();
         if (Array.isArray(data)) {
           if (data.length > 0) {
-            operator_or_avs = "operators"
+            operator_or_avs = "operators";
           } else {
-            operator_or_avs = "avss"
+            operator_or_avs = "avss";
           }
         }
       } catch (error) {
@@ -243,7 +246,6 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       meetingType = 0;
     }
 
-    
     // if (chain?.name === "Optimism") {
     //   operator_or_avs = "optimism";
     // } else if (chain?.name === "Arbitrum One") {
@@ -269,6 +271,27 @@ const BottomBar: React.FC<BottomBarProps> = () => {
       console.log(result);
     } catch (error) {
       console.error("Error handling end call:", error);
+    }
+
+    try {
+      const data = {
+        meetingId: roomId,
+        meetingType: "session" // or "office_hours"
+      };
+      
+      axios.put('/api/update-meeting-recorded', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          console.log("Meeting status updated successfully", response.data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } catch (error) {
+      console.error('Error:', error);
     }
 
     if (meetingCategory === "officehours") {

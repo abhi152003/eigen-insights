@@ -442,7 +442,7 @@ function AvailableSessions() {
 
           <div className="w-3/4 ml-4">
             <div className="text-light-cyan text-lg font-semibold mb-1">
-              TestName or Address
+              pzhipher
             </div>
             <div className="text-sm flex">
               <div className="ml-[3px]">

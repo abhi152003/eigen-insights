@@ -210,7 +210,7 @@ function UserSessions({
           {searchParams.get("session") === "attending" && (
             <AttendingUserSessions daoName={daoName} />
           )}
-          {selfDelegate === false &&
+          {selfDelegate === true &&
             searchParams.get("session") === "hosted" &&
             (dataLoading ? (
               <div className="flex items-center justify-center">
