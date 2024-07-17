@@ -7,8 +7,8 @@ import OfficeHours from "./OfficeHours";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import operators_logo from "@/assets/images/daos/operators.png";
-import avss_logo from "@/assets/images/daos/avss.png";
+import operators_logo from "@/assets/images/daos/Operator4.jpg";
+import avss_logo from "@/assets/images/daos/AVSs3 New.png";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
 import "../../css/ShineFont.css";
@@ -155,8 +155,8 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
         </div>
       </div>
 
-      <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
-        {operator_or_avs === "Operators" ? (
+      <div className="ml-0 pl-16 py-1 flex gap-12 justify-start text-base">
+        {/* {operator_or_avs === "Operators" ? (
           <button
             className={` 
               mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -177,16 +177,16 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
               ${
                 searchParams.get("active") === "avsList"
-                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3]"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#05223B] to-[#427FA3] btnShine"
                   : "text-white border-white"
               }`}
             onClick={() => router.push(path + "?active=avsList")}
           >
             AVSs List
           </button>
-        )}
+        )} */}
 
-        {operator_or_avs === "Operators" ? (
+        {/* {operator_or_avs === "Operators" ? (
           <button
             className={`
               mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -218,9 +218,9 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           >
             AVSs Sessions
           </button>
-        )}
+        )} */}
 
-        {operator_or_avs === "Operators" ? (
+        {/* {operator_or_avs === "Operators" ? (
           <button
             className={`
             mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -252,7 +252,7 @@ function SpecificDAO({ props }: { props: { daoDelegates: string } }) {
           >
             Office hours
           </button>
-        )}
+        )} */}
 
         {/* <button
           className={`

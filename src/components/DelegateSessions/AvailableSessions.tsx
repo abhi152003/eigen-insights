@@ -403,7 +403,7 @@ function AvailableSessions() {
           boxShadow:
             "0 4px 10px 0px rgba(94, 156, 191, 0.7), 0 4px 10px 0px rgba(94, 156, 191, 0.5);",
         }}
-        className="rounded-3xl flex flex-col bg-deep-blue my-8 w-fit"
+        className="rounded-3xl flex flex-col bg-deep-blue my-8 w-1/2"
       >
         <div className="flex items-center mb-4 border-b-2 py-5 px-5 rounded-tl-3xl rounded-tr-3xl">
           <div
@@ -446,13 +446,15 @@ function AvailableSessions() {
             </div>
             <div className="text-sm flex">
               <div className="ml-[3px]">
-                0x4cd2086e1d708e65db5d4f5712a9ca46ed4bbd0a
+                0x4c...f2bda
               </div>
               <div className="items-center">
-                {/* <Tooltip
+                <Tooltip
                   placement="right"
+                  content="Copy"
                   closeDelay={1}
-                > */}
+                  className="bg-midnight-blue text-white"
+                >
                   <div className="pl-2 pt-[2px] cursor-pointer" color="#3E3D3D">
                     <IoCopy
                       // onClick={() =>
@@ -461,7 +463,7 @@ function AvailableSessions() {
                       className="text-white hover:text-light-cyan"
                     />
                   </div>
-                {/* </Tooltip> */}
+                </Tooltip>
                 <Toaster
                   toastOptions={{
                     style: {
@@ -477,7 +479,7 @@ function AvailableSessions() {
               </div>
             </div>
             <div className="mt-2 bg-midnight-blue border-1 border-white text-white rounded-md text-xs px-4 py-1 font-semibold w-fit capitalize">
-              Test Name
+              pzhipher
             </div>
             <div>
               <div

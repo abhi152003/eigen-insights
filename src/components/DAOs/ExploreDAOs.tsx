@@ -229,7 +229,7 @@ function ExploreDAOs() {
             ))
           ) : (
             <div className="pl-3 text-xl font-semibold">
-              No such Dao available
+              No such data available
             </div>
           )}
 
