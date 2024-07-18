@@ -21,10 +21,10 @@ function Page() {
 
   return (
     <div>
-      <h1 className="text-5xl text-center pb-7 mt-5 font-semibold">
+      <h2 className="text-5xl text-center pb-7 mt-5 font-semibold">
         EigenLayer
-      </h1>
-      <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
+      </h2>
+      {/* <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
         <button
           className={` 
                 mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
@@ -66,7 +66,7 @@ function Page() {
         >
           Office Hours
         </button>
-      </div>
+      </div> */}
 
       <div className="py-6">
         {searchParams.get("active") === "analytics" ? (

@@ -484,7 +484,7 @@ function Analytics() {
           </div> */}
 
           <div>
-            <h1 className="mt-7 text-[2.25rem] font-semibold	">
+            <h1 className="ml-2 mt-7 text-[2.25rem] font-semibold	">
               TVL Restaking Distribution
             </h1>
             <div className="flex justify-center mt-5">
@@ -552,7 +552,7 @@ function Analytics() {
           </div>
 
           <div>
-            <h1 className="mt-7 text-[2.25rem]  font-semibold	">
+            <h1 className="ml-2 first:mt-7 text-[2.25rem]  font-semibold	">
               Operators Distribution
             </h1>
             <div className="flex justify-center mt-5">
@@ -624,7 +624,7 @@ function Analytics() {
           </div>
 
           <div className="mt-10">
-            <h1 className="mt-10 text-[1.25rem] font-semibold	">
+            <h1 className="ml-3 mt-10 text-[1.25rem] font-semibold	">
               All Withdrawals
             </h1>
 

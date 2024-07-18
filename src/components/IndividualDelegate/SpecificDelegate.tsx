@@ -483,7 +483,7 @@ function SpecificDelegate({ props }: { props: Type }) {
             ) : (
               ""
             )}
-            <button
+            {/* <button
               className={`border-b-2 py-3 px-2
                 ${
                   searchParams.get("active") === "delegatesSession"
@@ -508,7 +508,7 @@ function SpecificDelegate({ props }: { props: Type }) {
               }
             >
               Office Hours
-            </button>
+            </button> */}
           </div>
 
           <div className="py-6 ps-16">
