@@ -1,17 +1,7 @@
 // import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  BallTriangle,
-  Comment,
-  Hourglass,
-  InfinitySpin,
-  LineWave,
-  Oval,
-  RotatingLines,
-  ThreeCircles,
-  ThreeDots,
-} from "react-loader-spinner";
+import { LineWave, ThreeCircles } from "react-loader-spinner";
 
 import { Bar, Pie, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
@@ -53,19 +43,9 @@ function DelegateInfo({
   desc: string;
   delegateInfo: any;
 }) {
-  const [loading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState(true);
   const [isDataLoading, setDataLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [sessionHostCount, setSessionHostCount] = useState(0);
-  const [sessionAttendCount, setSessionAttendCount] = useState(0);
-  const [officehoursHostCount, setOfficehoursHostCount] = useState(0);
-  const [officehoursAttendCount, setOfficehoursAttendCount] = useState(0);
-  const [isSessionHostedLoading, setSessionHostedLoading] = useState(true);
-  const [isSessionAttendedLoading, setSessionAttendedLoading] = useState(true);
-  const [isOfficeHoursHostedLoading, setOfficeHoursHostedLoading] =
-    useState(true);
-  const [isOfficeHoursAttendedLoading, setOfficeHoursAttendedLoading] =
-    useState(true);
   const [activeButton, setActiveButton] = useState("onchain");
   const [isPageLoading, setPageLoading] = useState<boolean>(true);
   const [avsOperators, setAVSOperators] = useState<any[]>([]);
@@ -73,6 +53,7 @@ function DelegateInfo({
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [earningsReceiver, setEarningsReceiver] = useState("");
 
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
@@ -139,189 +120,6 @@ function DelegateInfo({
     };
   }, [handleScroll]);
 
-  // const fetchAttestation = async (buttonType: string) => {
-  //   let sessionHostingCount = 0;
-  //   let sessionAttendingCount = 0;
-  //   let officehoursHostingCount = 0;
-  //   let officehoursAttendingCount = 0;
-
-  //   setActiveButton(buttonType);
-  //   setSessionHostedLoading(true);
-  //   setSessionAttendedLoading(true);
-  //   setOfficeHoursHostedLoading(true);
-  //   setOfficeHoursAttendedLoading(true);
-
-  //   const host_uid_key =
-  //     buttonType === "onchain" ? "onchain_host_uid" : "uid_host";
-
-  //   const attendee_uid_key =
-  //     buttonType === "onchain" ? "onchain_uid_attendee" : "attendee_uid";
-
-  //   const sessionHosted = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `/api/get-meeting/${props.individualDelegate}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         }
-  //       );
-  //       const result = await response.json();
-  //       if (result.success) {
-  //         result.data.forEach((item: any) => {
-  //           if (
-  //             item.meeting_status === "Recorded" &&
-  //             item.operator_or_avs === props.daoDelegates &&
-  //             item[host_uid_key]
-  //           ) {
-  //             sessionHostingCount++;
-  //           }
-  //           // console.log("op host count: ", sessionHostingCount);
-  //           setSessionHostCount(sessionHostingCount);
-  //           setSessionHostedLoading(false);
-  //         });
-  //       } else {
-  //         setSessionHostedLoading(false);
-  //       }
-  //     } catch (e) {
-  //       console.log("Error: ", e);
-  //     }
-  //   };
-
-    // const sessionAttended = async () => {
-    //   try {
-    //     const response = await fetch(
-    //       `/api/get-session-data/${props.individualDelegate}`,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //           dao_name: props.daoDelegates,
-    //         }),
-    //       }
-    //     );
-    //     const result = await response.json();
-    //     if (result.success) {
-    //       result.data.forEach((item: any) => {
-    //         if (
-    //           item.meeting_status === "Recorded" &&
-    //           item.dao_name === props.daoDelegates &&
-    //           item.attendees.some((attendee: any) => attendee[attendee_uid_key])
-    //         ) {
-    //           sessionAttendingCount++;
-    //         }
-    //         // console.log("op attended count: ", sessionAttendingCount);
-    //         setSessionAttendCount(sessionAttendingCount);
-    //         setSessionAttendedLoading(false);
-    //       });
-    //     } else {
-    //       setSessionAttendedLoading(false);
-    //     }
-    //   } catch (e) {
-    //     console.log("Error: ", e);
-    //   }
-    // };
-
-    // const officeHoursHosted = async () => {
-    //   try {
-    //     const response = await fetch(`/api/get-officehours-address`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         address: props.individualDelegate,
-    //       }),
-    //     });
-    //     const result = await response.json();
-    //     // console.log("office hours result: ", result);
-    //     if (result.length > 0) {
-    //       result.forEach((item: any) => {
-    //         if (
-    //           item.meeting_status === "inactive" &&
-    //           item.dao_name === props.daoDelegates &&
-    //           item[host_uid_key]
-    //         ) {
-    //           officehoursHostingCount++;
-    //         }
-    //         // console.log("office hours host count: ", officehoursHostingCount);
-    //         setOfficehoursHostCount(officehoursHostingCount);
-    //         setOfficeHoursHostedLoading(false);
-    //       });
-    //     } else {
-    //       setOfficeHoursHostedLoading(false);
-    //     }
-    //   } catch (e) {
-    //     console.log("Error: ", e);
-    //   }
-    // };
-
-    // const officeHoursAttended = async () => {
-    //   try {
-    //     const response = await fetch(`/api/get-attendee-individual`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         attendee_address: props.individualDelegate,
-    //       }),
-    //     });
-    //     const result = await response.json();
-    //     // console.log("office hours attended result: ", result);
-    //     if (result.length > 0) {
-    //       result.forEach((item: any) => {
-    //         if (
-    //           item.meeting_status === "inactive" &&
-    //           item.dao_name === props.daoDelegates &&
-    //           item.attendees.some((attendee: any) => attendee[attendee_uid_key])
-    //         ) {
-    //           officehoursAttendingCount++;
-    //         }
-    //         // console.log("officehours attended: ", officehoursAttendingCount);
-    //         setOfficehoursAttendCount(officehoursAttendingCount);
-    //         setOfficeHoursAttendedLoading(false);
-    //       });
-    //     } else {
-    //       setOfficeHoursAttendedLoading(false);
-    //     }
-    //   } catch (e) {
-    //     console.log("Error: ", e);
-    //   }
-    // };
-
-  //   sessionHosted();
-  //   sessionAttended();
-  //   officeHoursHosted();
-  //   officeHoursAttended();
-  // };
-
-  // const details = [
-  //   {
-  //     number: sessionHostCount,
-  //     desc: "Sessions hosted",
-  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=hosted`,
-  //   },
-  //   {
-  //     number: sessionAttendCount,
-  //     desc: "Sessions attended",
-  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=delegatesSession&session=attended`,
-  //   },
-  //   {
-  //     number: officehoursHostCount,
-  //     desc: "Office Hours hosted",
-  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=hosted`,
-  //   },
-  //   {
-  //     number: officehoursAttendCount,
-  //     desc: "Office Hours attended",
-  //     ref: `/${props.daoDelegates}/${props.individualDelegate}?active=officeHours&hours=attended`,
-  //   },
-  // ];
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -367,57 +165,58 @@ function DelegateInfo({
 
   type FilteredData = [string, number];
 
-  const filteredData: FilteredData[] = Object.entries(
-    delegateInfo.tvl.tvlStrategies
+  const filteredData: FilteredData[] = Object.entries(delegateInfo.tvl.tvlStrategies)
+  .filter((entry): entry is [string, number] => 
+    typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
   )
-    .filter(([key, value]) => value !== 0 && key !== "Eigen")
-    .map(([key, value]) => [key, value as number]);
+  .map(([key, value]): FilteredData => [key, value])
+  .sort((a, b) => b[1] - a[1]); 
 
   // Create labels and data arrays
   const labels = filteredData.map(([key, value]) => key);
   const dataValues = filteredData.map(([key, value]) => value);
 
   // Define the data for the Pie chart
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "TVL Strategies",
-        data: dataValues,
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(153, 102, 255, 0.6)",
-          "rgba(199, 199, 199, 0.6)",
-          "rgba(255, 159, 64, 0.6)",
-          "rgba(83, 102, 255, 0.6)",
-          "rgba(132, 206, 86, 0.6)",
-          "rgba(192, 192, 75, 0.6)",
-          "rgba(199, 83, 64, 0.6)",
-          "rgba(102, 153, 255, 0.6)",
-          "rgba(255, 83, 64, 0.6)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(153, 102, 255, 0.6)",
-          "rgba(199, 199, 199, 0.6)",
-          "rgba(255, 159, 64, 0.6)",
-          "rgba(83, 102, 255, 0.6)",
-          "rgba(132, 206, 86, 0.6)",
-          "rgba(192, 192, 75, 0.6)",
-          "rgba(199, 83, 64, 0.6)",
-          "rgba(102, 153, 255, 0.6)",
-          "rgba(255, 83, 64, 0.6)",
-        ],
-        borderWidth: 2,
-      },
-    ],
-  };
+  // const data = {
+  //   labels: labels,
+  //   datasets: [
+  //     {
+  //       label: "TVL Strategies",
+  //       data: dataValues,
+  //       backgroundColor: [
+  //         "rgba(255, 99, 132, 0.6)",
+  //         "rgba(54, 162, 235, 0.6)",
+  //         "rgba(75, 192, 192, 0.6)",
+  //         "rgba(255, 206, 86, 0.6)",
+  //         "rgba(153, 102, 255, 0.6)",
+  //         "rgba(199, 199, 199, 0.6)",
+  //         "rgba(255, 159, 64, 0.6)",
+  //         "rgba(83, 102, 255, 0.6)",
+  //         "rgba(132, 206, 86, 0.6)",
+  //         "rgba(192, 192, 75, 0.6)",
+  //         "rgba(199, 83, 64, 0.6)",
+  //         "rgba(102, 153, 255, 0.6)",
+  //         "rgba(255, 83, 64, 0.6)",
+  //       ],
+  //       borderColor: [
+  //         "rgba(255, 99, 132, 0.6)",
+  //         "rgba(54, 162, 235, 0.6)",
+  //         "rgba(75, 192, 192, 0.6)",
+  //         "rgba(255, 206, 86, 0.6)",
+  //         "rgba(153, 102, 255, 0.6)",
+  //         "rgba(199, 199, 199, 0.6)",
+  //         "rgba(255, 159, 64, 0.6)",
+  //         "rgba(83, 102, 255, 0.6)",
+  //         "rgba(132, 206, 86, 0.6)",
+  //         "rgba(192, 192, 75, 0.6)",
+  //         "rgba(199, 83, 64, 0.6)",
+  //         "rgba(102, 153, 255, 0.6)",
+  //         "rgba(255, 83, 64, 0.6)",
+  //       ],
+  //       borderWidth: 2,
+  //     },
+  //   ],
+  // };
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -485,14 +284,14 @@ function DelegateInfo({
 
   const formatTVL = (value: number): string => {
     if (!value) return "0";
-  
+
     const absValue = Math.abs(value);
-    
+
     // Function to round to 2 decimal places
     const roundToTwo = (num: number): number => {
       return Math.round(num * 100) / 100;
     };
-  
+
     if (absValue >= 1000000) {
       // For millions, use 'm'
       const millions = absValue / 1000000;
@@ -502,7 +301,7 @@ function DelegateInfo({
       const thousands = absValue / 1000;
       return roundToTwo(thousands).toFixed(2) + "k";
     }
-    
+
     // For values less than 1000, just round to 2 decimal places
     return roundToTwo(absValue).toFixed(2);
   };
@@ -510,48 +309,9 @@ function DelegateInfo({
   return (
     <div>
       <div className="pe-16">
-      <div className="flex gap-3 py-1 min-h-10 justify-center">
-        <div>
-          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
-            <Image
-              src={EILogo}
-              alt="Image not found"
-              width={60}
-              height={60}
-              style={{ width: "53px", height: "53px" }}
-              className="rounded-full"
-            ></Image>
-            <div className="text-light-cyan font-semibold">
-              {delegateInfo?.totalStakers
-                ? formatTVL(Number(delegateInfo?.totalStakers))
-                : 0}
-              &nbsp;
-            </div>
-            <div>total stakers</div>
-          </div>
-        </div>
-        <div>
-          <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
-            <Image
-              src={EILogo}
-              alt="Image not found"
-              width={60}
-              height={60}
-              style={{ width: "53px", height: "53px" }}
-              className="rounded-full"
-            ></Image>
-            <div className="text-light-cyan font-semibold">
-              {delegateInfo?.tvl.tvl
-                ? formatTVL(Number(delegateInfo?.tvl.tvl))
-                : 0}
-              &nbsp;
-            </div>
-            <div>TVL ETH</div>
-          </div>
-        </div>
-        <div>
-          {props.daoDelegates === "avss" && (
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+        <div className="flex gap-3 py-1 min-h-10 justify-center">
+          <div>
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
                 src={EILogo}
                 alt="Image not found"
@@ -561,43 +321,139 @@ function DelegateInfo({
                 className="rounded-full"
               ></Image>
               <div className="text-light-cyan font-semibold">
-                {delegateInfo?.totalOperators
-                  ? formatTVL(Number(delegateInfo?.totalOperators))
+                {delegateInfo?.totalStakers
+                  ? formatTVL(Number(delegateInfo?.totalStakers))
                   : 0}
                 &nbsp;
               </div>
-              <div>total operators</div>
+              <div>total stakers</div>
             </div>
-          )}
+          </div>
+          <div>
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              <div className="text-light-cyan font-semibold">
+                {delegateInfo?.tvl.tvl
+                  ? formatTVL(Number(delegateInfo?.tvl.tvl))
+                  : 0}
+                &nbsp;
+              </div>
+              <div>TVL ETH</div>
+            </div>
+          </div>
+          <div>
+            {props.daoDelegates === "avss" && (
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+                <Image
+                  src={EILogo}
+                  alt="Image not found"
+                  width={60}
+                  height={60}
+                  style={{ width: "53px", height: "53px" }}
+                  className="rounded-full"
+                ></Image>
+                <div className="text-light-cyan font-semibold">
+                  {delegateInfo?.totalOperators
+                    ? formatTVL(Number(delegateInfo?.totalOperators))
+                    : 0}
+                  &nbsp;
+                </div>
+                <div>total operators</div>
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
-            <Image
-              src={EILogo}
-              alt="Image not found"
-              width={60}
-              height={60}
-              style={{ width: "53px", height: "53px" }}
-              className="rounded-full"
-            ></Image>
-            {/* <div className="text-light-cyan font-semibold">
-              &nbsp;
-              {delegateInfo?.tvl.tvl
-                ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
-                : 0}
-              &nbsp;
-            </div> */}
-            <div className="text-light-cyan font-semibold">
-              {delegateInfo?.tvl.tvl
-                ? formatTVL(delegateInfo?.tvl.tvlRestaking)
-                : 0}
-              &nbsp;
+
+        <div className="flex gap-3 py-1 min-h-10 justify-center">
+          <div>
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              {/* <div className="text-light-cyan font-semibold">
+                &nbsp;
+                {delegateInfo?.tvl.tvl
+                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                  : 0}
+                &nbsp;
+              </div> */}
+              <div className="text-light-cyan font-semibold">
+                {delegateInfo?.tvl.tvl
+                  ? formatTVL(delegateInfo?.tvl.tvlRestaking)
+                  : 0}
+                &nbsp;
+              </div>
+              <div>TVL Restaked ETH</div>
             </div>
-            <div>TVL Restaked ETH</div>
+          </div>
+
+          <div>
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              {/* <div className="text-light-cyan font-semibold">
+                &nbsp;
+                {delegateInfo?.tvl.tvl
+                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                  : 0}
+                &nbsp;
+              </div> */}
+              <div className="text-light-cyan font-semibold">
+                {delegateInfo?.tvl.tvl
+                  ? formatTVL(delegateInfo?.tvl.tvlStrategies.Eigen)
+                  : 0}
+                &nbsp;
+              </div>
+              <div>Eigen Restaked</div>
+            </div>
+          </div>
+
+          <div>
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <Image
+                src={EILogo}
+                alt="Image not found"
+                width={60}
+                height={60}
+                style={{ width: "53px", height: "53px" }}
+                className="rounded-full"
+              ></Image>
+              {/* <div className="text-light-cyan font-semibold">
+                &nbsp;
+                {delegateInfo?.tvl.tvl
+                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
+                  : 0}
+                &nbsp;
+              </div> */}
+              <div className="text-light-cyan font-semibold">
+                {delegateInfo?.tvl.tvl
+                  ? formatTVL(delegateInfo?.tvl.tvlBeaconChain)
+                  : 0}
+                &nbsp;
+              </div>
+              <div>Native ETH</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
       <div
         style={{
@@ -609,7 +465,7 @@ function DelegateInfo({
         }`}
       >
         <h1 className="text-xl mb-5">About</h1>
-        {loading ? (
+        {Loading ? (
           <div className="flex -mt-10 justify-center">
             <LineWave
               visible={true}
@@ -738,7 +594,7 @@ function DelegateInfo({
                         </div>
                         <span className="font-semibold">
                           {value.toLocaleString(undefined, {
-                            maximumFractionDigits: 3,
+                            maximumFractionDigits: 2,
                           })}
                         </span>
                       </div>

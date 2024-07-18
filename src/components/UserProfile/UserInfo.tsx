@@ -4,6 +4,8 @@ import React, { ChangeEvent, useState, useEffect } from "react";
 import { InfinitySpin, Oval, RotatingLines } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { useNetwork } from "wagmi";
+import EILogo from "@/assets/images/daos/eigen_logo.png";
+import Image from "next/image";
 
 interface userInfoProps {
   description: string;
@@ -13,6 +15,7 @@ interface userInfoProps {
   isDelegate: boolean;
   isSelfDelegate: boolean;
   daoName: string;
+  restakedPoints: number;
 }
 
 function UserInfo({
@@ -23,6 +26,7 @@ function UserInfo({
   isDelegate,
   isSelfDelegate,
   daoName,
+  restakedPoints,
 }: userInfoProps) {
   const { address } = useAccount();
   // const address = "0x5e349eca2dc61abcd9dd99ce94d04136151a09ee";
@@ -215,29 +219,6 @@ function UserInfo({
   //   }
   // }, [activeButton, address, chain]);
 
-  const blocks = [
-    {
-      number: sessionHostCount,
-      desc: "Sessions hosted",
-      ref: `/profile/${address}}?active=sessions&session=hosted`,
-    },
-    {
-      number: sessionAttendCount,
-      desc: "Sessions attended",
-      ref: `/profile/${address}}?active=sessions&session=attended`,
-    },
-    {
-      number: officehoursHostCount,
-      desc: "Office Hours hosted",
-      ref: `/profile/${address}}?active=officeHours&hours=attended`,
-    },
-    {
-      number: officehoursAttendCount,
-      desc: "Office Hours attended",
-      ref: `/profile/${address}}?active=officeHours&hours=attended`,
-    },
-  ];
-
   const handleDescChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setTempDesc(event.target.value);
     console.log("Temp Desc", event.target.value);
@@ -353,6 +334,23 @@ function UserInfo({
             <div>No data available</div>
           )}
         </div> */}
+      </div>
+
+      <div className="flex gap-3 py-1 min-h-10 justify-center">
+        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+          <Image
+            src={EILogo}
+            alt="Image not found"
+            width={60}
+            height={60}
+            style={{ width: "53px", height: "53px" }}
+            className="rounded-full"
+          ></Image>
+          <div className="text-light-cyan font-semibold">
+            {restakedPoints.toFixed(2)}
+          </div>
+          <div>Restaked Points</div>
+        </div>
       </div>
 
       <div

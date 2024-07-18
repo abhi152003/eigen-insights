@@ -447,7 +447,7 @@ function Analytics() {
 
   return (
     <div className="p-20 -mt-20">
-      <h1 className="text-5xl text-center pb-7">Analytics</h1>
+      {/* <h1 className="text-5xl text-center pb-7">Analytics</h1> */}
       {isPageLoading && (
         <div className="flex items-center justify-center pt-40">
           <ThreeCircles

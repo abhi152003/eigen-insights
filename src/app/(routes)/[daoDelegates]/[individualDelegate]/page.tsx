@@ -1,7 +1,9 @@
 "use client";
 import SpecificDelegate from "@/components/IndividualDelegate/SpecificDelegate";
+import { ApolloProvider } from "@apollo/client";
 import { Metadata } from "next";
 import React from "react";
+import client from "@/components/utils/avsExplorerClient";
 
 interface Type {
   daoDelegates: string;
@@ -11,7 +13,9 @@ interface Type {
 function page({ params }: { params: Type }) {
   return (
     <div>
-      <SpecificDelegate props={params} />
+      <ApolloProvider client={client}>
+        <SpecificDelegate props={params} />
+      </ApolloProvider>
     </div>
   );
 }
