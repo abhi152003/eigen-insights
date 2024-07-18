@@ -46,6 +46,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaDiscourse } from "react-icons/fa6";
 import { RiFolderUserLine } from "react-icons/ri";
 import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
+import { gql, useQuery } from "@apollo/client";
 
 interface Result {
   _id: string;
@@ -63,9 +64,30 @@ interface Result {
   totalStakers: number;
 }
 
+const GET_DATA = gql`
+  query MyQuery($id: ID!) {
+    deposits(where: { from: $id }) {
+      from
+      amount
+      timestamp
+      token {
+        symbol
+      }
+    }
+    withdraws(where: { from: $id }) {
+      amount
+      from
+      timestamp
+      token {
+        symbol
+      }
+    }
+  }
+`;
+
 function MainProfile() {
   const { isConnected } = useAccount();
-  const address = "0x04850b6b12fe4eda95df9371be81e1595716b7ef";
+  const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
   const { data: session, status } = useSession();
   const { openConnectModal } = useConnectModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
@@ -96,11 +118,28 @@ function MainProfile() {
   const [selfDelegate, setSelfDelegate] = useState(false);
   const [daoName, setDaoName] = useState("operators");
   const [profileData, setProfileData] = useState<any>();
+  const [restakedPoints, setRestakedPoints] = useState(0);
 
   interface ProgressData {
     total: any;
     uploaded: any;
   }
+
+  const { loading, error, data } = useQuery(GET_DATA, {
+    variables: { id: address },
+    context: {
+      subgraph: "eigenlayer", // Specify which subgraph to use
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      const points = calculateRestakedPoints(data);
+      console.log("Total restaked points:", points);
+      setRestakedPoints(points);
+    }
+  }, [data]);
 
   useEffect(() => {
     // console.log("path", path);
@@ -123,6 +162,7 @@ function MainProfile() {
     router,
     session,
     path.includes("profile/undefined"),
+    openConnectModal,
   ]);
 
   const uploadImage = async (selectedFile: any) => {
@@ -174,13 +214,22 @@ function MainProfile() {
   useEffect(() => {
     const checkDelegateStatus = async () => {
       try {
-        const res = await fetch(
-          `/api/get-search-data?q=${address}&prop=operators`
-        );
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
+        const fetchData = async (prop: string) => {
+          const res = await fetch(
+            `/api/get-search-data?q=${address}&prop=${prop}`
+          );
+          if (!res.ok) {
+            throw new Error(`Error: ${res.status}`);
+          }
+          return await res.json();
+        };
+
+        let data = await fetchData("operators");
+        if (Array.isArray(data) && data.length === 0) {
+          data = await fetchData("avss");
         }
-        const data: Result[] | { message: string } = await res.json();
+
+        console.log("dataaaaaaaaaaaa", data);
         if (Array.isArray(data)) {
           console.log("dataaaaaaaa", data[0]);
           setProfileData(data[0]);
@@ -190,11 +239,7 @@ function MainProfile() {
           setDisplayName(data[0].metadataName);
           setTwitter(data[0].metadataX);
           setDiscord(data[0].metadataDiscord ?? "");
-          if (data.length > 0) {
-            setSelfDelegate(true);
-          } else {
-            setSelfDelegate(false);
-          }
+          setSelfDelegate(data.length > 0);
         }
       } catch (error) {
         console.log(error);
@@ -562,6 +607,109 @@ function MainProfile() {
     fetchData();
   }, [chain, address, daoName, chain?.name]);
 
+  if (loading)
+    return (
+      <div className="flex items-center justify-center">
+        <ThreeCircles
+          visible={true}
+          height="50"
+          width="50"
+          color="#FFFFFF"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+        />
+      </div>
+    );
+  if (error) {
+    console.error("GraphQL Error:", error);
+    return <p>Error: {error.message}</p>;
+  }
+
+  interface Token {
+    symbol: string;
+  }
+
+  interface Transaction {
+    amount: string;
+    timestamp: string;
+    token: Token;
+  }
+
+  interface StakerData {
+    deposits: Transaction[];
+    withdraws: Transaction[];
+  }
+
+  function calculateRestakedPoints(stakerData: StakerData): number {
+    const currentTimestamp = Math.floor(Date.now() / 1000); // Current Unix timestamp
+    let totalPoints = 0;
+
+    // Create a map to store deposits by token symbol
+    const depositMap: { [key: string]: Transaction[] } = {};
+
+    // Process deposits
+    stakerData.deposits.forEach((deposit) => {
+      // Exclude EIGEN token deposits
+      if (deposit.token.symbol !== "EIGEN") {
+        if (!depositMap[deposit.token.symbol]) {
+          depositMap[deposit.token.symbol] = [];
+        }
+        depositMap[deposit.token.symbol].push(deposit);
+      }
+    });
+
+    // Process withdrawals and calculate points
+    stakerData.withdraws.forEach((withdraw) => {
+      // Exclude EIGEN token withdrawals
+      if (withdraw.token.symbol !== "EIGEN") {
+        const deposits = depositMap[withdraw.token.symbol];
+        if (deposits && deposits.length > 0) {
+          let remainingWithdrawAmount = parseFloat(withdraw.amount);
+          const withdrawTimestamp = parseInt(withdraw.timestamp);
+
+          while (remainingWithdrawAmount > 0 && deposits.length > 0) {
+            const deposit = deposits[0];
+            const depositAmount = parseFloat(deposit.amount);
+            const startTime = parseInt(deposit.timestamp);
+            const duration = (withdrawTimestamp - startTime) / 3600; // Duration in hours
+
+            if (depositAmount <= remainingWithdrawAmount) {
+              // Full deposit is withdrawn
+              const points = (depositAmount / 1e18) * duration;
+              totalPoints += points;
+              remainingWithdrawAmount -= depositAmount;
+              deposits.shift(); // Remove this deposit as it's fully processed
+            } else {
+              // Partial deposit is withdrawn
+              const withdrawnAmount = remainingWithdrawAmount;
+              const points = (withdrawnAmount / 1e18) * duration;
+              totalPoints += points;
+              deposit.amount = (
+                depositAmount - remainingWithdrawAmount
+              ).toString();
+              remainingWithdrawAmount = 0;
+            }
+          }
+        }
+      }
+    });
+
+    // Process remaining deposits (those without withdrawals)
+    Object.values(depositMap).forEach((deposits) => {
+      deposits.forEach((deposit) => {
+        const startTime = parseInt(deposit.timestamp);
+        const duration = (currentTimestamp - startTime) / 3600; // Duration in hours
+        const amount = parseFloat(deposit.amount) / 1e18; // Convert from Wei to ETH
+        console.log(duration, amount)
+        // Calculate points for this stake
+        const points = amount * duration;
+        totalPoints += points;
+      });
+    });
+
+    return totalPoints;
+  }
+
   return (
     <>
       {!isPageLoading ? (
@@ -854,7 +1002,7 @@ function MainProfile() {
                     }}
                   />
                 </div>
-                {selfDelegate === true
+                {/* {selfDelegate === true
                   ? votes && (
                       <div className="flex gap-4 py-1">
                         <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
@@ -884,7 +1032,8 @@ function MainProfile() {
                         </div>
                       </div>
                     )
-                  : null}
+                  : null
+                } */}
               </div>
             </div>
             <div>
@@ -903,7 +1052,7 @@ function MainProfile() {
             >
               Info
             </button>
-            <button
+            {/* <button
               className={`border-b-2 py-4 px-2 outline-none ${
                 searchParams.get("active") === "sessions"
                   ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
@@ -939,17 +1088,17 @@ function MainProfile() {
               >
                 Instant Meet
               </button>
-            )}
+            )} */}
             {/* <button
-          className={`border-b-2 py-4 px-2 outline-none ${
-            searchParams.get("active") === "claimNft"
-              ? "text-light-cyan font-semibold border-b-2 border-blue-shade-200"
-              : "border-transparent"
-          }`}
-          onClick={() => router.push(path + "?active=claimNft")}
-        >
-          Claim NFTs
-        </button> */}
+              className={`border-b-2 py-4 px-2 outline-none ${
+                searchParams.get("active") === "claimNft"
+                  ? "text-light-cyan font-semibold border-b-2 border-blue-shade-200"
+                  : "border-transparent"
+              }`}
+              onClick={() => router.push(path + "?active=claimNft")}
+            >
+              Claim NFTs
+            </button> */}
           </div>
 
           <div className="py-6 ps-16">
@@ -964,6 +1113,7 @@ function MainProfile() {
                 }
                 isLoading={isLoading}
                 daoName={daoName}
+                restakedPoints={restakedPoints}
               />
             ) : (
               ""

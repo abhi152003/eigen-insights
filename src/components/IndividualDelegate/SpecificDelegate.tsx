@@ -33,8 +33,15 @@ import { FaXTwitter, FaDiscord } from "react-icons/fa6";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 import Operators from "./Operators";
 import Avss from "./Avss";
-import client from "../utils/urlqClient";
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import client from "../utils/avsExplorerClient";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+  useQuery,
+} from "@apollo/client";
+import AvsHistory from "./AvsHistory";
 
 interface Type {
   daoDelegates: string;
@@ -58,6 +65,15 @@ interface Result {
   tvl: any;
 }
 
+const GET_DATA = gql`
+  query MyQuery($id: ID!) {
+    operators(where: { id: $id }) {
+      earningsReceiver
+      id
+    }
+  }
+`;
+
 function SpecificDelegate({ props }: { props: Type }) {
   const { publicClient, walletClient } = WalletAndPublicClient();
   const { chain, chains } = useNetwork();
@@ -78,12 +94,20 @@ function SpecificDelegate({ props }: { props: Type }) {
   const [description, setDescription] = useState("");
   // const provider = new ethers.BrowserProvider(window?.ethereum);
   const [displayEnsName, setDisplayEnsName] = useState<string>();
-
+  const [earningsReceiver, setEarningsReceiver] = useState("");
   const [socials, setSocials] = useState({
     twitter: "",
     discord: "",
     telegram: "",
     website: "",
+  });
+
+  const userId = props.individualDelegate;
+  const { loading, error, data } = useQuery(GET_DATA, {
+    variables: { id: userId },
+    context: {
+      subgraph: "avs", // Specify which subgraph to use
+    },
   });
 
   useEffect(() => {
@@ -175,6 +199,22 @@ function SpecificDelegate({ props }: { props: Type }) {
   };
 
   console.log(delegateInfo);
+
+  if (props.daoDelegates === "operators") {
+    useEffect(() => {
+      if (data) {
+        console.log(data.operators[0].earningsReceiver);
+        setEarningsReceiver(data.operators[0].earningsReceiver);
+      }
+    }, [data]);
+  }
+
+  if (loading) return <div className="flex items-center justify-center"></div>;
+  if (error) {
+    console.error("GraphQL Error:", error);
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
     <>
       {isPageLoading && (
@@ -305,10 +345,17 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
 
                 <div className="flex items-center py-1">
-                  <div>
-                    {props.individualDelegate.slice(0, 6)} ...{" "}
-                    {props.individualDelegate.slice(-4)}
-                  </div>
+                  {props.daoDelegates === "operators" ? (
+                    <div>
+                      Operator Address : {props.individualDelegate.slice(0, 6)}{" "}
+                      ... {props.individualDelegate.slice(-4)}
+                    </div>
+                  ) : (
+                    <div>
+                      AVS Address : {props.individualDelegate.slice(0, 6)}{" "}
+                      ... {props.individualDelegate.slice(-4)}
+                    </div>
+                  )}
 
                   <Tooltip
                     content="Copy"
@@ -338,6 +385,43 @@ function SpecificDelegate({ props }: { props: Type }) {
                     />
                   </div>
                 </div>
+
+                {props.daoDelegates === "operators" && (
+                  <div className="flex items-center py-1">
+                    <div>
+                      Earnings Receiver Address : {earningsReceiver.slice(0, 6)}{" "}
+                      ... {earningsReceiver.slice(-4)}
+                    </div>
+
+                    <Tooltip
+                      content="Copy"
+                      placement="right"
+                      closeDelay={1}
+                      showArrow
+                      className="text-white bg-light-blue"
+                    >
+                      <span className="px-2 cursor-pointer">
+                        <IoCopy
+                          onClick={() => handleCopy(props.individualDelegate)}
+                        />
+                      </span>
+                    </Tooltip>
+                    <div style={{ zIndex: "21474836462" }}>
+                      <Toaster
+                        toastOptions={{
+                          style: {
+                            fontSize: "14px",
+                            backgroundColor: "#3E3D3D",
+                            color: "#fff",
+                            boxShadow: "none",
+                            borderRadius: "50px",
+                            padding: "3px 5px",
+                          },
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-5">
                   {props.daoDelegates === "operators" ? (
@@ -483,6 +567,21 @@ function SpecificDelegate({ props }: { props: Type }) {
             ) : (
               ""
             )}
+            {props.daoDelegates === "avss" ? (
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "history"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=history")}
+              >
+                History
+              </button>
+            ) : (
+              ""
+            )}
             {/* <button
               className={`border-b-2 py-3 px-2
                 ${
@@ -513,11 +612,13 @@ function SpecificDelegate({ props }: { props: Type }) {
 
           <div className="py-6 ps-16">
             {searchParams.get("active") === "info" && (
-              <DelegateInfo
-                props={props}
-                delegateInfo={delegateInfo}
-                desc={delegateInfo.metadataDescription}
-              />
+              <ApolloProvider client={client}>
+                <DelegateInfo
+                  props={props}
+                  delegateInfo={delegateInfo}
+                  desc={delegateInfo.metadataDescription}
+                />
+              </ApolloProvider>
             )}
             {searchParams.get("active") === "operators" && (
               <ApolloProvider client={client}>
@@ -535,12 +636,17 @@ function SpecificDelegate({ props }: { props: Type }) {
                 <OperatorsAnalytics props={props} />
               </ApolloProvider>
             )}
-            {searchParams.get("active") === "delegatesSession" && (
+            {searchParams.get("active") === "history" && (
+              <ApolloProvider client={client}>
+                <AvsHistory props={props} />
+              </ApolloProvider>
+            )}
+            {/* {searchParams.get("active") === "delegatesSession" && (
               <DelegateSessions props={props} />
             )}
             {searchParams.get("active") === "officeHours" && (
               <DelegateOfficeHrs props={props} />
-            )}
+            )} */}
           </div>
         </div>
       ) : (

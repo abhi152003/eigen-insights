@@ -73,6 +73,9 @@ function TotalOperatorsChart(
   avsId = props.individualDelegate;
   const { loading, error, data } = useQuery(GET_DATA, {
     variables: { id: avsId },
+    context: {
+      subgraph: 'avs' // Specify which subgraph to use
+    }
   });
 
   if (loading)
