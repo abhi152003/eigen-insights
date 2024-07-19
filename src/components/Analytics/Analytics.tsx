@@ -1,8 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import { Bar, Pie, Doughnut } from 'react-chartjs-2';
-// import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
-
 import { Doughnut, Pie } from "react-chartjs-2";
 import { Chart, ArcElement, Title, Tooltip } from "chart.js";
 import { formatEther } from "ethers";
@@ -10,6 +7,12 @@ import { Oval, ThreeCircles } from "react-loader-spinner";
 import "../../app/globals.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { useAccount } from "wagmi";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import {
+  PieChartSkeleton,
+  DataListSkeleton,
+} from "../Skeletons/PieChartSkeleton";
 
 interface Share {
   strategyAddress: string;
@@ -57,6 +60,42 @@ function Analytics() {
   const [take, setTake] = useState(10);
   const [total, setTotal] = useState(0);
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [sortedOperatorsData, setSortedOperatorsData] = useState<
+    [string, number][]
+  >([]);
+  const [tvlPercentageData, setTVLPercentageData] = useState<
+    Record<string, number>
+  >({});
+
+  useEffect(() => {
+    if (Object.keys(restakeTVL).length > 0 && totalRestaking > 0) {
+      const percentages = Object.entries(restakeTVL).reduce<
+        Record<string, number>
+      >((acc, [key, value]) => {
+        if (typeof value === "number") {
+          const percentage = (value / totalRestaking) * 100;
+          acc[key] = parseFloat(percentage.toFixed(2));
+        }
+        return acc;
+      }, {});
+      setTVLPercentageData(percentages);
+    }
+  }, [restakeTVL, totalRestaking]);
+
+  useEffect(() => {
+    if (avsOperators.length > 0) {
+      const sortedData = avsOperators
+        .filter(({ operatorsCount }) => operatorsCount !== 0)
+        .map(
+          ({ name, operatorsCount }) =>
+            [name, operatorsCount] as [string, number]
+        )
+        .sort((a, b) => b[1] - a[1]);
+      setSortedOperatorsData(sortedData);
+    }
+  }, [avsOperators]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,6 +133,7 @@ function Analytics() {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
 
     fetchData();
@@ -132,12 +172,29 @@ function Analytics() {
 
   const totalPages = Math.ceil(total / take);
 
-  // // Create labels and data arrays
+  // Create labels and data arrays
   // const labels = filteredData.map(([key, value]) => key);
   // const dataValues = filteredData.map(([key, value]) => value);
-  const filteredData = Object.entries(restakeTVL)
-    .filter(([key, value]) => value !== 0 && key !== "Eigen")
-    .map(([key, value]) => [key, value as number]);
+
+  type FilteredData = [string, number];
+  // const filteredData: FilteredData[] = Object.entries(restakeTVL)
+  // .filter((entry): entry is [string, number] =>
+  //   typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
+  // )
+  // .map(([key, value]): FilteredData => [key, value])
+  // .sort((a, b) => b[1] - a[1]);
+
+  const filteredData: [string, number, number][] = Object.entries(restakeTVL)
+    .filter(
+      (entry): entry is [string, number] =>
+        typeof entry[1] === "number" && entry[1] !== 0 && entry[0] !== "Eigen"
+    )
+    .map(([key, value]): [string, number, number] => [
+      key,
+      value,
+      tvlPercentageData[key] || 0,
+    ])
+    .sort((a, b) => b[1] - a[1]);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [operatorsHoveredIndex, setOperatorsHoveredIndex] = useState<
@@ -191,10 +248,10 @@ function Analytics() {
   };
 
   const operatorsChartData = {
-    labels: filteredOperatorsData.map(([label]) => label),
+    labels: sortedOperatorsData.map(([label]) => label),
     datasets: [
       {
-        data: filteredOperatorsData.map(([_, value]) => value),
+        data: sortedOperatorsData.map(([_, value]) => value),
         backgroundColor: [
           "#3498db",
           "#2ecc71",
@@ -261,11 +318,10 @@ function Analytics() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const { address } = useAccount();
-  
+
   const handleWithdrawalAddress = async () => {
-    
     if (address) {
       setSearchQuery(address);
     }
@@ -309,84 +365,6 @@ function Analytics() {
       // setDelegateData({ ...delegateData, delegates: tempData.delegates });
     }
   };
-
-  // Define the data for the Pie chart
-  // const restakeData = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: "TVL Strategies",
-  //       data: dataValues,
-  //       backgroundColor: [
-  //         "rgba(255, 99, 132, 0.8)", // Bright pink
-  //         "rgba(54, 162, 235, 0.8)", // Bright blue
-  //         "rgba(255, 206, 86, 0.8)", // Bright yellow
-  //         "rgba(75, 192, 192, 0.8)", // Bright teal
-  //         "rgba(153, 102, 255, 0.8)", // Bright purple
-  //         "rgba(255, 159, 64, 0.8)", // Bright orange
-  //         "rgba(46, 204, 113, 0.8)", // Bright green
-  //         "rgba(52, 152, 219, 0.8)", // Another blue shade
-  //         "rgba(155, 89, 182, 0.8)", // Another purple shade
-  //         "rgba(241, 196, 15, 0.8)", // Another yellow shade
-  //         "rgba(231, 76, 60, 0.8)", // Bright red
-  //         "rgba(26, 188, 156, 0.8)", // Another teal shade
-  //       ],
-  //       borderColor: [
-  //         "rgba(255, 99, 132, 1)",
-  //         "rgba(54, 162, 235, 1)",
-  //         "rgba(255, 206, 86, 1)",
-  //         "rgba(75, 192, 192, 1)",
-  //         "rgba(153, 102, 255, 1)",
-  //         "rgba(255, 159, 64, 1)",
-  //         "rgba(46, 204, 113, 1)",
-  //         "rgba(52, 152, 219, 1)",
-  //         "rgba(155, 89, 182, 1)",
-  //         "rgba(241, 196, 15, 1)",
-  //         "rgba(231, 76, 60, 1)",
-  //         "rgba(26, 188, 156, 1)",
-  //       ],
-  //       borderWidth: 2,
-  //     },
-  //   ],
-  // };
-
-  // const avsOperatorsData = {
-  //   labels: avsOperators.map(({ name }) => name),
-  //   datasets: [
-  //     {
-  //       data: avsOperators.map(({ operatorsCount }) => operatorsCount),
-  //       backgroundColor: [
-  //         "rgba(255, 99, 132, 0.8)",
-  //         "rgba(54, 162, 235, 0.8)",
-  //         "rgba(255, 206, 86, 0.8)",
-  //         "rgba(75, 192, 192, 0.8)",
-  //         "rgba(153, 102, 255, 0.8)",
-  //         "rgba(255, 159, 64, 0.8)",
-  //         "rgba(46, 204, 113, 0.8)",
-  //         "rgba(52, 152, 219, 0.8)",
-  //         "rgba(155, 89, 182, 0.8)",
-  //         "rgba(241, 196, 15, 0.8)",
-  //         "rgba(231, 76, 60, 0.8)",
-  //         "rgba(26, 188, 156, 0.8)",
-  //       ],
-  //       borderColor: [
-  //         "rgba(255, 99, 132, 1)",
-  //         "rgba(54, 162, 235, 1)",
-  //         "rgba(255, 206, 86, 1)",
-  //         "rgba(75, 192, 192, 1)",
-  //         "rgba(153, 102, 255, 1)",
-  //         "rgba(255, 159, 64, 1)",
-  //         "rgba(46, 204, 113, 1)",
-  //         "rgba(52, 152, 219, 1)",
-  //         "rgba(155, 89, 182, 1)",
-  //         "rgba(241, 196, 15, 1)",
-  //         "rgba(231, 76, 60, 1)",
-  //         "rgba(26, 188, 156, 1)",
-  //       ],
-  //       borderWidth: 2,
-  //     },
-  //   ],
-  // };
 
   interface AnalyticsSummaryProps {
     totalTVL: number;
@@ -470,157 +448,216 @@ function Analytics() {
             totalStakers={totalStakers}
             totalRestaking={totalRestaking}
           />
-          {/* <div className='flex items-center justify-center mt-7'>
-            <div className='flex gap-x-40 text-center'>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Operators Distribution in AVSs</h1>
-                  <Doughnut data={avsOperatorsData} options={{cutout: '95%'}}  />
-              </div>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Restaking TVL Distribution</h1>
-                  <Doughnut data={restakeData} options={{cutout: '95%'}} />
-              </div>
-            </div>
-          </div> */}
 
           <div>
-            <h1 className="ml-2 mt-7 text-[2.25rem] font-semibold	">
+            <h1 className="ml-2 mb-2 mt-7 text-[2.25rem] font-semibold">
               TVL Restaking Distribution
             </h1>
-            <div className="flex justify-center mt-5">
-              {filteredData.length > 0 ? (
-                <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-                  <div className="p-4">
-                    <div className="flex justify-between items-center">
-                      <h2 className="text-xl font-bold">Total</h2>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold">
-                          {totalRestaking.toLocaleString(undefined, {
-                            maximumFractionDigits: 3,
-                          })}{" "}
-                          ETH
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex flex-col md:flex-row gap-x-40">
-                      <div className="w-full md:w-1/2 pr-10">
-                        <div className="space-y-2">
-                          {filteredData.map(([label, value], index) => (
-                            <div
-                              key={label}
-                              className={`flex justify-between items-center rounded-md ${
-                                hoveredIndex === index ? "bg-gray-600" : ""
-                              }`}
-                            >
-                              <div className="flex items-center">
-                                <div
-                                  className="w-4 h-4 rounded-full mr-1"
-                                  style={{
-                                    backgroundColor:
-                                      chartData.datasets[0].backgroundColor[
-                                        index %
-                                          chartData.datasets[0].backgroundColor
-                                            .length
-                                      ],
-                                  }}
-                                ></div>
-                                <span>{label}</span>
-                              </div>
-                              <span className="font-semibold">
-                                {value.toLocaleString(undefined, {
-                                  maximumFractionDigits: 3,
-                                })}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                        <div style={{ width: "300px", height: "300px" }}>
-                          <Pie data={chartData} options={tvlChartOptions} />
-                        </div>
-                      </div>
-                    </div>
+            {isLoading ? (
+              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                <div className="p-4">
+                  <div className="flex justify-between items-center">
+                    <Skeleton width={100} />
+                    <Skeleton width={150} />
                   </div>
                 </div>
-              ) : (
-                <p>No ETH stacked</p>
-              )}
-            </div>
+                <div className="p-6">
+                  <div className="flex flex-col md:flex-row gap-x-40">
+                    <DataListSkeleton />
+                    <PieChartSkeleton />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-center mt-5">
+                {filteredData.length > 0 ? (
+                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                    <div className="p-4">
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-bold">Total</h2>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold">
+                            {totalRestaking.toLocaleString(undefined, {
+                              maximumFractionDigits: 3,
+                            })}{" "}
+                            ETH
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex flex-col md:flex-row gap-x-40">
+                        <div className="w-full md:w-1/2 pr-10">
+                          <div className="space-y-2">
+                            {filteredData.map(
+                              ([label, value]: any, index: number | null) => (
+                                <div
+                                  key={label}
+                                  className={`flex justify-between items-center rounded-md ${
+                                    hoveredIndex === index ? "bg-gray-600" : ""
+                                  }`}
+                                >
+                                  <div className="flex items-center">
+                                    <div
+                                      className="w-4 h-4 rounded-full mr-1"
+                                      style={{
+                                        backgroundColor:
+                                          chartData.datasets[0].backgroundColor[
+                                            index
+                                              ? index
+                                              : 0 %
+                                                chartData.datasets[0]
+                                                  .backgroundColor.length
+                                          ],
+                                      }}
+                                    ></div>
+                                    <span>{label}</span>
+                                  </div>
+                                  {/* Add a flex container with justification and gap for spacing */}
+                                  <div className="flex justify-end items-center gap-4">
+                                    {" "}
+                                    {/* Increased gap from 4 to 6 */}
+                                    {/* Add min-width to create consistent column widths */}
+                                    <span className="font-semibold min-w-[100px] text-right">
+                                      {value.toLocaleString(undefined, {
+                                        maximumFractionDigits: 2,
+                                      })}
+                                    </span>
+                                    {/* Add min-width to percentage column as well */}
+                                    <span className="font-semibold min-w-[60px] text-right">
+                                      {((value / totalRestaking) * 100).toFixed(
+                                        2
+                                      )}
+                                      %
+                                    </span>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                          <div style={{ width: "300px", height: "300px" }}>
+                            <Pie data={chartData} options={tvlChartOptions} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p>No ETH staked</p>
+                )}
+              </div>
+            )}
           </div>
 
+          {/* Operators Distribution */}
           <div>
-            <h1 className="ml-2 first:mt-7 text-[2.25rem]  font-semibold	">
+            <h1 className="ml-2 mb-2 first:mt-7 text-[2.25rem] font-semibold">
               Operators Distribution
             </h1>
-            <div className="flex justify-center mt-5">
-              {filteredOperatorsData.length > 0 ? (
-                <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-                  <div className="p-4">
-                    <div className="flex justify-between items-center">
-                      <h2 className="text-xl font-bold">Total</h2>
-                      <div className="text-right">
-                        <p className="text-2xl font-bold">
-                          {totalOperators} Operators
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex flex-col md:flex-row gap-x-40">
-                      <div className="w-full md:w-1/2 pr-10">
-                        <div className="space-y-2">
-                          {filteredOperatorsData.map(
-                            ([label, value], index) => (
-                              <div
-                                key={label}
-                                className={`flex justify-between items-center rounded-md ${
-                                  operatorsHoveredIndex === index
-                                    ? "bg-gray-600"
-                                    : ""
-                                }`}
-                              >
-                                <div className="flex items-center">
-                                  <div
-                                    className="w-4 h-4 rounded-full mr-1"
-                                    style={{
-                                      backgroundColor:
-                                        chartData.datasets[0].backgroundColor[
-                                          index %
-                                            chartData.datasets[0]
-                                              .backgroundColor.length
-                                        ],
-                                    }}
-                                  ></div>
-                                  <span>{label}</span>
-                                </div>
-                                <span className="font-semibold">
-                                  {value.toLocaleString(undefined, {
-                                    maximumFractionDigits: 3,
-                                  })}
-                                </span>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </div>
-                      <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                        <div style={{ width: "300px", height: "300px" }}>
-                          <Pie
-                            data={operatorsChartData}
-                            options={operatorsChartOptions}
-                          />
-                        </div>
-                      </div>
-                    </div>
+            {isLoading ? (
+              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                <div className="p-4">
+                  <div className="flex justify-between items-center">
+                    <Skeleton width={100} />
+                    <Skeleton width={150} />
                   </div>
                 </div>
-              ) : (
-                <p>No Operators</p>
-              )}
-            </div>
+                <div className="p-6">
+                  <div className="flex flex-col md:flex-row gap-x-40">
+                    <DataListSkeleton />
+                    <PieChartSkeleton />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-center mt-5">
+                {sortedOperatorsData.length > 0 ? (
+                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                    <div className="p-4">
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-xl font-bold">Total</h2>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold">
+                            {totalOperators} Operators
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex flex-col md:flex-row gap-x-40">
+                        <div className="w-full md:w-1/2 pr-10">
+                          <div className="space-y-2">
+                            {sortedOperatorsData.map(
+                              ([label, value], index) => (
+                                <div
+                                  key={label}
+                                  className={`flex justify-between items-center rounded-md ${
+                                    operatorsHoveredIndex === index
+                                      ? "bg-gray-600"
+                                      : ""
+                                  }`}
+                                >
+                                  <div className="flex items-center flex-grow min-w-0 mr-4">
+                                    <div
+                                      className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
+                                      style={{
+                                        backgroundColor:
+                                          operatorsChartData.datasets[0]
+                                            .backgroundColor[
+                                            index %
+                                              operatorsChartData.datasets[0]
+                                                .backgroundColor.length
+                                          ],
+                                      }}
+                                    ></div>
+                                    <span
+                                      className="truncate max-w-[200px]"
+                                      title={label}
+                                    >
+                                      {label}
+                                    </span>
+                                  </div>
+                                  {/* Add a flex container with justification and gap for spacing */}
+                                  <div className="flex justify-end items-center gap-5 flex-shrink-0">
+                                    {" "}
+                                    {/* Added flex-shrink-0 */}
+                                    {/* Add min-width to create consistent column widths */}
+                                    <span className="font-semibold min-w-[60px] text-right">
+                                      {value.toLocaleString(undefined, {
+                                        maximumFractionDigits: 0,
+                                      })}
+                                    </span>
+                                    {/* Add min-width to percentage column as well */}
+                                    <span className="font-semibold min-w-[60px] text-right">
+                                      {((value / totalOperators) * 100).toFixed(
+                                        2
+                                      )}
+                                      %
+                                    </span>
+                                  </div>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                        <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                          <div style={{ width: "300px", height: "300px" }}>
+                            <Pie
+                              data={operatorsChartData}
+                              options={operatorsChartOptions}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p>No Operators</p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="mt-10">
