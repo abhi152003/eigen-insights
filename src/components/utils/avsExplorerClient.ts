@@ -12,13 +12,22 @@ const eigenDALink = new HttpLink({
   uri: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/Gnzym6AjPZmmJSHsJY3Lr6nvz9CRnBiYRWorTFZbyXKj`
 });
 
+const airdropLink = new HttpLink({
+  uri: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_GRAPH_KEY}/subgraphs/id/5qKTQiuSDgvwRyjmcWjx9V8T7md2gvRTrmWdVg82c481
+`
+});
+
 const splitLink = split(
   (operation) => operation.getContext().subgraph === 'avs',
   avsExpLink,
   split(
     (operation) => operation.getContext().subgraph === 'eigenlayer',
     eigenLayerLink,
-    eigenDALink
+    split(
+      (operation) => operation.getContext().subgraph === 'airdrop',
+      airdropLink,
+      eigenDALink
+    )
   )
 );
 

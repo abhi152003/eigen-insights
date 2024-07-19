@@ -10,6 +10,69 @@ import { Oval, ThreeCircles } from "react-loader-spinner";
 import "../../app/globals.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { useAccount } from "wagmi";
+import { gql, useQuery } from "@apollo/client";
+
+import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
+
+// Define the type for our data
+type ClaimData = {
+  amount: string;
+  account: string;
+  blockTimestamp: string;
+  transactionHash: string;
+};
+
+// Props type for our component
+type LeaderboardProps = {
+  data: ClaimData[];
+};
+
+const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
+  // Sort the data by amount (descending order)
+  const sortedData = [...data].sort((a, b) => {
+    const amountA = BigInt(a.amount);
+    const amountB = BigInt(b.amount);
+    if (amountA < amountB) return 1;
+    if (amountA > amountB) return -1;
+    return 0;
+  });
+
+  return (
+    <div className="bg-[#1f2937] text-[#a0b3d7] p-6 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4 text-[#e0e7f4]">Claim Leaderboard</h2>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-[#2a3955]">
+              <th className="px-4 py-2 text-left">Rank</th>
+              <th className="px-4 py-2 text-left">Account</th>
+              <th className="px-4 py-2 text-right">Amount (ETH)</th>
+              <th className="px-4 py-2 text-right">Claimed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedData.map((item, index) => (
+              <tr key={item.transactionHash} className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors">
+                <td className="px-4 py-2">{index + 1}</td>
+                <td className="px-4 py-2">
+                  <a href={`https://etherscan.io/address/${item.account}`} target="_blank" rel="noopener noreferrer" className="text-[#4f8fea] hover:underline">
+                    {`${item.account.slice(0, 6)}...${item.account.slice(-4)}`}
+                  </a>
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {(Number(BigInt(item.amount)) / 1e18).toFixed(2)}
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {formatDistanceToNowStrict(new Date(parseInt(item.blockTimestamp) * 1000), { addSuffix: true })}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
 interface Share {
   strategyAddress: string;
@@ -23,6 +86,17 @@ interface Withdrawal {
   stakerAddress: string;
   shares: Share[];
 }
+
+const GET_DATA = gql`
+  query MyQuery {
+    claimeds(orderBy: amount, orderDirection: desc, first: 10) {
+      amount
+      account
+      blockTimestamp
+      transactionHash
+    }
+  }
+`;
 
 const strategyNames: { [key: string]: string } = {
   "0x93c4b944d05dfe6df7645a86cd2206016c51564d": "stETH",
@@ -57,6 +131,21 @@ function Analytics() {
   const [take, setTake] = useState(10);
   const [total, setTotal] = useState(0);
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [airDrop, setAirDrop] = useState();
+
+  const { loading, error, data } = useQuery(GET_DATA, {
+    context: {
+      subgraph: "airdrop", // Specify which subgraph to use
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      console.log(data.claimeds);
+      setAirDrop(data.claimeds)
+    }
+  }, [data]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -261,11 +350,10 @@ function Analytics() {
   };
 
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const { address } = useAccount();
-  
+
   const handleWithdrawalAddress = async () => {
-    
     if (address) {
       setSearchQuery(address);
     }
@@ -309,84 +397,6 @@ function Analytics() {
       // setDelegateData({ ...delegateData, delegates: tempData.delegates });
     }
   };
-
-  // Define the data for the Pie chart
-  // const restakeData = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: "TVL Strategies",
-  //       data: dataValues,
-  //       backgroundColor: [
-  //         "rgba(255, 99, 132, 0.8)", // Bright pink
-  //         "rgba(54, 162, 235, 0.8)", // Bright blue
-  //         "rgba(255, 206, 86, 0.8)", // Bright yellow
-  //         "rgba(75, 192, 192, 0.8)", // Bright teal
-  //         "rgba(153, 102, 255, 0.8)", // Bright purple
-  //         "rgba(255, 159, 64, 0.8)", // Bright orange
-  //         "rgba(46, 204, 113, 0.8)", // Bright green
-  //         "rgba(52, 152, 219, 0.8)", // Another blue shade
-  //         "rgba(155, 89, 182, 0.8)", // Another purple shade
-  //         "rgba(241, 196, 15, 0.8)", // Another yellow shade
-  //         "rgba(231, 76, 60, 0.8)", // Bright red
-  //         "rgba(26, 188, 156, 0.8)", // Another teal shade
-  //       ],
-  //       borderColor: [
-  //         "rgba(255, 99, 132, 1)",
-  //         "rgba(54, 162, 235, 1)",
-  //         "rgba(255, 206, 86, 1)",
-  //         "rgba(75, 192, 192, 1)",
-  //         "rgba(153, 102, 255, 1)",
-  //         "rgba(255, 159, 64, 1)",
-  //         "rgba(46, 204, 113, 1)",
-  //         "rgba(52, 152, 219, 1)",
-  //         "rgba(155, 89, 182, 1)",
-  //         "rgba(241, 196, 15, 1)",
-  //         "rgba(231, 76, 60, 1)",
-  //         "rgba(26, 188, 156, 1)",
-  //       ],
-  //       borderWidth: 2,
-  //     },
-  //   ],
-  // };
-
-  // const avsOperatorsData = {
-  //   labels: avsOperators.map(({ name }) => name),
-  //   datasets: [
-  //     {
-  //       data: avsOperators.map(({ operatorsCount }) => operatorsCount),
-  //       backgroundColor: [
-  //         "rgba(255, 99, 132, 0.8)",
-  //         "rgba(54, 162, 235, 0.8)",
-  //         "rgba(255, 206, 86, 0.8)",
-  //         "rgba(75, 192, 192, 0.8)",
-  //         "rgba(153, 102, 255, 0.8)",
-  //         "rgba(255, 159, 64, 0.8)",
-  //         "rgba(46, 204, 113, 0.8)",
-  //         "rgba(52, 152, 219, 0.8)",
-  //         "rgba(155, 89, 182, 0.8)",
-  //         "rgba(241, 196, 15, 0.8)",
-  //         "rgba(231, 76, 60, 0.8)",
-  //         "rgba(26, 188, 156, 0.8)",
-  //       ],
-  //       borderColor: [
-  //         "rgba(255, 99, 132, 1)",
-  //         "rgba(54, 162, 235, 1)",
-  //         "rgba(255, 206, 86, 1)",
-  //         "rgba(75, 192, 192, 1)",
-  //         "rgba(153, 102, 255, 1)",
-  //         "rgba(255, 159, 64, 1)",
-  //         "rgba(46, 204, 113, 1)",
-  //         "rgba(52, 152, 219, 1)",
-  //         "rgba(155, 89, 182, 1)",
-  //         "rgba(241, 196, 15, 1)",
-  //         "rgba(231, 76, 60, 1)",
-  //         "rgba(26, 188, 156, 1)",
-  //       ],
-  //       borderWidth: 2,
-  //     },
-  //   ],
-  // };
 
   interface AnalyticsSummaryProps {
     totalTVL: number;
@@ -445,6 +455,12 @@ function Analytics() {
     );
   };
 
+  if (loading) return <div className="flex items-center justify-center"></div>;
+  if (error) {
+    console.error("GraphQL Error:", error);
+    return <p>Error: {error.message}</p>;
+  }
+
   return (
     <div className="p-20 -mt-20">
       {/* <h1 className="text-5xl text-center pb-7">Analytics</h1> */}
@@ -470,6 +486,9 @@ function Analytics() {
             totalStakers={totalStakers}
             totalRestaking={totalRestaking}
           />
+          {airDrop &&
+            <Leaderboard data={airDrop}/>
+          }
           {/* <div className='flex items-center justify-center mt-7'>
             <div className='flex gap-x-40 text-center'>
               <div className='w-96 h-96'>

@@ -200,14 +200,12 @@ function SpecificDelegate({ props }: { props: Type }) {
 
   console.log(delegateInfo);
 
-  if (props.daoDelegates === "operators") {
-    useEffect(() => {
-      if (data) {
-        console.log(data.operators[0].earningsReceiver);
-        setEarningsReceiver(data.operators[0].earningsReceiver);
-      }
-    }, [data]);
-  }
+  useEffect(() => {
+    if (props.daoDelegates === "operators" && data) {
+      console.log(data.operators[0].earningsReceiver);
+      setEarningsReceiver(data.operators[0].earningsReceiver);
+    }
+  }, [props.daoDelegates, data]);
 
   if (loading) return <div className="flex items-center justify-center"></div>;
   if (error) {

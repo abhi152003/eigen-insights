@@ -12,6 +12,8 @@ import SessionPage from "@/app/(routes)/sessions/page";
 import OfficeHoursPage from "../office-hours/page";
 import RecordedSessions from "@/components/DelegateSessions/RecordedSessions";
 import { RxCross2 } from "react-icons/rx";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/components/utils/avsExplorerClient";
 
 function Page() {
   const searchParams = useSearchParams();
@@ -70,7 +72,9 @@ function Page() {
 
       <div className="py-6">
         {searchParams.get("active") === "analytics" ? (
-          <Analytics />
+          <ApolloProvider client={client}>
+            <Analytics />
+          </ApolloProvider>
         ) : searchParams.get("active") === "recordedSessions" ? (
           <div className="ps-16 pe-16">
             <RecordedSessions />
