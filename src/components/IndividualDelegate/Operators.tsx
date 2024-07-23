@@ -1,17 +1,16 @@
 import { useRouter } from "next-nprogress-bar";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 import Image from "next/image";
-import { Button, Tooltip as CopyToolTip } from "@nextui-org/react";
 import { IoCopy, IoSearchSharp } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
 import { gql, useQuery } from "@apollo/client";
 
 const GET_OPERATORS = gql`
-  query GetOperators($avsAddress: String!, $skip: Int!, $first: Int!) {
-    quorums(where: { avs: $avsAddress }) {
-      operators(orderBy: totalWeight, orderDirection: desc, skip: $skip, first: $first) {
+  query GetAllOperators($avsAddress: String!) {
+    quorums(where: { avs: $avsAddress }, first: 2) {
+      operators(orderBy: totalWeight, orderDirection: desc, first: 900) {
         createdTimestamp
         operator {
           id
@@ -31,169 +30,198 @@ const GET_OPERATORS = gql`
   }
 `;
 
+const GET_AVS_OPERATORS = gql`
+  query GetAVSOperators($avsAddress: String!, $status: Int) {
+    avsoperatorStatuses(
+      where: { avs: $avsAddress, status: $status }
+      orderBy: operator__totalShares
+      orderDirection: desc
+      first: 900
+    ) {
+      status
+      operator {
+        id
+        metadataURI
+        delegatorsCount
+        registered
+        totalShares
+        totalEigenShares
+      }
+    }
+  }
+`;
+
+const GET_DA_METRICS = gql`
+  query GetDAMetrics($operatorId: String!) {
+    eigenDaMetrics_collection {
+      activeOperators(where: { id: $operatorId }) {
+        id
+        daSigningRate24h
+        daSigningRate4W
+        daSigningRate1W
+      }
+    }
+  }
+`;
+
 interface Operator {
-  createdTimestamp: string;
+  quorum?: number;
+  createdTimestamp?: string;
   operator: {
     id: string;
     metadataURI: string;
     delegatorsCount: number;
     totalShares: string;
     totalEigenShares: string;
-    avsStatuses: { status: number }[];
+    avsStatuses?: { status: number }[];
+    registered?: number;
   };
-  totalWeight: string;
+  totalWeight?: string;
+  daSigningRate?: string;
+  status?: number;
 }
 
 interface OperatorRowProps {
   operator: Operator;
   router: ReturnType<typeof useRouter>;
   handleCopy: (address: string) => void;
-  rank: number;
+  rank: string;
+  daSigningRatePeriod: string;
 }
-
-const OperatorRow: React.FC<OperatorRowProps> = ({ operator, router, handleCopy, rank }) => {
-  const [metadata, setMetadata] = useState<{ name: string; logo: string; description: string } | null>(null);
-
-  useEffect(() => {
-    const fetchMetadata = async () => {
-      try {
-        const response = await fetch(operator.operator.metadataURI);
-        const data = await response.json();
-        setMetadata(data);
-      } catch (error) {
-        console.error("Error fetching metadata:", error);
-      }
-    };
-    fetchMetadata();
-  }, [operator.operator.metadataURI]);
-
-  const formatDate = (timestamp: string) => {
-    const now = new Date();
-    const past = new Date(parseInt(timestamp) * 1000);
-    const diffTime = Math.abs(now.getTime() - past.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) {
-      return "today";
-    } else if (diffDays === 1) {
-      return "yesterday";
-    } else {
-      return `${diffDays} days ago`;
-    }
-  };
-
-  const status = operator.operator.avsStatuses[0]?.status === 1 ? "Active" : "Inactive";
-
-  return (
-    <tr
-      className="border-b border-gray-700 hover:bg-sky-blue hover:bg-opacity-5 cursor-pointer transition-colors duration-150 whitespace-nowrap"
-      onClick={() => router.push(`/operators/${operator.operator.id}?active=info`)}
-    >
-      <td className="px-4 py-2">
-        <div className="flex items-center">
-          <div className="relative w-10 h-10 flex-shrink-0 mr-3">
-            <Image
-              src={metadata?.logo ?? "/placeholder.png"}
-              alt="Logo"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-full"
-            />
-          </div>
-          <span className="font-semibold">
-            {metadata?.name || `${operator.operator.id.slice(0, 6)}...${operator.operator.id.slice(-4)}`}
-          </span>
-        </div>
-      </td>
-      <td className="px-4 py-2">
-        <div className="flex items-center">
-          <span>{`${operator.operator.id.slice(0, 6)}...${operator.operator.id.slice(-4)}`}</span>
-          <span
-            className="ml-2 cursor-pointer"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleCopy(operator.operator.id);
-            }}
-            title="Copy address"
-          >
-            <IoCopy size={16} />
-          </span>
-        </div>
-      </td>
-      <td className="px-4 py-2">
-        <p className="truncate max-w-xs" title={metadata?.description}>
-          {metadata?.description || "No description provided"}
-        </p>
-      </td>
-      <td className="px-4 py-2 text-right">{operator.operator.delegatorsCount}</td>
-      <td className="px-4 py-2 text-right">{parseFloat(operator.totalWeight).toFixed(2)}</td>
-      <td className="px-4 py-2 text-right">{formatDate(operator.createdTimestamp)}</td>
-      <td className="px-4 py-2 text-right">{status}</td>
-      <td className="px-4 py-2 text-right">{rank}</td>
-    </tr>
-  );
-};
 
 function Operators({ props }: { props: { individualDelegate: string } }) {
   const router = useRouter();
-  const [operators, setOperators] = useState<Operator[]>([]);
+  const [allOperators, setAllOperators] = useState<Operator[]>([]);
+  const [displayedOperators, setDisplayedOperators] = useState<Operator[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedQuorum, setSelectedQuorum] = useState<number | null>(0);
+  const [selectedQuorum, setSelectedQuorum] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [operatorCounts, setOperatorCounts] = useState<{
+    [key: number]: number;
+  }>({});
+  const [operatorsInAllQuorums, setOperatorsInAllQuorums] = useState<
+    Operator[]
+  >([]);
+  const [daSigningRatePeriod, setDaSigningRatePeriod] = useState<string>("24h");
+  const [useAVSOperators, setUseAVSOperators] = useState(false);
+  const [useAllOperatorsFallback, setUseAllOperatorsFallback] = useState(true);
+  const [totalAVSOperatorsCount, setTotalAVSOperatorsCount] = useState(0);
 
-  const { loading: queryLoading, error, data, fetchMore } = useQuery(GET_OPERATORS, {
-    variables: { avsAddress: props.individualDelegate, skip: 0, first: 100 },
+  const {
+    loading: queryLoading,
+    error,
+    data,
+  } = useQuery(GET_OPERATORS, {
+    variables: { avsAddress: props.individualDelegate },
     notifyOnNetworkStatusChange: true,
     context: {
       subgraph: "avs",
-    }
+    },
   });
 
-  if (data) {
-    console.log("data is comingggggg")
-  } else {
-    console.log("data is not cominggg")
-  }
+  console.log("dataaaaaaaaaa", data);
+
+  const {
+    loading: avsQueryLoading,
+    error: avsError,
+    data: avsData,
+  } = useQuery(GET_AVS_OPERATORS, {
+    variables: {
+      avsAddress: props.individualDelegate,
+      status: useAllOperatorsFallback ? 1 : undefined,
+    },
+    skip: !useAVSOperators && !useAllOperatorsFallback,
+    context: {
+      subgraph: "avs",
+    },
+  });
+
+  console.log("fallbackkkkkkkkkkkk", avsData);
 
   useEffect(() => {
     if (data?.quorums) {
-      const allOperators = data.quorums.flatMap((quorum: any) => quorum.operators);
-      setOperators(allOperators);
+      const hasEmptyQuorum = data.quorums.some(
+        (quorum: any) => quorum.operators.length === 0
+      );
+
+      if (data.quorums.length > 0 && !hasEmptyQuorum) {
+        const operators = data.quorums.flatMap((quorum: any) =>
+          quorum.operators.map((op: any) => ({ ...op, quorum: quorum.quorum }))
+        );
+        setAllOperators(operators);
+
+        // Calculate operator counts for each quorum
+        const counts = data.quorums.reduce(
+          (acc: { [key: number]: number }, quorum: any) => {
+            acc[quorum.quorum] = quorum.operatorsCount;
+            return acc;
+          },
+          {}
+        );
+        setOperatorCounts(counts);
+
+        // Calculate operators in all quorums
+        const quorumCount = data.quorums.length;
+        const operatorCounts = operators.reduce(
+          (acc: { [key: string]: number }, op: Operator) => {
+            acc[op.operator.id] = (acc[op.operator.id] || 0) + 1;
+            return acc;
+          },
+          {}
+        );
+        const inAllQuorums = operators.filter(
+          (op: { operator: { id: string | number } }) =>
+            operatorCounts[op.operator.id] === quorumCount
+        );
+        setOperatorsInAllQuorums(inAllQuorums);
+
+        setLoading(false);
+        setUseAVSOperators(false);
+      } else {
+        // If any quorum has an empty operators array, use fallback query
+        setUseAVSOperators(true);
+      }
+    } else if (data?.quorums && data.quorums.length === 0) {
+      setUseAVSOperators(true);
+    }
+
+    // Process avsData (fallback query data)
+    if (avsData?.avsoperatorStatuses) {
+      const operators = avsData.avsoperatorStatuses.map((op: any) => ({
+        operator: op.operator,
+        status: op.status,
+      }));
+      setTotalAVSOperatorsCount(operators.length);
+      if (useAVSOperators) {
+        setAllOperators(operators);
+        setOperatorsInAllQuorums(operators);
+      }
       setLoading(false);
     }
-  }, [data]);
-
-  const loadMoreOperators = useCallback(() => {
-    fetchMore({
-      variables: {
-        skip: operators.length,
-        first: 100,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return {
-          quorums: prev.quorums.map((prevQuorum: any, index: number) => ({
-            ...prevQuorum,
-            operators: [...prevQuorum.operators, ...fetchMoreResult.quorums[index].operators],
-          })),
-        };
-      },
-    });
-  }, [fetchMore, operators.length]);
+  }, [data, avsData, useAVSOperators]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop
-        === document.documentElement.offsetHeight
-      ) {
-        loadMoreOperators();
-      }
-    };
+    let filtered: any[] | ((prevState: Operator[]) => Operator[]) = [];
+    if (useAVSOperators || useAllOperatorsFallback) {
+      filtered = [...allOperators];
+    } else if (selectedQuorum !== null) {
+      filtered = allOperators.filter((op) => op.quorum === selectedQuorum);
+    }
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [loadMoreOperators]);
+    if (searchQuery) {
+      filtered = filtered.filter((operator) =>
+        operator.operator.id.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setDisplayedOperators(filtered);
+  }, [
+    allOperators,
+    searchQuery,
+    selectedQuorum,
+    useAVSOperators,
+    useAllOperatorsFallback,
+  ]);
 
   const handleCopy = (addr: string) => {
     copy(addr);
@@ -204,13 +232,197 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
     setSearchQuery(query);
   };
 
-  const filteredOperators = useMemo(() => {
-    return operators.filter((operator) => {
-      const matchesSearch = operator.operator.id.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesQuorum = selectedQuorum === null || operator.operator.avsStatuses[0]?.status === selectedQuorum;
-      return matchesSearch && matchesQuorum;
+  const calculateRank = (
+    operator: Operator,
+    allOperators: Operator[],
+    selectedQuorum: number | null
+  ) => {
+    if (selectedQuorum === null) {
+      // For All Quorums, prioritize Quorum 0
+      const quorum0Operators = allOperators.filter((op) => op.quorum === 0);
+      const quorum1Operators = allOperators.filter((op) => op.quorum === 1);
+
+      if (
+        operator.quorum === 0 ||
+        (operator.quorum === undefined &&
+          quorum0Operators.some(
+            (op) => op.operator.id === operator.operator.id
+          ))
+      ) {
+        return (
+          quorum0Operators.findIndex(
+            (op) => op.operator.id === operator.operator.id
+          ) + 1
+        );
+      } else {
+        return (
+          quorum1Operators.findIndex(
+            (op) => op.operator.id === operator.operator.id
+          ) + 1
+        );
+      }
+    } else {
+      // For specific quorums, rank within that quorum
+      const quorumOperators = allOperators.filter(
+        (op) => op.quorum === selectedQuorum
+      );
+      return (
+        quorumOperators.findIndex(
+          (op) => op.operator.id === operator.operator.id
+        ) + 1
+      );
+    }
+  };
+
+  const OperatorRow: React.FC<OperatorRowProps> = ({
+    operator,
+    router,
+    handleCopy,
+    rank,
+    daSigningRatePeriod,
+  }) => {
+    const [metadata, setMetadata] = useState<{
+      name: string;
+      logo: string;
+      description: string;
+    } | null>(null);
+
+    const { data: daMetricsData } = useQuery(GET_DA_METRICS, {
+      variables: { operatorId: operator.operator.id },
+      skip:
+        props.individualDelegate !==
+        "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0",
     });
-  }, [operators, searchQuery, selectedQuorum]);
+
+    useEffect(() => {
+      if (daMetricsData && daMetricsData.eigenDaMetrics_collection) {
+        const activeOperators =
+          daMetricsData.eigenDaMetrics_collection[0]?.activeOperators;
+        if (activeOperators && activeOperators.length > 0) {
+          const metrics = activeOperators[0];
+          if (metrics) {
+            const rate = metrics[`daSigningRate${daSigningRatePeriod}`];
+            operator.daSigningRate = rate !== undefined ? rate : undefined;
+          }
+        } else {
+          operator.daSigningRate = undefined;
+        }
+      }
+    }, [daMetricsData, daSigningRatePeriod, operator]);
+
+    useEffect(() => {
+      const fetchMetadata = async () => {
+        try {
+          const response = await fetch(operator.operator.metadataURI);
+          const data = await response.json();
+          setMetadata(data);
+        } catch (error) {
+          console.error("Error fetching metadata:", error);
+        }
+      };
+      fetchMetadata();
+    }, [operator.operator.metadataURI]);
+
+    const formatDate = (timestamp: string | number | undefined) => {
+      if (!timestamp) return "N/A";
+      const now = new Date();
+      const past = new Date(
+        typeof timestamp === "string" ? parseInt(timestamp) * 1000 : timestamp
+      );
+      const diffTime = Math.abs(now.getTime() - past.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) {
+        return "today";
+      } else if (diffDays === 1) {
+        return "yesterday";
+      } else {
+        return `${diffDays} days ago`;
+      }
+    };
+
+    const status = useAVSOperators
+      ? operator.status === 1
+        ? "Active"
+        : "Inactive"
+      : operator.operator.avsStatuses?.[0]?.status === 1
+      ? "Active"
+      : "Inactive";
+
+    const optInDate: string | number | undefined =
+      operator.createdTimestamp || operator.operator.registered;
+
+    return (
+      <tr
+        className="border-b border-gray-700 hover:bg-sky-blue hover:bg-opacity-5 cursor-pointer transition-colors duration-150 whitespace-nowrap"
+        onClick={() =>
+          router.push(`/operators/${operator.operator.id}?active=info`)
+        }
+      >
+        <td className="px-4 py-2">
+          <div className="flex items-center">
+            <div className="relative w-10 h-10 flex-shrink-0 mr-3">
+              <Image
+                src={metadata?.logo ?? ""}
+                alt="Logo"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+            <span className="font-semibold">
+              {metadata?.name ||
+                `${operator.operator.id.slice(
+                  0,
+                  6
+                )}...${operator.operator.id.slice(-4)}`}
+            </span>
+          </div>
+        </td>
+        <td className="px-4 py-2">
+          <div className="flex items-center">
+            <span>{`${operator.operator.id.slice(
+              0,
+              6
+            )}...${operator.operator.id.slice(-4)}`}</span>
+            <span
+              className="ml-2 cursor-pointer"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleCopy(operator.operator.id);
+              }}
+              title="Copy address"
+            >
+              <IoCopy size={16} />
+            </span>
+          </div>
+        </td>
+        <td className="px-4 py-2 text-right">
+          {operator.operator.delegatorsCount}
+        </td>
+        {selectedQuorum === 0 || selectedQuorum === null ? (
+          <td className="px-4 py-2 text-right">
+            {(parseFloat(operator.operator.totalShares) / 1e18).toFixed(2)}
+          </td>
+        ) : (
+          <td className="px-4 py-2 text-right">
+            {(parseFloat(operator.operator.totalEigenShares) / 1e18).toFixed(2)}
+          </td>
+        )}
+        <td className="px-4 py-2 text-right">{formatDate(optInDate)}</td>
+        <td className="px-4 py-2 text-right">{status}</td>
+        <td className="px-4 py-2 text-right">{rank}</td>
+        {props.individualDelegate ===
+          "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
+          <td className="px-4 py-2 text-right">
+            {operator.daSigningRate !== undefined
+              ? `${parseFloat(operator.daSigningRate).toFixed(2)}%`
+              : "N/A"}
+          </td>
+        )}
+      </tr>
+    );
+  };
 
   if (loading) {
     return (
@@ -226,9 +438,11 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
         />
       </div>
     );
-  } else {
-    console.log(error)
   }
+
+  const getTotalOperatorCount = () => {
+    return totalAVSOperatorsCount;
+  };
 
   return (
     <div>
@@ -248,46 +462,119 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               <IoSearchSharp className="iconExplore" />
             </button>
           </div>
-          <div className="mb-4 flex space-x-4">
-            <button
-              className={`px-4 py-2 rounded ${
-                selectedQuorum === 0 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
-              }`}
-              onClick={() => setSelectedQuorum(selectedQuorum === 0 ? null : 0)}
-            >
-              Quorum 0
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                selectedQuorum === 1 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
-              }`}
-              onClick={() => setSelectedQuorum(selectedQuorum === 1 ? null : 1)}
-            >
-              Quorum 1
-            </button>
-          </div>
+          {!useAVSOperators && (
+            <div className="mb-4 flex space-x-4">
+              <button
+                className={`px-4 py-2 rounded ${
+                  selectedQuorum === null
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => {
+                  setSelectedQuorum(null);
+                  setUseAllOperatorsFallback(true);
+                }}
+              >
+                All Quorums ({getTotalOperatorCount()})
+              </button>
+
+              <button
+                className={`px-4 py-2 rounded ${
+                  selectedQuorum === 0
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => {
+                  setSelectedQuorum(0);
+                  setUseAllOperatorsFallback(false);
+                }}
+              >
+                Quorum 0 ({operatorCounts[0] || 0})
+              </button>
+              <button
+                className={`px-4 py-2 rounded ${
+                  selectedQuorum === 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => {
+                  setSelectedQuorum(1);
+                  setUseAllOperatorsFallback(false);
+                }}
+              >
+                Quorum 1 ({operatorCounts[1] || 0})
+              </button>
+            </div>
+          )}
+          {props.individualDelegate ===
+            "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
+            <div className="mb-4 flex space-x-4">
+              <button
+                className={`px-4 py-2 rounded ${
+                  daSigningRatePeriod === "24h"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => setDaSigningRatePeriod("24h")}
+              >
+                1 Day
+              </button>
+              <button
+                className={`px-4 py-2 rounded ${
+                  daSigningRatePeriod === "1W"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => setDaSigningRatePeriod("1W")}
+              >
+                1 Week
+              </button>
+              <button
+                className={`px-4 py-2 rounded ${
+                  daSigningRatePeriod === "4W"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => setDaSigningRatePeriod("4W")}
+              >
+                1 Month
+              </button>
+            </div>
+          )}
           <div className="w-full overflow-x-auto">
             <table className="min-w-full bg-midnight-blue overflow-x-auto">
               <thead>
                 <tr className="bg-sky-blue bg-opacity-10">
                   <th className="px-4 py-2 text-left">Operator</th>
                   <th className="px-4 py-2 text-left">Address</th>
-                  <th className="px-4 py-2 text-left">Description</th>
                   <th className="px-4 py-2 text-right">Total Stakers</th>
                   <th className="px-4 py-2 text-right">TVL</th>
                   <th className="px-4 py-2 text-right">Opt-in</th>
                   <th className="px-4 py-2 text-right">Status</th>
                   <th className="px-4 py-2 text-right">Rank</th>
+                  {props.individualDelegate ===
+                    "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
+                    <th className="px-4 py-2 text-right">Uptime</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
-                {filteredOperators.map((operator, index) => (
+                {displayedOperators.map((operator, index) => (
                   <OperatorRow
-                    key={operator.operator.id}
+                    key={`${operator.operator.id}-${operator.quorum}`}
                     operator={operator}
                     router={router}
                     handleCopy={handleCopy}
-                    rank={index + 1}
+                    rank={`${calculateRank(
+                      operator,
+                      allOperators,
+                      selectedQuorum
+                    )}/${
+                      selectedQuorum === null
+                        ? getTotalOperatorCount()
+                        : operatorCounts[selectedQuorum] || 0
+                    }`}
+                    daSigningRatePeriod={daSigningRatePeriod}
                   />
                 ))}
               </tbody>
