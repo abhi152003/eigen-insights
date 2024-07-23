@@ -1002,103 +1002,11 @@ function MainProfile() {
                     }}
                   />
                 </div>
-                {/* {selfDelegate === true
-                  ? votes && (
-                      <div className="flex gap-4 py-1">
-                        <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                          <span className="text-light-cyan font-semibold">
-                            {votes.delegatedVotes
-                              ? formatNumber(Number(votes.delegatedVotes))
-                              : "Fetching "}
-                            &nbsp;
-                          </span>
-                          delegated tokens
-                        </div>
-                        <div className="text-[#4F4F4F] border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                          <span className="text-light-cyan font-semibold">
-                            {formatNumber(votes.delegatorCount)
-                              ? null
-                              : "Fetching "}
-                          </span>
-                          Delegated from
-                          <span className="text-light-cyan font-semibold">
-                            &nbsp;
-                            {formatNumber(votes.delegatorCount)
-                              ? formatNumber(votes.delegatorCount)
-                              : "number of "}
-                            &nbsp;
-                          </span>
-                          Addresses
-                        </div>
-                      </div>
-                    )
-                  : null
-                } */}
               </div>
             </div>
             <div>
               <ConnectWalletWithENS />
             </div>
-          </div>
-
-          <div className="flex gap-12 bg-[#D9D9D945] pl-16 text-white">
-            <button
-              className={`border-b-2 py-4 px-2 outline-none ${
-                searchParams.get("active") === "info"
-                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
-                  : "border-transparent"
-              }`}
-              onClick={() => router.push(path + "?active=info")}
-            >
-              Info
-            </button>
-            {/* <button
-              className={`border-b-2 py-4 px-2 outline-none ${
-                searchParams.get("active") === "sessions"
-                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
-                  : "border-transparent"
-              }`}
-              onClick={() =>
-                router.push(path + "?active=sessions&session=schedule")
-              }
-            >
-              Sessions
-            </button>
-            <button
-              className={`border-b-2 py-4 px-2 outline-none ${
-                searchParams.get("active") === "officeHours"
-                  ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
-                  : "border-transparent"
-              }`}
-              onClick={() =>
-                router.push(path + "?active=officeHours&hours=schedule")
-              }
-            >
-              Office Hours
-            </button>
-
-            {selfDelegate === true && (
-              <button
-                className={`border-b-2 py-4 px-2 outline-none ${
-                  searchParams.get("active") === "instant-meet"
-                    ? "text-light-cyan font-semibold border-b-3 border-light-cyan"
-                    : "border-transparent"
-                }`}
-                onClick={() => router.push(path + "?active=instant-meet")}
-              >
-                Instant Meet
-              </button>
-            )} */}
-            {/* <button
-              className={`border-b-2 py-4 px-2 outline-none ${
-                searchParams.get("active") === "claimNft"
-                  ? "text-light-cyan font-semibold border-b-2 border-blue-shade-200"
-                  : "border-transparent"
-              }`}
-              onClick={() => router.push(path + "?active=claimNft")}
-            >
-              Claim NFTs
-            </button> */}
           </div>
 
           <div className="py-6 ps-16">

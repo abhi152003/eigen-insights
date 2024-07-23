@@ -438,69 +438,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                     </button>
                   )}
                 </div>
-
-                {/* <div className="flex gap-3 py-1">
-                  <div>
-                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-                      <span className="text-light-cyan text-base font-semibold">
-                        {delegateInfo?.totalStakers
-                          ? Number(delegateInfo?.totalStakers)
-                          : 0}
-                        &nbsp;
-                      </span>
-                      total stakers
-                    </div>
-                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                      TVL
-                      <span className="text-light-cyan text-base font-semibold">
-                        &nbsp;
-                        {delegateInfo?.tvl.tvl
-                          ? parseFloat((delegateInfo?.tvl.tvl).toFixed(2))
-                          : 0}
-                        &nbsp;
-                      </span>
-                      ETH
-                    </div>
-                  </div>
-
-                  <div>
-                    {props.daoDelegates === "avss" && (
-                      <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1 mb-5">
-                        <span className="text-light-cyan text-base font-semibold">
-                          {delegateInfo?.totalOperators
-                            ? Number(delegateInfo?.totalOperators)
-                            : 0}
-                          &nbsp;
-                        </span>
-                        total operators
-                      </div>
-                    )}
-                    <div className="text-white border-[0.5px] border-[#D9D9D9] rounded-md px-3 py-1">
-                      TVL Restaked
-                      <span className="text-light-cyan text-base font-semibold">
-                        &nbsp;
-                        {delegateInfo?.tvl.tvl
-                          ? parseFloat(
-                              (delegateInfo?.tvl.tvlRestaking).toFixed(2)
-                            )
-                          : 0}
-                        &nbsp;
-                      </span>
-                      ETH
-                    </div>
-                  </div>
-                </div> */}
-
-                {/* <div className="pt-2">
-                  <button
-                    className="bg-midnight-blue font-bold text-white rounded-full px-8 py-[10px] btnShineWallet"
-                    onClick={() =>
-                      handleDelegateVotes(`${props.individualDelegate}`)
-                    }
-                  >
-                    Stake
-                  </button>
-                </div> */}
               </div>
             </div>
             <div className="pr-[2.2rem]">
@@ -580,32 +517,6 @@ function SpecificDelegate({ props }: { props: Type }) {
             ) : (
               ""
             )}
-            {/* <button
-              className={`border-b-2 py-3 px-2
-                ${
-                  searchParams.get("active") === "delegatesSession"
-                    ? "border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                }`}
-              onClick={() =>
-                router.push(path + "?active=delegatesSession&session=book")
-              }
-            >
-              Sessions
-            </button>
-            <button
-              className={`border-b-2 py-3 px-2
-                ${
-                  searchParams.get("active") === "officeHours"
-                    ? "border-light-cyan text-light-cyan font-semibold"
-                    : "border-transparent"
-                }`}
-              onClick={() =>
-                router.push(path + "?active=officeHours&hours=ongoing")
-              }
-            >
-              Office Hours
-            </button> */}
           </div>
 
           <div className="py-6 ps-16">

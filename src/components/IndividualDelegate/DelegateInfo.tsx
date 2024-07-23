@@ -26,6 +26,13 @@ import "../../css/ImagePulse.css";
 import "../../css/ExploreDAO.css";
 import OperatorsAnalytics from "./OperatorsAnalytics";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import {
+  PieChartSkeleton,
+  DataListSkeleton,
+} from "../Skeletons/PieChartSkeleton";
+
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -54,6 +61,7 @@ function DelegateInfo({
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const [earningsReceiver, setEarningsReceiver] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
@@ -147,6 +155,7 @@ function DelegateInfo({
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -484,6 +493,23 @@ function DelegateInfo({
         )}
       </div>
 
+      {isLoading ? (
+              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                <div className="p-4">
+                  <div className="flex justify-between items-center">
+                    <Skeleton width={100} />
+                    <Skeleton width={150} />
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex flex-col md:flex-row gap-x-40">
+                    <DataListSkeleton />
+                    <PieChartSkeleton />
+                  </div>
+                </div>
+              </div>
+            ) : (
+
       <div className="flex justify-center mt-5 pe-16">
         {filteredData.length > 0 ? (
           <div
@@ -548,6 +574,7 @@ function DelegateInfo({
           <p>No ETH stacked</p>
         )}
       </div>
+      )}
     </div>
   );
 }
