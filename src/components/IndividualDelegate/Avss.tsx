@@ -1,169 +1,132 @@
 import { useRouter } from "next-nprogress-bar";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoCopy, IoSearchSharp } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
-import Image from "next/image";
 import { ThreeCircles } from "react-loader-spinner";
-import { useQuery } from "urql";
+import { gql, useQuery } from "@apollo/client";
+import Image from "next/image";
 
-const GET_DATA = `
-  query MyQuery {
-  avss(where: {id: "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0"}) {
-    registrationsCount
-    registrations(where: {}, orderBy: registeredTimestamp, orderDirection: asc) {
-      status
-      registeredTimestamp
-      operator {
-        id
-        totalShares
+const GET_OPERATOR_AVSS = gql`
+  query GetOperatorAvss($operatorId: String!) {
+    operator(id: $operatorId) {
+      id
+      avsStatuses(where: { status: 1 }) {
+        avs {
+          id
+          metadataURI
+          registrationsCount
+        }
+        status
       }
     }
   }
-}
 `;
 
 interface Type {
-  daoDelegates: string;
   individualDelegate: string;
 }
 
+interface Metadata {
+  name: string;
+  website: string;
+  description: string;
+  logo: string;
+  twitter: string;
+}
+
 function Avss({ props }: { props: Type }) {
-  const [isDataLoading, setDataLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [avsOperators, setAVSOperators] = useState<any[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [avssWithMetadata, setAvssWithMetadata] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  const {
+    loading: graphLoading,
+    error,
+    data,
+  } = useQuery(GET_OPERATOR_AVSS, {
+    variables: { operatorId: props.individualDelegate },
+    context: {
+      subgraph: "avs",
+    },
+  });
 
-  //   const fetchData = useCallback(async () => {
-  //     if (!hasMore || isDataLoading) return;
+  const fetchMetadata = async (uri: string): Promise<Metadata | null> => {
+    try {
+      const url = `/api/get-avs-metadata?url=${encodeURIComponent(uri)}`;
+      const response = await fetch(url);
 
-  //     setDataLoading(true);
-  //     const options = { method: "GET" };
-  //     const avsOperatorsRes = await fetch(
-  //       `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
-  //       options
-  //     );
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to fetch metadata: ${response.status} ${errorText}`
+        );
+      }
 
-  //     const newAvsOperators = await avsOperatorsRes.json();
-
-  //     if (newAvsOperators.data.length === 0) {
-  //       setHasMore(false);
-  //     } else {
-  //       setAVSOperators((prevOperators) => [
-  //         ...prevOperators,
-  //         ...newAvsOperators.data,
-  //       ]);
-  //       setCurrentPage((prevPage) => prevPage + 12);
-  //     }
-
-  //     setDataLoading(false);
-  //     setInitialLoad(false);
-  //   }, [currentPage, hasMore, isDataLoading]);
-
-  const [operatorsAvss, setOperatorsAvss] = useState<any[]>([]);
-
-  const fetchData = useCallback(async () => {
-    if (!hasMore || isDataLoading) return;
-
-    setDataLoading(true);
-    const options = { method: "GET" };
-    const operatorsAvssRes = await fetch(
-      `/api/get-operators-avss?operatorAddress=${props.individualDelegate}`,
-      options
-    );
-
-    const newOperatorsAvss = await operatorsAvssRes.json();
-
-    console.log("operatorsssssssssssssss", newOperatorsAvss);
-    setOperatorsAvss(newOperatorsAvss);
-
-    setDataLoading(false);
-    setInitialLoad(false);
-  }, [currentPage, hasMore, isDataLoading]);
-
-  useEffect(() => {
-    if (initialLoad) {
-      fetchData();
+      return await response.json();
+    } catch (error) {
+      console.error(`Error fetching metadata from ${uri}:`, error);
+      return null;
     }
-  }, [fetchData, initialLoad]);
-
-  const debounce = (
-    func: { (): void; apply?: any },
-    delay: number | undefined
-  ) => {
-    let timeoutId: string | number | NodeJS.Timeout | undefined;
-    return (...args: any) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func.apply(null, args);
-      }, delay);
-    };
   };
 
-  const handleScroll = useCallback(() => {
-    if (initialLoad) return;
+  useEffect(() => {
+    if (data && data.operator) {
+      const fetchAllMetadata = async () => {
+        setLoading(true);
+        const avssWithMetadata = await Promise.all(
+          data.operator.avsStatuses.map(async (status: any) => {
+            const avs = status.avs;
+            const metadata = await fetchMetadata(avs.metadataURI);
+            return { ...avs, metadata };
+          })
+        );
 
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    const threshold = 100;
-    if (
-      scrollTop + clientHeight >= scrollHeight - threshold &&
-      !isDataLoading
-    ) {
-      fetchData();
+        const sortedAvssWithMetadata = avssWithMetadata.sort(
+          (a, b) =>
+            parseInt(b.registrationsCount) - parseInt(a.registrationsCount)
+        );
+
+        setAvssWithMetadata(sortedAvssWithMetadata);
+        setAvssWithMetadata(avssWithMetadata);
+        setLoading(false);
+      };
+      fetchAllMetadata();
     }
-  }, [fetchData, initialLoad, isDataLoading]);
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [handleScroll]);
+  }, [data]);
 
   const handleCopy = (addr: string) => {
     copy(addr);
     toast("Address Copied");
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
-
-  console.log("avs addresssssss", props.individualDelegate);
-
-  const handleSearchChange = async (query: string) => {
-    // console.log("query: ", query.length);
-    // console.log("queryyyyyyyy",query)
+  const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-
-    if (query.length > 0) {
-      // console.log("Delegate data: ", query, delegateData);
-      // console.log(delegateData);
-      window.removeEventListener("scroll", handleScroll);
-
-      try {
-        const res = await fetch(
-          `/api/search-operators-avss?q=${query}&operatorAddress=${props.individualDelegate}`
-        );
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
-        }
-        const data = await res.json();
-        console.log("dataaaaaaaaa", data);
-        setOperatorsAvss(data);
-      } catch (error) {
-        console.error("Search error:", error);
-      }
-    } else {
-      // console.log("in else");
-      console.log("data not comingggggg");
-      // setDelegateData({ ...delegateData, delegates: tempData.delegates });
-      window.addEventListener("scroll", handleScroll);
-    }
   };
 
-  console.log("avsssssss", avsOperators);
+  const filteredAvss = avssWithMetadata.filter(
+    (avs) =>
+      avs.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      avs.metadata?.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (loading)
+    return (
+      <div className="flex items-center justify-center">
+        <ThreeCircles
+          visible={true}
+          height="50"
+          width="50"
+          color="#FFFFFF"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+
+  if (error) return <p>Oh no... {error.message}</p>;
 
   return (
     <div>
@@ -174,7 +137,7 @@ function Avss({ props }: { props: Type }) {
             className="searchInput"
             type="text"
             name=""
-            placeholder="Search by Address or ENS Name"
+            placeholder="Search by Address or Name"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
           />
@@ -183,68 +146,53 @@ function Avss({ props }: { props: Type }) {
           </button>
         </div>
         <div className="py-8 pe-14 font-poppins">
-          {initialLoad ? (
-            <div className="flex items-center justify-center">
-              <ThreeCircles
-                visible={true}
-                height="50"
-                width="50"
-                color="#FFFFFF"
-                ariaLabel="three-circles-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            </div>
-          ) : operatorsAvss.length > 0 ? (
+          {filteredAvss.length > 0 ? (
             <div className="w-full overflow-x-auto">
               <table className="min-w-full bg-midnight-blue">
                 <thead>
                   <tr className="bg-sky-blue bg-opacity-10">
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Address</th>
+                    <th className="px-4 py-2 text-left">Operators</th>
+                    <th className="px-4 py-2 text-left">Description</th>
+                    <th className="px-4 py-2 text-left">Website</th>
+                    <th className="px-4 py-2 text-left">Twitter</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {operatorsAvss.map((dao, index) => (
+                  {filteredAvss.map((avs, index) => (
                     <tr
                       key={index}
                       className="border-b border-gray-700 hover:bg-sky-blue hover:bg-opacity-5 cursor-pointer transition-colors duration-150"
-                      onClick={() =>
-                        router.push(`/avss/${dao.avs_address}?active=info`)
-                      }
+                      onClick={() => router.push(`/avss/${avs.id}?active=info`)}
                     >
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          {/* <div className="relative w-10 h-10 flex-shrink-0 mr-3">
+                          <div className="relative w-10 h-10 flex-shrink-0 mr-3">
                             <Image
-                              src={dao.metadataLogo ?? "/placeholder.png"}
+                              src={avs.metadata?.logo ?? "/placeholder.png"}
                               alt="Logo"
                               layout="fill"
                               objectFit="cover"
                               className="rounded-full"
                             />
-                          </div> */}
+                          </div>
                           <span className="font-semibold">
-                            {dao.avs_name
-                              ? dao.avs_name
-                              : `${dao.avs_address.slice(
-                                  0,
-                                  6
-                                )}...${dao.avs_address.slice(-4)}`}
+                            {avs.metadata?.name ||
+                              `${avs.id.slice(0, 6)}...${avs.id.slice(-4)}`}
                           </span>
                         </div>
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          <span>{`${dao.avs_address.slice(
-                            0,
-                            6
-                          )}...${dao.avs_address.slice(-4)}`}</span>
+                          <span>{`${avs.id.slice(0, 6)}...${avs.id.slice(
+                            -4
+                          )}`}</span>
                           <span
                             className="ml-2 cursor-pointer"
                             onClick={(event) => {
                               event.stopPropagation();
-                              handleCopy(dao.avs_address);
+                              handleCopy(avs.id);
                             }}
                             title="Copy address"
                           >
@@ -252,14 +200,43 @@ function Avss({ props }: { props: Type }) {
                           </span>
                         </div>
                       </td>
-                      {/* <td className="px-4 py-2">
+                      <td className="px-4 py-2">{avs.registrationsCount}</td>
+                      <td className="px-4 py-2">
                         <p
                           className="truncate max-w-xs"
-                          title={dao.metadataDescription}
+                          title={avs.metadata?.description}
                         >
-                          {dao.metadataDescription || "No description provided"}
+                          {avs.metadata?.description || "N/A"}
                         </p>
-                      </td> */}
+                      </td>
+                      <td className="px-4 py-2">
+                        {avs.metadata?.website ? (
+                          <a
+                            href={avs.metadata.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:text-blue-300"
+                          >
+                            Website
+                          </a>
+                        ) : (
+                          "N/A"
+                        )}
+                      </td>
+                      <td className="px-4 py-2">
+                        {avs.metadata?.twitter ? (
+                          <a
+                            href={avs.metadata.twitter}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-400 hover:text-blue-300"
+                          >
+                            Twitter
+                          </a>
+                        ) : (
+                          "N/A"
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -267,14 +244,15 @@ function Avss({ props }: { props: Type }) {
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center pt-10">
-              {/* <div className="text-5xl">☹️</div>{" "}
+              <div className="text-5xl">☹️</div>
               <div className="pt-4 font-semibold text-lg">
-                Oops, no such result available!
-              </div> */}
+                No results found.
+              </div>
             </div>
           )}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

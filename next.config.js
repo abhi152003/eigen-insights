@@ -41,7 +41,8 @@ const nextConfig = {
       { hostname: "s3-eigenlayer-metadata.s3.amazonaws.com" },
       { hostname: "aethos-avs-metadata.s3.us-east-2.amazonaws.com" },
       { hostname: "i.ibb.co" },
-      { hostname: "mainnet-ethereum-avs-metadata.s3.amazonaws.com"}
+      { hostname: "mainnet-ethereum-avs-metadata.s3.amazonaws.com"},
+      { hostname: "mainnet-aethos-avs-metadata.s3.us-east-2.amazonaws.com"}
     ],
   },
   reactStrictMode: false,

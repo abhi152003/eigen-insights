@@ -70,7 +70,7 @@ function UserInfo({
   };
 
   return (
-    <div className="pt-4">
+    <div className="">
       {/* <div className="flex flex-col justify-between items-center">
       </div> */}
 
