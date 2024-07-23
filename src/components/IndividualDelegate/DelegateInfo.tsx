@@ -1,30 +1,12 @@
-// import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import React, { useCallback, useEffect, useState } from "react";
-import { LineWave, ThreeCircles } from "react-loader-spinner";
-
-import { Bar, Pie, Doughnut } from "react-chartjs-2";
+import { LineWave } from "react-loader-spinner";
+import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
-import { Toaster, toast } from "react-hot-toast";
-import { IoCopy } from "react-icons/io5";
+import { toast } from "react-hot-toast";
 import Image from "next/image";
-import NOLogo from "@/assets/images/daos/operators.png";
-import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
-import styles from "@/components/IndividualDelegate/DelegateVotes.module.css";
-import {
-  Button,
-  Dropdown,
-  Pagination,
-  Tooltip as CopyToolTip,
-} from "@nextui-org/react";
 import copy from "copy-to-clipboard";
-
-import { IoSearchSharp } from "react-icons/io5";
-import "../../css/SearchShine.css";
-import "../../css/ImagePulse.css";
-import "../../css/ExploreDAO.css";
-import OperatorsAnalytics from "./OperatorsAnalytics";
 
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
@@ -54,6 +36,7 @@ function DelegateInfo({
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const [earningsReceiver, setEarningsReceiver] = useState("");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
@@ -87,19 +70,6 @@ function DelegateInfo({
     }
   }, [fetchData, props.daoDelegates, initialLoad]);
 
-  const debounce = (
-    func: { (): void; apply?: any },
-    delay: number | undefined
-  ) => {
-    let timeoutId: string | number | NodeJS.Timeout | undefined;
-    return (...args: any) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        func.apply(null, args);
-      }, delay);
-    };
-  };
-
   const handleScroll = useCallback(() => {
     if (initialLoad) return;
 
@@ -132,7 +102,6 @@ function DelegateInfo({
             headers: {
               "Content-Type": "application/json",
             },
-            // body: JSON.stringify({ individualDelegate: props.individualDelegate }),
           }
         );
 
@@ -165,97 +134,35 @@ function DelegateInfo({
 
   type FilteredData = [string, number];
 
-  const filteredData: FilteredData[] = Object.entries(delegateInfo.tvl.tvlStrategies)
-  .filter((entry): entry is [string, number] => 
-    typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
-  )
-  .map(([key, value]): FilteredData => [key, value])
-  .sort((a, b) => b[1] - a[1]); 
+  const filteredData: FilteredData[] = Object.entries({
+    ...delegateInfo.tvl.tvlStrategies,
+    "Native ETH": delegateInfo.tvl.tvlBeaconChain,
+  })
+    .filter((entry): entry is [string, number] =>
+      typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
+    )
+    .map(([key, value]): FilteredData => [key, value])
+    .sort((a, b) => b[1] - a[1]);
 
-  // Create labels and data arrays
   const labels = filteredData.map(([key, value]) => key);
   const dataValues = filteredData.map(([key, value]) => value);
 
-  // Define the data for the Pie chart
-  // const data = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: "TVL Strategies",
-  //       data: dataValues,
-  //       backgroundColor: [
-  //         "rgba(255, 99, 132, 0.6)",
-  //         "rgba(54, 162, 235, 0.6)",
-  //         "rgba(75, 192, 192, 0.6)",
-  //         "rgba(255, 206, 86, 0.6)",
-  //         "rgba(153, 102, 255, 0.6)",
-  //         "rgba(199, 199, 199, 0.6)",
-  //         "rgba(255, 159, 64, 0.6)",
-  //         "rgba(83, 102, 255, 0.6)",
-  //         "rgba(132, 206, 86, 0.6)",
-  //         "rgba(192, 192, 75, 0.6)",
-  //         "rgba(199, 83, 64, 0.6)",
-  //         "rgba(102, 153, 255, 0.6)",
-  //         "rgba(255, 83, 64, 0.6)",
-  //       ],
-  //       borderColor: [
-  //         "rgba(255, 99, 132, 0.6)",
-  //         "rgba(54, 162, 235, 0.6)",
-  //         "rgba(75, 192, 192, 0.6)",
-  //         "rgba(255, 206, 86, 0.6)",
-  //         "rgba(153, 102, 255, 0.6)",
-  //         "rgba(199, 199, 199, 0.6)",
-  //         "rgba(255, 159, 64, 0.6)",
-  //         "rgba(83, 102, 255, 0.6)",
-  //         "rgba(132, 206, 86, 0.6)",
-  //         "rgba(192, 192, 75, 0.6)",
-  //         "rgba(199, 83, 64, 0.6)",
-  //         "rgba(102, 153, 255, 0.6)",
-  //         "rgba(255, 83, 64, 0.6)",
-  //       ],
-  //       borderWidth: 2,
-  //     },
-  //   ],
-  // };
-
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const totalEth = delegateInfo.tvl.tvlRestaking;
+  const totalEth = delegateInfo.tvl.tvlRestaking + delegateInfo.tvl.tvlBeaconChain;
 
   const chartData = {
-    labels: filteredData.map(([label]) => label),
+    labels: labels,
     datasets: [
       {
-        data: filteredData.map(([_, value]) => value),
+        data: dataValues,
         backgroundColor: [
-          "#3498db",
-          "#2ecc71",
-          "#9b59b6",
-          "#f1c40f",
-          "#e74c3c",
-          "#1abc9c",
-          "#34495e",
-          "#95a5a6",
-          "#d35400",
-          "#c0392b",
-          "#16a085",
-          "#8e44ad",
-          "#2c3e50",
+          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
+          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
+          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
         ],
         borderColor: [
-          "#3498db",
-          "#2ecc71",
-          "#9b59b6",
-          "#f1c40f",
-          "#e74c3c",
-          "#1abc9c",
-          "#34495e",
-          "#95a5a6",
-          "#d35400",
-          "#c0392b",
-          "#16a085",
-          "#8e44ad",
-          "#2c3e50",
+          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
+          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
+          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
         ],
         borderWidth: 1,
       },
@@ -287,22 +194,18 @@ function DelegateInfo({
 
     const absValue = Math.abs(value);
 
-    // Function to round to 2 decimal places
     const roundToTwo = (num: number): number => {
       return Math.round(num * 100) / 100;
     };
 
     if (absValue >= 1000000) {
-      // For millions, use 'm'
       const millions = absValue / 1000000;
       return roundToTwo(millions).toFixed(2) + "m";
     } else if (absValue >= 1000) {
-      // For thousands, use 'k'
       const thousands = absValue / 1000;
       return roundToTwo(thousands).toFixed(2) + "k";
     }
 
-    // For values less than 1000, just round to 2 decimal places
     return roundToTwo(absValue).toFixed(2);
   };
 
@@ -319,7 +222,7 @@ function DelegateInfo({
                 height={60}
                 style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
-              ></Image>
+              />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalStakers
                   ? formatTVL(Number(delegateInfo?.totalStakers))
@@ -338,7 +241,7 @@ function DelegateInfo({
                 height={60}
                 style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
-              ></Image>
+              />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(Number(delegateInfo?.tvl.tvl))
@@ -358,7 +261,7 @@ function DelegateInfo({
                   height={60}
                   style={{ width: "53px", height: "53px" }}
                   className="rounded-full"
-                ></Image>
+                />
                 <div className="text-light-cyan font-semibold">
                   {delegateInfo?.totalOperators
                     ? formatTVL(Number(delegateInfo?.totalOperators))
@@ -381,14 +284,7 @@ function DelegateInfo({
                 height={60}
                 style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
-              ></Image>
-              {/* <div className="text-light-cyan font-semibold">
-                &nbsp;
-                {delegateInfo?.tvl.tvl
-                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
-                  : 0}
-                &nbsp;
-              </div> */}
+              />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlRestaking)
@@ -408,14 +304,7 @@ function DelegateInfo({
                 height={60}
                 style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
-              ></Image>
-              {/* <div className="text-light-cyan font-semibold">
-                &nbsp;
-                {delegateInfo?.tvl.tvl
-                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
-                  : 0}
-                &nbsp;
-              </div> */}
+              />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlStrategies.Eigen)
@@ -435,14 +324,7 @@ function DelegateInfo({
                 height={60}
                 style={{ width: "53px", height: "53px" }}
                 className="rounded-full"
-              ></Image>
-              {/* <div className="text-light-cyan font-semibold">
-                &nbsp;
-                {delegateInfo?.tvl.tvl
-                  ? parseFloat((delegateInfo?.tvl.tvlRestaking).toFixed(2))
-                  : 0}
-                &nbsp;
-              </div> */}
+              />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlBeaconChain)
@@ -479,7 +361,7 @@ function DelegateInfo({
           desc
         ) : (
           <div className="font-semibold text-base flex justify-center">
-            Descrption has not been provided
+            Description has not been provided
           </div>
         )}
       </div>
@@ -507,16 +389,16 @@ function DelegateInfo({
               <div className="flex flex-col md:flex-row gap-x-40">
                 <div className="w-full md:w-1/2 pr-10">
                   <div className="space-y-2">
-                    {filteredData.map(([label, value], index) => (
+                  {filteredData.map(([label, value], index) => (
                       <div
-                        key={label}
-                        className={`flex justify-between items-center rounded-md ${
+                        key={index}
+                        className={`flex justify-between items-center py-2 rounded-md ${
                           hoveredIndex === index ? "bg-gray-600" : ""
                         }`}
                       >
-                        <div className="flex items-center">
+                        <div className="flex items-center flex-grow min-w-0 mr-4">
                           <div
-                            className="w-4 h-4 rounded-full mr-1"
+                            className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
                             style={{
                               backgroundColor:
                                 chartData.datasets[0].backgroundColor[
@@ -527,11 +409,16 @@ function DelegateInfo({
                           ></div>
                           <span>{label}</span>
                         </div>
-                        <span className="font-semibold">
-                          {value.toLocaleString(undefined, {
-                            maximumFractionDigits: 2,
-                          })}
-                        </span>
+                        <div className="flex justify-end items-center gap-6 flex-1">
+                          <div className="min-w-[80px] text-right font-semibold">
+                            {value.toLocaleString(undefined, {
+                              maximumFractionDigits: 2,
+                            })}
+                          </div>
+                          <div className="min-w-[60px] text-right font-semibold">
+                            {((value / totalEth) * 100).toFixed(2)}%
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -545,7 +432,7 @@ function DelegateInfo({
             </div>
           </div>
         ) : (
-          <p>No ETH stacked</p>
+          <p>No ETH staked</p>
         )}
       </div>
     </div>
