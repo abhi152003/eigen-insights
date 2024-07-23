@@ -344,14 +344,14 @@ function SpecificDelegate({ props }: { props: Type }) {
 
                 <div className="flex items-center py-1">
                   {props.daoDelegates === "operators" ? (
-                    <div>
-                      Operator Address : {props.individualDelegate.slice(0, 6)}{" "}
-                      ... {props.individualDelegate.slice(-4)}
+                    <div className="">
+                      Operator Address : <span className="text-light-cyan">{props.individualDelegate.slice(0, 6)}{" "}
+                      ... {props.individualDelegate.slice(-4)}</span>
                     </div>
                   ) : (
-                    <div>
-                      AVS Address : {props.individualDelegate.slice(0, 6)}{" "}
-                      ... {props.individualDelegate.slice(-4)}
+                    <div className="">
+                      AVS Address : <span className="text-light-cyan">{props.individualDelegate.slice(0, 6)}{" "}
+                      ... {props.individualDelegate.slice(-4)}</span>
                     </div>
                   )}
 
@@ -386,9 +386,9 @@ function SpecificDelegate({ props }: { props: Type }) {
 
                 {props.daoDelegates === "operators" && (
                   <div className="flex items-center py-1">
-                    <div>
-                      Earnings Receiver Address : {earningsReceiver.slice(0, 6)}{" "}
-                      ... {earningsReceiver.slice(-4)}
+                    <div className="">
+                      Earnings Receiver Address : <span className="text-light-cyan">{earningsReceiver.slice(0, 6)}{" "}
+                      ... {earningsReceiver.slice(-4)}</span>
                     </div>
 
                     <Tooltip
