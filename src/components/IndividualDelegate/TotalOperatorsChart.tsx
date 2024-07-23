@@ -23,7 +23,7 @@ const GET_DATA = gql`
         where: {}
         orderBy: registeredTimestamp
         orderDirection: asc
-        first: 292
+        first: 900
       ) {
         status
         registeredTimestamp
