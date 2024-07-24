@@ -37,10 +37,10 @@ function AvsHistory({ props }: { props: Type }) {
   const router = useRouter();
   const avsId = props.individualDelegate;
   const { loading, error, data } = useQuery(GET_DATA, {
-    variables: {id: avsId},
+    variables: { id: avsId },
     context: {
-      subgraph: "avs"
-    }
+      subgraph: "avs",
+    },
   });
 
   useEffect(() => {
@@ -91,22 +91,33 @@ function AvsHistory({ props }: { props: Type }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   return (
     <div>
-      <Toaster />
-      <div className="py-8 pe-14 font-poppins">
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
+      <div className="py-2 pe-14 font-poppins">
         <div className="w-full overflow-x-auto">
           <table className="min-w-full bg-midnight-blue overflow-x-auto">
             <thead>
               <tr className="bg-sky-blue bg-opacity-10">
-                <th className="px-4 py-2 text-left">Event</th>
-                <th className="px-4 py-2 text-left">Operator</th>
-                <th className="px-4 py-2 text-left">Age</th>
-                <th className="px-4 py-2 text-left">Block Number</th>
-                <th className="px-4 py-2 text-left">Transaction Hash</th>
+                <th className="px-[14px] py-2 text-left">Event</th>
+                <th className="px-3 py-2 text-left">Operator</th>
+                <th className="px-3 py-2 text-left">Age</th>
+                <th className="px-3 py-2 text-left">Block Number</th>
+                <th className="px-3 py-2 text-left">Transaction Hash</th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +137,23 @@ function AvsHistory({ props }: { props: Type }) {
                       )
                     }
                   >
-                    {action.operator.id}
+                    <div className="flex items-center">
+                      <span>
+                        {action.operator.id.slice(0, 6)}...
+                        {action.operator.id.slice(-3)}
+                      </span>
+                      <span
+                        className="ml-2 cursor-pointer"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleCopy(action.operator.id);
+                        }}
+                        title="Copy"
+                        color="light-cyan"
+                      >
+                        <IoCopy size={16} />
+                      </span>
+                    </div>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
                     {formatTimestamp(action.blockTimestamp)}
@@ -141,7 +168,23 @@ function AvsHistory({ props }: { props: Type }) {
                       )
                     }
                   >
-                    {action.transactionHash}
+                    <div className="flex items-center">
+                      <span>
+                        {action.transactionHash.slice(0, 8)}.....
+                        {action.transactionHash.slice(-5)}
+                      </span>
+                      <span
+                        className="ml-2 cursor-pointer"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleCopy(action.transactionHash);
+                        }}
+                        title="Copy Hash"
+                        color="light-cyan"
+                      >
+                        <IoCopy size={16} />
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}

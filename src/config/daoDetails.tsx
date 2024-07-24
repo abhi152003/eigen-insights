@@ -14,7 +14,7 @@ export const dao_details: any = {
   },
   avss: {
     title: "AVSs",
-    operator_or_avs: "AVSs",
+    operator_or_avs: "AVSs", 
     chain_name: "AVSs",
     description:
       "Actively Validated Services (AVSs) are services built on the EigenLayer protocol that leverage Ethereum's shared security.Operators perform validation tasks for AVSs, contributing to the security and integrity of the network.AVSs deliver services to users (AVS Consumers) and the broader Web3 ecosystem.",

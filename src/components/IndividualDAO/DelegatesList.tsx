@@ -240,7 +240,7 @@ function DelegatesList({ props }: { props: string }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
   // const handleMouseMove = (event:any,index:any) => {
   //   const rect = event.currentTarget.getBoundingClientRect();

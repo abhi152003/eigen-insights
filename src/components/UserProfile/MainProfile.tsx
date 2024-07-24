@@ -291,7 +291,7 @@ function MainProfile() {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleInputChange = (fieldName: string, value: string) => {

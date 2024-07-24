@@ -74,6 +74,9 @@ function ExploreDAOs() {
     } else if (formatted === "eigenlayer") {
       router.push(`/${formatted}?active=analytics`);
     }
+    // else if (formatted === "restakers") {
+    //   router.push(`/${formatted}?active=restakersList`);
+    // } 
   };
 
   const handleClose = () => {
