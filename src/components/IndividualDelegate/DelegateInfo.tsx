@@ -261,7 +261,7 @@ function DelegateInfo({
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const formatTVL = (value: number): string => {
@@ -499,7 +499,7 @@ function DelegateInfo({
                       {filteredData.map(([label, value], index) => (
                         <div
                           key={index}
-                          className={`flex justify-between items-center py-2 rounded-md ${
+                          className={`flex justify-between items-center rounded-md ${
                             hoveredIndex === index ? "bg-gray-600" : ""
                           }`}
                         >

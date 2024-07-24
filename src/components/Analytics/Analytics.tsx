@@ -8,8 +8,11 @@ import "../../app/globals.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { useAccount } from "wagmi";
 import { gql, useQuery } from "@apollo/client";
+import { IoCopy } from "react-icons/io5";
+import copy from "copy-to-clipboard";
+import toast, { Toaster } from "react-hot-toast";
 
-import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 
 // Define the type for our data
 type ClaimData = {
@@ -34,9 +37,26 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     return 0;
   });
 
+  const handleCopy = (addr: any) => {
+    copy(addr);
+    toast("Address Copied 🎊");
+  };
+
   return (
-    <div className="bg-[#1f2937] text-[#a0b3d7] p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-[#e0e7f4]">Claim Leaderboard</h2>
+    <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
+      <h2 className="text-2xl font-bold mb-4 text-white flex items-center">Claim Leaderboard 🎁🎊</h2>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -49,18 +69,45 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
           </thead>
           <tbody>
             {sortedData.map((item, index) => (
-              <tr key={item.transactionHash} className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors">
+              <tr
+                key={item.transactionHash}
+                className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors"
+              >
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">
-                  <a href={`https://etherscan.io/address/${item.account}`} target="_blank" rel="noopener noreferrer" className="text-[#4f8fea] hover:underline">
-                    {`${item.account.slice(0, 6)}...${item.account.slice(-4)}`}
-                  </a>
+                  <div className="flex items-center">
+                    <a
+                      href={`https://etherscan.io/address/${item.account}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-light-cyan hover:underline"
+                    >
+                      <span>
+                        {`${item.account.slice(0, 6)}...${item.account.slice(
+                          -4
+                        )}`}
+                      </span>
+                    </a>
+                    <span
+                      className="ml-2 cursor-pointer"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleCopy(item.account);
+                      }}
+                      title="Copy"
+                    >
+                      <IoCopy size={16} color="#ffffff" />
+                    </span>
+                  </div>
                 </td>
                 <td className="px-4 py-2 text-right">
                   {(Number(BigInt(item.amount)) / 1e18).toFixed(2)}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {formatDistanceToNowStrict(new Date(parseInt(item.blockTimestamp) * 1000), { addSuffix: true })}
+                  {formatDistanceToNowStrict(
+                    new Date(parseInt(item.blockTimestamp) * 1000),
+                    { addSuffix: true }
+                  )}
                 </td>
               </tr>
             ))}
@@ -70,6 +117,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     </div>
   );
 };
+
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
@@ -145,7 +193,7 @@ function Analytics() {
   useEffect(() => {
     if (data) {
       console.log(data.claimeds);
-      setAirDrop(data.claimeds)
+      setAirDrop(data.claimeds);
     }
   }, [data]);
 
@@ -471,7 +519,7 @@ function Analytics() {
     totalRestaking,
   }) => {
     return (
-      <div className="flex bg-white text-black rounded-lg shadow-sm overflow-hidden">
+      <div className="flex bg-[#1F2937] text-white rounded-lg shadow-sm overflow-hidden">
         <SummaryItem label="TVL(ETH)" value={totalTVL} isFirst={true} />
         <SummaryItem label="Total Operators" value={totalOperators} />
         <SummaryItem label="Total AVSs" value={totalAVSs} />
@@ -504,8 +552,8 @@ function Analytics() {
           isFirst ? "pl-6" : ""
         } ${isLast ? "pr-6" : ""}`}
       >
-        <div className="text-sm text-gray-600">{label}</div>
-        <div className="font-bold text-lg text-black">
+        <div className="text-sm text-white">{label}</div>
+        <div className="font-bold text-lg text-white">
           {parseFloat(value.toFixed(2)).toLocaleString()}
         </div>
       </div>
@@ -517,6 +565,11 @@ function Analytics() {
     console.error("GraphQL Error:", error);
     return <p>Error: {error.message}</p>;
   }
+
+  const handleCopy = (addr: any) => {
+    copy(addr);
+    toast("Address Copied 🎊");
+  };
 
   return (
     <div className="p-20 -mt-20">
@@ -543,9 +596,7 @@ function Analytics() {
             totalStakers={totalStakers}
             totalRestaking={totalRestaking}
           />
-          {airDrop &&
-            <Leaderboard data={airDrop}/>
-          }
+          {airDrop && <Leaderboard data={airDrop} />}
           {/* <div className='flex items-center justify-center mt-7'>
             <div className='flex gap-x-40 text-center'>
               <div className='w-96 h-96'>
@@ -560,7 +611,7 @@ function Analytics() {
           </div> */}
 
           <div>
-            <h1 className="ml-2 mb-2 mt-7 text-[2.25rem] font-semibold">
+            <h1 className="ml-2 mt-10 text-3xl font-semibold">
               TVL Restaking Distribution
             </h1>
             {isLoading ? (
@@ -579,7 +630,7 @@ function Analytics() {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-4">
                 {filteredData.length > 0 ? (
                   <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                     <div className="p-4">
@@ -663,7 +714,7 @@ function Analytics() {
 
           {/* Operators Distribution */}
           <div>
-            <h1 className="ml-2 mb-2 first:mt-7 text-[2.25rem] font-semibold">
+            <h1 className="ml-2 first:mt-10 text-3xl font-semibold">
               Operators Distribution
             </h1>
             {isLoading ? (
@@ -682,7 +733,7 @@ function Analytics() {
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-4">
                 {sortedOperatorsData.length > 0 ? (
                   <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                     <div className="p-4">
@@ -770,13 +821,13 @@ function Analytics() {
             )}
           </div>
 
-          <div className="mt-10">
-            <h1 className="ml-3 mt-10 text-[1.25rem] font-semibold	">
+          <div className="">
+            <h1 className="ml-3 mt-10 text-2xl font-semibold">
               All Withdrawals
             </h1>
 
-            <div className="flex">
-              <div className="searchBox searchShineWidthOfAVSs mb-5 mt-5">
+            <div className="flex items-center">
+              <div className="searchBox my-3">
                 <input
                   className="searchInput"
                   type="text"
@@ -791,20 +842,20 @@ function Analytics() {
               </div>
               <button
                 onClick={handleWithdrawalAddress}
-                className="border border-white rounded-lg h-8 px-2 justify-center mt-6 ml-10"
+                className="border border-white rounded-lg px-2 justify-center ml-5 py-2"
               >
                 Get All My Withdrawals
               </button>
             </div>
 
-            <div className="mx-auto py-8 overflow-x-auto">
+            <div className="mx-auto py-3 overflow-x-auto">
               <table className="w-full border-collapse text-center text-white rounded-md">
                 <thead>
                   <tr className="bg-gray-800">
                     <th className="py-2 px-4 border border-gray-700">Block</th>
                     <th className="py-2 px-4 border border-gray-700">Staker</th>
                     <th className="py-2 px-4 border border-gray-700">
-                      Is Completed?
+                      Is Completed ?
                     </th>
                     <th className="py-2 px-4 border border-gray-700">
                       Delegated To
@@ -826,14 +877,44 @@ function Analytics() {
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.createdAtBlock}
                       </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.stakerAddress}
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center">
+                          <span>
+                            {withdrawal.stakerAddress.slice(0, 6)}....
+                            {withdrawal.stakerAddress.slice(-3)}
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.stakerAddress);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                        </div>
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.isCompleted ? "Yes" : "No"}
                       </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.delegatedTo}
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center">
+                        <span>
+                        {withdrawal.delegatedTo.slice(0, 6)}....
+                        {withdrawal.delegatedTo.slice(-3)}
+                        </span>
+                        <span
+                            className="ml-2 cursor-pointer"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.delegatedTo);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                          </div>
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.shares.map((share, index) => (
@@ -864,7 +945,8 @@ function Analytics() {
                 <button
                   disabled={skip === 0}
                   onClick={() => handlePageChange(skip / take)}
-                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  className={`px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors 
+                    ${skip === 0 ? "cursor-pointer" : ""}`}
                 >
                   Prev
                 </button>

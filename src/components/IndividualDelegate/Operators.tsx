@@ -225,7 +225,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleSearchChange = (query: string) => {
@@ -447,8 +447,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   return (
     <div>
       <div>
-        <h1 className="mt-10 ml-3 font-medium text-3xl">Node Operators</h1>
-        <div className="py-8 pe-14 font-poppins">
+        {/* <h1 className="mt-3 ml-3 font-medium text-3xl">Node Operators</h1> */}
+        <div className="py-2 pe-14 font-poppins">
           <div className="searchBox searchShineWidthOfAVSs mb-1">
             <input
               className="searchInput"
@@ -463,12 +463,14 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
             </button>
           </div>
           {!useAVSOperators && (
-            <div className="mb-4 flex space-x-4">
+            <div className="mb-4 flex space-x-4 my-4">
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
+                  ${
                   selectedQuorum === null
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => {
                   setSelectedQuorum(null);
@@ -477,12 +479,28 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               >
                 All Quorums ({getTotalOperatorCount()})
               </button>
+              {/* <button
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
+                  selectedQuorum === null
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
+                }`}
+                onClick={() => {
+                  setSelectedQuorum(null);
+                  setUseAllOperatorsFallback(true);
+                }}
+              >
+                All Quorums ({getTotalOperatorCount()})
+              </button> */}
 
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
+                  ${
                   selectedQuorum === 0
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => {
                   setSelectedQuorum(0);
@@ -492,10 +510,12 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 Quorum 0 ({operatorCounts[0] || 0})
               </button>
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
+                  ${
                   selectedQuorum === 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => {
                   setSelectedQuorum(1);
@@ -510,30 +530,33 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
             "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
             <div className="mb-4 flex space-x-4">
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "24h"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => setDaSigningRatePeriod("24h")}
               >
                 1 Day
               </button>
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "1W"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => setDaSigningRatePeriod("1W")}
               >
                 1 Week
               </button>
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "4W"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => setDaSigningRatePeriod("4W")}
               >
@@ -541,7 +564,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               </button>
             </div>
           )}
-          <div className="w-full overflow-x-auto">
+          <div className="mt-4 w-full overflow-x-auto">
             <table className="min-w-full bg-midnight-blue overflow-x-auto">
               <thead>
                 <tr className="bg-sky-blue bg-opacity-10">
@@ -582,7 +605,16 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
           </div>
         </div>
       </div>
-      <Toaster />
+      <Toaster toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }} />
     </div>
   );
 }

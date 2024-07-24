@@ -185,7 +185,7 @@ function SpecificDelegate({ props }: { props: Type }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleClick = () => {
@@ -278,7 +278,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
               </div>
               <div className="px-4">
-                <div className="flex items-center py-1">
+                <div className="flex items-center py-[2px]">
                   <div className="font-semibold text-base pr-4 mt-2">
                     {delegateInfo?.metadataName ||
                       delegateInfo.metadataName ||
@@ -421,7 +421,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
                 )}
 
-                <div className="mt-5">
+                <div className="mt-3">
                   {props.daoDelegates === "operators" ? (
                     <button
                       className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"

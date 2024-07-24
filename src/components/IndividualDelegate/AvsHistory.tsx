@@ -247,9 +247,9 @@ function AvsHistory({ props }: { props: Type }) {
       first: ITEMS_PER_PAGE,
     },
     context: {
-      subgraph: "avs",
-    },
-  });
+      subgraph: 'avs'
+    }
+  })
 
   useEffect(() => {
     if (data && data.avsactions.length < ITEMS_PER_PAGE) {
