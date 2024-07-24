@@ -22,7 +22,7 @@ interface Result {
   tvl: any;
 }
 
-const Page = ({ props }: { props: string }) => {
+const Page = () => {
 
   const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({
     delegates: [],
@@ -33,39 +33,6 @@ const Page = ({ props }: { props: string }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPageLoading, setPageLoading] = useState<boolean>(true);
   const [isSearching, setIsSearching] = useState<boolean>(true);
-
-  const handleSearchChange = async (query: string) => {
-    setSearchQuery(query);
-    setPageLoading(true);
-
-    if (query.length > 0) {
-      setIsSearching(true);
-
-      try {
-        const res = await fetch(
-          `/api/get-search-data?q=${query}&prop=${props}`
-        );
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
-        }
-        const data: Result[] | { message: string } = await res.json();
-        if (Array.isArray(data)) {
-          setDelegateData({ delegates: data });
-        } else {
-          console.error(data.message);
-        }
-      } catch (error) {
-        console.error("Search error:", error);
-      }
-
-      setPageLoading(false);
-    } else {
-      // console.log("in else");
-      setIsSearching(false);
-      setDelegateData({ ...delegateData, delegates: tempData.delegates });
-      setPageLoading(false);
-    }
-  };
 
   return (
     <div className="py-6">
@@ -91,7 +58,6 @@ const Page = ({ props }: { props: string }) => {
             name=""
             placeholder="Search restaker by address"
             value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
           />
           <button className="searchButton">
             <IoSearchSharp className="iconExplore" />
