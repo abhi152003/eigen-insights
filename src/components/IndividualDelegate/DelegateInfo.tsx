@@ -20,6 +20,23 @@ import {
   PieChartSkeleton,
   DataListSkeleton,
 } from "../Skeletons/PieChartSkeleton";
+import { gql, useQuery } from "@apollo/client";
+
+const GET_OPERATOR_AVSS = gql`
+  query GetOperatorAvss($operatorId: String!) {
+    operator(id: $operatorId) {
+      id
+      avsStatuses(where: { status: 1 }) {
+        avs {
+          id
+          metadataURI
+          registrationsCount
+        }
+        status
+      }
+    }
+  }
+`;
 
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
@@ -51,6 +68,25 @@ function DelegateInfo({
   const [earningsReceiver, setEarningsReceiver] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalAvss, setTotalAvss] = useState(0);
+
+  const {
+    loading: graphLoading,
+    error,
+    data,
+  } = useQuery(GET_OPERATOR_AVSS, {
+    variables: { operatorId: props.individualDelegate },
+    context: {
+      subgraph: "avs",
+    },
+  });
+
+  useEffect(() => {
+    if (data && data.operator) {
+      console.log(data.operator.avsStatuses.length);
+      setTotalAvss(data.operator.avsStatuses.length);
+    }
+  });
 
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
@@ -153,8 +189,9 @@ function DelegateInfo({
     ...delegateInfo.tvl.tvlStrategies,
     "Native ETH": delegateInfo.tvl.tvlBeaconChain,
   })
-    .filter((entry): entry is [string, number] =>
-      typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
+    .filter(
+      (entry): entry is [string, number] =>
+        typeof entry[1] === "number" && entry[1] !== 0 && entry[0] !== "Eigen"
     )
     .map(([key, value]): FilteredData => [key, value])
     .sort((a, b) => b[1] - a[1]);
@@ -162,7 +199,8 @@ function DelegateInfo({
   const labels = filteredData.map(([key, value]) => key);
   const dataValues = filteredData.map(([key, value]) => value);
 
-  const totalEth = delegateInfo.tvl.tvlRestaking + delegateInfo.tvl.tvlBeaconChain;
+  const totalEth =
+    delegateInfo.tvl.tvlRestaking + delegateInfo.tvl.tvlBeaconChain;
 
   const chartData = {
     labels: labels,
@@ -170,14 +208,36 @@ function DelegateInfo({
       {
         data: dataValues,
         backgroundColor: [
-          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
-          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
-          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
+          "#27ae60",
         ],
         borderColor: [
-          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
-          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
-          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
+          "#27ae60",
         ],
         borderWidth: 1,
       },
@@ -244,7 +304,7 @@ function DelegateInfo({
                   : 0}
                 &nbsp;
               </div>
-              <div>total stakers</div>
+              <div>Total Stakers</div>
             </div>
           </div>
           <div>
@@ -267,7 +327,7 @@ function DelegateInfo({
             </div>
           </div>
           <div>
-            {props.daoDelegates === "avss" && (
+            {props.daoDelegates === "avss" ? (
               <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
                 <Image
                   src={EILogo}
@@ -283,7 +343,23 @@ function DelegateInfo({
                     : 0}
                   &nbsp;
                 </div>
-                <div>total operators</div>
+                <div>Total Operators</div>
+              </div>
+            ) : (
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+                <Image
+                  src={EILogo}
+                  alt="Image not found"
+                  width={60}
+                  height={60}
+                  style={{ width: "53px", height: "53px" }}
+                  className="rounded-full"
+                />
+                <div className="text-light-cyan font-semibold">
+                  {totalAvss}
+                  &nbsp;
+                </div>
+                <div>Total AVSs</div>
               </div>
             )}
           </div>
@@ -382,91 +458,91 @@ function DelegateInfo({
       </div>
 
       {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-                <div className="p-4">
-                  <div className="flex justify-between items-center">
-                    <Skeleton width={100} />
-                    <Skeleton width={150} />
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-x-40">
-                    <DataListSkeleton />
-                    <PieChartSkeleton />
-                  </div>
-                </div>
-              </div>
-            ) : (
-
-      <div className="flex justify-center mt-5 pe-16">
-        {filteredData.length > 0 ? (
-          <div
-            className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"
-            style={{ width: "100%" }}
-          >
-            <div className="p-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Total</h2>
-                <div className="text-right">
-                  <p className="text-2xl font-bold">
-                    {totalEth.toLocaleString(undefined, {
-                      maximumFractionDigits: 3,
-                    })}{" "}
-                    ETH
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="flex flex-col md:flex-row gap-x-40">
-                <div className="w-full md:w-1/2 pr-10">
-                  <div className="space-y-2">
-                  {filteredData.map(([label, value], index) => (
-                      <div
-                        key={index}
-                        className={`flex justify-between items-center py-2 rounded-md ${
-                          hoveredIndex === index ? "bg-gray-600" : ""
-                        }`}
-                      >
-                        <div className="flex items-center flex-grow min-w-0 mr-4">
-                          <div
-                            className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
-                            style={{
-                              backgroundColor:
-                                chartData.datasets[0].backgroundColor[
-                                  index %
-                                    chartData.datasets[0].backgroundColor.length
-                                ],
-                            }}
-                          ></div>
-                          <span>{label}</span>
-                        </div>
-                        <div className="flex justify-end items-center gap-6 flex-1">
-                          <div className="min-w-[80px] text-right font-semibold">
-                            {value.toLocaleString(undefined, {
-                              maximumFractionDigits: 2,
-                            })}
-                          </div>
-                          <div className="min-w-[60px] text-right font-semibold">
-                            {((value / totalEth) * 100).toFixed(2)}%
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                  <div style={{ width: "300px", height: "300px" }}>
-                    <Pie data={chartData} options={chartOptions} />
-                  </div>
-                </div>
-              </div>
+        <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <Skeleton width={100} />
+              <Skeleton width={150} />
             </div>
           </div>
-        ) : (
-          <p>No ETH staked</p>
-        )}
-      </div>
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row gap-x-40">
+              <DataListSkeleton />
+              <PieChartSkeleton />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center mt-5 pe-16">
+          {filteredData.length > 0 ? (
+            <div
+              className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"
+              style={{ width: "100%" }}
+            >
+              <div className="p-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold">Total</h2>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold">
+                      {totalEth.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}{" "}
+                      ETH
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row gap-x-40">
+                  <div className="w-full md:w-1/2 pr-10">
+                    <div className="space-y-2">
+                      {filteredData.map(([label, value], index) => (
+                        <div
+                          key={index}
+                          className={`flex justify-between items-center py-2 rounded-md ${
+                            hoveredIndex === index ? "bg-gray-600" : ""
+                          }`}
+                        >
+                          <div className="flex items-center flex-grow min-w-0 mr-4">
+                            <div
+                              className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
+                              style={{
+                                backgroundColor:
+                                  chartData.datasets[0].backgroundColor[
+                                    index %
+                                      chartData.datasets[0].backgroundColor
+                                        .length
+                                  ],
+                              }}
+                            ></div>
+                            <span>{label}</span>
+                          </div>
+                          <div className="flex justify-end items-center gap-6 flex-1">
+                            <div className="min-w-[80px] text-right font-semibold">
+                              {value.toLocaleString(undefined, {
+                                maximumFractionDigits: 2,
+                              })}
+                            </div>
+                            <div className="min-w-[60px] text-right font-semibold">
+                              {((value / totalEth) * 100).toFixed(2)}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                    <div style={{ width: "300px", height: "300px" }}>
+                      <Pie data={chartData} options={chartOptions} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p>No ETH staked</p>
+          )}
+        </div>
       )}
     </div>
   );

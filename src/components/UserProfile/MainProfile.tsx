@@ -46,7 +46,8 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaDiscourse } from "react-icons/fa6";
 import { RiFolderUserLine } from "react-icons/ri";
 import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
-import { gql, useQuery } from "@apollo/client";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import client from "../utils/avsExplorerClient";
 
 interface Result {
   _id: string;
@@ -118,7 +119,7 @@ function MainProfile() {
   const [selfDelegate, setSelfDelegate] = useState(false);
   const [daoName, setDaoName] = useState("operators");
   const [profileData, setProfileData] = useState<any>();
-  const [restakedPoints, setRestakedPoints] = useState(0);
+  const [restakedData, setRestakedData] = useState<any>();
 
   interface ProgressData {
     total: any;
@@ -134,12 +135,14 @@ function MainProfile() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      console.log("dataaaaaaaaaaa", data);
+      setRestakedData(data);
       const points = calculateRestakedPoints(data);
-      console.log("Total restaked points:", points);
-      setRestakedPoints(points);
+      // console.log("Total restaked points:", points);
     }
   }, [data]);
+
+  console.log("restaked dataaaaaaaaaaaaaaa", restakedData);
 
   useEffect(() => {
     // console.log("path", path);
@@ -700,7 +703,7 @@ function MainProfile() {
         const startTime = parseInt(deposit.timestamp);
         const duration = (currentTimestamp - startTime) / 3600; // Duration in hours
         const amount = parseFloat(deposit.amount) / 1e18; // Convert from Wei to ETH
-        console.log(duration, amount)
+        console.log(duration, amount);
         // Calculate points for this stake
         const points = amount * duration;
         totalPoints += points;
@@ -1010,19 +1013,21 @@ function MainProfile() {
           </div>
 
           <div className="py-6 ps-16">
-            {searchParams.get("active") === "info" ? (
-              <UserInfo
-                description={description}
-                isDelegate={isDelegate}
-                isSelfDelegate={selfDelegate}
-                descAvailable={descAvailable}
-                onSaveButtonClick={(newDescription?: string) =>
-                  handleSubmit(newDescription)
-                }
-                isLoading={isLoading}
-                daoName={daoName}
-                restakedPoints={restakedPoints}
-              />
+            {(searchParams.get("active") === "info") ? (
+              <ApolloProvider client={client}>
+                <UserInfo
+                  description={description}
+                  isDelegate={isDelegate}
+                  isSelfDelegate={selfDelegate}
+                  descAvailable={descAvailable}
+                  onSaveButtonClick={(newDescription?: string) =>
+                    handleSubmit(newDescription)
+                  }
+                  isLoading={isLoading}
+                  daoName={daoName}
+                  restakedData={restakedData}
+                />
+              </ApolloProvider>
             ) : (
               ""
             )}
