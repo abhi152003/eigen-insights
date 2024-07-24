@@ -22,7 +22,7 @@ interface Result {
   tvl: any;
 }
 
-const page = ({ props }: { props: string }) => {
+const Page = ({ props }: { props: string }) => {
 
   const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({
     delegates: [],
@@ -102,4 +102,4 @@ const page = ({ props }: { props: string }) => {
   );
 };
 
-export default page;
+export default Page;
