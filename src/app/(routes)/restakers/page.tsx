@@ -4,6 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import ConnectWalletWithENS from "../../../components/ConnectWallet/ConnectWalletWithENS";
 import "../../../css/SearchShine.css";
+import Restakers from "@/components/Restakers/Restakers";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/components/utils/avsExplorerClient";
 
 interface Result {
   _id: string;
@@ -62,6 +65,11 @@ const Page = () => {
           <button className="searchButton">
             <IoSearchSharp className="iconExplore" />
           </button>
+        </div>
+        <div>
+          <ApolloProvider client={client}>
+            <Restakers />
+          </ApolloProvider>
         </div>
       </div>
     </div>

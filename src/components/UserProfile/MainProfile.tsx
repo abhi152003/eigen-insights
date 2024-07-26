@@ -87,8 +87,9 @@ const GET_DATA = gql`
 `;
 
 function MainProfile() {
-  const { isConnected } = useAccount();
-  const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
+  const { address, isConnected } = useAccount();
+  console.log("addressssssssssss", address?.toLowerCase());
+  // const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
   const { data: session, status } = useSession();
   const { openConnectModal } = useConnectModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
@@ -120,6 +121,7 @@ function MainProfile() {
   const [daoName, setDaoName] = useState("operators");
   const [profileData, setProfileData] = useState<any>();
   const [restakedData, setRestakedData] = useState<any>();
+  const [operatorData, setOperatorData] = useState<any>();
 
   interface ProgressData {
     total: any;
@@ -127,7 +129,7 @@ function MainProfile() {
   }
 
   const { loading, error, data } = useQuery(GET_DATA, {
-    variables: { id: address },
+    variables: { id: address?.toLowerCase() },
     context: {
       subgraph: "eigenlayer", // Specify which subgraph to use
     },
@@ -243,6 +245,7 @@ function MainProfile() {
           setTwitter(data[0].metadataX);
           setDiscord(data[0].metadataDiscord ?? "");
           setSelfDelegate(data.length > 0);
+          setOperatorData(data)
         }
       } catch (error) {
         console.log(error);
@@ -1025,6 +1028,7 @@ function MainProfile() {
                   }
                   isLoading={isLoading}
                   daoName={daoName}
+                  operatorData={operatorData}
                   restakedData={restakedData}
                 />
               </ApolloProvider>
