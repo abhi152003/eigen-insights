@@ -60,6 +60,22 @@ interface Type {
   individualDelegate: string;
 }
 
+interface TVLStrategies {
+  Eigen: number;
+  cbETH: number;
+  stETH: number;
+  rETH: number;
+  ETHx: number;
+  ankrETH: number;
+  oETH: number;
+  osETH: number;
+  swETH: number;
+  wBETH: number;
+  sfrxETH: number;
+  lsETH: number;
+  mETH: number;
+}
+
 function DelegateInfo({
   props,
   desc,
@@ -213,8 +229,15 @@ function DelegateInfo({
   const labels = filteredData.map(([key, value]) => key);
   const dataValues = filteredData.map(([key, value]) => value);
 
-  const totalEth =
-    delegateInfo.tvl.tvlRestaking + delegateInfo.tvl.tvlBeaconChain;
+  const strategyValues = Object.keys(delegateInfo.tvl.tvlStrategies)
+  .filter(key => key !== "Eigen")
+  .map(key => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
+
+  // Summing the strategy values
+  const totalStrategies = strategyValues.reduce((sum, value) => sum + value, 0);
+
+  // Calculating totalEth
+  const totalEth = totalStrategies + delegateInfo.tvl.tvlBeaconChain;
 
   const chartData = {
     labels: labels,
@@ -333,11 +356,11 @@ function DelegateInfo({
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
-                  ? formatTVL(Number(delegateInfo?.tvl.tvl))
+                  ? formatTVL(totalEth.toFixed(2))
                   : 0}
                 &nbsp;
               </div>
-              <div>TVL ETH</div>
+              <div>Total ETH Restaked</div>
             </div>
           </div>
           <div>
@@ -396,7 +419,7 @@ function DelegateInfo({
                   : 0}
                 &nbsp;
               </div>
-              <div>TVL Restaked ETH</div>
+              <div>LSTs Restaked</div>
             </div>
           </div>
 
@@ -416,7 +439,7 @@ function DelegateInfo({
                   : 0}
                 &nbsp;
               </div>
-              <div>Eigen Restaked</div>
+              <div>EIGEN Restaked</div>
             </div>
           </div>
 
@@ -436,7 +459,7 @@ function DelegateInfo({
                   : 0}
                 &nbsp;
               </div>
-              <div>Native ETH</div>
+              <div>Native ETH Restaked</div>
             </div>
           </div>
         </div>

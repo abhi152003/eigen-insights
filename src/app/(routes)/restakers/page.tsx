@@ -4,6 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import ConnectWalletWithENS from "../../../components/ConnectWallet/ConnectWalletWithENS";
 import "../../../css/SearchShine.css";
+import Restakers from "@/components/Restakers/Restakers";
+import { ApolloProvider } from "@apollo/client";
+import client from "@/components/utils/avsExplorerClient";
 
 interface Result {
   _id: string;
@@ -22,7 +25,7 @@ interface Result {
   tvl: any;
 }
 
-const page = ({ props }: { props: string }) => {
+const Page = () => {
 
   const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({
     delegates: [],
@@ -33,39 +36,6 @@ const page = ({ props }: { props: string }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPageLoading, setPageLoading] = useState<boolean>(true);
   const [isSearching, setIsSearching] = useState<boolean>(true);
-
-  const handleSearchChange = async (query: string) => {
-    setSearchQuery(query);
-    setPageLoading(true);
-
-    if (query.length > 0) {
-      setIsSearching(true);
-
-      try {
-        const res = await fetch(
-          `/api/get-search-data?q=${query}&prop=${props}`
-        );
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
-        }
-        const data: Result[] | { message: string } = await res.json();
-        if (Array.isArray(data)) {
-          setDelegateData({ delegates: data });
-        } else {
-          console.error(data.message);
-        }
-      } catch (error) {
-        console.error("Search error:", error);
-      }
-
-      setPageLoading(false);
-    } else {
-      // console.log("in else");
-      setIsSearching(false);
-      setDelegateData({ ...delegateData, delegates: tempData.delegates });
-      setPageLoading(false);
-    }
-  };
 
   return (
     <div className="py-6">
@@ -91,15 +61,19 @@ const page = ({ props }: { props: string }) => {
             name=""
             placeholder="Search restaker by address"
             value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
           />
           <button className="searchButton">
             <IoSearchSharp className="iconExplore" />
           </button>
+        </div>
+        <div>
+          <ApolloProvider client={client}>
+            <Restakers />
+          </ApolloProvider>
         </div>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

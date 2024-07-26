@@ -26,6 +26,7 @@ interface userInfoProps {
   isDelegate: boolean;
   isSelfDelegate: boolean;
   daoName: string;
+  operatorData: any;
   restakedData: any;
 }
 
@@ -41,10 +42,9 @@ const GET_DATA = gql`
       withdrawalsCount
       stakes {
         strategy {
-          totalShares
           tokenSymbol
-          totalWithdrawing
         }
+        shares
       }
     }
   }
@@ -58,10 +58,11 @@ function UserInfo({
   isDelegate,
   isSelfDelegate,
   daoName,
+  operatorData,
   restakedData,
 }: userInfoProps) {
   // const { address } = useAccount();
-  const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132"
+  const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
   // const address = "0x5e349eca2dc61abcd9dd99ce94d04136151a09ee";
   // const [description, setDescription] = useState(
   //   "Type your description here..."
@@ -83,7 +84,7 @@ function UserInfo({
     error,
     data,
   } = useQuery(GET_DATA, {
-    variables: { stakerId: address },
+    variables: { stakerId: address.toLowerCase() },
     context: {
       subgraph: "avs", // Specify which subgraph to use
     },
@@ -215,19 +216,19 @@ function UserInfo({
     const totalShares = parseFloat(data.staker.totalShares) / 1e18;
     const totalEigenShares = parseFloat(data.staker.totalEigenShares) / 1e18;
 
-    return data.staker.stakes.map(stake => {
-      const tokenSymbol = stake.strategy.tokenSymbol;
-      const totalShares = parseFloat(stake.strategy.totalShares);
-      const totalWithdrawing = parseFloat(stake.strategy.totalWithdrawing);
-      const netShares = (totalShares - totalWithdrawing) / 1e18;
-      
-      const value = tokenSymbol === 'bEIGEN' ? totalEigenShares : netShares;
-      return [tokenSymbol, value];
-    });
+    return data.staker.stakes
+      .filter(stake => stake.strategy.tokenSymbol !== 'bEIGEN') // Exclude Eigen
+      .map(stake => {
+        const tokenSymbol = stake.strategy.tokenSymbol;
+        const shares = parseFloat(stake.shares) / 1e18;
+        
+        return [tokenSymbol, shares];
+      });
   };
 
   const stakedData = processData(data);
   const totalStaked = stakedData.reduce((sum, [_, value]) => sum + value, 0);
+
   const chartData = {
     labels: stakedData.map(([label, _]) => label),
     datasets: [
@@ -276,9 +277,9 @@ function UserInfo({
             className="rounded-full"
           />
           <div className="text-light-cyan font-semibold">
-            {(data?.staker?.totalShares/1e18).toFixed(2)}
+            {(data?.staker?.totalShares / 1e18).toFixed(2)}
           </div>
-          <div>TVL ETH</div>
+          <div>Total ETH Restaked</div>
         </div>
         <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
           <Image
@@ -290,9 +291,9 @@ function UserInfo({
             className="rounded-full"
           />
           <div className="text-light-cyan font-semibold">
-            {(data?.staker?.totalEigenShares/1e18).toFixed(2)}
+            {(data?.staker?.totalEigenShares / 1e18).toFixed(2)}
           </div>
-          <div>TVL Eigen</div>
+          <div>Total EIGEN Restaked</div>
         </div>
         <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
           <Image
@@ -330,7 +331,7 @@ function UserInfo({
                   {stakedData?.map(([label, value], index) => (
                     <div
                       key={index}
-                      className={`flex justify-between items-center py-2 rounded-md ${
+                      className={`flex justify-between items-center rounded-md ${
                         hoveredIndex === index ? "bg-gray-600" : ""
                       }`}
                     >
@@ -346,9 +347,7 @@ function UserInfo({
                       </div>
                       <div className="flex justify-end items-center gap-6 flex-1">
                         <div className="min-w-[80px] text-right font-semibold">
-                          {value.toLocaleString(undefined, {
-                            maximumFractionDigits: 4,
-                          })}
+                          {value.toFixed(2)}
                         </div>
                         <div className="min-w-[60px] text-right font-semibold">
                           {((value / totalStaked) * 100).toFixed(2)}%
