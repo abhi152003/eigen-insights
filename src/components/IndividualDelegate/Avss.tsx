@@ -186,7 +186,7 @@ function Avss({ props }: { props: Type }) {
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          <span>{`${avs.id.slice(0, 6)}...${avs.id.slice(
+                          <span className="text-light-cyan">{`${avs.id.slice(0, 6)}...${avs.id.slice(
                             -4
                           )}`}</span>
                           <span

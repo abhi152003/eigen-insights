@@ -11,6 +11,7 @@ import { gql, useQuery } from "@apollo/client";
 import { IoCopy } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
+import LeaderboardSkeleton from "../Skeletons/LeaderboardSkeleton";
 
 import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 
@@ -56,7 +57,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
           },
         }}
       />
-      <h2 className="text-2xl font-bold mb-4 text-white flex items-center">Claim Leaderboard 🎁🎊</h2>
+      <h2 className="text-2xl font-bold mb-4 text-white flex items-center">
+        Airdrop Leaderboard 🎁🎊
+      </h2>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -115,6 +118,51 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
         </table>
       </div>
     </div>
+
+    // <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
+    //   <div className="h-8 w-64 bg-gray-700 rounded mb-4 animate-pulse"></div>
+    //   <div className="overflow-x-auto animate-pulse">
+    //     <table className="w-full">
+    //       <thead>
+    //         <tr className="border-b border-[#2a3955]">
+    //           <th className="px-4 py-2 text-left">
+    //             <div className="h-4 w-16 bg-gray-700 rounded"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-left">
+    //             <div className="h-4 w-24 bg-gray-700 rounded"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-right">
+    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-right">
+    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
+    //           </th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {[...Array(10)].map((_, index) => (
+    //           <tr key={index} className="border-b border-[#2a3955]">
+    //             <td className="px-4 py-2">
+    //               <div className="h-4 w-8 bg-gray-700 rounded"></div>
+    //             </td>
+    //             <td className="px-4 py-2">
+    //               <div className="flex items-center">
+    //                 <div className="h-4 w-32 bg-gray-700 rounded"></div>
+    //                 <div className="h-4 w-4 bg-gray-700 rounded-full ml-2"></div>
+    //               </div>
+    //             </td>
+    //             <td className="px-4 py-2 text-right">
+    //               <div className="h-4 w-16 bg-gray-700 rounded ml-auto"></div>
+    //             </td>
+    //             <td className="px-4 py-2 text-right">
+    //               <div className="h-4 w-24 bg-gray-700 rounded ml-auto"></div>
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   </div>
+    // </div>
   );
 };
 
@@ -557,6 +605,15 @@ function Analytics() {
           {parseFloat(value.toFixed(2)).toLocaleString()}
         </div>
       </div>
+
+      // <div
+      //   className={`flex-1 p-4 animate-pulse ${
+      //     !isLast ? "border-r border-gray-200" : ""
+      //   } ${isFirst ? "pl-6" : ""} ${isLast ? "pr-6" : ""}`}
+      // >
+      //   <div className="h-4 w-16 bg-gray-300 rounded mb-2"></div>
+      //   <div className="h-6 w-24 bg-gray-300 rounded"></div>
+      // </div>
     );
   };
 
@@ -597,25 +654,13 @@ function Analytics() {
             totalRestaking={totalRestaking}
           />
           {airDrop && <Leaderboard data={airDrop} />}
-          {/* <div className='flex items-center justify-center mt-7'>
-            <div className='flex gap-x-40 text-center'>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Operators Distribution in AVSs</h1>
-                  <Doughnut data={avsOperatorsData} options={{cutout: '95%'}}  />
-              </div>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Restaking TVL Distribution</h1>
-                  <Doughnut data={restakeData} options={{cutout: '95%'}} />
-              </div>
-            </div>
-          </div> */}
 
           <div>
             <h1 className="ml-2 mt-10 text-3xl font-semibold">
               TVL Restaking Distribution
             </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
                 <div className="p-4">
                   <div className="flex justify-between items-center">
                     <Skeleton width={100} />
@@ -718,7 +763,7 @@ function Analytics() {
               Operators Distribution
             </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
                 <div className="p-4">
                   <div className="flex justify-between items-center">
                     <Skeleton width={100} />
@@ -900,11 +945,11 @@ function Analytics() {
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
                         <div className="flex items-center">
-                        <span>
-                        {withdrawal.delegatedTo.slice(0, 6)}....
-                        {withdrawal.delegatedTo.slice(-3)}
-                        </span>
-                        <span
+                          <span>
+                            {withdrawal.delegatedTo.slice(0, 6)}....
+                            {withdrawal.delegatedTo.slice(-3)}
+                          </span>
+                          <span
                             className="ml-2 cursor-pointer"
                             onClick={(event) => {
                               event.stopPropagation();
@@ -914,7 +959,7 @@ function Analytics() {
                           >
                             <IoCopy size={14} color="#ffffff" />
                           </span>
-                          </div>
+                        </div>
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.shares.map((share, index) => (
@@ -969,6 +1014,79 @@ function Analytics() {
                 </button>
               </div>
             </div>
+
+            {/* <div className="mx-auto py-3 overflow-x-auto animate-pulse">
+              <table className="w-full border-collapse text-center text-white rounded-md">
+                <thead>
+                  <tr className="bg-gray-800">
+                    {[
+                      "Block",
+                      "Staker",
+                      "Is Completed ?",
+                      "Delegated To",
+                      "Shares(ETH)",
+                      "Strategy",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        className="py-2 px-4 border border-gray-700"
+                      >
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...Array(10)].map((_, index) => (
+                    <tr key={index} className="bg-gray-900">
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <div className="h-4 bg-gray-700 rounded w-24"></div>
+                          <div className="ml-2 h-4 w-4 bg-gray-700 rounded-full"></div>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-8 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <div className="h-4 bg-gray-700 rounded w-24"></div>
+                          <div className="ml-2 h-4 w-4 bg-gray-700 rounded-full"></div>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700">
+                        <div className="h-4 bg-gray-700 rounded w-20 mx-auto"></div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="flex justify-center mt-4">
+                {["First", "Prev", "Page X of Y", "Next", "Last"].map(
+                  (btn, index) => (
+                    <div
+                      key={index}
+                      className={`px-4 py-2 ${
+                        index !== 2 ? "mr-2" : ""
+                      } bg-gray-700 text-gray-100 rounded`}
+                    >
+                      <div
+                        className={`h-4 bg-gray-600 rounded ${
+                          index === 2 ? "w-24" : "w-16"
+                        }`}
+                      ></div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div> */}
           </div>
         </div>
       )}

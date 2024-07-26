@@ -15,8 +15,6 @@ import { useQuery } from "@apollo/client";
 import { gql } from "urql";
 import { ThreeCircles } from "react-loader-spinner";
 
-import ChartSkeletonLoader from './ChartSkeletonLoader';
-
 const GET_DATA = gql`
   query MyQuery($id: ID!) {
     avss(where: { id: $id }) {
@@ -81,20 +79,19 @@ function TotalOperatorsChart(
   });
 
   if (loading)
-    // return (
-    //   <div className="flex items-center justify-center">
-    //     <ThreeCircles
-    //       visible={true}
-    //       height="50"
-    //       width="50"
-    //       color="#FFFFFF"
-    //       ariaLabel="three-circles-loading"
-    //       wrapperStyle={{}}
-    //     />
-    //   </div>
-    // );
+    return (
+      <div className="flex items-center justify-center">
+        <ThreeCircles
+          visible={true}
+          height="50"
+          width="50"
+          color="#FFFFFF"
+          ariaLabel="three-circles-loading"
+          wrapperStyle={{}}
+        />
+      </div>
+    );
 
-    return <ChartSkeletonLoader />;
   if (error) {
     console.error("GraphQL Error:", error);
     return <p>Error: {error.message}</p>;

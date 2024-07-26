@@ -4,7 +4,8 @@ import React from "react";
 import logo from "@/assets/images/daos/eigen_logo.png";
 import rocket from "@/assets/images/sidebar/rocket.png";
 import operatorLogo from "@/assets/images/daos/Operator4.jpg";
-import restakerLogo from "@/assets/images/daos/restakers1.png";
+// import restakers_logo from "@/assets/images/logos/a_eigenToken2 (3).png";
+import restakers_logo from "@/assets/images/logos/a_restakerFinal.png";
 import avsLogo from "@/assets/images/daos/AVSs3 New.png";
 import styles from "./sidebar.module.css";
 import { usePathname } from "next/navigation";
@@ -113,11 +114,11 @@ function Sidebar() {
                   pathname.includes('/restakers') ? "border-white border-[2.5px]" : ""
                 }`}>
                   <Image
-                    src={restakerLogo}
+                    src={restakers_logo}
                     width={80}
                     height={80}
                     alt="Restakers"
-                    className={`w-8 h-8 xl:w-9 xl:h-9 2xl:w-10 2xl:h-10 2.5xl:w-12 2.5xl:h-12 rounded-full cursor-pointer ${styles.image_hover}`}
+                    className={`w-8 h-8 xl:w-9 xl:h-9 2xl:w-10 2xl:h-10 2.5xl:w-12 2.5xl:h-12 rounded-full cursor-pointer object-fill ${styles.image_hover}`}
                     priority={true}
                   />
                 </div>

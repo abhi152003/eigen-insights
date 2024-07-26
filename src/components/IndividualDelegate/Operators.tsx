@@ -381,7 +381,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
         </td>
         <td className="px-4 py-2">
           <div className="flex items-center">
-            <span>{`${operator.operator.id.slice(
+            <span className="text-light-cyan">{`${operator.operator.id.slice(
               0,
               6
             )}...${operator.operator.id.slice(-4)}`}</span>
@@ -465,7 +465,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
           {!useAVSOperators && (
             <div className="mb-4 flex space-x-4 my-4">
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
                   ${
                   selectedQuorum === null
@@ -480,7 +480,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 All Quorums ({getTotalOperatorCount()})
               </button>
               {/* <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   selectedQuorum === null
                     ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
@@ -495,7 +495,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               </button> */}
 
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                   ${
                   selectedQuorum === 0
@@ -510,7 +510,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 Quorum 0 ({operatorCounts[0] || 0})
               </button>
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                   ${
                   selectedQuorum === 1
@@ -541,7 +541,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 1 Day
               </button>
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "1W"
                     ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
@@ -552,7 +552,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 1 Week
               </button>
               <button
-                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "4W"
                     ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"

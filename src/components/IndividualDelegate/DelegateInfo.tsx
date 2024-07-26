@@ -10,6 +10,7 @@ import copy from "copy-to-clipboard";
 
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
+import "../../css/DelegateInfo.css";
 import "../../css/ImagePulse.css";
 import "../../css/ExploreDAO.css";
 import OperatorsAnalytics from "./OperatorsAnalytics";
@@ -21,6 +22,19 @@ import {
   DataListSkeleton,
 } from "../Skeletons/PieChartSkeleton";
 import { gql, useQuery } from "@apollo/client";
+
+import operators_logo from "@/assets/images/daos/Operator4.jpg";
+import avss_logo from "@/assets/images/daos/AVSs3 New.png";
+import restaker3 from "@/assets/images/logos/a_restaker3.png";
+import eigenToken from "@/assets/images/logos/a_eigenToken2.png";
+import ethlogo from "@/assets/images/logos/a_ethlogo1.png";
+import restaker4 from "@/assets/images/logos/a_restaker4.png";
+import restaker5 from "@/assets/images/logos/a_restaker5.png";
+import LST1 from "@/assets/images/logos/a_ETHLocked.png";
+import LST2 from "@/assets/images/logos/a_LST2.png";
+import eigenToken3 from "@/assets/images/logos/a_eigenToken3.png";
+import eigenToken4 from "@/assets/images/logos/a_eigenToken4.png";
+import eigenToken2 from "@/assets/images/logos/a_eigenToken2 (3).png";
 
 const GET_OPERATOR_AVSS = gql`
   query GetOperatorAvss($operatorId: String!) {
@@ -291,12 +305,12 @@ function DelegateInfo({
           <div>
             <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
-                src={EILogo}
+                src={eigenToken2}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img1"
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalStakers
@@ -310,12 +324,12 @@ function DelegateInfo({
           <div>
             <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
-                src={EILogo}
+                src={LST1}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img2"
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
@@ -330,12 +344,12 @@ function DelegateInfo({
             {props.daoDelegates === "avss" ? (
               <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
                 <Image
-                  src={EILogo}
+                  src={operators_logo}
                   alt="Image not found"
-                  width={60}
-                  height={60}
+                  width={40}
+                  height={40}
                   style={{ width: "53px", height: "53px" }}
-                  className="rounded-full"
+                  className="rounded-full img3"
                 />
                 <div className="text-light-cyan font-semibold">
                   {delegateInfo?.totalOperators
@@ -348,12 +362,12 @@ function DelegateInfo({
             ) : (
               <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
                 <Image
-                  src={EILogo}
+                  src={avss_logo}
                   alt="Image not found"
                   width={60}
                   height={60}
-                  style={{ width: "53px", height: "53px" }}
-                  className="rounded-full"
+                  style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                  className="rounded-full img4"
                 />
                 <div className="text-light-cyan font-semibold">
                   {totalAvss}
@@ -369,12 +383,12 @@ function DelegateInfo({
           <div>
             <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
-                src={EILogo}
+                src={LST2}
                 alt="Image not found"
-                width={60}
-                height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                width={80}
+                height={80}
+                style={{ width: "53px", height: "53px", objectFit: "fill" }}
+                className="rounded-full img5"
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
@@ -389,12 +403,12 @@ function DelegateInfo({
           <div>
             <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
-                src={EILogo}
+                src={eigenToken3}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img6"
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
@@ -409,12 +423,12 @@ function DelegateInfo({
           <div>
             <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
               <Image
-                src={EILogo}
+                src={ethlogo}
                 alt="Image not found"
-                width={60}
-                height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                width={80}
+                height={80}
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img7"
               />
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
@@ -459,13 +473,13 @@ function DelegateInfo({
 
       {isLoading ? (
         <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-          <div className="p-4">
+          <div className="p-4 animate-pulse">
             <div className="flex justify-between items-center">
               <Skeleton width={100} />
               <Skeleton width={150} />
             </div>
           </div>
-          <div className="p-6">
+          <div className="p-6 animate-pulse">
             <div className="flex flex-col md:flex-row gap-x-40">
               <DataListSkeleton />
               <PieChartSkeleton />

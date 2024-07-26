@@ -400,7 +400,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     >
                       <span className="px-2 cursor-pointer">
                         <IoCopy
-                          onClick={() => handleCopy(props.individualDelegate)}
+                          onClick={() => handleCopy(earningsReceiver)}
                         />
                       </span>
                     </Tooltip>
