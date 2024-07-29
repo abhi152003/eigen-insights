@@ -42,6 +42,7 @@ import {
   useQuery,
 } from "@apollo/client";
 import AvsHistory from "./AvsHistory";
+import OperatorHistory from "./OperatorHistory";
 
 interface Type {
   daoDelegates: string;
@@ -506,16 +507,26 @@ function SpecificDelegate({ props }: { props: Type }) {
               <button
                 className={`border-b-2 py-3 px-2
                   ${
-                    searchParams.get("active") === "history"
+                    searchParams.get("active") === "avsHistory"
                       ? "border-light-cyan text-light-cyan font-semibold"
                       : "border-transparent"
                   }`}
-                onClick={() => router.push(path + "?active=history")}
+                onClick={() => router.push(path + "?active=avsHistory")}
               >
                 History
               </button>
             ) : (
-              ""
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "operatorHistory"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=operatorHistory")}
+              >
+                History
+              </button>
             )}
           </div>
 
@@ -545,9 +556,14 @@ function SpecificDelegate({ props }: { props: Type }) {
                 <OperatorsAnalytics props={props} />
               </ApolloProvider>
             )}
-            {searchParams.get("active") === "history" && (
+            {searchParams.get("active") === "avsHistory" && (
               <ApolloProvider client={client}>
                 <AvsHistory props={props} />
+              </ApolloProvider>
+            )}
+            {searchParams.get("active") === "operatorHistory" && (
+              <ApolloProvider client={client}>
+                <OperatorHistory props={props}/>
               </ApolloProvider>
             )}
             {/* {searchParams.get("active") === "delegatesSession" && (

@@ -90,14 +90,57 @@ function AvsHistory({ props }: { props: Type }) {
 
   if (loading)
     return (
-      <div className="flex justify-center">
-        <ThreeCircles
-          visible={true}
-          height="50"
-          width="50"
-          color="#FFFFFF"
-          ariaLabel="three-circles-loading"
-        />
+      <div className="container mx-auto px-4 marginSetter">
+        <div className="overflow-x-auto">
+          <table className="w-full bg-midnight-blue">
+            <thead>
+              <tr className="bg-sky-blue bg-opacity-10 animate-pulse">
+                {[
+                  "Event",
+                  "Operator",
+                  "Description",
+                  "Age",
+                  "Block",
+                  "TxHash",
+                ].map((header) => (
+                  <th key={header} className="px-4 py-2 text-left">
+                    <div className="h-4 bg-gray-400 rounded w-20"></div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[...Array(20)].map((_, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-gray-400 animate-pulse"
+                >
+                  <td className="px-4 py-2">
+                    <div className="h-6 bg-gray-400 rounded w-24"></div>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="flex items-center">
+                      <div className="h-4 bg-gray-400 rounded w-24"></div>
+                      <div className="ml-2 h-4 w-4 bg-gray-400 rounded-full"></div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="h-4 bg-gray-400 rounded w-32"></div>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="h-4 bg-gray-400 rounded w-20"></div>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="h-4 bg-gray-400 rounded w-16"></div>
+                  </td>
+                  <td className="px-4 py-2">
+                    <div className="h-4 bg-gray-400 rounded w-24"></div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   if (error) return <p>Error: {error.message}</p>;
@@ -174,7 +217,7 @@ function AvsHistory({ props }: { props: Type }) {
           },
         }}
       />
-      {/* <div className="overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="w-full bg-midnight-blue">
           <thead>
             <tr className="bg-sky-blue bg-opacity-10">
@@ -215,9 +258,9 @@ function AvsHistory({ props }: { props: Type }) {
                     </span>
                   </td>
                   <td className="px-4 py-2 flex items-center text-light-cyan">
-                    {action?.operator?.id.slice(0, 6)}{" "}
-                      ... {action?.operator?.id.slice(-4)}
-                  <span
+                    {action?.operator?.id.slice(0, 6)} ...{" "}
+                    {action?.operator?.id.slice(-4)}
+                    <span
                       className="ml-2 cursor-pointer"
                       onClick={(event) => {
                         event.stopPropagation();
@@ -226,7 +269,7 @@ function AvsHistory({ props }: { props: Type }) {
                       title="Copy"
                     >
                       <IoCopy size={16} color="#ffffff" />
-                  </span>
+                    </span>
                   </td>
                   <td className="px-4py-2">
                     {formatActionType(action?.type, action?.quorumNumber)}
@@ -243,63 +286,15 @@ function AvsHistory({ props }: { props: Type }) {
                       className="text-blue-500 hover:underline"
                     >
                       <span className="">
-                      {`${action?.transactionHash.slice(
-                        0,
-                        6
-                      )}...${action?.transactionHash.slice(-4)}`}
+                        {`${action?.transactionHash.slice(
+                          0,
+                          6
+                        )}...${action?.transactionHash.slice(-4)}`}
                       </span>
                     </a>
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
-      </div> */}
-
-      <div className="overflow-x-auto">
-        <table className="w-full bg-midnight-blue">
-          <thead>
-            <tr className="bg-sky-blue bg-opacity-10 animate-pulse">
-              {[
-                "Event",
-                "Operator",
-                "Description",
-                "Age",
-                "Block",
-                "TxHash",
-              ].map((header) => (
-                <th key={header} className="px-4 py-2 text-left">
-                  <div className="h-4 bg-gray-400 rounded w-20"></div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array(20)].map((_, index) => (
-              <tr key={index} className="border-b border-gray-400 animate-pulse">
-                <td className="px-4 py-2">
-                  <div className="h-6 bg-gray-400 rounded w-24"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="flex items-center">
-                    <div className="h-4 bg-gray-400 rounded w-24"></div>
-                    <div className="ml-2 h-4 w-4 bg-gray-400 rounded-full"></div>
-                  </div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-4 bg-gray-400 rounded w-32"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-4 bg-gray-400 rounded w-20"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-4 bg-gray-400 rounded w-16"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-4 bg-gray-400 rounded w-24"></div>
-                </td>
-              </tr>
-            ))}
           </tbody>
         </table>
       </div>

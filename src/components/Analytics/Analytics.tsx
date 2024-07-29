@@ -660,7 +660,7 @@ function Analytics() {
               TVL Restaking Distribution
             </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
+              <div className="w-full max-w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
                 <div className="p-4">
                   <div className="flex justify-between items-center">
                     <Skeleton width={100} />
@@ -677,7 +677,7 @@ function Analytics() {
             ) : (
               <div className="flex justify-center mt-4">
                 {filteredData.length > 0 ? (
-                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                  <div className="w-full max-w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                     <div className="p-4">
                       <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">Total</h2>
@@ -763,7 +763,7 @@ function Analytics() {
               Operators Distribution
             </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
+              <div className="w-full max-w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 animate-pulse">
                 <div className="p-4">
                   <div className="flex justify-between items-center">
                     <Skeleton width={100} />
@@ -780,7 +780,7 @@ function Analytics() {
             ) : (
               <div className="flex justify-center mt-4">
                 {sortedOperatorsData.length > 0 ? (
-                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                  <div className="w-full max-w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                     <div className="p-4">
                       <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">Total</h2>

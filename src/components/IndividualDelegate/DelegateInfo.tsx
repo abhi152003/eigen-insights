@@ -52,6 +52,7 @@ const GET_OPERATOR_AVSS = gql`
   }
 `;
 
+
 // Register ChartJS modules
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -230,8 +231,8 @@ function DelegateInfo({
   const dataValues = filteredData.map(([key, value]) => value);
 
   const strategyValues = Object.keys(delegateInfo.tvl.tvlStrategies)
-  .filter(key => key !== "Eigen")
-  .map(key => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
+    .filter((key) => key !== "Eigen")
+    .map((key) => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
 
   // Summing the strategy values
   const totalStrategies = strategyValues.reduce((sum, value) => sum + value, 0);
@@ -355,9 +356,7 @@ function DelegateInfo({
                 className="rounded-full img2"
               />
               <div className="text-light-cyan font-semibold">
-                {delegateInfo?.tvl.tvl
-                  ? formatTVL(totalEth.toFixed(2))
-                  : 0}
+                {delegateInfo?.tvl.tvl ? formatTVL(totalEth.toFixed(2)) : 0}
                 &nbsp;
               </div>
               <div>Total ETH Restaked</div>
