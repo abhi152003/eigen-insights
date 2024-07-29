@@ -16,7 +16,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import NOLogo from "@/assets/images/daos/operators.png";
+import operatorLogo from "@/assets/images/daos/Operator4.jpg";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
 import {
@@ -723,21 +723,20 @@ function MainProfile() {
           <div className="flex ps-14 py-5 pe-10 justify-between">
             <div className="flex  items-center justify-center">
               <div
-                className="relative object-cover rounded-3xl "
+                className="relative object-cover rounded-3xl"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 style={{
-                  backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
                 }}
               >
-                <div className="w-40 h-40 flex items-center justify-content ">
+                <div className="w-40 h-40 flex items-center justify-content">
                   <div className="flex justify-center items-center w-40 h-40">
                     <Image
                       src={
                         (displayImage ? displayImage : "") ||
                         (daoName === "operators"
-                          ? NOLogo
+                          ? operatorLogo
                           : daoName === "avss"
                           ? AVSLogo
                           : EILogo)
@@ -978,7 +977,7 @@ function MainProfile() {
                   </div>
                 </div>
 
-                <div className="flex items-center py-1">
+                <div className="flex items-center pt-[-10px]">
                   <div>
                     {`${address}`.substring(0, 6)} ...{" "}
                     {`${address}`.substring(`${address}`.length - 4)}
@@ -989,7 +988,7 @@ function MainProfile() {
                     placement="right"
                     closeDelay={1}
                     showArrow
-                    className="bg-deep-blue text-white"
+                    className="bg-medium-blue text-white"
                   >
                     <span className="px-2 cursor-pointer">
                       <IoCopy onClick={() => handleCopy(`${address}`)} />
@@ -1071,7 +1070,6 @@ function MainProfile() {
         <>
           <div
             className="flex items-center justify-center"
-            style={{ height: "100vh" }}
           >
             <ThreeCircles
               visible={true}

@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { ThreeCircles } from "react-loader-spinner";
 import { formatDistanceStrict } from "date-fns";
+import { IoCopy } from "react-icons/io5";
+import toast, { Toaster } from "react-hot-toast";
+import copy from "copy-to-clipboard";
 
 const GET_RESTAKERS = gql`
   query GetRestakers($first: Int!, $skip: Int!) {
-    stakers(first: $first, skip: $skip, orderBy: totalShares, orderDirection: desc) {
+    stakers(
+      first: $first
+      skip: $skip
+      orderBy: totalShares
+      orderDirection: desc
+    ) {
       id
       totalEigenShares
       totalEigenWithdrawalsShares
@@ -48,7 +56,7 @@ function Restakers() {
   });
 
   if (data) {
-    console.log("dataaaaaaaaaaaa", data)
+    console.log("dataaaaaaaaaaaa", data);
   }
 
   useEffect(() => {
@@ -108,17 +116,18 @@ function Restakers() {
         i === maxPageLoaded ||
         (i >= currentPage - 1 && i <= currentPage + 1)
       ) {
-        const isDisabled = i > maxPageLoaded || (i === maxPageLoaded && isLastPage);
+        const isDisabled =
+          i > maxPageLoaded || (i === maxPageLoaded && isLastPage);
         pageNumbers.push(
           <button
             key={i}
             onClick={() => !isDisabled && handlePageChange(i)}
             className={`px-3 py-1 mx-1 rounded ${
               i === currentPage
-                ? "bg-gray-800 text-white"
+                ? "bg-gray-500 text-white"
                 : isDisabled
-                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                : "bg-gray-200 text-gray-700"
+                ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                : "bg-gray-200 text-gray-600"
             }`}
             disabled={isDisabled}
           >
@@ -133,16 +142,16 @@ function Restakers() {
   };
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto pr-6 pl-1">
       <div className="overflow-x-auto">
-        <table className="w-full bg-black border border-gray-300">
+        <table className="w-full bg-midnight-blue border border-gray-300">
           <thead>
-            <tr className="bg-black">
-              <th className="px-4 py-2 border-b">Staker Address</th>
-              <th className="px-4 py-2 border-b">TVL ETH</th>
-              <th className="px-4 py-2 border-b">TVL Eigen</th>
-              <th className="px-4 py-2 border-b">Last Action</th>
-              <th className="px-4 py-2 border-b">Transaction</th>
+            <tr className="bg-sky-blue bg-opacity-10">
+              <th className="px-4 py-2 border-b text-left">Staker Address</th>
+              <th className="px-4 py-2 border-b text-left">TVL Eigen</th>
+              <th className="px-4 py-2 border-b text-left">TVL ETH</th>
+              <th className="px-4 py-2 border-b text-left">Last Action</th>
+              <th className="px-4 py-2 border-b text-left">Transaction</th>
             </tr>
           </thead>
           <tbody>
@@ -157,11 +166,12 @@ function Restakers() {
           </tbody>
         </table>
       </div>
-      <div className="mt-4 flex justify-between items-center">
+      <div className="mt-4 flex justify-center gap-5 items-center">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="p-3 border-[#A7DBF2] border-1 rounded-md px-4
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
         >
           Previous
         </button>
@@ -169,7 +179,8 @@ function Restakers() {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={isLastPage}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+          className="p-3 border-[#A7DBF2] border-1 rounded-md px-4
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
         >
           Next
         </button>
@@ -187,32 +198,69 @@ function StakerRow({ staker }: { staker: any }) {
   // const tvlEth = ((parseFloat(staker.totalShares) - parseFloat(staker.totalWithdrawalsShares)) / 1e18).toFixed(2);
   // const tvlEigen = ((parseFloat(staker.totalEigenShares) - parseFloat(staker.totalEigenWithdrawalsShares)) / 1e18).toFixed(2);
 
-  const tvlEth = ((parseFloat(staker.totalShares)) / 1e18).toFixed(2);
-  const tvlEigen = ((parseFloat(staker.totalEigenShares)) / 1e18).toFixed(2);
+  const tvlEth = (parseFloat(staker.totalShares) / 1e18).toFixed(2);
+  const tvlEigen = (parseFloat(staker.totalEigenShares) / 1e18).toFixed(2);
+
+  const handleCopy = (addr: any) => {
+    copy(addr);
+    toast("Address Copied 🎊");
+  };
 
   return (
-    <tr className="">
-      <td className="px-4 py-2 border-b">{staker.id}</td>
-      <td className="px-4 py-2 border-b">{tvlEth}</td>
-      <td className="px-4 py-2 border-b">{tvlEigen}</td>
-      <td className="px-4 py-2 border-b">
-        {/* {loading && <span>Loading...</span>}
+    <>
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
+      <tr className="">
+        <td className="px-4 py-2 border-b">
+          <div className="flex items-center">
+            <span>
+              {staker.id.slice(0, 6)}...{staker.id.slice(-4)}
+            </span>
+            <span
+              className="ml-2 cursor-pointer"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleCopy(staker.id);
+              }}
+              title="Copy"
+            >
+              <IoCopy size={16} color="#ffffff" />
+            </span>
+          </div>
+        </td>
+        <td className="px-4 py-2 border-b">{tvlEth}</td>
+        <td className="px-4 py-2 border-b">{tvlEigen}</td>
+        <td className="px-4 py-2 border-b">
+          {/* {loading && <span>Loading...</span>}
         {error && <span>Error fetching data</span>} */}
-        {data && data.stakerActions[0] && getTimeSince(data.stakerActions[0].blockTimestamp)}
-      </td>
-      <td className="px-4 py-2 border-b">
-        {data && data.stakerActions[0] && (
-          <a
-            href={`https://etherscan.io/tx/${data.stakerActions[0].transactionHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            View
-          </a>
-        )}
-      </td>
-    </tr>
+          {data &&
+            data.stakerActions[0] &&
+            getTimeSince(data.stakerActions[0].blockTimestamp)}
+        </td>
+        <td className="px-4 py-2 border-b">
+          {data && data.stakerActions[0] && (
+            <a
+              href={`https://etherscan.io/tx/${data.stakerActions[0].transactionHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              View
+            </a>
+          )}
+        </td>
+      </tr>
+    </>
   );
 }
 

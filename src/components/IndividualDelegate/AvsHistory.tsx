@@ -303,7 +303,7 @@ function AvsHistory({ props }: { props: Type }) {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+          className="p-3 border-[#A7DBF2] border-1 rounded-md px-4
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
         >
           Previous
@@ -312,7 +312,7 @@ function AvsHistory({ props }: { props: Type }) {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={isLastPage}
-          className="p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+          className="p-3 border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
         >
           Next
