@@ -13,10 +13,18 @@ import EILogo from "@/assets/images/daos/eigen_logo.png";
 import Image from "next/image";
 import { gql, useQuery } from "@apollo/client";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
+import { Chart as ChartJS, Title, Legend, ArcElement } from "chart.js";
+
+import LST1 from "@/assets/images/logos/a_ETHLocked.png";
+import LST2 from "@/assets/images/logos/a_LST2.png";
+import eigenToken3 from "@/assets/images/logos/a_eigenToken3.png";
+import eigenToken4 from "@/assets/images/logos/a_eigenToken4.png";
+
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
 
 // Register ChartJS modules
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(Title, Legend, ArcElement);
 
 interface userInfoProps {
   description: string;
@@ -210,18 +218,20 @@ function UserInfo({
     console.log("dataaaa", data.staker);
   }
 
-  const processData = (data: { staker: { totalShares: string; totalEigenShares: string; stakes: any[]; }; }) => {
+  const processData = (data: {
+    staker: { totalShares: string; totalEigenShares: string; stakes: any[] };
+  }) => {
     if (!data || !data.staker) return [];
 
     const totalShares = parseFloat(data.staker.totalShares) / 1e18;
     const totalEigenShares = parseFloat(data.staker.totalEigenShares) / 1e18;
 
     return data.staker.stakes
-      .filter(stake => stake.strategy.tokenSymbol !== 'bEIGEN') // Exclude Eigen
-      .map(stake => {
+      .filter((stake) => stake.strategy.tokenSymbol !== "bEIGEN") // Exclude Eigen
+      .map((stake) => {
         const tokenSymbol = stake.strategy.tokenSymbol;
         const shares = parseFloat(stake.shares) / 1e18;
-        
+
         return [tokenSymbol, shares];
       });
   };
@@ -264,48 +274,124 @@ function UserInfo({
     },
   };
 
+  const formatTVL = (value: number): string => {
+    if (!value) return "0";
+
+    const absValue = Math.abs(value);
+
+    const roundToTwo = (num: number): number => {
+      return Math.round(num * 100) / 100;
+    };
+
+    if (absValue >= 1000000) {
+      const millions = absValue / 1000000;
+      return roundToTwo(millions).toFixed(2) + "m";
+    } else if (absValue >= 1000) {
+      const thousands = absValue / 1000;
+      return roundToTwo(thousands).toFixed(2) + "k";
+    }
+
+    return roundToTwo(absValue).toFixed(2);
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="flex gap-3 py-1 min-h-10 justify-center">
-        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
           <Image
-            src={EILogo}
+            src={LST2}
             alt="EigenLayer Logo"
             width={60}
             height={60}
-            style={{ width: "53px", height: "53px" }}
+            style={{ width: "53px", height: "53px", objectFit: "cover" }}
             className="rounded-full"
           />
+          <span className="absolute top-[-1rem] right-[0.5rem]">
+            <Tooltip
+              content={
+                <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                  <span className="text-sm">
+                    Total ETH restaked by you to different operators
+                  </span>
+                </div>
+              }
+              showArrow
+              placement="top"
+              delay={1}
+            >
+              <span className="px-2">
+                <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+              </span>
+            </Tooltip>
+          </span>
           <div className="text-light-cyan font-semibold">
-            {(data?.staker?.totalShares / 1e18).toFixed(2)}
+            {formatTVL(Number((data?.staker?.totalShares / 1e18).toFixed(2)))}
           </div>
           <div>Total ETH Restaked</div>
         </div>
-        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
           <Image
-            src={EILogo}
+            src={eigenToken3}
             alt="EigenLayer Logo"
             width={60}
             height={60}
-            style={{ width: "53px", height: "53px" }}
+            style={{ width: "53px", height: "53px", objectFit: "cover" }}
             className="rounded-full"
           />
+          <span className="absolute top-[-1rem] right-[0.5rem]">
+            <Tooltip
+              content={
+                <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                  <span className="text-sm">
+                    Total number of Eigen token restaked by you within eigenlayer protocol
+                  </span>
+                </div>
+              }
+              showArrow
+              placement="top"
+              delay={1}
+            >
+              <span className="px-2">
+                <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+              </span>
+            </Tooltip>
+          </span>
           <div className="text-light-cyan font-semibold">
-            {(data?.staker?.totalEigenShares / 1e18).toFixed(2)}
+            {formatTVL(
+              Number((data?.staker?.totalEigenShares / 1e18).toFixed(2))
+            )}
           </div>
-          <div>Total EIGEN Restaked</div>
+          <div>EIGEN Restaked</div>
         </div>
-        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+        <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
           <Image
-            src={EILogo}
+            src={eigenToken4}
             alt="Image not found"
             width={60}
             height={60}
-            style={{ width: "53px", height: "53px" }}
+            style={{ width: "53px", height: "53px", objectFit: "cover" }}
             className="rounded-full"
           ></Image>
+          <span className="absolute top-[-1rem] right-[0.5rem]">
+            <Tooltip
+              content={
+                <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                  <span className="text-sm">
+                    Number of points that you are able to achieve from the eigenlayer protocol
+                  </span>
+                </div>
+              }
+              showArrow
+              placement="top"
+              delay={1}
+            >
+              <span className="px-2">
+                <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+              </span>
+            </Tooltip>
+          </span>
           <div className="text-light-cyan font-semibold">
-            {restakedPoints?.toFixed(2)}
+            {formatTVL(Number(restakedPoints?.toFixed(2)))}
           </div>
           <div>Restaked Points</div>
         </div>

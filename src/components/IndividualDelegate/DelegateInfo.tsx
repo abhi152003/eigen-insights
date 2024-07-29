@@ -2,7 +2,7 @@ import { useRouter } from "next-nprogress-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import { LineWave } from "react-loader-spinner";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
+import { Chart as ChartJS, Title, Legend, ArcElement } from "chart.js";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
@@ -22,6 +22,9 @@ import {
   DataListSkeleton,
 } from "../Skeletons/PieChartSkeleton";
 import { gql, useQuery } from "@apollo/client";
+
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
 
 import operators_logo from "@/assets/images/daos/Operator4.jpg";
 import avss_logo from "@/assets/images/daos/AVSs3 New.png";
@@ -53,7 +56,7 @@ const GET_OPERATOR_AVSS = gql`
 `;
 
 // Register ChartJS modules
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(Title, Legend, ArcElement);
 
 interface Type {
   daoDelegates: string;
@@ -230,8 +233,8 @@ function DelegateInfo({
   const dataValues = filteredData.map(([key, value]) => value);
 
   const strategyValues = Object.keys(delegateInfo.tvl.tvlStrategies)
-  .filter(key => key !== "Eigen")
-  .map(key => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
+    .filter((key) => key !== "Eigen")
+    .map((key) => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
 
   // Summing the strategy values
   const totalStrategies = strategyValues.reduce((sum, value) => sum + value, 0);
@@ -326,7 +329,7 @@ function DelegateInfo({
       <div className="pe-16">
         <div className="flex gap-3 py-1 min-h-10 justify-center">
           <div>
-            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
                 src={eigenToken2}
                 alt="Image not found"
@@ -335,6 +338,25 @@ function DelegateInfo({
                 style={{ width: "53px", height: "53px", objectFit: "cover" }}
                 className="rounded-full img1"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total number of stakers delegating their tokens to
+                        this operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="top"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalStakers
                   ? formatTVL(Number(delegateInfo?.totalStakers))
@@ -345,7 +367,7 @@ function DelegateInfo({
             </div>
           </div>
           <div>
-            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
                 src={LST1}
                 alt="Image not found"
@@ -354,10 +376,27 @@ function DelegateInfo({
                 style={{ width: "53px", height: "53px", objectFit: "cover" }}
                 className="rounded-full img2"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total amount of ETH restaked through this operator,
+                        including native ETH and LSTs
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="top"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
-                {delegateInfo?.tvl.tvl
-                  ? formatTVL(totalEth.toFixed(2))
-                  : 0}
+                {delegateInfo?.tvl.tvl ? formatTVL(totalEth.toFixed(2)) : 0}
                 &nbsp;
               </div>
               <div>Total ETH Restaked</div>
@@ -365,7 +404,7 @@ function DelegateInfo({
           </div>
           <div>
             {props.daoDelegates === "avss" ? (
-              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
                 <Image
                   src={operators_logo}
                   alt="Image not found"
@@ -374,6 +413,24 @@ function DelegateInfo({
                   style={{ width: "53px", height: "53px" }}
                   className="rounded-full img3"
                 />
+                <span className="absolute top-[-1rem] right-[0.5rem]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Total number of operators registered in this AVS
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
                 <div className="text-light-cyan font-semibold">
                   {delegateInfo?.totalOperators
                     ? formatTVL(Number(delegateInfo?.totalOperators))
@@ -383,7 +440,7 @@ function DelegateInfo({
                 <div>Total Operators</div>
               </div>
             ) : (
-              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
                 <Image
                   src={avss_logo}
                   alt="Image not found"
@@ -392,6 +449,25 @@ function DelegateInfo({
                   style={{ width: "53px", height: "53px", objectFit: "cover" }}
                   className="rounded-full img4"
                 />
+                <span className="absolute top-[-1rem] right-[0.5rem]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Total number of avss in which this operator has
+                          registered in
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
                 <div className="text-light-cyan font-semibold">
                   {totalAvss}
                   &nbsp;
@@ -404,7 +480,7 @@ function DelegateInfo({
 
         <div className="flex gap-3 py-1 min-h-10 justify-center">
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
                 src={LST2}
                 alt="Image not found"
@@ -413,6 +489,25 @@ function DelegateInfo({
                 style={{ width: "53px", height: "53px", objectFit: "fill" }}
                 className="rounded-full img5"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total amount of Liquid Staking Tokens restaked
+                        through this operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlRestaking)
@@ -424,7 +519,7 @@ function DelegateInfo({
           </div>
 
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
                 src={eigenToken3}
                 alt="Image not found"
@@ -433,6 +528,25 @@ function DelegateInfo({
                 style={{ width: "53px", height: "53px", objectFit: "cover" }}
                 className="rounded-full img6"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        Total amount of EIGEN tokens restaked through this
+                        operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlStrategies.Eigen)
@@ -444,7 +558,7 @@ function DelegateInfo({
           </div>
 
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
                 src={ethlogo}
                 alt="Image not found"
@@ -453,6 +567,24 @@ function DelegateInfo({
                 style={{ width: "53px", height: "53px", objectFit: "cover" }}
                 className="rounded-full img7"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        Shows the amount of native ETH restaked, excluding LSTs
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlBeaconChain)
