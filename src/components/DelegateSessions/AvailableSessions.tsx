@@ -147,7 +147,7 @@ function AvailableSessions() {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleSearchChange = (query: string) => {

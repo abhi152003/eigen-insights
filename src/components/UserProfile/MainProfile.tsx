@@ -16,7 +16,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import NOLogo from "@/assets/images/daos/operators.png";
+import operatorLogo from "@/assets/images/daos/Operator4.jpg";
 import AVSLogo from "@/assets/images/daos/avss.png";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
 import {
@@ -46,7 +46,8 @@ import { MdOutlineMail } from "react-icons/md";
 import { FaDiscourse } from "react-icons/fa6";
 import { RiFolderUserLine } from "react-icons/ri";
 import { FaXTwitter, FaDiscord, FaGithub } from "react-icons/fa6";
-import { gql, useQuery } from "@apollo/client";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import client from "../utils/avsExplorerClient";
 
 interface Result {
   _id: string;
@@ -86,8 +87,9 @@ const GET_DATA = gql`
 `;
 
 function MainProfile() {
-  const { isConnected } = useAccount();
-  const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
+  const { address, isConnected } = useAccount();
+  console.log("addressssssssssss", address?.toLowerCase());
+  // const address = "0x176f3dab24a159341c0509bb36b833e7fdd0a132";
   const { data: session, status } = useSession();
   const { openConnectModal } = useConnectModal();
   const { publicClient, walletClient } = WalletAndPublicClient();
@@ -118,7 +120,8 @@ function MainProfile() {
   const [selfDelegate, setSelfDelegate] = useState(false);
   const [daoName, setDaoName] = useState("operators");
   const [profileData, setProfileData] = useState<any>();
-  const [restakedPoints, setRestakedPoints] = useState(0);
+  const [restakedData, setRestakedData] = useState<any>();
+  const [operatorData, setOperatorData] = useState<any>();
 
   interface ProgressData {
     total: any;
@@ -126,7 +129,7 @@ function MainProfile() {
   }
 
   const { loading, error, data } = useQuery(GET_DATA, {
-    variables: { id: address },
+    variables: { id: address?.toLowerCase() },
     context: {
       subgraph: "eigenlayer", // Specify which subgraph to use
     },
@@ -134,12 +137,14 @@ function MainProfile() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      console.log("dataaaaaaaaaaa", data);
+      setRestakedData(data);
       const points = calculateRestakedPoints(data);
-      console.log("Total restaked points:", points);
-      setRestakedPoints(points);
+      // console.log("Total restaked points:", points);
     }
   }, [data]);
+
+  console.log("restaked dataaaaaaaaaaaaaaa", restakedData);
 
   useEffect(() => {
     // console.log("path", path);
@@ -240,6 +245,7 @@ function MainProfile() {
           setTwitter(data[0].metadataX);
           setDiscord(data[0].metadataDiscord ?? "");
           setSelfDelegate(data.length > 0);
+          setOperatorData(data)
         }
       } catch (error) {
         console.log(error);
@@ -291,7 +297,7 @@ function MainProfile() {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleInputChange = (fieldName: string, value: string) => {
@@ -700,7 +706,7 @@ function MainProfile() {
         const startTime = parseInt(deposit.timestamp);
         const duration = (currentTimestamp - startTime) / 3600; // Duration in hours
         const amount = parseFloat(deposit.amount) / 1e18; // Convert from Wei to ETH
-        console.log(duration, amount)
+        console.log(duration, amount);
         // Calculate points for this stake
         const points = amount * duration;
         totalPoints += points;
@@ -717,21 +723,20 @@ function MainProfile() {
           <div className="flex ps-14 py-5 pe-10 justify-between">
             <div className="flex  items-center justify-center">
               <div
-                className="relative object-cover rounded-3xl "
+                className="relative object-cover rounded-3xl"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
                 style={{
-                  backgroundColor: "#fcfcfc",
                   border: "2px solid #E9E9E9 ",
                 }}
               >
-                <div className="w-40 h-40 flex items-center justify-content ">
+                <div className="w-40 h-40 flex items-center justify-content">
                   <div className="flex justify-center items-center w-40 h-40">
                     <Image
                       src={
                         (displayImage ? displayImage : "") ||
                         (daoName === "operators"
-                          ? NOLogo
+                          ? operatorLogo
                           : daoName === "avss"
                           ? AVSLogo
                           : EILogo)
@@ -972,7 +977,7 @@ function MainProfile() {
                   </div>
                 </div>
 
-                <div className="flex items-center py-1">
+                <div className="flex items-center pt-[-10px]">
                   <div>
                     {`${address}`.substring(0, 6)} ...{" "}
                     {`${address}`.substring(`${address}`.length - 4)}
@@ -983,7 +988,7 @@ function MainProfile() {
                     placement="right"
                     closeDelay={1}
                     showArrow
-                    className="bg-deep-blue text-white"
+                    className="bg-medium-blue text-white"
                   >
                     <span className="px-2 cursor-pointer">
                       <IoCopy onClick={() => handleCopy(`${address}`)} />
@@ -1010,19 +1015,22 @@ function MainProfile() {
           </div>
 
           <div className="py-6 ps-16">
-            {searchParams.get("active") === "info" ? (
-              <UserInfo
-                description={description}
-                isDelegate={isDelegate}
-                isSelfDelegate={selfDelegate}
-                descAvailable={descAvailable}
-                onSaveButtonClick={(newDescription?: string) =>
-                  handleSubmit(newDescription)
-                }
-                isLoading={isLoading}
-                daoName={daoName}
-                restakedPoints={restakedPoints}
-              />
+            {(searchParams.get("active") === "info") ? (
+              <ApolloProvider client={client}>
+                <UserInfo
+                  description={description}
+                  isDelegate={isDelegate}
+                  isSelfDelegate={selfDelegate}
+                  descAvailable={descAvailable}
+                  onSaveButtonClick={(newDescription?: string) =>
+                    handleSubmit(newDescription)
+                  }
+                  isLoading={isLoading}
+                  daoName={daoName}
+                  operatorData={operatorData}
+                  restakedData={restakedData}
+                />
+              </ApolloProvider>
             ) : (
               ""
             )}
@@ -1062,7 +1070,6 @@ function MainProfile() {
         <>
           <div
             className="flex items-center justify-center"
-            style={{ height: "100vh" }}
           >
             <ThreeCircles
               visible={true}

@@ -2,7 +2,7 @@ import { useRouter } from "next-nprogress-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import { LineWave } from "react-loader-spinner";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
+import { Chart as ChartJS, Title, Legend, ArcElement } from "chart.js";
 import { toast } from "react-hot-toast";
 import Image from "next/image";
 import EILogo from "@/assets/images/daos/eigen_logo.png";
@@ -10,6 +10,7 @@ import copy from "copy-to-clipboard";
 
 import { IoSearchSharp } from "react-icons/io5";
 import "../../css/SearchShine.css";
+import "../../css/DelegateInfo.css";
 import "../../css/ImagePulse.css";
 import "../../css/ExploreDAO.css";
 import OperatorsAnalytics from "./OperatorsAnalytics";
@@ -20,13 +21,63 @@ import {
   PieChartSkeleton,
   DataListSkeleton,
 } from "../Skeletons/PieChartSkeleton";
+import { gql, useQuery } from "@apollo/client";
+
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
+
+import operators_logo from "@/assets/images/daos/Operator4.jpg";
+import avss_logo from "@/assets/images/daos/AVSs3 New.png";
+import restaker3 from "@/assets/images/logos/a_restaker3.png";
+import eigenToken from "@/assets/images/logos/a_eigenToken2.png";
+import ethlogo from "@/assets/images/logos/a_ethlogo1.png";
+import restaker4 from "@/assets/images/logos/a_restaker4.png";
+import restaker5 from "@/assets/images/logos/a_restaker5.png";
+import LST1 from "@/assets/images/logos/a_ETHLocked.png";
+import LST2 from "@/assets/images/logos/a_LST2.png";
+import eigenToken3 from "@/assets/images/logos/a_eigenToken3.png";
+import eigenToken4 from "@/assets/images/logos/a_eigenToken4.png";
+import eigenToken2 from "@/assets/images/logos/a_eigenToken2 (3).png";
+
+const GET_OPERATOR_AVSS = gql`
+  query GetOperatorAvss($operatorId: String!) {
+    operator(id: $operatorId) {
+      id
+      avsStatuses(where: { status: 1 }) {
+        avs {
+          id
+          metadataURI
+          registrationsCount
+        }
+        status
+      }
+    }
+  }
+`;
+
 
 // Register ChartJS modules
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(Title, Legend, ArcElement);
 
 interface Type {
   daoDelegates: string;
   individualDelegate: string;
+}
+
+interface TVLStrategies {
+  Eigen: number;
+  cbETH: number;
+  stETH: number;
+  rETH: number;
+  ETHx: number;
+  ankrETH: number;
+  oETH: number;
+  osETH: number;
+  swETH: number;
+  wBETH: number;
+  sfrxETH: number;
+  lsETH: number;
+  mETH: number;
 }
 
 function DelegateInfo({
@@ -51,6 +102,25 @@ function DelegateInfo({
   const [earningsReceiver, setEarningsReceiver] = useState("");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalAvss, setTotalAvss] = useState(0);
+
+  const {
+    loading: graphLoading,
+    error,
+    data,
+  } = useQuery(GET_OPERATOR_AVSS, {
+    variables: { operatorId: props.individualDelegate },
+    context: {
+      subgraph: "avs",
+    },
+  });
+
+  useEffect(() => {
+    if (data && data.operator) {
+      console.log(data.operator.avsStatuses.length);
+      setTotalAvss(data.operator.avsStatuses.length);
+    }
+  });
 
   const fetchData = useCallback(async () => {
     if (!hasMore || isDataLoading) return;
@@ -153,8 +223,9 @@ function DelegateInfo({
     ...delegateInfo.tvl.tvlStrategies,
     "Native ETH": delegateInfo.tvl.tvlBeaconChain,
   })
-    .filter((entry): entry is [string, number] =>
-      typeof entry[1] === 'number' && entry[1] !== 0 && entry[0] !== "Eigen"
+    .filter(
+      (entry): entry is [string, number] =>
+        typeof entry[1] === "number" && entry[1] !== 0 && entry[0] !== "Eigen"
     )
     .map(([key, value]): FilteredData => [key, value])
     .sort((a, b) => b[1] - a[1]);
@@ -162,7 +233,15 @@ function DelegateInfo({
   const labels = filteredData.map(([key, value]) => key);
   const dataValues = filteredData.map(([key, value]) => value);
 
-  const totalEth = delegateInfo.tvl.tvlRestaking + delegateInfo.tvl.tvlBeaconChain;
+  const strategyValues = Object.keys(delegateInfo.tvl.tvlStrategies)
+    .filter((key) => key !== "Eigen")
+    .map((key) => delegateInfo.tvl.tvlStrategies[key as keyof TVLStrategies]);
+
+  // Summing the strategy values
+  const totalStrategies = strategyValues.reduce((sum, value) => sum + value, 0);
+
+  // Calculating totalEth
+  const totalEth = totalStrategies + delegateInfo.tvl.tvlBeaconChain;
 
   const chartData = {
     labels: labels,
@@ -170,14 +249,36 @@ function DelegateInfo({
       {
         data: dataValues,
         backgroundColor: [
-          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
-          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
-          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
+          "#27ae60",
         ],
         borderColor: [
-          "#3498db", "#2ecc71", "#9b59b6", "#f1c40f", "#e74c3c",
-          "#1abc9c", "#34495e", "#95a5a6", "#d35400", "#c0392b",
-          "#16a085", "#8e44ad", "#2c3e50", "#27ae60",
+          "#3498db",
+          "#2ecc71",
+          "#9b59b6",
+          "#f1c40f",
+          "#e74c3c",
+          "#1abc9c",
+          "#34495e",
+          "#95a5a6",
+          "#d35400",
+          "#c0392b",
+          "#16a085",
+          "#8e44ad",
+          "#2c3e50",
+          "#27ae60",
         ],
         borderWidth: 1,
       },
@@ -201,7 +302,7 @@ function DelegateInfo({
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const formatTVL = (value: number): string => {
@@ -229,61 +330,150 @@ function DelegateInfo({
       <div className="pe-16">
         <div className="flex gap-3 py-1 min-h-10 justify-center">
           <div>
-            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
-                src={EILogo}
+                src={eigenToken2}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img1"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total number of stakers delegating their tokens to
+                        this operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="top"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.totalStakers
                   ? formatTVL(Number(delegateInfo?.totalStakers))
                   : 0}
                 &nbsp;
               </div>
-              <div>total stakers</div>
+              <div>Total Stakers</div>
             </div>
           </div>
           <div>
-            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="text-white w-[200px] flex flex-col gap-[10px] items-center border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
-                src={EILogo}
+                src={LST1}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img2"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total amount of ETH restaked through this operator,
+                        including native ETH and LSTs
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="top"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
-                {delegateInfo?.tvl.tvl
-                  ? formatTVL(Number(delegateInfo?.tvl.tvl))
-                  : 0}
+                {delegateInfo?.tvl.tvl ? formatTVL(totalEth.toFixed(2)) : 0}
                 &nbsp;
               </div>
-              <div>TVL ETH</div>
+              <div>Total ETH Restaked</div>
             </div>
           </div>
           <div>
-            {props.daoDelegates === "avss" && (
-              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            {props.daoDelegates === "avss" ? (
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
                 <Image
-                  src={EILogo}
+                  src={operators_logo}
                   alt="Image not found"
-                  width={60}
-                  height={60}
+                  width={40}
+                  height={40}
                   style={{ width: "53px", height: "53px" }}
-                  className="rounded-full"
+                  className="rounded-full img3"
                 />
+                <span className="absolute top-[-1rem] right-[0.5rem]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Total number of operators registered in this AVS
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
                 <div className="text-light-cyan font-semibold">
                   {delegateInfo?.totalOperators
                     ? formatTVL(Number(delegateInfo?.totalOperators))
                     : 0}
                   &nbsp;
                 </div>
-                <div>total operators</div>
+                <div>Total Operators</div>
+              </div>
+            ) : (
+              <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
+                <Image
+                  src={avss_logo}
+                  alt="Image not found"
+                  width={60}
+                  height={60}
+                  style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                  className="rounded-full img4"
+                />
+                <span className="absolute top-[-1rem] right-[0.5rem]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Total number of avss in which this operator has
+                          registered in
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+                <div className="text-light-cyan font-semibold">
+                  {totalAvss}
+                  &nbsp;
+                </div>
+                <div>Total AVSs</div>
               </div>
             )}
           </div>
@@ -291,62 +481,118 @@ function DelegateInfo({
 
         <div className="flex gap-3 py-1 min-h-10 justify-center">
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
-                src={EILogo}
+                src={LST2}
                 alt="Image not found"
-                width={60}
-                height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                width={80}
+                height={80}
+                style={{ width: "53px", height: "53px", objectFit: "fill" }}
+                className="rounded-full img5"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        The total amount of Liquid Staking Tokens restaked
+                        through this operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlRestaking)
                   : 0}
                 &nbsp;
               </div>
-              <div>TVL Restaked ETH</div>
+              <div>LSTs Restaked</div>
             </div>
           </div>
 
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
-                src={EILogo}
+                src={eigenToken3}
                 alt="Image not found"
                 width={60}
                 height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img6"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        Total amount of EIGEN tokens restaked through this
+                        operator
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlStrategies.Eigen)
                   : 0}
                 &nbsp;
               </div>
-              <div>Eigen Restaked</div>
+              <div>EIGEN Restaked</div>
             </div>
           </div>
 
           <div>
-            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv">
+            <div className="w-[200px] flex flex-col gap-[10px] items-center text-white border-[0.5px] border-[#D9D9D9] rounded-xl p-4 tvlDiv relative">
               <Image
-                src={EILogo}
+                src={ethlogo}
                 alt="Image not found"
-                width={60}
-                height={60}
-                style={{ width: "53px", height: "53px" }}
-                className="rounded-full"
+                width={80}
+                height={80}
+                style={{ width: "53px", height: "53px", objectFit: "cover" }}
+                className="rounded-full img7"
               />
+              <span className="absolute top-[-1rem] right-[0.5rem]">
+                <Tooltip
+                  content={
+                    <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                      <span className="text-sm">
+                        Shows the amount of native ETH restaked, excluding LSTs
+                      </span>
+                    </div>
+                  }
+                  showArrow
+                  placement="right"
+                  delay={1}
+                >
+                  <span className="px-2">
+                    <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                  </span>
+                </Tooltip>
+              </span>
               <div className="text-light-cyan font-semibold">
                 {delegateInfo?.tvl.tvl
                   ? formatTVL(delegateInfo?.tvl.tvlBeaconChain)
                   : 0}
                 &nbsp;
               </div>
-              <div>Native ETH</div>
+              <div>Native ETH Restaked</div>
             </div>
           </div>
         </div>
@@ -382,91 +628,91 @@ function DelegateInfo({
       </div>
 
       {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-                <div className="p-4">
-                  <div className="flex justify-between items-center">
-                    <Skeleton width={100} />
-                    <Skeleton width={150} />
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-x-40">
-                    <DataListSkeleton />
-                    <PieChartSkeleton />
-                  </div>
-                </div>
-              </div>
-            ) : (
-
-      <div className="flex justify-center mt-5 pe-16">
-        {filteredData.length > 0 ? (
-          <div
-            className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"
-            style={{ width: "100%" }}
-          >
-            <div className="p-4">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Total</h2>
-                <div className="text-right">
-                  <p className="text-2xl font-bold">
-                    {totalEth.toLocaleString(undefined, {
-                      maximumFractionDigits: 3,
-                    })}{" "}
-                    ETH
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="flex flex-col md:flex-row gap-x-40">
-                <div className="w-full md:w-1/2 pr-10">
-                  <div className="space-y-2">
-                  {filteredData.map(([label, value], index) => (
-                      <div
-                        key={index}
-                        className={`flex justify-between items-center py-2 rounded-md ${
-                          hoveredIndex === index ? "bg-gray-600" : ""
-                        }`}
-                      >
-                        <div className="flex items-center flex-grow min-w-0 mr-4">
-                          <div
-                            className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
-                            style={{
-                              backgroundColor:
-                                chartData.datasets[0].backgroundColor[
-                                  index %
-                                    chartData.datasets[0].backgroundColor.length
-                                ],
-                            }}
-                          ></div>
-                          <span>{label}</span>
-                        </div>
-                        <div className="flex justify-end items-center gap-6 flex-1">
-                          <div className="min-w-[80px] text-right font-semibold">
-                            {value.toLocaleString(undefined, {
-                              maximumFractionDigits: 2,
-                            })}
-                          </div>
-                          <div className="min-w-[60px] text-right font-semibold">
-                            {((value / totalEth) * 100).toFixed(2)}%
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
-                  <div style={{ width: "300px", height: "300px" }}>
-                    <Pie data={chartData} options={chartOptions} />
-                  </div>
-                </div>
-              </div>
+        <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+          <div className="p-4 animate-pulse">
+            <div className="flex justify-between items-center">
+              <Skeleton width={100} />
+              <Skeleton width={150} />
             </div>
           </div>
-        ) : (
-          <p>No ETH staked</p>
-        )}
-      </div>
+          <div className="p-6 animate-pulse">
+            <div className="flex flex-col md:flex-row gap-x-40">
+              <DataListSkeleton />
+              <PieChartSkeleton />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center mt-5 pe-16">
+          {filteredData.length > 0 ? (
+            <div
+              className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"
+              style={{ width: "100%" }}
+            >
+              <div className="p-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold">Total</h2>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold">
+                      {totalEth.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}{" "}
+                      ETH
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row gap-x-40">
+                  <div className="w-full md:w-1/2 pr-10">
+                    <div className="space-y-2">
+                      {filteredData.map(([label, value], index) => (
+                        <div
+                          key={index}
+                          className={`flex justify-between items-center rounded-md ${
+                            hoveredIndex === index ? "bg-gray-600" : ""
+                          }`}
+                        >
+                          <div className="flex items-center flex-grow min-w-0 mr-4">
+                            <div
+                              className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
+                              style={{
+                                backgroundColor:
+                                  chartData.datasets[0].backgroundColor[
+                                    index %
+                                      chartData.datasets[0].backgroundColor
+                                        .length
+                                  ],
+                              }}
+                            ></div>
+                            <span>{label}</span>
+                          </div>
+                          <div className="flex justify-end items-center gap-6 flex-1">
+                            <div className="min-w-[80px] text-right font-semibold">
+                              {value.toLocaleString(undefined, {
+                                maximumFractionDigits: 2,
+                              })}
+                            </div>
+                            <div className="min-w-[60px] text-right font-semibold">
+                              {((value / totalEth) * 100).toFixed(2)}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                    <div style={{ width: "300px", height: "300px" }}>
+                      <Pie data={chartData} options={chartOptions} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p>No ETH staked</p>
+          )}
+        </div>
       )}
     </div>
   );

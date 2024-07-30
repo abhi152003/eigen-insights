@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { ThreeCircles } from "react-loader-spinner";
 import { gql, useQuery } from "@apollo/client";
 import Image from "next/image";
+import SkeletonLoader from "../Skeletons/IndOperatorsAvsTable";
 
 const GET_OPERATOR_AVSS = gql`
   query GetOperatorAvss($operatorId: String!) {
@@ -98,7 +99,7 @@ function Avss({ props }: { props: Type }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleSearchChange = (query: string) => {
@@ -131,8 +132,8 @@ function Avss({ props }: { props: Type }) {
   return (
     <div>
       <div>
-        <h1 className="mt-10 ml-3 font-medium text-3xl">AVSs</h1>
-        <div className="searchBox searchShineWidthOfAVSs -mb-7 mt-5">
+        {/* <h1 className="mt-10 ml-3 font-medium text-3xl">AVSs</h1> */}
+        <div className="searchBox searchShineWidthOfAVSs -mb-7 mt-2">
           <input
             className="searchInput"
             type="text"
@@ -147,7 +148,7 @@ function Avss({ props }: { props: Type }) {
         </div>
         <div className="py-8 pe-14 font-poppins">
           {filteredAvss.length > 0 ? (
-            <div className="w-full overflow-x-auto">
+            <div className="mt-4 w-full overflow-x-auto">
               <table className="min-w-full bg-midnight-blue">
                 <thead>
                   <tr className="bg-sky-blue bg-opacity-10">
@@ -185,7 +186,7 @@ function Avss({ props }: { props: Type }) {
                       </td>
                       <td className="px-4 py-2">
                         <div className="flex items-center">
-                          <span>{`${avs.id.slice(0, 6)}...${avs.id.slice(
+                          <span className="text-light-cyan">{`${avs.id.slice(0, 6)}...${avs.id.slice(
                             -4
                           )}`}</span>
                           <span
@@ -252,7 +253,16 @@ function Avss({ props }: { props: Type }) {
           )}
         </div>
       </div>
-      <Toaster />
+      <Toaster toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }} />
     </div>
   );
 }

@@ -42,6 +42,7 @@ import {
   useQuery,
 } from "@apollo/client";
 import AvsHistory from "./AvsHistory";
+import OperatorHistory from "./OperatorHistory";
 
 interface Type {
   daoDelegates: string;
@@ -185,7 +186,7 @@ function SpecificDelegate({ props }: { props: Type }) {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleClick = () => {
@@ -278,7 +279,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                 </div>
               </div>
               <div className="px-4">
-                <div className="flex items-center py-1">
+                <div className="flex items-center py-[2px]">
                   <div className="font-semibold text-base pr-4 mt-2">
                     {delegateInfo?.metadataName ||
                       delegateInfo.metadataName ||
@@ -400,7 +401,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                     >
                       <span className="px-2 cursor-pointer">
                         <IoCopy
-                          onClick={() => handleCopy(props.individualDelegate)}
+                          onClick={() => handleCopy(earningsReceiver)}
                         />
                       </span>
                     </Tooltip>
@@ -421,7 +422,7 @@ function SpecificDelegate({ props }: { props: Type }) {
                   </div>
                 )}
 
-                <div className="mt-5">
+                <div className="mt-3">
                   {props.daoDelegates === "operators" ? (
                     <button
                       className="bg-midnight-blue font-bold text-white rounded-full px-8 py-1 -mt-1 btnShineWallet"
@@ -506,16 +507,26 @@ function SpecificDelegate({ props }: { props: Type }) {
               <button
                 className={`border-b-2 py-3 px-2
                   ${
-                    searchParams.get("active") === "history"
+                    searchParams.get("active") === "avsHistory"
                       ? "border-light-cyan text-light-cyan font-semibold"
                       : "border-transparent"
                   }`}
-                onClick={() => router.push(path + "?active=history")}
+                onClick={() => router.push(path + "?active=avsHistory")}
               >
                 History
               </button>
             ) : (
-              ""
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "operatorHistory"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=operatorHistory")}
+              >
+                History
+              </button>
             )}
           </div>
 
@@ -545,9 +556,14 @@ function SpecificDelegate({ props }: { props: Type }) {
                 <OperatorsAnalytics props={props} />
               </ApolloProvider>
             )}
-            {searchParams.get("active") === "history" && (
+            {searchParams.get("active") === "avsHistory" && (
               <ApolloProvider client={client}>
                 <AvsHistory props={props} />
+              </ApolloProvider>
+            )}
+            {searchParams.get("active") === "operatorHistory" && (
+              <ApolloProvider client={client}>
+                <OperatorHistory props={props}/>
               </ApolloProvider>
             )}
             {/* {searchParams.get("active") === "delegatesSession" && (

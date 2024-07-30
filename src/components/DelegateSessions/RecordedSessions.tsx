@@ -62,7 +62,7 @@ function RecordedSessions() {
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   useEffect(() => {

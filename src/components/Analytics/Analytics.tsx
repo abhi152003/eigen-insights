@@ -1,15 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Doughnut, Pie } from "react-chartjs-2";
-import { Chart, ArcElement, Title, Tooltip } from "chart.js";
+import { Chart, ArcElement, Title } from "chart.js";
 import { formatEther } from "ethers";
 import { Oval, ThreeCircles } from "react-loader-spinner";
 import "../../app/globals.css";
 import { IoSearchSharp } from "react-icons/io5";
 import { useAccount } from "wagmi";
 import { gql, useQuery } from "@apollo/client";
+import { IoCopy } from "react-icons/io5";
+import copy from "copy-to-clipboard";
+import toast, { Toaster } from "react-hot-toast";
+import LeaderboardSkeleton from "../Skeletons/LeaderboardSkeleton";
 
-import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
+
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
@@ -59,14 +66,50 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     return 0;
   });
 
+  const handleCopy = (addr: any) => {
+    copy(addr);
+    toast("Address Copied 🎊");
+  };
+
   return (
-    <div className="bg-[#1f2937] text-[#a0b3d7] p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4 text-[#e0e7f4]">Claim Leaderboard</h2>
+    <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
+      <h2 className="text-2xl font-bold mb-4 text-white flex items-center">
+        Airdrop Leaderboard 🎁🎊
+      </h2>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#2a3955]">
-              <th className="px-4 py-2 text-left">Rank</th>
+              <th className="px-4 py-2 text-left flex gap-2">
+              <span className="pt-[19px]">Rank</span>
+              <span>
+              <Tooltip
+                content={
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                    <span className="text-sm">Based on the amount of ETH won by staker</span>
+                  </div>
+                }
+                showArrow
+                placement="right"
+                delay={1}
+              >
+                <span className="px-2">
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                </span>
+              </Tooltip></span>
+              </th>
               <th className="px-4 py-2 text-left">Account</th>
               <th className="px-4 py-2 text-right">Amount (ETH)</th>
               <th className="px-4 py-2 text-right">Claimed</th>
@@ -74,18 +117,45 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
           </thead>
           <tbody>
             {sortedData.map((item, index) => (
-              <tr key={item.transactionHash} className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors">
+              <tr
+                key={item.transactionHash}
+                className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors"
+              >
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">
-                  <a href={`https://etherscan.io/address/${item.account}`} target="_blank" rel="noopener noreferrer" className="text-[#4f8fea] hover:underline">
-                    {`${item.account.slice(0, 6)}...${item.account.slice(-4)}`}
-                  </a>
+                  <div className="flex items-center">
+                    <a
+                      href={`https://etherscan.io/address/${item.account}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-light-cyan hover:underline"
+                    >
+                      <span>
+                        {`${item.account.slice(0, 6)}...${item.account.slice(
+                          -4
+                        )}`}
+                      </span>
+                    </a>
+                    <span
+                      className="ml-2 cursor-pointer"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleCopy(item.account);
+                      }}
+                      title="Copy"
+                    >
+                      <IoCopy size={16} color="#ffffff" />
+                    </span>
+                  </div>
                 </td>
                 <td className="px-4 py-2 text-right">
                   {(Number(BigInt(item.amount)) / 1e18).toFixed(2)}
                 </td>
                 <td className="px-4 py-2 text-right">
-                  {formatDistanceToNowStrict(new Date(parseInt(item.blockTimestamp) * 1000), { addSuffix: true })}
+                  {formatDistanceToNowStrict(
+                    new Date(parseInt(item.blockTimestamp) * 1000),
+                    { addSuffix: true }
+                  )}
                 </td>
               </tr>
             ))}
@@ -93,6 +163,51 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
         </table>
       </div>
     </div>
+
+    // <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
+    //   <div className="h-8 w-64 bg-gray-700 rounded mb-4 animate-pulse"></div>
+    //   <div className="overflow-x-auto animate-pulse">
+    //     <table className="w-full">
+    //       <thead>
+    //         <tr className="border-b border-[#2a3955]">
+    //           <th className="px-4 py-2 text-left">
+    //             <div className="h-4 w-16 bg-gray-700 rounded"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-left">
+    //             <div className="h-4 w-24 bg-gray-700 rounded"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-right">
+    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
+    //           </th>
+    //           <th className="px-4 py-2 text-right">
+    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
+    //           </th>
+    //         </tr>
+    //       </thead>
+    //       <tbody>
+    //         {[...Array(10)].map((_, index) => (
+    //           <tr key={index} className="border-b border-[#2a3955]">
+    //             <td className="px-4 py-2">
+    //               <div className="h-4 w-8 bg-gray-700 rounded"></div>
+    //             </td>
+    //             <td className="px-4 py-2">
+    //               <div className="flex items-center">
+    //                 <div className="h-4 w-32 bg-gray-700 rounded"></div>
+    //                 <div className="h-4 w-4 bg-gray-700 rounded-full ml-2"></div>
+    //               </div>
+    //             </td>
+    //             <td className="px-4 py-2 text-right">
+    //               <div className="h-4 w-16 bg-gray-700 rounded ml-auto"></div>
+    //             </td>
+    //             <td className="px-4 py-2 text-right">
+    //               <div className="h-4 w-24 bg-gray-700 rounded ml-auto"></div>
+    //             </td>
+    //           </tr>
+    //         ))}
+    //       </tbody>
+    //     </table>
+    //   </div>
+    // </div>
   );
 };
 
@@ -124,7 +239,7 @@ const strategyNames: { [key: string]: string } = {
   "0xae60d8180437b5c34bb956822ac2710972584473": "LST ETH",
 };
 
-Chart.register(ArcElement, Title, Tooltip);
+Chart.register(ArcElement, Title);
 
 function Analytics() {
   const [totalOperators, setTotalOperators] = useState(0);
@@ -153,7 +268,7 @@ function Analytics() {
   useEffect(() => {
     if (data) {
       console.log(data.claimeds);
-      setAirDrop(data.claimeds)
+      setAirDrop(data.claimeds);
     }
   }, [data]);
 
@@ -485,7 +600,7 @@ function Analytics() {
     totalRestaking,
   }) => {
     return (
-      <div className="flex bg-white text-black rounded-lg shadow-sm overflow-hidden">
+      <div className="flex bg-[#1F2937] text-white rounded-lg shadow-sm overflow-hidden">
         <SummaryItem label="TVL(ETH)" value={totalTVL} isFirst={true} />
         <SummaryItem label="Total Operators" value={totalOperators} />
         <SummaryItem label="Total AVSs" value={totalAVSs} />
@@ -517,11 +632,20 @@ function Analytics() {
         className={`flex-1 p-4 ${!isLast ? "border-r border-gray-200" : ""} ${isFirst ? "pl-6" : ""
           } ${isLast ? "pr-6" : ""}`}
       >
-        <div className="text-sm text-gray-600">{label}</div>
-        <div className="font-bold text-lg text-black">
+        <div className="text-sm text-white">{label}</div>
+        <div className="font-bold text-lg text-white">
           {parseFloat(value.toFixed(2)).toLocaleString()}
         </div>
       </div>
+
+      // <div
+      //   className={`flex-1 p-4 animate-pulse ${
+      //     !isLast ? "border-r border-gray-200" : ""
+      //   } ${isFirst ? "pl-6" : ""} ${isLast ? "pr-6" : ""}`}
+      // >
+      //   <div className="h-4 w-16 bg-gray-300 rounded mb-2"></div>
+      //   <div className="h-6 w-24 bg-gray-300 rounded"></div>
+      // </div>
     );
   };
 
@@ -530,6 +654,11 @@ function Analytics() {
     console.error("GraphQL Error:", error);
     return <p>Error: {error.message}</p>;
   }
+
+  const handleCopy = (addr: any) => {
+    copy(addr);
+    toast("Address Copied 🎊");
+  };
 
   return (
     <div className="p-20 -mt-20">
@@ -556,45 +685,31 @@ function Analytics() {
             totalStakers={totalStakers}
             totalRestaking={totalRestaking}
           />
-          {airDrop &&
-            <Leaderboard data={airDrop} />
-          }
-          {/* <div className='flex items-center justify-center mt-7'>
-            <div className='flex gap-x-40 text-center'>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Operators Distribution in AVSs</h1>
-                  <Doughnut data={avsOperatorsData} options={{cutout: '95%'}}  />
-              </div>
-              <div className='w-96 h-96'>
-                  <h1 className='pt-5 pb-5'>Restaking TVL Distribution</h1>
-                  <Doughnut data={restakeData} options={{cutout: '95%'}} />
-              </div>
-            </div>
-          </div> */}
+          {airDrop && <Leaderboard data={airDrop} />}
 
           <div>
-            <h1 className="ml-2 mb-2 mt-7 text-[2.25rem] font-semibold">
-              TVL Restaking Distribution
-            </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+              <div className="w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 mt-4">
                 <div className="p-4">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center animate-pulse">
                     <Skeleton width={100} />
                     <Skeleton width={150} />
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-x-40">
+                  <div className="flex flex-col md:flex-row gap-x-40 animate-pulse">
                     <DataListSkeleton />
                     <PieChartSkeleton />
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-4">
                 {filteredData.length > 0 ? (
-                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                  <div className="w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                    <h1 className="ml-2 mt-6 mb-1 text-2xl font-bold">
+                      TVL Restaking Distribution
+                    </h1>
                     <div className="p-4">
                       <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">Total</h2>
@@ -675,28 +790,28 @@ function Analytics() {
 
           {/* Operators Distribution */}
           <div>
-            <h1 className="ml-2 mb-2 first:mt-7 text-[2.25rem] font-semibold">
-              Operators Distribution
-            </h1>
             {isLoading ? (
-              <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+              <div className="w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4 mt-4">
                 <div className="p-4">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center animate-pulse">
                     <Skeleton width={100} />
                     <Skeleton width={150} />
                   </div>
                 </div>
                 <div className="p-6">
-                  <div className="flex flex-col md:flex-row gap-x-40">
+                  <div className="flex flex-col md:flex-row gap-x-40 animate-pulse">
                     <DataListSkeleton />
                     <PieChartSkeleton />
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="flex justify-center mt-5">
+              <div className="flex justify-center mt-4">
                 {sortedOperatorsData.length > 0 ? (
-                  <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                  <div className="w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
+                    <h1 className="ml-2 mt-6 mb-1 text-2xl font-bold">
+                      Operator Distribution
+                    </h1>
                     <div className="p-4">
                       <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">Total</h2>
@@ -763,13 +878,13 @@ function Analytics() {
             )}
           </div>
 
-          <div className="mt-10">
-            <h1 className="ml-3 mt-10 text-[1.25rem] font-semibold	">
+          <div className="">
+            <h1 className="ml-3 mt-10 text-2xl font-semibold">
               All Withdrawals
             </h1>
 
-            <div className="flex">
-              <div className="searchBox searchShineWidthOfAVSs mb-5 mt-5">
+            <div className="flex items-center">
+              <div className="searchBox my-3">
                 <input
                   className="searchInput"
                   type="text"
@@ -782,23 +897,22 @@ function Analytics() {
                   <IoSearchSharp className="iconExplore" />
                 </button>
               </div>
-              {isConnected && (
-                <button
-                  onClick={handleWithdrawalAddress}
-                  className="border border-white rounded-lg h-8 px-2 justify-center mt-6 ml-10"
-                >
-                  Get All My Withdrawals
-                </button>
-              )}
+              <button
+                onClick={handleWithdrawalAddress}
+                className="border border-white rounded-lg px-2 justify-center ml-5 py-2"
+              >
+                Get All My Withdrawals
+              </button>
             </div>
-            <div className="mx-auto py-8 overflow-x-auto">
+
+            <div className="mx-auto py-3 overflow-x-auto">
               <table className="w-full border-collapse text-center text-white rounded-md">
                 <thead>
                   <tr className="bg-gray-800">
                     <th className="py-2 px-4 border border-gray-700">Block</th>
                     <th className="py-2 px-4 border border-gray-700">Staker</th>
                     <th className="py-2 px-4 border border-gray-700">
-                      Is Completed?
+                      Is Completed ?
                     </th>
                     <th className="py-2 px-4 border border-gray-700">
                       Delegated To
@@ -815,19 +929,49 @@ function Analytics() {
                   {withdrawals.map((withdrawal, index) => (
                     <tr
                       key={index}
-                      className="bg-gray-900 hover:bg-gray-800 transition-colors"
+                      className="bg-gray-800 hover:bg-gray-900 transition-colors"
                     >
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.createdAtBlock}
                       </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.stakerAddress}
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <span className="text-center">
+                            {withdrawal.stakerAddress.slice(0, 6)}....
+                            {withdrawal.stakerAddress.slice(-3)}
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer text-center"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.stakerAddress);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                        </div>
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.isCompleted ? "Yes" : "No"}
                       </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.delegatedTo}
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <span>
+                            {withdrawal.delegatedTo.slice(0, 6)}....
+                            {withdrawal.delegatedTo.slice(-3)}
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.delegatedTo);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                        </div>
                       </td>
                       <td className="py-2 px-4 border border-gray-700 text-sm">
                         {withdrawal.shares.map((share, index) => (
@@ -851,14 +995,15 @@ function Analytics() {
                 <button
                   disabled={skip === 0}
                   onClick={() => handlePageChange(1)}
-                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-medium-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-medium-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors cursor-pointer"
                 >
                   First
                 </button>
                 <button
                   disabled={skip === 0}
                   onClick={() => handlePageChange(skip / take)}
-                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  className={`px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors 
+                    ${skip === 0 ? "cursor-pointer" : ""}`}
                 >
                   Prev
                 </button>
@@ -881,6 +1026,79 @@ function Analytics() {
                 </button>
               </div>
             </div>
+
+            {/* <div className="mx-auto py-3 overflow-x-auto animate-pulse">
+              <table className="w-full border-collapse text-center text-white rounded-md">
+                <thead>
+                  <tr className="bg-gray-800">
+                    {[
+                      "Block",
+                      "Staker",
+                      "Is Completed ?",
+                      "Delegated To",
+                      "Shares(ETH)",
+                      "Strategy",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        className="py-2 px-4 border border-gray-700"
+                      >
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...Array(10)].map((_, index) => (
+                    <tr key={index} className="bg-gray-900">
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <div className="h-4 bg-gray-700 rounded w-24"></div>
+                          <div className="ml-2 h-4 w-4 bg-gray-700 rounded-full"></div>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-8 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <div className="h-4 bg-gray-700 rounded w-24"></div>
+                          <div className="ml-2 h-4 w-4 bg-gray-700 rounded-full"></div>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        <div className="h-4 bg-gray-700 rounded w-16 mx-auto"></div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700">
+                        <div className="h-4 bg-gray-700 rounded w-20 mx-auto"></div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="flex justify-center mt-4">
+                {["First", "Prev", "Page X of Y", "Next", "Last"].map(
+                  (btn, index) => (
+                    <div
+                      key={index}
+                      className={`px-4 py-2 ${
+                        index !== 2 ? "mr-2" : ""
+                      } bg-gray-700 text-gray-100 rounded`}
+                    >
+                      <div
+                        className={`h-4 bg-gray-600 rounded ${
+                          index === 2 ? "w-24" : "w-16"
+                        }`}
+                      ></div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div> */}
           </div>
         </div>
       )}

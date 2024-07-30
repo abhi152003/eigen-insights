@@ -23,54 +23,11 @@ function Page() {
 
   return (
     <div>
-      <h2 className="text-5xl text-center pb-7 mt-5 font-semibold">
+      <h2 className="text-4xl text-center pb-7 mt-5 font-semibold shineFont">
         EigenLayer
       </h2>
-      {/* <div className="ml-0 pl-16 py-2 flex gap-12 justify-start text-base">
-        <button
-          className={` 
-                mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
-                ${
-                  searchParams.get("active") === "analytics"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
-                    : "text-white border-white"
-                }`}
-          onClick={() => router.push(path + "?active=analytics")}
-        >
-          Analytics
-        </button>
 
-        <button
-          className={` 
-                mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
-                ${
-                  searchParams.get("active") === "recordedSessions"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
-                    : "text-white border-white"
-                }`}
-          onClick={() => router.push(path + "?active=recordedSessions")}
-        >
-          Sessions
-        </button>
-
-        <button
-          className={` 
-                mt-6 p-3 border-[#A7DBF2] border-1 rounded-full px-6 
-                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000  group
-                ${
-                  searchParams.get("hours") === "ongoing"
-                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3] btnShine"
-                    : "text-white border-white"
-                }`}
-          onClick={() => router.push(path + "?hours=ongoing")}
-        >
-          Office Hours
-        </button>
-      </div> */}
-
-      <div className="py-6">
+      <div className="">
         {searchParams.get("active") === "analytics" ? (
           <ApolloProvider client={client}>
             <Analytics />

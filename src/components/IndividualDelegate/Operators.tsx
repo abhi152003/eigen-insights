@@ -89,6 +89,8 @@ interface OperatorRowProps {
   daSigningRatePeriod: string;
 }
 
+const ITEMS_PER_PAGE = 20;
+
 function Operators({ props }: { props: { individualDelegate: string } }) {
   const router = useRouter();
   const [allOperators, setAllOperators] = useState<Operator[]>([]);
@@ -106,6 +108,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   const [useAVSOperators, setUseAVSOperators] = useState(false);
   const [useAllOperatorsFallback, setUseAllOperatorsFallback] = useState(true);
   const [totalAVSOperatorsCount, setTotalAVSOperatorsCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
 
   const {
     loading: queryLoading,
@@ -128,9 +132,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   } = useQuery(GET_AVS_OPERATORS, {
     variables: {
       avsAddress: props.individualDelegate,
-      status: useAllOperatorsFallback ? 1 : undefined,
+      status: 1, // Assuming we want active operators
     },
-    skip: !useAVSOperators && !useAllOperatorsFallback,
     context: {
       subgraph: "avs",
     },
@@ -140,71 +143,47 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
 
   useEffect(() => {
     if (data?.quorums) {
-      const hasEmptyQuorum = data.quorums.some(
-        (quorum: any) => quorum.operators.length === 0
+      const operators = data.quorums.flatMap((quorum: any) =>
+        quorum.operators.map((op: any) => ({ ...op, quorum: quorum.quorum }))
       );
+      setAllOperators(operators);
 
-      if (data.quorums.length > 0 && !hasEmptyQuorum) {
-        const operators = data.quorums.flatMap((quorum: any) =>
-          quorum.operators.map((op: any) => ({ ...op, quorum: quorum.quorum }))
-        );
-        setAllOperators(operators);
+      const counts = data.quorums.reduce(
+        (acc: { [key: number]: number }, quorum: any) => {
+          acc[quorum.quorum] = quorum.operatorsCount;
+          return acc;
+        },
+        {}
+      );
+      setOperatorCounts(counts);
 
-        // Calculate operator counts for each quorum
-        const counts = data.quorums.reduce(
-          (acc: { [key: number]: number }, quorum: any) => {
-            acc[quorum.quorum] = quorum.operatorsCount;
-            return acc;
-          },
-          {}
-        );
-        setOperatorCounts(counts);
-
-        // Calculate operators in all quorums
-        const quorumCount = data.quorums.length;
-        const operatorCounts = operators.reduce(
-          (acc: { [key: string]: number }, op: Operator) => {
-            acc[op.operator.id] = (acc[op.operator.id] || 0) + 1;
-            return acc;
-          },
-          {}
-        );
-        const inAllQuorums = operators.filter(
-          (op: { operator: { id: string | number } }) =>
-            operatorCounts[op.operator.id] === quorumCount
-        );
-        setOperatorsInAllQuorums(inAllQuorums);
-
-        setLoading(false);
-        setUseAVSOperators(false);
-      } else {
-        // If any quorum has an empty operators array, use fallback query
-        setUseAVSOperators(true);
-      }
-    } else if (data?.quorums && data.quorums.length === 0) {
-      setUseAVSOperators(true);
+      setLoading(false);
     }
 
-    // Process avsData (fallback query data)
     if (avsData?.avsoperatorStatuses) {
-      const operators = avsData.avsoperatorStatuses.map((op: any) => ({
+      const fallbackOperators = avsData.avsoperatorStatuses.map((op: any) => ({
         operator: op.operator,
         status: op.status,
       }));
-      setTotalAVSOperatorsCount(operators.length);
-      if (useAVSOperators) {
-        setAllOperators(operators);
-        setOperatorsInAllQuorums(operators);
+      setTotalAVSOperatorsCount(fallbackOperators.length);
+
+      if (selectedQuorum === null) {
+        setDisplayedOperators(fallbackOperators);
       }
+
       setLoading(false);
     }
-  }, [data, avsData, useAVSOperators]);
+  }, [data, avsData, selectedQuorum]);
 
   useEffect(() => {
-    let filtered: any[] | ((prevState: Operator[]) => Operator[]) = [];
-    if (useAVSOperators || useAllOperatorsFallback) {
-      filtered = [...allOperators];
-    } else if (selectedQuorum !== null) {
+    let filtered: Operator[] = [];
+    if (selectedQuorum === null) {
+      filtered =
+        avsData?.avsoperatorStatuses.map((op: any) => ({
+          operator: op.operator,
+          status: op.status,
+        })) || [];
+    } else {
       filtered = allOperators.filter((op) => op.quorum === selectedQuorum);
     }
 
@@ -214,64 +193,79 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
       );
     }
 
+    filtered.sort(
+      (a, b) =>
+        parseFloat(b.operator.totalShares) - parseFloat(a.operator.totalShares)
+    );
+
     setDisplayedOperators(filtered);
-  }, [
-    allOperators,
-    searchQuery,
-    selectedQuorum,
-    useAVSOperators,
-    useAllOperatorsFallback,
-  ]);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [allOperators, avsData, searchQuery, selectedQuorum]);
 
   const handleCopy = (addr: string) => {
     copy(addr);
-    toast("Address Copied");
+    toast("Address Copied 🎊");
   };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
   };
 
+  const handleQuorumSelection = (quorum: number | null) => {
+    setSelectedQuorum(quorum);
+    setCurrentPage(1); // Reset to first page when changing quorum
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const getPaginatedOperators = () => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return displayedOperators.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  };
+
   const calculateRank = (
     operator: Operator,
-    allOperators: Operator[],
-    selectedQuorum: number | null
+    displayedOperators: Operator[]
   ) => {
-    if (selectedQuorum === null) {
-      // For All Quorums, prioritize Quorum 0
-      const quorum0Operators = allOperators.filter((op) => op.quorum === 0);
-      const quorum1Operators = allOperators.filter((op) => op.quorum === 1);
+    return (
+      displayedOperators.findIndex(
+        (op) => op.operator.id === operator.operator.id
+      ) + 1
+    );
+  };
 
-      if (
-        operator.quorum === 0 ||
-        (operator.quorum === undefined &&
-          quorum0Operators.some(
-            (op) => op.operator.id === operator.operator.id
-          ))
-      ) {
-        return (
-          quorum0Operators.findIndex(
-            (op) => op.operator.id === operator.operator.id
-          ) + 1
-        );
-      } else {
-        return (
-          quorum1Operators.findIndex(
-            (op) => op.operator.id === operator.operator.id
-          ) + 1
-        );
-      }
-    } else {
-      // For specific quorums, rank within that quorum
-      const quorumOperators = allOperators.filter(
-        (op) => op.quorum === selectedQuorum
-      );
-      return (
-        quorumOperators.findIndex(
-          (op) => op.operator.id === operator.operator.id
-        ) + 1
+  const totalPages = Math.ceil(displayedOperators.length / ITEMS_PER_PAGE);
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 mx-1 rounded ${
+            i === currentPage
+              ? "bg-sky-blue text-white"
+              : "bg-gray-200 text-gray-600"
+          }`}
+        >
+          {i}
+        </button>
       );
     }
+
+    return pageNumbers;
   };
 
   const OperatorRow: React.FC<OperatorRowProps> = ({
@@ -341,13 +335,14 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
       }
     };
 
-    const status = useAVSOperators
-      ? operator.status === 1
+    const status =
+      selectedQuorum === null
+        ? operator.status === 1
+          ? "Active"
+          : "Inactive"
+        : operator.operator.avsStatuses?.[0]?.status === 1
         ? "Active"
-        : "Inactive"
-      : operator.operator.avsStatuses?.[0]?.status === 1
-      ? "Active"
-      : "Inactive";
+        : "Inactive";
 
     const optInDate: string | number | undefined =
       operator.createdTimestamp || operator.operator.registered;
@@ -381,7 +376,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
         </td>
         <td className="px-4 py-2">
           <div className="flex items-center">
-            <span>{`${operator.operator.id.slice(
+            <span className="text-light-cyan">{`${operator.operator.id.slice(
               0,
               6
             )}...${operator.operator.id.slice(-4)}`}</span>
@@ -447,8 +442,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   return (
     <div>
       <div>
-        <h1 className="mt-10 ml-3 font-medium text-3xl">Node Operators</h1>
-        <div className="py-8 pe-14 font-poppins">
+        {/* <h1 className="mt-3 ml-3 font-medium text-3xl">Node Operators</h1> */}
+        <div className="py-2 pe-14 font-poppins">
           <div className="searchBox searchShineWidthOfAVSs mb-1">
             <input
               className="searchInput"
@@ -462,86 +457,83 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               <IoSearchSharp className="iconExplore" />
             </button>
           </div>
-          {!useAVSOperators && (
-            <div className="mb-4 flex space-x-4">
-              <button
-                className={`px-4 py-2 rounded ${
-                  selectedQuorum === null
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-                onClick={() => {
-                  setSelectedQuorum(null);
-                  setUseAllOperatorsFallback(true);
-                }}
-              >
-                All Quorums ({getTotalOperatorCount()})
-              </button>
-
-              <button
-                className={`px-4 py-2 rounded ${
-                  selectedQuorum === 0
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-                onClick={() => {
-                  setSelectedQuorum(0);
-                  setUseAllOperatorsFallback(false);
-                }}
-              >
-                Quorum 0 ({operatorCounts[0] || 0})
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${
-                  selectedQuorum === 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-                onClick={() => {
-                  setSelectedQuorum(1);
-                  setUseAllOperatorsFallback(false);
-                }}
-              >
-                Quorum 1 ({operatorCounts[1] || 0})
-              </button>
-            </div>
-          )}
+          <div className="mb-4 flex space-x-4 my-4">
+            <button
+              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
+                    ${
+                      selectedQuorum === null
+                        ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                        : "text-white border-white"
+                    }`}
+              onClick={() => handleQuorumSelection(null)}
+            >
+              All Quorums ({totalAVSOperatorsCount})
+            </button>
+            <button
+              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
+                    ${
+                      selectedQuorum === 0
+                        ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                        : "text-white border-white"
+                    }`}
+              onClick={() => handleQuorumSelection(0)}
+            >
+              Quorum 0 ({operatorCounts[0] || 0})
+            </button>
+            <button
+              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
+                    ${
+                      selectedQuorum === 1
+                        ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                        : "text-white border-white"
+                    }`}
+              onClick={() => handleQuorumSelection(1)}
+            >
+              Quorum 1 ({operatorCounts[1] || 0})
+            </button>
+          </div>
           {props.individualDelegate ===
             "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
             <div className="mb-4 flex space-x-4">
               <button
-                className={`px-4 py-2 rounded ${
+                className={`p-3 border-[#A7DBF2] border-1 rounded-md px-6 
+                border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
                   daSigningRatePeriod === "24h"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
+                    ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                    : "text-white border-white"
                 }`}
                 onClick={() => setDaSigningRatePeriod("24h")}
               >
                 1 Day
               </button>
               <button
-                className={`px-4 py-2 rounded ${
-                  daSigningRatePeriod === "1W"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
+                daSigningRatePeriod === "1W"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
+              }`}
                 onClick={() => setDaSigningRatePeriod("1W")}
               >
                 1 Week
               </button>
               <button
-                className={`px-4 py-2 rounded ${
-                  daSigningRatePeriod === "4W"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
+                className={`border-[#A7DBF2] border-1 rounded-md px-4 
+              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  ${
+                daSigningRatePeriod === "4W"
+                  ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
+                  : "text-white border-white"
+              }`}
                 onClick={() => setDaSigningRatePeriod("4W")}
               >
                 1 Month
               </button>
             </div>
           )}
-          <div className="w-full overflow-x-auto">
+          <div className="mt-4 w-full overflow-x-auto">
             <table className="min-w-full bg-midnight-blue overflow-x-auto">
               <thead>
                 <tr className="bg-sky-blue bg-opacity-10">
@@ -559,20 +551,14 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 </tr>
               </thead>
               <tbody>
-                {displayedOperators.map((operator, index) => (
+                {getPaginatedOperators().map((operator, index) => (
                   <OperatorRow
-                    key={`${operator.operator.id}-${operator.quorum}`}
+                    key={operator.operator.id}
                     operator={operator}
                     router={router}
                     handleCopy={handleCopy}
-                    rank={`${calculateRank(
-                      operator,
-                      allOperators,
-                      selectedQuorum
-                    )}/${
-                      selectedQuorum === null
-                        ? getTotalOperatorCount()
-                        : operatorCounts[selectedQuorum] || 0
+                    rank={`${calculateRank(operator, displayedOperators)}/${
+                      displayedOperators.length
                     }`}
                     daSigningRatePeriod={daSigningRatePeriod}
                   />
@@ -580,9 +566,40 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               </tbody>
             </table>
           </div>
+
+          <div className="mt-4 flex justify-center items-center">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
+              border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
+            >
+              Previous
+            </button>
+            <div className="mx-4">{renderPageNumbers()}</div>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
+              border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
     </div>
   );
 }
