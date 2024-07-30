@@ -78,6 +78,7 @@ function TotalOperatorsChart(
     }
   });
 
+
   if (loading)
     return (
       <div className="flex items-center justify-center">
@@ -223,6 +224,18 @@ function TotalOperatorsChart(
     },
   };
 
+  // return (
+  //   <div
+  //     style={{
+  //       backgroundColor: "#1d4059",
+  //       padding: "20px",
+  //       borderRadius: "10px",
+  //     }}
+  //     className="w-full h-[300px] sm:h-[400px] md:h-[500px]"
+  //   >
+  //     <Line data={newData} options={options} />
+  //   </div>
+  // );
   return (
     <div
       style={{

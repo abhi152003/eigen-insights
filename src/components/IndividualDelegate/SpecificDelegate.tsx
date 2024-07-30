@@ -148,7 +148,7 @@ function SpecificDelegate({ props }: { props: Type }) {
             props.individualDelegate,
             props.daoDelegates
           );
-          setDelegateInfo(details);
+          setDelegateInfo(details);   
         }
 
         if (details) {
