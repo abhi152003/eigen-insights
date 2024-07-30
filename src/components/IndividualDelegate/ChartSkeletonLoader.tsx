@@ -42,7 +42,7 @@ function ChartSkeletonLoader() {
 
 
         {/* X-axis title */}
-        <div className="text-center mt-[-10px]">
+        <div className="text-center mt-[-5px]">
           <Skeleton height={16} width={60} />
         </div>
       </div>

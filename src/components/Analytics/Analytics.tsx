@@ -10,6 +10,12 @@ import { useAccount } from "wagmi";
 import { gql, useQuery } from "@apollo/client";
 
 import { formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import {
+  PieChartSkeleton,
+  DataListSkeleton,
+} from "../Skeletons/PieChartSkeleton";
 
 // Define the type for our data
 type ClaimData = {
@@ -18,13 +24,32 @@ type ClaimData = {
   blockTimestamp: string;
   transactionHash: string;
 };
+// Define a type for the TVL data
+type TVLData = {
+  [key: string]: number;
+  "Native ETH": number;  // Now required instead of optional
+};
 
 // Props type for our component
 type LeaderboardProps = {
   data: ClaimData[];
 };
 
+interface Share {
+  strategyAddress: string;
+  shares: string;
+}
+
+interface Withdrawal {
+  createdAtBlock: number;
+  delegatedTo: string;
+  isCompleted: boolean;
+  stakerAddress: string;
+  shares: Share[];
+}
+
 const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
+
   // Sort the data by amount (descending order)
   const sortedData = [...data].sort((a, b) => {
     const amountA = BigInt(a.amount);
@@ -70,25 +95,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     </div>
   );
 };
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import {
-  PieChartSkeleton,
-  DataListSkeleton,
-} from "../Skeletons/PieChartSkeleton";
-
-interface Share {
-  strategyAddress: string;
-  shares: string;
-}
-
-interface Withdrawal {
-  createdAtBlock: number;
-  delegatedTo: string;
-  isCompleted: boolean;
-  stakerAddress: string;
-  shares: Share[];
-}
 
 const GET_DATA = gql`
   query MyQuery {
@@ -126,7 +132,6 @@ function Analytics() {
   const [totalTVL, setTotalTVL] = useState(0);
   const [totalStakers, setTotalStakers] = useState(0);
   const [totalRestaking, setTotalRestaking] = useState(0);
-  const [restakeTVL, setRestakeTVL] = useState({});
   const [avsOperators, setAVSOperators] = useState([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
@@ -135,6 +140,9 @@ function Analytics() {
   const [total, setTotal] = useState(0);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [airDrop, setAirDrop] = useState();
+  const { address, isConnected } = useAccount();
+  const [restakeTVL, setRestakeTVL] = useState<TVLData>({ "Native ETH": 0 });
+
 
   const { loading, error, data } = useQuery(GET_DATA, {
     context: {
@@ -215,10 +223,15 @@ function Analytics() {
         setTotalAVSs(metricsData.totalAvs);
         setTotalStakers(metricsData.totalStakers);
         setTotalRestaking(metricsData.tvlRestaking);
-        setRestakeTVL(restakeTVL.tvlStrategies);
+        const updatedRestakeTVL: TVLData = {
+          ...restakeTVL.tvlStrategies,
+          "Native ETH": metricsData.tvlBeaconChain
+        };
+        setRestakeTVL(updatedRestakeTVL);
         setAVSOperators(avsOperators);
         setIsDataFetched(true); // Set the flag to true after fetching data
         setIsPageLoading(false);
+
       } catch (error) {
         console.log(error);
       }
@@ -284,6 +297,7 @@ function Analytics() {
       tvlPercentageData[key] || 0,
     ])
     .sort((a, b) => b[1] - a[1]);
+  const totalTVLWithNative = totalRestaking + (restakeTVL["Native ETH"] || 0);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [operatorsHoveredIndex, setOperatorsHoveredIndex] = useState<
@@ -408,7 +422,7 @@ function Analytics() {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { address } = useAccount();
+
 
   const handleWithdrawalAddress = async () => {
     if (address) {
@@ -500,9 +514,8 @@ function Analytics() {
   }) => {
     return (
       <div
-        className={`flex-1 p-4 ${!isLast ? "border-r border-gray-200" : ""} ${
-          isFirst ? "pl-6" : ""
-        } ${isLast ? "pr-6" : ""}`}
+        className={`flex-1 p-4 ${!isLast ? "border-r border-gray-200" : ""} ${isFirst ? "pl-6" : ""
+          } ${isLast ? "pr-6" : ""}`}
       >
         <div className="text-sm text-gray-600">{label}</div>
         <div className="font-bold text-lg text-black">
@@ -544,7 +557,7 @@ function Analytics() {
             totalRestaking={totalRestaking}
           />
           {airDrop &&
-            <Leaderboard data={airDrop}/>
+            <Leaderboard data={airDrop} />
           }
           {/* <div className='flex items-center justify-center mt-7'>
             <div className='flex gap-x-40 text-center'>
@@ -587,8 +600,8 @@ function Analytics() {
                         <h2 className="text-xl font-bold">Total</h2>
                         <div className="text-right">
                           <p className="text-2xl font-bold">
-                            {totalRestaking.toLocaleString(undefined, {
-                              maximumFractionDigits: 3,
+                            {(totalRestaking + restakeTVL["Native ETH"]).toLocaleString(undefined, {
+                              maximumFractionDigits: 2,
                             })}{" "}
                             ETH
                           </p>
@@ -603,9 +616,8 @@ function Analytics() {
                               ([label, value]: any, index: number | null) => (
                                 <div
                                   key={label}
-                                  className={`flex justify-between items-center rounded-md ${
-                                    hoveredIndex === index ? "bg-gray-600" : ""
-                                  }`}
+                                  className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? "bg-gray-600" : ""
+                                    }`}
                                 >
                                   <div className="flex items-center">
                                     <div
@@ -613,11 +625,11 @@ function Analytics() {
                                       style={{
                                         backgroundColor:
                                           chartData.datasets[0].backgroundColor[
-                                            index
-                                              ? index
-                                              : 0 %
-                                                chartData.datasets[0]
-                                                  .backgroundColor.length
+                                          index
+                                            ? index
+                                            : 0 %
+                                            chartData.datasets[0]
+                                              .backgroundColor.length
                                           ],
                                       }}
                                     ></div>
@@ -635,7 +647,7 @@ function Analytics() {
                                     </span>
                                     {/* Add min-width to percentage column as well */}
                                     <span className="font-semibold min-w-[60px] text-right">
-                                      {((value / totalRestaking) * 100).toFixed(
+                                      {((value / totalTVLWithNative) * 100).toFixed(
                                         2
                                       )}
                                       %
@@ -696,63 +708,44 @@ function Analytics() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <div className="flex flex-col md:flex-row gap-x-40">
-                        <div className="w-full md:w-1/2 pr-10">
+                      <div className="flex flex-col md:flex-row gap-x-10">
+                        <div className="w-full md:w-3/5">
                           <div className="space-y-2">
-                            {sortedOperatorsData.map(
-                              ([label, value], index) => (
-                                <div
-                                  key={label}
-                                  className={`flex justify-between items-center rounded-md ${
-                                    operatorsHoveredIndex === index
-                                      ? "bg-gray-600"
-                                      : ""
+                            {sortedOperatorsData.map(([label, value], index) => (
+                              <div
+                                key={label}
+                                className={`flex items-center rounded-md ${operatorsHoveredIndex === index ? "bg-gray-600" : ""
                                   }`}
-                                >
-                                  <div className="flex items-center flex-grow min-w-0 mr-4">
-                                    <div
-                                      className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
-                                      style={{
-                                        backgroundColor:
-                                          operatorsChartData.datasets[0]
-                                            .backgroundColor[
-                                            index %
-                                              operatorsChartData.datasets[0]
-                                                .backgroundColor.length
-                                          ],
-                                      }}
-                                    ></div>
-                                    <span
-                                      className="truncate max-w-[200px]"
-                                      title={label}
-                                    >
-                                      {label}
-                                    </span>
-                                  </div>
-                                  {/* Add a flex container with justification and gap for spacing */}
-                                  <div className="flex justify-end items-center gap-5 flex-shrink-0">
-                                    {" "}
-                                    {/* Added flex-shrink-0 */}
-                                    {/* Add min-width to create consistent column widths */}
-                                    <span className="font-semibold min-w-[60px] text-right">
-                                      {value.toLocaleString(undefined, {
-                                        maximumFractionDigits: 0,
-                                      })}
-                                    </span>
-                                    {/* Add min-width to percentage column as well */}
-                                    <span className="font-semibold min-w-[60px] text-right">
-                                      {((value / totalOperators) * 100).toFixed(
-                                        2
-                                      )}
-                                      %
-                                    </span>
-                                  </div>
+                              >
+                                <div className="flex items-center flex-grow min-w-0 mr-4">
+                                  <div
+                                    className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
+                                    style={{
+                                      backgroundColor:
+                                        operatorsChartData.datasets[0].backgroundColor[
+                                        index % operatorsChartData.datasets[0].backgroundColor.length
+                                        ],
+                                    }}
+                                  ></div>
+                                  <span className="truncate" title={label}>
+                                    {label}
+                                  </span>
                                 </div>
-                              )
-                            )}
+                                <div className="flex justify-end items-center gap-4 flex-shrink-0">
+                                  <span className="font-semibold text-right w-20">
+                                    {value.toLocaleString(undefined, {
+                                      maximumFractionDigits: 0,
+                                    })}
+                                  </span>
+                                  <span className="font-semibold text-right w-20">
+                                    {((value / totalOperators) * 100).toFixed(2)}%
+                                  </span>
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                        <div className="w-full md:w-1/2 flex items-center justify-center mt-6 md:mt-0">
+                        <div className="w-full md:w-2/5 flex items-center justify-center mt-6 md:mt-0">
                           <div style={{ width: "300px", height: "300px" }}>
                             <Pie
                               data={operatorsChartData}
@@ -789,14 +782,15 @@ function Analytics() {
                   <IoSearchSharp className="iconExplore" />
                 </button>
               </div>
-              <button
-                onClick={handleWithdrawalAddress}
-                className="border border-white rounded-lg h-8 px-2 justify-center mt-6 ml-10"
-              >
-                Get All My Withdrawals
-              </button>
+              {isConnected && (
+                <button
+                  onClick={handleWithdrawalAddress}
+                  className="border border-white rounded-lg h-8 px-2 justify-center mt-6 ml-10"
+                >
+                  Get All My Withdrawals
+                </button>
+              )}
             </div>
-
             <div className="mx-auto py-8 overflow-x-auto">
               <table className="w-full border-collapse text-center text-white rounded-md">
                 <thead>

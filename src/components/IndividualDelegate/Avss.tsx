@@ -30,7 +30,7 @@ interface Type {
 interface Metadata {
   name: string;
   website: string;
-  description: string;
+  // description: string;
   logo: string;
   twitter: string;
 }
@@ -154,7 +154,7 @@ function Avss({ props }: { props: Type }) {
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Address</th>
                     <th className="px-4 py-2 text-left">Operators</th>
-                    <th className="px-4 py-2 text-left">Description</th>
+                    {/* <th className="px-4 py-2 text-left">Description</th> */}
                     <th className="px-4 py-2 text-left">Website</th>
                     <th className="px-4 py-2 text-left">Twitter</th>
                   </tr>
@@ -201,14 +201,14 @@ function Avss({ props }: { props: Type }) {
                         </div>
                       </td>
                       <td className="px-4 py-2">{avs.registrationsCount}</td>
-                      <td className="px-4 py-2">
+                      {/* <td className="px-4 py-2">
                         <p
                           className="truncate max-w-xs"
                           title={avs.metadata?.description}
                         >
                           {avs.metadata?.description || "N/A"}
                         </p>
-                      </td>
+                      </td> */}
                       <td className="px-4 py-2">
                         {avs.metadata?.website ? (
                           <a

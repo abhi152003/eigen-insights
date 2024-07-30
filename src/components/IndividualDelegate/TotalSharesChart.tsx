@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import { useQuery } from "@apollo/client";
 import { gql } from "urql";
-import { ThreeCircles } from "react-loader-spinner";
+import ChartSkeletonLoader from './ChartSkeletonLoader';
 
 const GET_DATA = gql`
   query MyQuery($id: ID!) {
@@ -62,13 +62,13 @@ interface Type {
   individualDelegate: string;
 }
 
-interface TotalOperatorsChartProps {
+interface TotalSharesChartProps {
   avsId: string;
 }
 
 function TotalSharesChart(
   { props }: { props: Type },
-  { avsId }: TotalOperatorsChartProps
+  { avsId }: TotalSharesChartProps
 ) {
   avsId = props.individualDelegate;
   const { loading, error, data } = useQuery(GET_DATA, {
@@ -78,8 +78,7 @@ function TotalSharesChart(
     }
   });
 
-  if (loading) return <div className="flex items-center justify-center">
-  </div>;
+  if (loading) return <ChartSkeletonLoader />;
   if (error) {
     console.error("GraphQL Error:", error);
     return <p>Error: {error.message}</p>;
@@ -159,18 +158,18 @@ function TotalSharesChart(
       legend: {
         position: "top" as const,
         labels: {
-          color: "rgb(255, 255, 255)", // White color for legend text
+          color: "rgb(255, 255, 255)",
           font: {
-            size: 14, // Adjust legend font size
+            size: 14,
           },
         },
       },
       title: {
         display: true,
         text: "Total Shares Over Time",
-        color: "rgb(255, 255, 255)", // White color for title,
+        color: "rgb(255, 255, 255)",
         font: {
-          size: 18, // Adjust title font size
+          size: 18,
         },
       },
     },
@@ -181,17 +180,17 @@ function TotalSharesChart(
           text: "Month",
           color: "rgb(255, 255, 255)",
           font: {
-            size: 14, // Adjust x-axis title font size
+            size: 14,
           },
         },
         ticks: {
-          color: "rgb(255, 255, 255)", // White color for x-axis labels
+          color: "rgb(255, 255, 255)",
           font: {
-            size: 12, // Adjust x-axis tick font size
+            size: 12,
           },
         },
         grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Slightly visible white grid lines
+          color: "rgba(255, 255, 255, 0.1)",
         },
       },
       y: {
@@ -200,17 +199,17 @@ function TotalSharesChart(
           color: "rgb(255, 255, 255)",
           text: " Total Shares (in Ether)",
           font: {
-            size: 14, // Adjust y-axis title font size
+            size: 14,
           },
         },
         ticks: {
-          color: "rgb(255, 255, 255)", // White color for y-axis labels
+          color: "rgb(255, 255, 255)",
           font: {
-            size: 12, // Adjust y-axis tick font size
+            size: 12,
           },
         },
         grid: {
-          color: "rgba(255, 255, 255, 0.1)", // Slightly visible white grid lines
+          color: "rgba(255, 255, 255, 0.1)",
         },
         beginAtZero: true,
       },

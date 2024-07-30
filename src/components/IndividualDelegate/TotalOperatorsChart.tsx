@@ -15,6 +15,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from "urql";
 import { ThreeCircles } from "react-loader-spinner";
 
+
 import ChartSkeletonLoader from './ChartSkeletonLoader';
 
 const GET_DATA = gql`
@@ -79,6 +80,7 @@ function TotalOperatorsChart(
       subgraph: 'avs' // Specify which subgraph to use
     }
   });
+
 
   if (loading)
     // return (
@@ -226,6 +228,18 @@ function TotalOperatorsChart(
     },
   };
 
+  // return (
+  //   <div
+  //     style={{
+  //       backgroundColor: "#1d4059",
+  //       padding: "20px",
+  //       borderRadius: "10px",
+  //     }}
+  //     className="w-full h-[300px] sm:h-[400px] md:h-[500px]"
+  //   >
+  //     <Line data={newData} options={options} />
+  //   </div>
+  // );
   return (
     <div
       style={{
