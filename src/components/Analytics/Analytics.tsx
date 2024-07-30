@@ -68,22 +68,25 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
           <thead>
             <tr className="border-b border-[#2a3955]">
               <th className="px-4 py-2 text-left flex gap-2">
-              <span className="pt-[19px]">Rank</span>
-              <span>
-              <Tooltip
-                content={
-                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                    <span className="text-sm">Based on the amount of ETH won by staker</span>
-                  </div>
-                }
-                showArrow
-                placement="right"
-                delay={1}
-              >
-                <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                <span className="pt-[19px]">Rank</span>
+                <span>
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Based on the amount of ETH won by staker
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="right"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
                 </span>
-              </Tooltip></span>
               </th>
               <th className="px-4 py-2 text-left">Account</th>
               <th className="px-4 py-2 text-right">Amount (ETH)</th>
@@ -588,14 +591,20 @@ function Analytics() {
   }) => {
     return (
       <div className="flex bg-[#1F2937] text-white rounded-lg shadow-sm overflow-hidden">
-        <SummaryItem label="TVL(ETH)" value={totalTVL} isFirst={true} />
+        <SummaryItem
+          label="TVL (ETH)"
+          value={totalTVL}
+          isFirst={true}
+          tooltip="Total value of assets locked in the EigenLayer protocol"
+        />
         <SummaryItem label="Total Operators" value={totalOperators} />
         <SummaryItem label="Total AVSs" value={totalAVSs} />
         <SummaryItem label="Total Stakers" value={totalStakers} />
         <SummaryItem
-          label="TVL Restaking(ETH)"
+          label="TVL Restaking (ETH)"
           value={totalRestaking}
           isLast={true}
+          tooltip="Total value of assets restaked from TVL in the EigenLayer protocol"
         />
       </div>
     );
@@ -606,6 +615,7 @@ function Analytics() {
     value: number;
     isFirst?: boolean;
     isLast?: boolean;
+    tooltip?: string;
   }
 
   const SummaryItem: React.FC<SummaryItemProps> = ({
@@ -613,6 +623,7 @@ function Analytics() {
     value,
     isFirst = false,
     isLast = false,
+    tooltip,
   }) => {
     return (
       <div
@@ -620,7 +631,28 @@ function Analytics() {
           isFirst ? "pl-6" : ""
         } ${isLast ? "pr-6" : ""}`}
       >
-        <div className="text-sm text-white">{label}</div>
+        {/* <div className="text-sm text-white">{label}</div> */}
+        <div className="text-sm text-white relative">
+          {label}
+          {tooltip && (
+            <span className={`${isFirst ? "absolute top-[-1rem] left-[70px]" : "absolute top-[-17px] left-[131px]"}`}>
+              <Tooltip
+                content={
+                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[18vw]">
+                    <span className="text-sm">{tooltip}</span>
+                  </div>
+                }
+                showArrow
+                placement="right"
+                delay={1}
+              >
+                <span className="px-2">
+                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                </span>
+              </Tooltip>
+            </span>
+          )}
+        </div>
         <div className="font-bold text-lg text-white">
           {parseFloat(value.toFixed(2)).toLocaleString()}
         </div>

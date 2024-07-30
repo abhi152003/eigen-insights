@@ -7,6 +7,9 @@ import copy from "copy-to-clipboard";
 import toast, { Toaster } from "react-hot-toast";
 import { gql, useQuery } from "@apollo/client";
 
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
+
 const GET_OPERATORS = gql`
   query GetAllOperators($avsAddress: String!) {
     quorums(where: { avs: $avsAddress }, first: 2) {
@@ -109,7 +112,6 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   const [useAllOperatorsFallback, setUseAllOperatorsFallback] = useState(true);
   const [totalAVSOperatorsCount, setTotalAVSOperatorsCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
 
   const {
     loading: queryLoading,
@@ -459,7 +461,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
           </div>
           <div className="mb-4 flex space-x-4 my-4">
             <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+              className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
                     ${
                       selectedQuorum === null
@@ -468,10 +470,31 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     }`}
               onClick={() => handleQuorumSelection(null)}
             >
-              All Quorums ({totalAVSOperatorsCount})
+              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                <span>All Quorums ({totalAVSOperatorsCount})</span>
+                <span className="absolute right-[-20px]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Includes operators handling Either of ETH, LSTs, or
+                          EIGEN token delegations from restakers
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="bottom"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+              </div>
             </button>
             <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+              className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                     ${
                       selectedQuorum === 0
@@ -480,10 +503,31 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     }`}
               onClick={() => handleQuorumSelection(0)}
             >
-              Quorum 0 ({operatorCounts[0] || 0})
+              {/* Quorum 0 ({operatorCounts[0] || 0}) */}
+              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                <span>Quorum 0 ({operatorCounts[0] || 0})</span>
+                <span className="absolute right-[-20px]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                        Number of operators dedicated to ETH and LST delegations in EigenLayer
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="bottom"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+              </div>
             </button>
             <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-4 
+              className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                     ${
                       selectedQuorum === 1
@@ -492,7 +536,28 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     }`}
               onClick={() => handleQuorumSelection(1)}
             >
-              Quorum 1 ({operatorCounts[1] || 0})
+              {/* Quorum 1 ({operatorCounts[1] || 0}) */}
+              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                <span>Quorum 1 ({operatorCounts[1] || 0})</span>
+                <span className="absolute right-[-20px]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[21vw]">
+                        <span className="text-sm">
+                        EIGEN token-specific operator set within the EigenLayer ecosystem that focuses on network participation through EIGEN staking
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="right"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+              </div>
             </button>
           </div>
           {props.individualDelegate ===
@@ -539,14 +604,125 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                 <tr className="bg-sky-blue bg-opacity-10">
                   <th className="px-4 py-2 text-left">Operator</th>
                   <th className="px-4 py-2 text-left">Address</th>
-                  <th className="px-4 py-2 text-right">Total Stakers</th>
-                  <th className="px-4 py-2 text-right">TVL</th>
-                  <th className="px-4 py-2 text-right">Opt-in</th>
-                  <th className="px-4 py-2 text-right">Status</th>
-                  <th className="px-4 py-2 text-right">Rank</th>
+                  <th className="px-4 py-2 text-right">Restakers</th>
+                  <th className="px-4 py-2 text-right flex gap-1 justify-end">
+                    <span className="pt-[21px] text-center">TVL</span>
+                    <span>
+                      <Tooltip
+                        content={
+                          <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                            <span className="text-sm">
+                              Total amount of ETH restaked or locked with an
+                              operator within the EigenLayer protocol
+                            </span>
+                          </div>
+                        }
+                        showArrow
+                        placement="top"
+                        delay={1}
+                      >
+                        <span className="px-2">
+                          <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                        </span>
+                      </Tooltip>
+                    </span>
+                  </th>
+                  <th className="px-4 py-2 text-right">
+                    <div className="flex items-center gap-2 justify-end">
+                      <span>Opt-in</span>
+                      <span>
+                        <Tooltip
+                          content={
+                            <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                              <span className="text-sm">
+                                Indicates when an individual operator has began
+                                participating in the AVS
+                              </span>
+                            </div>
+                          }
+                          showArrow
+                          placement="top"
+                          delay={1}
+                        >
+                          <span className="px-2">
+                            <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                          </span>
+                        </Tooltip>
+                      </span>
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-right">
+                    <div className="flex gap-2 items-center">
+                      <span>Status</span>
+                      <span>
+                        <Tooltip
+                          content={
+                            <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                              <span className="text-sm">
+                                Indicates the operator's status for this
+                                particular AVS
+                              </span>
+                            </div>
+                          }
+                          showArrow
+                          placement="top"
+                          delay={1}
+                        >
+                          <span className="px-2">
+                            <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                          </span>
+                        </Tooltip>
+                      </span>
+                    </div>
+                  </th>
+                  <th className="px-4 py-2 text-right flex gap-1">
+                    <span className="pt-[21px]">Rank</span>
+                    <span>
+                      <Tooltip
+                        content={
+                          <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                            <span className="text-sm">
+                              Operator's rank within a quorum is determined by
+                              their TVL according to the quorum's strategies
+                            </span>
+                          </div>
+                        }
+                        showArrow
+                        placement="top"
+                        delay={1}
+                      >
+                        <span className="px-2">
+                          <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                        </span>
+                      </Tooltip>
+                    </span>
+                  </th>
                   {props.individualDelegate ===
                     "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
-                    <th className="px-4 py-2 text-right">Uptime</th>
+                    <th className="px-4 py-2 text-right">
+                      <div className="flex gap-2 items-center">
+                        <span>Uptime</span>
+                        <span>
+                          <Tooltip
+                            content={
+                              <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                                <span className="text-sm">
+                                  Number of batches processed by the operator in
+                                  selected time
+                                </span>
+                              </div>
+                            }
+                            showArrow
+                            placement="top"
+                            delay={1}
+                          >
+                            <span className="px-2">
+                              <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                            </span>
+                          </Tooltip>
+                        </span>
+                      </div>
+                    </th>
                   )}
                 </tr>
               </thead>

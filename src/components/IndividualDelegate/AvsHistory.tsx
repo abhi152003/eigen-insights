@@ -221,7 +221,7 @@ function AvsHistory({ props }: { props: Type }) {
         <table className="w-full bg-midnight-blue">
           <thead>
             <tr className="bg-sky-blue bg-opacity-10">
-              <th className="px-4 py-2 text-left">Event</th>
+              <th className="px-6 py-2 text-left">Event</th>
               <th className="px-4 py-2 text-left">Operator</th>
               <th className="px-4 py-2 text-left">Description</th>
               <th className="px-4 py-2 text-left">Age</th>

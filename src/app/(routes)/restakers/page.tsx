@@ -37,6 +37,10 @@ const Page = () => {
   const [isPageLoading, setPageLoading] = useState<boolean>(true);
   const [isSearching, setIsSearching] = useState<boolean>(true);
 
+  const handleSearchChange = async (query: string) => {
+    
+  }
+
   return (
     <div className="py-6">
       <div className="pr-8 pb-3 pl-16">
@@ -61,6 +65,7 @@ const Page = () => {
             name=""
             placeholder="Search restaker by address"
             value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
           <button className="searchButton">
             <IoSearchSharp className="iconExplore" />
