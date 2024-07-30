@@ -659,7 +659,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                           content={
                             <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
                               <span className="text-sm">
-                                Indicates the operator's status for this
+                                Indicates the operator&apos;s status for this
                                 particular AVS
                               </span>
                             </div>
@@ -682,8 +682,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                         content={
                           <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
                             <span className="text-sm">
-                              Operator's rank within a quorum is determined by
-                              their TVL according to the quorum's strategies
+                              Operator&apos;s rank within a quorum is determined by
+                              their TVL according to the quorum&apos;s strategies
                             </span>
                           </div>
                         }
