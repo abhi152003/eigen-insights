@@ -5,7 +5,9 @@ import { formatDistanceStrict } from "date-fns";
 import { IoCopy, IoSearchSharp } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
 import copy from "copy-to-clipboard";
-import "../../css/SearchShine.css";
+
+import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
+import { Tooltip } from "@nextui-org/react";
 
 const GET_RESTAKERS = gql`
   query GetRestakers($first: Int!, $skip: Int!) {
@@ -177,8 +179,50 @@ function Restakers() {
           <thead>
             <tr className="bg-sky-blue bg-opacity-10">
               <th className="px-4 py-2 border-b text-left">Staker Address</th>
-              <th className="px-4 py-2 border-b text-left">TVL ETH</th>
-              <th className="px-4 py-2 border-b text-left">TVL EIGEN</th>
+              <th className="px-4 py-2 border-b text-left relative">
+                <span className="">TVL ETH</span>
+                <span className="absolute right-[73px] bottom-[-14px]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                        <span className="text-sm">
+                          Amount of restaked ETH delegated to operators by
+                          restaker
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+              </th>
+              <th className="px-4 py-2 border-b text-left relative">
+                <span>TVL EIGEN</span>
+                <span className="absolute right-[96px] bottom-[-14px]">
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                        <span className="text-sm">
+                          Amount of restaked EIGEN token delegated to operators
+                          by restaker
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="top"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
+                </span>
+              </th>
               <th className="px-4 py-2 border-b text-left">Last Action</th>
               <th className="px-4 py-2 border-b text-left">Transaction</th>
             </tr>
@@ -189,7 +233,7 @@ function Restakers() {
                 (currentPage - 1) * ITEMS_PER_PAGE,
                 currentPage * ITEMS_PER_PAGE
               )
-              .map((staker: { id: React.Key | null | undefined; }) => (
+              .map((staker: { id: React.Key | null | undefined }) => (
                 <StakerRow key={staker.id} staker={staker} />
               ))}
           </tbody>

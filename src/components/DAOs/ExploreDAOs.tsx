@@ -126,7 +126,7 @@ function ExploreDAOs() {
 
   return (
     <>
-      <div className="flex items-center justify-between px-20">
+      <div className="flex items-center justify-between pr-[5rem] pl-[94px]">
         <h2 className="text-4xl pb-7 mt-5 font-semibold shineFont">
           EigenLayer
         </h2>
