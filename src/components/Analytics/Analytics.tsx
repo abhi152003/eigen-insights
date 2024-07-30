@@ -68,22 +68,25 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
           <thead>
             <tr className="border-b border-[#2a3955]">
               <th className="px-4 py-2 text-left flex gap-2">
-              <span className="pt-[19px]">Rank</span>
-              <span>
-              <Tooltip
-                content={
-                  <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                    <span className="text-sm">Based on the amount of ETH won by staker</span>
-                  </div>
-                }
-                showArrow
-                placement="right"
-                delay={1}
-              >
-                <span className="px-2">
-                  <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                <span className="pt-[19px]">Rank</span>
+                <span>
+                  <Tooltip
+                    content={
+                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                        <span className="text-sm">
+                          Based on the amount of ETH won by staker
+                        </span>
+                      </div>
+                    }
+                    showArrow
+                    placement="right"
+                    delay={1}
+                  >
+                    <span className="px-2">
+                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                    </span>
+                  </Tooltip>
                 </span>
-              </Tooltip></span>
               </th>
               <th className="px-4 py-2 text-left">Account</th>
               <th className="px-4 py-2 text-right">Amount (ETH)</th>
@@ -251,6 +254,10 @@ function Analytics() {
   const [total, setTotal] = useState(0);
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [airDrop, setAirDrop] = useState();
+  const [searchResults, setSearchResults] = useState<Withdrawal[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchPage, setSearchPage] = useState(1);
+  const [searchResultsPerPage] = useState(10);
 
   const { loading, error, data } = useQuery(GET_DATA, {
     context: {
@@ -344,26 +351,26 @@ function Analytics() {
     fetchData();
   }, [skip, take]);
 
-  useEffect(() => {
-    const fetchWithdrawals = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const withdrawlsRes = await fetch(
-        `https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`,
-        options
-      );
-      const withdrawlsData = await withdrawlsRes.json();
-      console.log(withdrawlsData);
-      setWithdrawals(withdrawlsData.data);
-      setTotal(withdrawlsData.meta.total);
-      setIsPageLoading(false);
+  const fetchWithdrawals = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
 
+    const withdrawlsRes = await fetch(
+      `https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`,
+      options
+    );
+    const withdrawlsData = await withdrawlsRes.json();
+    console.log(withdrawlsData);
+    setWithdrawals(withdrawlsData.data);
+    setTotal(withdrawlsData.meta.total);
+    setIsPageLoading(false);
+  };
+
+  useEffect(() => {
     fetchWithdrawals();
   }, [skip, take]);
 
@@ -526,50 +533,46 @@ function Analytics() {
 
   const { address } = useAccount();
 
-  const handleWithdrawalAddress = async () => {
-    if (address) {
-      setSearchQuery(address);
-    }
-
-    try {
-      const res = await fetch(`/api/search-withdrawal-data?address=${address}`);
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-      }
-      const data = await res.json();
-      console.log("dataaaaaaaaa", data);
-      setWithdrawals(data);
-    } catch (error) {
-      console.error("Search error:", error);
-    }
-  };
-
   const handleSearchChange = async (query: string) => {
-    // console.log("query: ", query.length);
-    // console.log("queryyyyyyyy",query)
     setSearchQuery(query);
+    setSearchPage(1);
 
     if (query.length > 0) {
-      // console.log("Delegate data: ", query, delegateData);
-      // console.log(delegateData);
-
+      setIsSearching(true);
       try {
         const res = await fetch(`/api/search-withdrawal-data?address=${query}`);
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }
         const data = await res.json();
-        console.log("dataaaaaaaaa", data);
-        setWithdrawals(data);
+        setSearchResults(data);
+        setTotal(data.length);
       } catch (error) {
         console.error("Search error:", error);
+        setSearchResults([]);
+        setTotal(0);
       }
     } else {
-      // console.log("in else");
-      console.log("data not comingggggg");
-      // setDelegateData({ ...delegateData, delegates: tempData.delegates });
+      setIsSearching(false);
+      fetchWithdrawals();
     }
   };
+
+  const handleWithdrawalAddress = async () => {
+    if (address) {
+      handleSearchChange(address.toLowerCase());
+    }
+  };
+
+  const indexOfLastSearchResult = searchPage * searchResultsPerPage;
+  const indexOfFirstSearchResult =
+    indexOfLastSearchResult - searchResultsPerPage;
+  const currentSearchResults = searchResults.slice(
+    indexOfFirstSearchResult,
+    indexOfLastSearchResult
+  );
+
+  const searchPaginate = (pageNumber: number) => setSearchPage(pageNumber);
 
   interface AnalyticsSummaryProps {
     totalTVL: number;
@@ -886,6 +889,7 @@ function Analytics() {
             )}
           </div>
 
+          {/* Withdrawals */}
           <div className="">
             <h1 className="ml-3 mt-10 text-2xl font-semibold">
               All Withdrawals
@@ -934,7 +938,132 @@ function Analytics() {
                   </tr>
                 </thead>
                 <tbody>
-                  {withdrawals.map((withdrawal, index) => (
+                  {isSearching
+                    ? currentSearchResults.map((withdrawal, index) => (
+                        <tr
+                          key={index}
+                          className="bg-gray-800 hover:bg-gray-900 transition-colors"
+                        >
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.createdAtBlock}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                            <div className="flex items-center justify-center">
+                              <span className="text-center">
+                                {withdrawal.stakerAddress.slice(0, 6)}....
+                                {withdrawal.stakerAddress.slice(-3)}
+                              </span>
+                              <span
+                                className="ml-2 cursor-pointer text-center"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleCopy(withdrawal.stakerAddress);
+                                }}
+                                title="Copy"
+                              >
+                                <IoCopy size={14} color="#ffffff" />
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.isCompleted ? "Yes" : "No"}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                            <div className="flex items-center justify-center">
+                              <span>
+                                {withdrawal.delegatedTo.slice(0, 6)}....
+                                {withdrawal.delegatedTo.slice(-3)}
+                              </span>
+                              <span
+                                className="ml-2 cursor-pointer"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleCopy(withdrawal.delegatedTo);
+                                }}
+                                title="Copy"
+                              >
+                                <IoCopy size={14} color="#ffffff" />
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.shares.map((share, index) => (
+                              <div key={index}>{weiToEth(share.shares)}</div>
+                            ))}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700">
+                            {withdrawal.shares.map((share, index) => (
+                              <div key={index}>
+                                {strategyNames[share.strategyAddress] ||
+                                  share.strategyAddress}
+                              </div>
+                            ))}
+                          </td>
+                        </tr>
+                      ))
+                    : withdrawals.map((withdrawal, index) => (
+                        <tr
+                          key={index}
+                          className="bg-gray-800 hover:bg-gray-900 transition-colors"
+                        >
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.createdAtBlock}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                            <div className="flex items-center justify-center">
+                              <span className="text-center">
+                                {withdrawal.stakerAddress.slice(0, 6)}....
+                                {withdrawal.stakerAddress.slice(-3)}
+                              </span>
+                              <span
+                                className="ml-2 cursor-pointer text-center"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleCopy(withdrawal.stakerAddress);
+                                }}
+                                title="Copy"
+                              >
+                                <IoCopy size={14} color="#ffffff" />
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.isCompleted ? "Yes" : "No"}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                            <div className="flex items-center justify-center">
+                              <span>
+                                {withdrawal.delegatedTo.slice(0, 6)}....
+                                {withdrawal.delegatedTo.slice(-3)}
+                              </span>
+                              <span
+                                className="ml-2 cursor-pointer"
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  handleCopy(withdrawal.delegatedTo);
+                                }}
+                                title="Copy"
+                              >
+                                <IoCopy size={14} color="#ffffff" />
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700 text-sm">
+                            {withdrawal.shares.map((share, index) => (
+                              <div key={index}>{weiToEth(share.shares)}</div>
+                            ))}
+                          </td>
+                          <td className="py-2 px-4 border border-gray-700">
+                            {withdrawal.shares.map((share, index) => (
+                              <div key={index}>
+                                {strategyNames[share.strategyAddress] ||
+                                  share.strategyAddress}
+                              </div>
+                            ))}
+                          </td>
+                        </tr>
+                      ))}
+                  {/* {withdrawals.map((withdrawal, index) => (
                     <tr
                       key={index}
                       className="bg-gray-800 hover:bg-gray-900 transition-colors"
@@ -995,44 +1124,91 @@ function Analytics() {
                         ))}
                       </td>
                     </tr>
-                  ))}
+                  ))} */}
                 </tbody>
               </table>
 
-              <div className="flex justify-center mt-4">
-                <button
-                  disabled={skip === 0}
-                  onClick={() => handlePageChange(1)}
-                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-medium-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors cursor-pointer"
-                >
-                  First
-                </button>
-                <button
-                  disabled={skip === 0}
-                  onClick={() => handlePageChange(skip / take)}
-                  className={`px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors 
+              {isSearching ? (
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={() => searchPaginate(1)}
+                    disabled={searchPage === 1}
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-medium-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    First
+                  </button>
+                  <button
+                    onClick={() => searchPaginate(searchPage - 1)}
+                    disabled={searchPage === 1}
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    Prev
+                  </button>
+                  <span className="px-4 py-2 mr-2 text-gray-300">
+                    Page {searchPage} of{" "}
+                    {Math.ceil(searchResults.length / searchResultsPerPage)}
+                  </span>
+                  <button
+                    onClick={() => searchPaginate(searchPage + 1)}
+                    disabled={
+                      searchPage ===
+                      Math.ceil(searchResults.length / searchResultsPerPage)
+                    }
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    Next
+                  </button>
+                  <button
+                    onClick={() =>
+                      searchPaginate(
+                        Math.ceil(searchResults.length / searchResultsPerPage)
+                      )
+                    }
+                    disabled={
+                      searchPage ===
+                      Math.ceil(searchResults.length / searchResultsPerPage)
+                    }
+                    className="px-4 py-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    Last
+                  </button>
+                </div>
+              ) : (
+                <div className="flex justify-center mt-4">
+                  <button
+                    disabled={skip === 0}
+                    onClick={() => handlePageChange(1)}
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-medium-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors cursor-pointer"
+                  >
+                    First
+                  </button>
+                  <button
+                    disabled={skip === 0}
+                    onClick={() => handlePageChange(skip / take)}
+                    className={`px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors 
                     ${skip === 0 ? "cursor-pointer" : ""}`}
-                >
-                  Prev
-                </button>
-                <span className="px-4 py-2 mr-2 text-gray-300">
-                  Page {skip / take + 1} of {totalPages}
-                </span>
-                <button
-                  disabled={skip + take >= total}
-                  onClick={() => handlePageChange(skip / take + 2)}
-                  className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
-                >
-                  Next
-                </button>
-                <button
-                  disabled={skip + take >= total}
-                  onClick={() => handlePageChange(totalPages)}
-                  className="px-4 py-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
-                >
-                  Last
-                </button>
-              </div>
+                  >
+                    Prev
+                  </button>
+                  <span className="px-4 py-2 mr-2 text-gray-300">
+                    Page {skip / take + 1} of {totalPages}
+                  </span>
+                  <button
+                    disabled={skip + take >= total}
+                    onClick={() => handlePageChange(skip / take + 2)}
+                    className="px-4 py-2 mr-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    Next
+                  </button>
+                  <button
+                    disabled={skip + take >= total}
+                    onClick={() => handlePageChange(totalPages)}
+                    className="px-4 py-2 bg-gray-700 text-gray-100 rounded hover:bg-light-blue disabled:bg-gray-800 disabled:text-gray-500 transition-colors"
+                  >
+                    Last
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* <div className="mx-auto py-3 overflow-x-auto animate-pulse">

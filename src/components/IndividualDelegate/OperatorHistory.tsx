@@ -94,6 +94,8 @@ function OperatorHistory({ props }: { props: Type }) {
     []
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [dataFetched, setDataFetched] = useState<boolean>(false);
+  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set([1]));
 
   const { loading, error, data, fetchMore } = useQuery(GET_OPERATOR_HISTORY, {
     variables: {
@@ -134,6 +136,9 @@ function OperatorHistory({ props }: { props: Type }) {
 
   useEffect(() => {
     if (data) {
+      const fetchedItemsCount = data.operatorActions.length;
+      setIsLastPage(fetchedItemsCount < ITEMS_PER_PAGE);
+
       const fetchAllMetadata = async () => {
         const actionsWithMetadata = await Promise.all(
           data.operatorActions.map(async (action: AVSAction) => {
@@ -147,14 +152,15 @@ function OperatorHistory({ props }: { props: Type }) {
           })
         );
         setActionsWithMetadata(actionsWithMetadata);
+        setIsLoading(false);
+        setDataFetched(true);
       };
       fetchAllMetadata();
     }
-    setIsLoading(false);
   }, [data]);
 
   const loadMorePages = async (page: number) => {
-    if (page <= maxPageLoaded) return;
+    if (loadedPages.has(page)) return;
 
     const result = await fetchMore({
       variables: {
@@ -173,10 +179,11 @@ function OperatorHistory({ props }: { props: Type }) {
       },
     });
 
-    if (result.data.operatorActions.length < ITEMS_PER_PAGE) {
-      setIsLastPage(true);
-    }
-    setMaxPageLoaded(page);
+    setLoadedPages((prevLoadedPages) => new Set(prevLoadedPages).add(page));
+
+    const fetchedItemsCount = result.data.operatorActions.length;
+    setIsLastPage(fetchedItemsCount < ITEMS_PER_PAGE);
+    setMaxPageLoaded(Math.max(maxPageLoaded, page));
   };
 
   const handlePageChange = async (newPage: number) => {
@@ -246,7 +253,7 @@ function OperatorHistory({ props }: { props: Type }) {
     return pageNumbers;
   };
 
-  if (isLoading)
+  if (isLoading && !dataFetched) {
     return (
       <div className="container mx-auto px-4 marginSetter">
         <div className="overflow-x-auto">
@@ -296,6 +303,7 @@ function OperatorHistory({ props }: { props: Type }) {
         </div>
       </div>
     );
+  }
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -313,7 +321,12 @@ function OperatorHistory({ props }: { props: Type }) {
           },
         }}
       />
-      {actionsWithMetadata.length > 0 ? (
+      {dataFetched && actionsWithMetadata.length === 0 ? (
+        <div className="flex flex-col justify-center items-center pt-10">
+          <div className="text-5xl">☹️</div>
+          <div className="pt-4 font-semibold text-lg">No results found.</div>
+        </div>
+      ) : (
         <div>
           <div className="overflow-x-auto">
             <table className="w-full bg-midnight-blue">
@@ -344,7 +357,7 @@ function OperatorHistory({ props }: { props: Type }) {
                       >
                         <td className="px-4 py-2">
                           <span
-                            className={`px-4 py-1 rounded ${
+                            className={`px-4 py-1 rounded whitespace-nowrap ${
                               getEventType(action).includes("Join") ||
                               getEventType(action).includes("Registration")
                                 ? "bg-green-200 text-green-900"
@@ -354,7 +367,16 @@ function OperatorHistory({ props }: { props: Type }) {
                             {getEventType(action)}
                           </span>
                         </td>
-                        <td className="px-4 py-2 cursor-pointer" onClick={() => router.push(`/avss/${action.avs?.id ||action.quorum?.quorum?.avs?.id}?active=info`)}>
+                        <td
+                          className="px-4 py-2 cursor-pointer whitespace-nowrap"
+                          onClick={() =>
+                            router.push(
+                              `/avss/${
+                                action.avs?.id || action.quorum?.quorum?.avs?.id
+                              }?active=info`
+                            )
+                          }
+                        >
                           <div className="flex items-center space-x-2">
                             <div className="relative w-8 h-8 flex-shrink-0">
                               {action.type != "Registered" && (
@@ -374,8 +396,10 @@ function OperatorHistory({ props }: { props: Type }) {
                             </span>
                           </div>
                         </td>
-                        <td className="px-4 py-2">{getDescription(action)}</td>
-                        <td className="px-4 py-2">
+                        <td className="px-4 py-2 whitespace-nowrap">
+                          {getDescription(action)}
+                        </td>
+                        <td className="px-4 py-2 whitespace-nowrap">
                           {formatTimestamp(action.blockTimestamp)}
                         </td>
                         <td className="px-4 py-2">{action.blockNumber}</td>
@@ -404,7 +428,7 @@ function OperatorHistory({ props }: { props: Type }) {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="p-3 border-[#A7DBF2] border-1 rounded-md px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
+          border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
             >
               Previous
             </button>
@@ -413,16 +437,11 @@ function OperatorHistory({ props }: { props: Type }) {
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={isLastPage}
               className="p-3 border-[#A7DBF2] border-1 rounded-md px-6 
-              border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
+          border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
             >
               Next
             </button>
           </div>
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center items-center pt-10">
-          <div className="text-5xl">☹️</div>
-          <div className="pt-4 font-semibold text-lg">No results found.</div>
         </div>
       )}
     </div>

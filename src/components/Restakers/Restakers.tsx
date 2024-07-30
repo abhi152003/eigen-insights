@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { ThreeCircles } from "react-loader-spinner";
 import { formatDistanceStrict } from "date-fns";
-import { IoCopy } from "react-icons/io5";
+import { IoCopy, IoSearchSharp } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
 import copy from "copy-to-clipboard";
+import "../../css/SearchShine.css";
 
 const GET_RESTAKERS = gql`
   query GetRestakers($first: Int!, $skip: Int!) {
@@ -48,6 +49,7 @@ function Restakers() {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPageLoaded, setMaxPageLoaded] = useState(1);
   const [isLastPage, setIsLastPage] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { loading, error, data, fetchMore } = useQuery(GET_RESTAKERS, {
     variables: { first: ITEMS_PER_PAGE, skip: 0 },
@@ -86,6 +88,20 @@ function Restakers() {
       setIsLastPage(true);
     }
     setMaxPageLoaded(page);
+  };
+
+  const filteredStakers = useMemo(() => {
+    if (!data || !data.stakers) return [];
+    return data.stakers.filter((staker: { id: string }) =>
+      staker.id.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [data, searchQuery]);
+
+  const handleSearchChange = (e: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearchQuery(e.target.value);
+    setCurrentPage(1);
   };
 
   const handlePageChange = async (newPage: number) => {
@@ -144,23 +160,36 @@ function Restakers() {
   return (
     <div className="container mx-auto pr-6 pl-1">
       <div className="overflow-x-auto">
+        <div className="searchBox my-6">
+          <input
+            className="searchInput"
+            type="text"
+            name=""
+            placeholder="Search restaker by address"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <button className="searchButton">
+            <IoSearchSharp className="iconExplore" />
+          </button>
+        </div>
         <table className="w-full bg-midnight-blue border border-gray-300">
           <thead>
             <tr className="bg-sky-blue bg-opacity-10">
               <th className="px-4 py-2 border-b text-left">Staker Address</th>
-              <th className="px-4 py-2 border-b text-left">TVL Eigen</th>
               <th className="px-4 py-2 border-b text-left">TVL ETH</th>
+              <th className="px-4 py-2 border-b text-left">TVL EIGEN</th>
               <th className="px-4 py-2 border-b text-left">Last Action</th>
               <th className="px-4 py-2 border-b text-left">Transaction</th>
             </tr>
           </thead>
           <tbody>
-            {data?.stakers
+            {filteredStakers
               .slice(
                 (currentPage - 1) * ITEMS_PER_PAGE,
                 currentPage * ITEMS_PER_PAGE
               )
-              .map((staker: any) => (
+              .map((staker: { id: React.Key | null | undefined; }) => (
                 <StakerRow key={staker.id} staker={staker} />
               ))}
           </tbody>

@@ -141,20 +141,14 @@ function Sidebar() {
             </Link>
           </Tooltip>
 
-          {!isConnected && !session ? (
+          {!isConnected ? (
             <Tooltip
               content={<div className="capitalize">Wallet</div>}
               placement="right"
               className="rounded-md bg-opacity-90 bg-light-blue"
               closeDelay={1}
             >
-              {sessionLoading ? (
-                <div className={`p-[13px] mx-1 cursor-pointer ${styles.image_hover} rounded-full border border-white`}>
-                  <FaUser className="w-4 h-4" />
-                </div>
-              ) : (
-                <ConnectWallet />
-              )}
+              <ConnectWallet />
             </Tooltip>
           ) : (
             <Tooltip

@@ -245,7 +245,7 @@ function MainProfile() {
           setTwitter(data[0].metadataX);
           setDiscord(data[0].metadataDiscord ?? "");
           setSelfDelegate(data.length > 0);
-          setOperatorData(data)
+          setOperatorData(data);
         }
       } catch (error) {
         console.log(error);
@@ -628,7 +628,6 @@ function MainProfile() {
     );
   if (error) {
     console.error("GraphQL Error:", error);
-    return <p>Error: {error.message}</p>;
   }
 
   interface Token {
@@ -1015,7 +1014,7 @@ function MainProfile() {
           </div>
 
           <div className="py-6 ps-16">
-            {(searchParams.get("active") === "info") ? (
+            {searchParams.get("active") === "info" ? (
               <ApolloProvider client={client}>
                 <UserInfo
                   description={description}
@@ -1068,9 +1067,7 @@ function MainProfile() {
         </div>
       ) : (
         <>
-          <div
-            className="flex items-center justify-center"
-          >
+          <div className="flex items-center justify-center h-screen">
             <ThreeCircles
               visible={true}
               height="50"

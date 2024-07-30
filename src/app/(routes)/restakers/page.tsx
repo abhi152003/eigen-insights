@@ -8,35 +8,7 @@ import Restakers from "@/components/Restakers/Restakers";
 import { ApolloProvider } from "@apollo/client";
 import client from "@/components/utils/avsExplorerClient";
 
-interface Result {
-  _id: string;
-  address: string;
-  metadataName: string;
-  metadataDescription: string;
-  metadataDiscord: string | null;
-  metadataLogo: string;
-  metadataTelegram: string | null;
-  metadataWebsite: string;
-  metadataX: string;
-  tags: string[];
-  shares: any[];
-  totalOperators: number;
-  totalStakers: number;
-  tvl: any;
-}
-
 const Page = () => {
-
-  const [delegateData, setDelegateData] = useState<{ delegates: any[] }>({
-    delegates: [],
-  });
-  const [tempData, setTempData] = useState<{ delegates: any[] }>({
-    delegates: [],
-  });
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isPageLoading, setPageLoading] = useState<boolean>(true);
-  const [isSearching, setIsSearching] = useState<boolean>(true);
-
   return (
     <div className="py-6">
       <div className="pr-8 pb-3 pl-16">
@@ -53,18 +25,6 @@ const Page = () => {
           operators on EigenLayer. By doing so, they contribute to the security
           of the network and earn rewards based on the performance of the AVSs
           supported by the operators.
-        </div>
-        <div className="searchBox my-6">
-          <input
-            className="searchInput"
-            type="text"
-            name=""
-            placeholder="Search restaker by address"
-            value={searchQuery}
-          />
-          <button className="searchButton">
-            <IoSearchSharp className="iconExplore" />
-          </button>
         </div>
         <div>
           <ApolloProvider client={client}>
