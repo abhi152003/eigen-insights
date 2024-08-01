@@ -121,7 +121,7 @@ function AvsHistory({ props }: { props: Type }) {
                   <td className="px-4 py-2">
                     <div className="flex items-center">
                       <div className="h-4 bg-gray-400 rounded w-24"></div>
-                      <div className="ml-2 h-4 w-4 bg-gray-400 rounded-full"></div>
+                      <div className="ml-2 h-4 w-4 bg-gray-400 rounded"></div>
                     </div>
                   </td>
                   <td className="px-4 py-2">

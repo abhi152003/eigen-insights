@@ -34,7 +34,7 @@ type ClaimData = {
 // Define a type for the TVL data
 type TVLData = {
   [key: string]: number;
-  "Native ETH": number;  // Now required instead of optional
+  "Native ETH": number; // Now required instead of optional
 };
 
 // Props type for our component
@@ -56,7 +56,6 @@ interface Withdrawal {
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
-
   // Sort the data by amount (descending order)
   const sortedData = [...data].sort((a, b) => {
     const amountA = BigInt(a.amount);
@@ -73,18 +72,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
 
   return (
     <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
-      <Toaster
-        toastOptions={{
-          style: {
-            fontSize: "14px",
-            backgroundColor: "#3E3D3D",
-            color: "#fff",
-            boxShadow: "none",
-            borderRadius: "50px",
-            padding: "3px 5px",
-          },
-        }}
-      />
       <h2 className="text-2xl font-bold mb-4 text-white flex items-center">
         Airdrop Leaderboard 🎁🎊
       </h2>
@@ -92,27 +79,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
         <table className="w-full">
           <thead>
             <tr className="border-b border-[#2a3955]">
-              <th className="px-4 py-2 text-left flex gap-2">
-                <span className="pt-[19px]">Rank</span>
-                <span>
-                  <Tooltip
-                    content={
-                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                        <span className="text-sm">
-                          Based on the amount of ETH won by staker
-                        </span>
-                      </div>
-                    }
-                    showArrow
-                    placement="right"
-                    delay={1}
-                  >
-                    <span className="px-2">
-                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                    </span>
-                  </Tooltip>
-                </span>
-              </th>
+              <th className="px-4 py-2 text-left">Rank</th>
               <th className="px-4 py-2 text-left">Account</th>
               <th className="px-4 py-2 text-right">Amount (ETH)</th>
               <th className="px-4 py-2 text-right">Claimed</th>
@@ -190,20 +157,20 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     //       <tbody>
     //         {[...Array(10)].map((_, index) => (
     //           <tr key={index} className="border-b border-[#2a3955]">
-    //             <td className="px-4 py-2">
-    //               <div className="h-4 w-8 bg-gray-700 rounded"></div>
+    //             <td className="px-4 py-3">
+    //               <div className="h-[18px] w-4 bg-gray-700 rounded"></div>
     //             </td>
-    //             <td className="px-4 py-2">
+    //             <td className="px-4 py-3">
     //               <div className="flex items-center">
-    //                 <div className="h-4 w-32 bg-gray-700 rounded"></div>
-    //                 <div className="h-4 w-4 bg-gray-700 rounded-full ml-2"></div>
+    //                 <div className="h-[18px] w-[7rem] bg-gray-700 rounded"></div>
+    //                 <div className="h-[18px] w-4 bg-gray-700 rounded ml-2"></div>
     //               </div>
     //             </td>
-    //             <td className="px-4 py-2 text-right">
-    //               <div className="h-4 w-16 bg-gray-700 rounded ml-auto"></div>
+    //             <td className="px-4 py-3 text-right">
+    //               <div className="h-[18px] w-16 bg-gray-700 rounded ml-auto"></div>
     //             </td>
-    //             <td className="px-4 py-2 text-right">
-    //               <div className="h-4 w-24 bg-gray-700 rounded ml-auto"></div>
+    //             <td className="px-4 py-3 text-right">
+    //               <div className="h-[18px] w-24 bg-gray-700 rounded ml-auto"></div>
     //             </td>
     //           </tr>
     //         ))}
@@ -345,13 +312,12 @@ function Analytics() {
         setTotalRestaking(metricsData.tvlRestaking);
         const updatedRestakeTVL: TVLData = {
           ...restakeTVL.tvlStrategies,
-          "Native ETH": metricsData.tvlBeaconChain
+          "Native ETH": metricsData.tvlBeaconChain,
         };
         setRestakeTVL(updatedRestakeTVL);
         setAVSOperators(avsOperators);
         setIsDataFetched(true); // Set the flag to true after fetching data
         setIsPageLoading(false);
-
       } catch (error) {
         console.log(error);
       }
@@ -638,14 +604,21 @@ function Analytics() {
   }) => {
     return (
       <div
-        className={`flex-1 p-4 ${!isLast ? "border-r border-gray-200" : ""} ${isFirst ? "pl-6" : ""
-          } ${isLast ? "pr-6" : ""}`}
+        className={`flex-1 p-4 ${!isLast ? "border-r border-gray-200" : ""} ${
+          isFirst ? "pl-6" : ""
+        } ${isLast ? "pr-6" : ""}`}
       >
         {/* <div className="text-sm text-white">{label}</div> */}
         <div className="text-sm text-white relative">
           {label}
           {tooltip && (
-            <span className={`${isFirst ? "absolute top-[-1rem] left-[70px]" : "absolute top-[-17px] left-[131px]"}`}>
+            <span
+              className={`${
+                isFirst
+                  ? "absolute top-[-1rem] left-[70px]"
+                  : "absolute top-[-17px] left-[131px]"
+              }`}
+            >
               <Tooltip
                 content={
                   <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[18vw]">
@@ -745,7 +718,9 @@ function Analytics() {
                         <h2 className="text-xl font-bold">Total</h2>
                         <div className="text-right">
                           <p className="text-2xl font-bold">
-                            {(totalRestaking + restakeTVL["Native ETH"]).toLocaleString(undefined, {
+                            {(
+                              totalRestaking + restakeTVL["Native ETH"]
+                            ).toLocaleString(undefined, {
                               maximumFractionDigits: 2,
                             })}{" "}
                             ETH
@@ -761,8 +736,9 @@ function Analytics() {
                               ([label, value]: any, index: number | null) => (
                                 <div
                                   key={label}
-                                  className={`flex justify-between items-center rounded-md ${hoveredIndex === index ? "bg-gray-600" : ""
-                                    }`}
+                                  className={`flex justify-between items-center rounded-md ${
+                                    hoveredIndex === index ? "bg-gray-600" : ""
+                                  }`}
                                 >
                                   <div className="flex items-center">
                                     <div
@@ -770,11 +746,11 @@ function Analytics() {
                                       style={{
                                         backgroundColor:
                                           chartData.datasets[0].backgroundColor[
-                                          index
-                                            ? index
-                                            : 0 %
-                                            chartData.datasets[0]
-                                              .backgroundColor.length
+                                            index
+                                              ? index
+                                              : 0 %
+                                                chartData.datasets[0]
+                                                  .backgroundColor.length
                                           ],
                                       }}
                                     ></div>
@@ -792,9 +768,10 @@ function Analytics() {
                                     </span>
                                     {/* Add min-width to percentage column as well */}
                                     <span className="font-semibold min-w-[60px] text-right">
-                                      {((value / totalTVLWithNative) * 100).toFixed(
-                                        2
-                                      )}
+                                      {(
+                                        (value / totalTVLWithNative) *
+                                        100
+                                      ).toFixed(2)}
                                       %
                                     </span>
                                   </div>
@@ -856,38 +833,49 @@ function Analytics() {
                       <div className="flex flex-col md:flex-row gap-x-10">
                         <div className="w-full md:w-3/5">
                           <div className="space-y-2">
-                            {sortedOperatorsData.map(([label, value], index) => (
-                              <div
-                                key={label}
-                                className={`flex items-center rounded-md ${operatorsHoveredIndex === index ? "bg-gray-600" : ""
+                            {sortedOperatorsData.map(
+                              ([label, value], index) => (
+                                <div
+                                  key={label}
+                                  className={`flex items-center rounded-md ${
+                                    operatorsHoveredIndex === index
+                                      ? "bg-gray-600"
+                                      : ""
                                   }`}
-                              >
-                                <div className="flex items-center flex-grow min-w-0 mr-4">
-                                  <div
-                                    className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
-                                    style={{
-                                      backgroundColor:
-                                        operatorsChartData.datasets[0].backgroundColor[
-                                        index % operatorsChartData.datasets[0].backgroundColor.length
-                                        ],
-                                    }}
-                                  ></div>
-                                  <span className="truncate" title={label}>
-                                    {label}
-                                  </span>
+                                >
+                                  <div className="flex items-center flex-grow min-w-0 mr-4">
+                                    <div
+                                      className="w-4 h-4 rounded-full mr-2 flex-shrink-0"
+                                      style={{
+                                        backgroundColor:
+                                          operatorsChartData.datasets[0]
+                                            .backgroundColor[
+                                            index %
+                                              operatorsChartData.datasets[0]
+                                                .backgroundColor.length
+                                          ],
+                                      }}
+                                    ></div>
+                                    <span className="truncate" title={label}>
+                                      {label}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-end items-center gap-4 flex-shrink-0">
+                                    <span className="font-semibold text-right w-20">
+                                      {value.toLocaleString(undefined, {
+                                        maximumFractionDigits: 0,
+                                      })}
+                                    </span>
+                                    <span className="font-semibold text-right w-20">
+                                      {((value / totalOperators) * 100).toFixed(
+                                        2
+                                      )}
+                                      %
+                                    </span>
+                                  </div>
                                 </div>
-                                <div className="flex justify-end items-center gap-4 flex-shrink-0">
-                                  <span className="font-semibold text-right w-20">
-                                    {value.toLocaleString(undefined, {
-                                      maximumFractionDigits: 0,
-                                    })}
-                                  </span>
-                                  <span className="font-semibold text-right w-20">
-                                    {((value / totalOperators) * 100).toFixed(2)}%
-                                  </span>
-                                </div>
-                              </div>
-                            ))}
+                              )
+                            )}
                           </div>
                         </div>
                         <div className="w-full md:w-2/5 flex items-center justify-center mt-6 md:mt-0">
@@ -1082,68 +1070,6 @@ function Analytics() {
                           </td>
                         </tr>
                       ))}
-                  {/* {withdrawals.map((withdrawal, index) => (
-                    <tr
-                      key={index}
-                      className="bg-gray-800 hover:bg-gray-900 transition-colors"
-                    >
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.createdAtBlock}
-                      </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                        <div className="flex items-center justify-center">
-                          <span className="text-center">
-                            {withdrawal.stakerAddress.slice(0, 6)}....
-                            {withdrawal.stakerAddress.slice(-3)}
-                          </span>
-                          <span
-                            className="ml-2 cursor-pointer text-center"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleCopy(withdrawal.stakerAddress);
-                            }}
-                            title="Copy"
-                          >
-                            <IoCopy size={14} color="#ffffff" />
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.isCompleted ? "Yes" : "No"}
-                      </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                        <div className="flex items-center justify-center">
-                          <span>
-                            {withdrawal.delegatedTo.slice(0, 6)}....
-                            {withdrawal.delegatedTo.slice(-3)}
-                          </span>
-                          <span
-                            className="ml-2 cursor-pointer"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleCopy(withdrawal.delegatedTo);
-                            }}
-                            title="Copy"
-                          >
-                            <IoCopy size={14} color="#ffffff" />
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-2 px-4 border border-gray-700 text-sm">
-                        {withdrawal.shares.map((share, index) => (
-                          <div key={index}>{weiToEth(share.shares)}</div>
-                        ))}
-                      </td>
-                      <td className="py-2 px-4 border border-gray-700">
-                        {withdrawal.shares.map((share, index) => (
-                          <div key={index}>
-                            {strategyNames[share.strategyAddress] ||
-                              share.strategyAddress}
-                          </div>
-                        ))}
-                      </td>
-                    </tr>
-                  ))} */}
                 </tbody>
               </table>
 
@@ -1305,6 +1231,18 @@ function Analytics() {
           </div>
         </div>
       )}
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+            backgroundColor: "#3E3D3D",
+            color: "#fff",
+            boxShadow: "none",
+            borderRadius: "50px",
+            padding: "3px 5px",
+          },
+        }}
+      />
     </div>
   );
 }
