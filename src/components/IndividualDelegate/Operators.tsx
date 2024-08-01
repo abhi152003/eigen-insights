@@ -629,7 +629,7 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                   </th>
                   <th className="px-4 py-2 text-right">
                     <div className="flex items-center gap-2 justify-end">
-                      <span>Opt-in</span>
+                      <span className="text-right">Opt-in</span>
                       <span>
                         <Tooltip
                           content={
@@ -652,8 +652,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     </div>
                   </th>
                   <th className="px-4 py-2 text-right">
-                    <div className="flex gap-2 items-center">
-                      <span>Status</span>
+                    <div className="flex gap-2 items-center justify-end">
+                      <span className="text-right">Status</span>
                       <span>
                         <Tooltip
                           content={
@@ -675,8 +675,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                       </span>
                     </div>
                   </th>
-                  <th className="px-4 py-2 text-right flex gap-1">
-                    <span className="pt-[21px]">Rank</span>
+                  <th className="px-4 py-2 text-right flex gap-1 justify-end">
+                    <span className="pt-[21px] text-right">Rank</span>
                     <span>
                       <Tooltip
                         content={
@@ -700,8 +700,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                   {props.individualDelegate ===
                     "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
                     <th className="px-4 py-2 text-right">
-                      <div className="flex gap-2 items-center">
-                        <span>Uptime</span>
+                      <div className="flex gap-2 items-center justify-end">
+                        <span className="text-right">Uptime</span>
                         <span>
                           <Tooltip
                             content={

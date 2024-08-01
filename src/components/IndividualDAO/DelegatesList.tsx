@@ -242,20 +242,6 @@ function DelegatesList({ props }: { props: string }) {
     copy(addr);
     toast("Address Copied 🎊");
   };
-  // const handleMouseMove = (event:any,index:any) => {
-  //   const rect = event.currentTarget.getBoundingClientRect();
-  //   const x = event.clientX - rect.left;
-  //   const y = event.clientY - rect.top;
-
-  //   setCirclePosition({ x, y });
-  //   setClickedTileIndex(index);
-  //   console.log(circlePosition);
-
-  //   setTimeout(() => {
-  //     setClickedTileIndex(null);
-  //   }, 1500); // Adjust the time as needed
-
-  // };
 
   const WalletOpen = async (to: string) => {
     const adr = await walletClient.getAddresses();
@@ -420,16 +406,48 @@ function DelegatesList({ props }: { props: string }) {
 
       <div className="py-8 pe-10 font-poppins">
         {isPageLoading ? (
-          <div className="flex items-center justify-center">
-            <ThreeCircles
-              visible={true}
-              height="50"
-              width="50"
-              color="#FFFFFF"
-              ariaLabel="three-circles-loading"
-              wrapperStyle={{}}
-              wrapperClass=""
-            />
+          // <div className="flex items-center justify-center">
+          //   <ThreeCircles
+          //     visible={true}
+          //     height="50"
+          //     width="50"
+          //     color="#FFFFFF"
+          //     ariaLabel="three-circles-loading"
+          //     wrapperStyle={{}}
+          //     wrapperClass=""
+          //   />
+          // </div>
+          <div className="grid min-[475px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-10">
+            {[...Array(9)].map((_, index) => (
+              <div
+                key={index}
+                className="px-5 py-7 rounded-2xl flex flex-col justify-between cursor-pointer relative bg-midnight-blue"
+                style={{
+                  boxShadow: "0px 4px 50.8px 0px rgba(0, 0, 0, 0.11)",
+                }}
+              >
+                <div className="flex items-center justify-around animate-pulse">
+                  <div className="flex justify-center">
+                    <div className="w-16 h-16 bg-gray-400 rounded-full"></div>
+                  </div>
+                  <div className="text-left">
+                    <div className="py-3">
+                      <div className="w-32 h-6 bg-gray-400 rounded mb-2"></div>
+                      <div className="flex justify-start items-center gap-2 pb-2 pt-1">
+                        <div className="w-24 h-4 bg-gray-400 rounded"></div>
+                        <div className="h-4 w-4 bg-gray-400 rounded"></div>
+                      </div>
+                      <div className="text-sm border border-gray-300 py-2 px-1 rounded-lg w-full">
+                        <div className="w-28 h-5 bg-gray-400 rounded"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="w-full h-10 bg-gray-400 rounded mt-4 animate-pulse"></div>
+                </div>
+              </div>
+            ))}
           </div>
         ) : delegateData.delegates.length > 0 ? (
           <div>
@@ -461,7 +479,6 @@ function DelegatesList({ props }: { props: string }) {
                         alt="Image not found"
                         width={100}
                         height={100}
-                        // layout="fixed"
                         className="rounded-full"
                         style={{ width: "4rem", height: "4rem" }}
                       ></Image>
@@ -535,9 +552,6 @@ function DelegatesList({ props }: { props: string }) {
                           </Tooltip>
                         </div>
                         <div className="text-sm border border-[#D9D9D9] py-2 px-1 rounded-lg w-full">
-                          {/* <span className="text-light-cyan font-semibold">
-                            {daos.totalStakers}&nbsp;
-                          </span> */}
                           <span className="text-light-cyan font-semibold">
                             {formatTVL(Number(daos.totalStakers))}&nbsp;
                           </span>
@@ -564,6 +578,7 @@ function DelegatesList({ props }: { props: string }) {
                       </button>
                     </div>
                   </div>
+
                   <div style={{ zIndex: "21474836462" }}>
                     <Toaster
                       toastOptions={{
