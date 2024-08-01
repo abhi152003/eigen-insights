@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     try {
         const options = { method: 'GET' };
 
-        const avsAddressesRes = (await fetch('https://api.eigenexplorer.com/avs/addresses', options));
+        const avsAddressesRes = (await fetch('https://api.eigenexplorer.com/avs/addresses?take=100', options));
         const avsAddresses = await avsAddressesRes.json();
 
         const allOperators = [];

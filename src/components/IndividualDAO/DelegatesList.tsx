@@ -363,7 +363,7 @@ function DelegatesList({ props }: { props: string }) {
     if (props === "operators") {
       window.open(`https://app.eigenlayer.xyz/operator/${address}`);
     } else if (props === "avss") {
-      window.open(`https://app.eigenlayer.xyz/avs/${address}`);
+      window.open(`/avss/${address}?active=operators`);
     }
   };
 

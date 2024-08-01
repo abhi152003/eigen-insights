@@ -2,26 +2,33 @@
 
 import React, { useState, useEffect } from "react";
 import Image, { StaticImageData } from "next/image";
-import search from "@/assets/images/daos/search.png";
-// import { useRouter } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
-import { ImCross } from "react-icons/im";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { FaCirclePlus } from "react-icons/fa6";
-import Link from "next/link";
 import ConnectWalletWithENS from "../ConnectWallet/ConnectWalletWithENS";
 import { dao_details } from "@/config/daoDetails";
-import EILogo from "@/assets/images/daos/eigen_logo.png";
 import "../../css/ShineFont.css";
 import "../../css/BtnShine.css";
 import "../../css/SearchShine.css";
 import "../../css/ExploreDAO.css";
-import { IoSearchSharp } from "react-icons/io5";
 import restakers_logo from "@/assets/images/logos/a_restakerFinal.png";
 
 import client from "../utils/avsExplorerClient";
-import { ApolloClient, ApolloProvider } from "@apollo/client";
+import { ApolloClient, ApolloProvider, gql, useQuery } from "@apollo/client";
 import Analytics from "../Analytics/Analytics";
+
+const GET_EIGENLAYER_METRICS = gql`
+  query MyQuery {
+    eigenLayers {
+      avsCount
+      operatorsCount
+      stakersCount
+      stakersWhoDelegateCount
+    }
+    avss(where: { paused: false }) {
+      id
+      paused
+    }
+  }
+`;
 
 function ExploreDAOs() {
   const dao_info = Object.keys(dao_details).map((key) => {
@@ -34,34 +41,27 @@ function ExploreDAOs() {
   });
 
   const [daoInfo, setDaoInfo] = useState(dao_info);
-  const [searchQuery, setSearchQuery] = useState("");
   const [status, setStatus] = useState(true);
 
   const router = useRouter();
   const [showNotification, setShowNotification] = useState(true);
   const [isPageLoading, setIsPageLoading] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0 });
-  const [IshowCircle, SetCircleShow] = useState(false);
+
+  const {
+    loading,
+    error,
+    data,
+  } = useQuery(GET_EIGENLAYER_METRICS, {
+    context: {
+      subgraph: "avs",
+    },
+  });
 
   useEffect(() => {
     const storedStatus = sessionStorage.getItem("notificationStatus");
     setShowNotification(storedStatus !== "closed");
     setIsPageLoading(false);
   }, []);
-
-  const handleCloseNotification = () => {
-    sessionStorage.setItem("notificationStatus", "closed");
-    setShowNotification(false);
-  };
-
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    const filtered = dao_info.filter((item) =>
-      item.name.toLowerCase().startsWith(query.toLowerCase())
-    );
-    setDaoInfo(filtered);
-  };
 
   const handleClick = (name: string, img: StaticImageData) => {
     const formatted = name.toLowerCase();
@@ -90,38 +90,46 @@ function ExploreDAOs() {
 
   const [totalOperators, setTotalOperators] = useState();
   const [totalAVSs, setTotalAVSs] = useState();
-  const [totalStakers, setTotalStakers] = useState(0);
+  const [totalStakers, setTotalStakers] = useState();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const options = { method: "GET" };
-      try {
-        const operatorsRes = await fetch(
-          "https://api.eigenexplorer.com/metrics/total-operators",
-          options
-        );
-        const avsRes = await fetch(
-          "https://api.eigenexplorer.com/metrics/total-avs",
-          options
-        );
-        const metricsRes = await fetch(
-          "https://api.eigenexplorer.com/metrics",
-          options
-        );
+    // const fetchData = async () => {
+    //   const options = { method: "GET" };
+    //   try {
+    //     const operatorsRes = await fetch(
+    //       "https://api.eigenexplorer.com/metrics/total-operators",
+    //       options
+    //     );
+    //     const avsRes = await fetch(
+    //       "https://api.eigenexplorer.com/metrics/total-avs",
+    //       options
+    //     );
+    //     const metricsRes = await fetch(
+    //       "https://api.eigenexplorer.com/metrics",
+    //       options
+    //     );
 
-        const totalOperators = await operatorsRes.json();
-        const totalAVSs = await avsRes.json();
-        const metricsData = await metricsRes.json();
-        // console.log(totalOperators.totalOperators)
-        setTotalOperators(totalOperators.totalOperators);
-        setTotalAVSs(totalAVSs.totalAvs);
-        setTotalStakers(metricsData.totalStakers);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    //     const totalOperators = await operatorsRes.json();
+    //     const totalAVSs = await avsRes.json();
+    //     const metricsData = await metricsRes.json();
+    //     // console.log(totalOperators.totalOperators)
+    //     setTotalOperators(totalOperators.totalOperators);
+    //     setTotalAVSs(totalAVSs.totalAvs);
+    //     setTotalStakers(metricsData.totalStakers);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
 
-    fetchData();
+    // fetchData();
+
+    if (data) {
+      console.log("eigenlayerrrrrrrrrrrrr", data.eigenLayers)
+      console.log("activeavssssssssssss", data.avss)
+      setTotalOperators(data.eigenLayers[0].operatorsCount)
+      setTotalStakers(data.eigenLayers[0].stakersWhoDelegateCount)
+      setTotalAVSs(data.avss.length)
+    }
   });
 
   return (

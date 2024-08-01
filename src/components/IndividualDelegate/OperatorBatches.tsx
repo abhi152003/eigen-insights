@@ -94,7 +94,6 @@ function OperatorBatches({ props }: { props: Type }) {
     const totalSigned = parseInt(avs.totalBatches) - totalUnsigned;
 
     return [
-      { period: "Overall", signed: totalSigned, missed: totalUnsigned },
       {
         period: "1 day",
         signed: Math.max(0, parseInt(avs.totalBatches24H) - unsigned1d),
@@ -110,6 +109,7 @@ function OperatorBatches({ props }: { props: Type }) {
         signed: Math.max(0, parseInt(avs.totalBatches4W) - unsigned28d),
         missed: unsigned28d,
       },
+      { period: "Overall", signed: totalSigned, missed: totalUnsigned },
     ];
   }, [totalBatchesData, periodicBatchesData, operatorData]);
 
@@ -118,8 +118,10 @@ function OperatorBatches({ props }: { props: Type }) {
 
   if (!operatorData) {
     return (
-      <p className="justify-center text-center pe-16">No data available for this operator</p>
-    )
+      <p className="justify-center text-center pe-16">
+        No data available for this operator
+      </p>
+    );
   }
 
   const calculateSignPercentage = (signed: number, total: number) => {

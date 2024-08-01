@@ -44,6 +44,7 @@ import {
 import AvsHistory from "./AvsHistory";
 import OperatorHistory from "./OperatorHistory";
 import OperatorBatches from "./OperatorBatches";
+import OperatorsWithIssues from "./OperatorsWithIssues";
 
 interface Type {
   daoDelegates: string;
@@ -544,6 +545,21 @@ function SpecificDelegate({ props }: { props: Type }) {
             ) : (
               ""
             )}
+            {props.daoDelegates === "avss" && props.individualDelegate === "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" ? (
+              <button
+                className={`border-b-2 py-3 px-2
+                  ${
+                    searchParams.get("active") === "issues"
+                      ? "border-light-cyan text-light-cyan font-semibold"
+                      : "border-transparent"
+                  }`}
+                onClick={() => router.push(path + "?active=issues")}
+              >
+                Operators With Issues
+              </button>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="py-6 ps-16">
@@ -585,6 +601,11 @@ function SpecificDelegate({ props }: { props: Type }) {
             {searchParams.get("active") === "batches" && (
               <ApolloProvider client={client}>
                 <OperatorBatches props={props} />
+              </ApolloProvider>
+            )}
+            {searchParams.get("active") === "issues" && (
+              <ApolloProvider client={client}>
+                <OperatorsWithIssues props={props}/>
               </ApolloProvider>
             )}
             {/* {searchParams.get("active") === "delegatesSession" && (
