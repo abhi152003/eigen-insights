@@ -459,107 +459,113 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               <IoSearchSharp className="iconExplore" />
             </button>
           </div>
-          <div className="mb-4 flex space-x-4 my-4">
-            <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-8 
+          {data?.quorums.length > 0 && (
+            <div className="mb-4 flex space-x-4 my-4">
+              <button
+                className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group 
                     ${
                       selectedQuorum === null
                         ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
                         : "text-white border-white"
                     }`}
-              onClick={() => handleQuorumSelection(null)}
-            >
-              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
-                <span>All Quorums ({totalAVSOperatorsCount})</span>
-                <span className="absolute right-[-20px]">
-                  <Tooltip
-                    content={
-                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                        <span className="text-sm">
-                          Includes operators handling Either of ETH, LSTs, or
-                          EIGEN token delegations from restakers
-                        </span>
-                      </div>
-                    }
-                    showArrow
-                    placement="bottom"
-                    delay={1}
-                  >
-                    <span className="px-2">
-                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                    </span>
-                  </Tooltip>
-                </span>
-              </div>
-            </button>
-            <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-8 
+                onClick={() => handleQuorumSelection(null)}
+              >
+                <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                  <span>All Quorums ({totalAVSOperatorsCount})</span>
+                  <span className="absolute right-[-20px]">
+                    <Tooltip
+                      content={
+                        <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                          <span className="text-sm">
+                            Includes operators handling Either of ETH, LSTs, or
+                            EIGEN token delegations from restakers
+                          </span>
+                        </div>
+                      }
+                      showArrow
+                      placement="bottom"
+                      delay={1}
+                    >
+                      <span className="px-2">
+                        <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                      </span>
+                    </Tooltip>
+                  </span>
+                </div>
+              </button>
+              <button
+                className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                     ${
                       selectedQuorum === 0
                         ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
                         : "text-white border-white"
                     }`}
-              onClick={() => handleQuorumSelection(0)}
-            >
-              {/* Quorum 0 ({operatorCounts[0] || 0}) */}
-              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
-                <span>Quorum 0 ({operatorCounts[0] || 0})</span>
-                <span className="absolute right-[-20px]">
-                  <Tooltip
-                    content={
-                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                        <span className="text-sm">
-                        Number of operators dedicated to ETH and LST delegations in EigenLayer
-                        </span>
-                      </div>
-                    }
-                    showArrow
-                    placement="bottom"
-                    delay={1}
-                  >
-                    <span className="px-2">
-                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                    </span>
-                  </Tooltip>
-                </span>
-              </div>
-            </button>
-            <button
-              className={`border-[#A7DBF2] border-1 rounded-md px-8 
+                onClick={() => handleQuorumSelection(0)}
+              >
+                {/* Quorum 0 ({operatorCounts[0] || 0}) */}
+                <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                  <span>Quorum 0 ({operatorCounts[0] || 0})</span>
+                  <span className="absolute right-[-20px]">
+                    <Tooltip
+                      content={
+                        <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                          <span className="text-sm">
+                            Number of operators dedicated to ETH and LST
+                            delegations in EigenLayer
+                          </span>
+                        </div>
+                      }
+                      showArrow
+                      placement="bottom"
+                      delay={1}
+                    >
+                      <span className="px-2">
+                        <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                      </span>
+                    </Tooltip>
+                  </span>
+                </div>
+              </button>
+              <button
+                className={`border-[#A7DBF2] border-1 rounded-md px-8 
                 border-b-3 font-medium overflow-hidden relative py-2 hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group  
                     ${
                       selectedQuorum === 1
                         ? "text-[#A7DBF2] bg-gradient-to-r from-[#020024] via-[#214965] to-[#427FA3]"
                         : "text-white border-white"
                     }`}
-              onClick={() => handleQuorumSelection(1)}
-            >
-              {/* Quorum 1 ({operatorCounts[1] || 0}) */}
-              <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
-                <span>Quorum 1 ({operatorCounts[1] || 0})</span>
-                <span className="absolute right-[-20px]">
-                  <Tooltip
-                    content={
-                      <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[21vw]">
-                        <span className="text-sm">
-                        EIGEN token-specific operator set within the EigenLayer ecosystem that focuses on network participation through EIGEN staking
-                        </span>
-                      </div>
-                    }
-                    showArrow
-                    placement="right"
-                    delay={1}
-                  >
-                    <span className="px-2">
-                      <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                    </span>
-                  </Tooltip>
-                </span>
-              </div>
-            </button>
-          </div>
+                onClick={() => handleQuorumSelection(1)}
+              >
+                {/* Quorum 1 ({operatorCounts[1] || 0}) */}
+                <div className="flex items-center gap-2 justify-center ml-[-20px] relative">
+                  <span>Quorum 1 ({operatorCounts[1] || 0})</span>
+                  <span className="absolute right-[-20px]">
+                    <Tooltip
+                      content={
+                        <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[21vw]">
+                          <span className="text-sm">
+                            EIGEN token-specific operator set within the
+                            EigenLayer ecosystem that focuses on network
+                            participation through EIGEN staking
+                          </span>
+                        </div>
+                      }
+                      showArrow
+                      placement="right"
+                      delay={1}
+                    >
+                      <span className="px-2">
+                        <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                      </span>
+                    </Tooltip>
+                  </span>
+                </div>
+              </button>
+            </div>
+          )}
+
           {props.individualDelegate ===
             "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
             <div className="mb-4 flex space-x-4">
@@ -682,8 +688,9 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                         content={
                           <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
                             <span className="text-sm">
-                              Operator&apos;s rank within a quorum is determined by
-                              their TVL according to the quorum&apos;s strategies
+                              Operator&apos;s rank within a quorum is determined
+                              by their TVL according to the quorum&apos;s
+                              strategies
                             </span>
                           </div>
                         }

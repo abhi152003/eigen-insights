@@ -23,7 +23,7 @@ const GET_EIGENLAYER_METRICS = gql`
       stakersCount
       stakersWhoDelegateCount
     }
-    avss(where: { paused: false }) {
+    avss(where: { paused: false, metadataURI_not_contains: "null" }) {
       id
       paused
     }
@@ -47,11 +47,7 @@ function ExploreDAOs() {
   const [showNotification, setShowNotification] = useState(true);
   const [isPageLoading, setIsPageLoading] = useState(true);
 
-  const {
-    loading,
-    error,
-    data,
-  } = useQuery(GET_EIGENLAYER_METRICS, {
+  const { loading, error, data } = useQuery(GET_EIGENLAYER_METRICS, {
     context: {
       subgraph: "avs",
     },
@@ -124,11 +120,11 @@ function ExploreDAOs() {
     // fetchData();
 
     if (data) {
-      console.log("eigenlayerrrrrrrrrrrrr", data.eigenLayers)
-      console.log("activeavssssssssssss", data.avss)
-      setTotalOperators(data.eigenLayers[0].operatorsCount)
-      setTotalStakers(data.eigenLayers[0].stakersWhoDelegateCount)
-      setTotalAVSs(data.avss.length)
+      console.log("eigenlayerrrrrrrrrrrrr", data.eigenLayers);
+      console.log("activeavssssssssssss", data.avss);
+      setTotalOperators(data.eigenLayers[0].operatorsCount);
+      setTotalStakers(data.eigenLayers[0].stakersWhoDelegateCount);
+      setTotalAVSs(data.avss.length);
     }
   });
 
