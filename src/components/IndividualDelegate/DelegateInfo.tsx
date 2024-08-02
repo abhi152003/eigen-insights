@@ -628,22 +628,22 @@ function DelegateInfo({
       </div>
 
       {isLoading ? (
-        <div className="w-full max-w-full md:max-w-5xl bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
-          <div className="p-4 animate-pulse">
-            <div className="flex justify-between items-center">
-              <Skeleton width={100} />
-              <Skeleton width={150} />
-            </div>
-          </div>
-          <div className="p-6 animate-pulse">
-            <div className="flex flex-col md:flex-row gap-x-40">
-              <DataListSkeleton />
-              <PieChartSkeleton />
-            </div>
+        <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden mt-5 mr-[46px]">
+        <div className="p-4 animate-pulse">
+          <div className="flex justify-between items-center text-gray-400">
+            <Skeleton width={100} />
+            <Skeleton width={150} />
           </div>
         </div>
+        <div className="p-6 animate-pulse">
+          <div className="flex flex-col md:flex-row gap-x-4r">
+            <DataListSkeleton />
+            <PieChartSkeleton />
+          </div>
+        </div>
+      </div>
       ) : (
-        <div className="flex justify-center mt-5 pe-16">
+        <div className="flex justify-center mt-5 mr-[46px]">
           {filteredData.length > 0 ? (
             <div
               className="bg-gray-800 rounded-lg shadow-lg overflow-hidden px-4"

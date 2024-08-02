@@ -196,19 +196,19 @@ function UserInfo({
     return totalPoints;
   }
 
-  if (queryLoading)
-    return (
-      <div className="flex items-center justify-center">
-        <ThreeCircles
-          visible={true}
-          height="50"
-          width="50"
-          color="#FFFFFF"
-          ariaLabel="three-circles-loading"
-          wrapperStyle={{}}
-        />
-      </div>
-    );
+  // if (queryLoading)
+  //   return (
+  //     <div className="flex items-center justify-center">
+  //       <ThreeCircles
+  //         visible={true}
+  //         height="50"
+  //         width="50"
+  //         color="#FFFFFF"
+  //         ariaLabel="three-circles-loading"
+  //         wrapperStyle={{}}
+  //       />
+  //     </div>
+  //   );
   if (error) {
     console.error("GraphQL Error:", error);
     return <p>Error: {error.message}</p>;

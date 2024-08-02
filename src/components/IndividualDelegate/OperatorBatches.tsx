@@ -113,16 +113,8 @@ function OperatorBatches({ props }: { props: Type }) {
     ];
   }, [totalBatchesData, periodicBatchesData, operatorData]);
 
-  if (totalBatchesLoading || periodicBatchesLoading) return <p>Loading...</p>;
+  // if (totalBatchesLoading || periodicBatchesLoading) return <p>Loading...</p>;
   if (totalBatchesError || periodicBatchesError) return <p>Error :(</p>;
-
-  if (!operatorData) {
-    return (
-      <p className="justify-center text-center pe-16">
-        No data available for this operator
-      </p>
-    );
-  }
 
   const calculateSignPercentage = (signed: number, total: number) => {
     if (total === 0) return "100%";
@@ -144,21 +136,21 @@ function OperatorBatches({ props }: { props: Type }) {
           </thead>
           <tbody>
             {[...Array(5)].map((_, index) => (
-              <tr key={index} className="border-b border-gray-700">
+              <tr key={index} className="border-b border-white">
                 <td className="p-2">
                   <div className="flex items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-600 mr-2 animate-pulse"></div>
-                    <div className="w-16 h-4 bg-gray-600 rounded animate-pulse"></div>
+                    <div className="w-6 h-6 rounded-full bg-gray-400 mr-2 animate-pulse"></div>
+                    <div className="w-16 h-4 bg-gray-400 rounded animate-pulse"></div>
                   </div>
                 </td>
                 <td className="p-2">
-                  <div className="w-24 h-4 bg-gray-600 rounded animate-pulse"></div>
+                  <div className="w-24 h-4 bg-gray-400 rounded animate-pulse"></div>
                 </td>
                 <td className="p-2">
-                  <div className="w-16 h-4 bg-gray-600 rounded animate-pulse"></div>
+                  <div className="w-16 h-4 bg-gray-400 rounded animate-pulse"></div>
                 </td>
                 <td className="p-2">
-                  <div className="w-16 h-4 bg-gray-600 rounded animate-pulse"></div>
+                  <div className="w-16 h-4 bg-gray-400 rounded animate-pulse"></div>
                 </td>
               </tr>
             ))}
@@ -170,6 +162,15 @@ function OperatorBatches({ props }: { props: Type }) {
 
   if (totalBatchesError || periodicBatchesError) {
     console.log(totalBatchesError, periodicBatchesError);
+  }
+
+  if (!operatorData) {
+    return (
+      <div className="pt-4 flex items-center flex-col justify-center">
+        <div className="text-3xl">☹️</div>
+        <div>Oops, no data available</div>
+      </div>
+    );
   }
 
   return (

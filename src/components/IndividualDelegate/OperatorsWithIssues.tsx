@@ -198,50 +198,93 @@ function OperatorsWithIssues({ props }: { props: Type }): JSX.Element {
     processData();
   }, [batchesData, client]);
 
-  if (batchesLoading) return <p>Loading...</p>;
+  if (batchesLoading)
+    return (
+      <div className="pe-16">
+        <table className="w-full bg-midnight-blue">
+          <thead>
+            <tr className="text-left bg-[#1d4059]">
+              <th className="p-3 font-medium pl-[28px]">
+                <div className="h-6 bg-gray-300 rounded animate-pulse w-24"></div>
+              </th>
+              <th className="p-3 font-medium">
+                <div className="h-6 bg-gray-300 rounded animate-pulse"></div>
+              </th>
+              <th className="p-3 font-medium whitespace-nowrap">
+                <div className="h-6 bg-gray-300 rounded animate-pulse w-36"></div>
+              </th>
+              <th className="p-3 font-medium">
+                <div className="h-6 bg-gray-300 rounded animate-pulse w-28"></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(20)].map((_, index) => (
+              <tr key={index} className="border-b border-[#2a3f5f]">
+                <td className="py-3 px-[30px]">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-gray-300 rounded animate-pulse"></div>
+                    <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                    <div className="w-32 h-6 bg-gray-300 rounded animate-pulse"></div>
+                  </div>
+                </td>
+                <td className="p-3">
+                  <div className="w-8 h-6 bg-gray-300 rounded animate-pulse"></div>
+                </td>
+                <td className="p-3">
+                  <div className="w-20 h-6 bg-gray-300 rounded animate-pulse"></div>
+                </td>
+                <td className="p-3">
+                  <div className="flex flex-wrap">
+                    {[...Array(100)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="w-2 h-2 m-[1px] bg-gray-300 animate-pulse"
+                      ></div>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
   if (batchesError) return <p>Error loading batches: {batchesError.message}</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-4 pe-16">
-      <table className="w-full bg-midnight-blue">
-        <thead>
-          <tr className="text-left bg-[#1d4059]">
-            <th className="p-2">Operator</th>
-            <th className="p-2">Missed</th>
-            <th className="p-2 whitespace-nowrap">Last missed</th>
-            <th className="p-2">Batches</th>
-          </tr>
-        </thead>
-        <tbody>
-          {operatorsData.length === 0 ? (
-            <tr>
-              <td className="p-2" colSpan={4}>
-                No data available
-              </td>
+    <>
+      <div className="pe-16">
+        <table className="w-full bg-midnight-blue">
+          <thead>
+            <tr className="text-left bg-[#1d4059]">
+              <th className="p-3 font-medium pl-[28px]">Operator</th>
+              <th className="p-3 font-medium">Missed</th>
+              <th className="p-3 font-medium whitespace-nowrap">Last missed</th>
+              <th className="p-3 font-medium">Batches</th>
             </tr>
-          ) : (
-            operatorsData.map((operator, index) => (
-              <tr key={operator.id} className="border-b border-gray-700">
+          </thead>
+          <tbody>
+            {operatorsData.map((operator, index) => (
+              <tr key={operator.id} className="border-b border-[#2a3f5f]">
                 <td
-                  className="p-2 flex items-center cursor-pointer"
+                  className="p-3 flex items-center space-x-3 cursor-pointer"
                   onClick={() =>
-                    router.push(
-                      `/operators/${operator.id}?active=info`
-                    )
+                    router.push(`/operators/${operator.id}?active=info`)
                   }
                 >
-                  <span className="mr-2">{index + 1}</span>
+                  <span className="text-white w-6 text-right">{index + 1}</span>
                   <img
                     src={operator.logo}
                     alt={operator.name}
-                    className="w-6 h-6 rounded-full mr-2"
+                    className="w-6 h-6 rounded-full"
                   />
-                  <span>{operator.name}</span>
+                  <span className="font-medium">{operator.name}</span>
                 </td>
-                <td className="p-2 text-red-500">{operator.missed}</td>
-                <td className="p-2">{operator.lastMissed}</td>
-                <td className="p-2">
+                <td className="p-3 text-red-400">{operator.missed}</td>
+                <td className="p-3 text-gray-300">{operator.lastMissed}</td>
+                <td className="p-3">
                   <div className="flex flex-wrap">
                     {operator.batches.map((batch, i) => (
                       <Tooltip
@@ -274,11 +317,11 @@ function OperatorsWithIssues({ props }: { props: Type }): JSX.Element {
                   </div>
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

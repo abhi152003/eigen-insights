@@ -9,6 +9,7 @@ import { gql, useQuery } from "@apollo/client";
 
 import { FaChevronDown, FaCircleInfo, FaPlus } from "react-icons/fa6";
 import { Tooltip } from "@nextui-org/react";
+import SortingArrows from "../../components/Svgs/SortingArrows"
 
 const GET_OPERATORS = gql`
   query GetAllOperators($avsAddress: String!) {
@@ -421,21 +422,21 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center">
-        <ThreeCircles
-          visible={true}
-          height="50"
-          width="50"
-          color="#FFFFFF"
-          ariaLabel="three-circles-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center">
+  //       <ThreeCircles
+  //         visible={true}
+  //         height="50"
+  //         width="50"
+  //         color="#FFFFFF"
+  //         ariaLabel="three-circles-loading"
+  //         wrapperStyle={{}}
+  //         wrapperClass=""
+  //       />
+  //     </div>
+  //   );
+  // }
 
   const getTotalOperatorCount = () => {
     return totalAVSOperatorsCount;
@@ -444,7 +445,6 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
   return (
     <div>
       <div>
-        {/* <h1 className="mt-3 ml-3 font-medium text-3xl">Node Operators</h1> */}
         <div className="py-2 pe-14 font-poppins">
           <div className="searchBox searchShineWidthOfAVSs mb-1">
             <input
@@ -511,7 +511,8 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     content={
                       <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
                         <span className="text-sm">
-                        Number of operators dedicated to ETH and LST delegations in EigenLayer
+                          Number of operators dedicated to ETH and LST
+                          delegations in EigenLayer
                         </span>
                       </div>
                     }
@@ -544,7 +545,9 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                     content={
                       <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[21vw]">
                         <span className="text-sm">
-                        EIGEN token-specific operator set within the EigenLayer ecosystem that focuses on network participation through EIGEN staking
+                          EIGEN token-specific operator set within the
+                          EigenLayer ecosystem that focuses on network
+                          participation through EIGEN staking
                         </span>
                       </div>
                     }
@@ -598,117 +601,93 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
               </button>
             </div>
           )}
-          <div className="mt-4 w-full overflow-x-auto">
-            <table className="min-w-full bg-midnight-blue overflow-x-auto">
-              <thead>
-                <tr className="bg-sky-blue bg-opacity-10">
-                  <th className="px-4 py-2 text-left">Operator</th>
-                  <th className="px-4 py-2 text-left">Address</th>
-                  <th className="px-4 py-2 text-right">Restakers</th>
-                  <th className="px-4 py-2 text-right flex gap-1 justify-end">
-                    <span className="pt-[21px] text-center">TVL</span>
-                    <span>
-                      <Tooltip
-                        content={
-                          <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
-                            <span className="text-sm">
-                              Total amount of ETH restaked or locked with an
-                              operator within the EigenLayer protocol
-                            </span>
-                          </div>
-                        }
-                        showArrow
-                        placement="top"
-                        delay={1}
-                      >
-                        <span className="px-2">
-                          <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                        </span>
-                      </Tooltip>
-                    </span>
-                  </th>
-                  <th className="px-4 py-2 text-right">
-                    <div className="flex items-center gap-2 justify-end">
-                      <span className="text-right">Opt-in</span>
-                      <span>
-                        <Tooltip
-                          content={
-                            <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
-                              <span className="text-sm">
-                                Indicates when an individual operator has began
-                                participating in the AVS
-                              </span>
-                            </div>
-                          }
-                          showArrow
-                          placement="top"
-                          delay={1}
-                        >
-                          <span className="px-2">
-                            <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                          </span>
-                        </Tooltip>
-                      </span>
-                    </div>
-                  </th>
-                  <th className="px-4 py-2 text-right">
-                    <div className="flex gap-2 items-center justify-end">
-                      <span className="text-right">Status</span>
-                      <span>
-                        <Tooltip
-                          content={
-                            <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
-                              <span className="text-sm">
-                                Indicates the operator&apos;s status for this
-                                particular AVS
-                              </span>
-                            </div>
-                          }
-                          showArrow
-                          placement="top"
-                          delay={1}
-                        >
-                          <span className="px-2">
-                            <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                          </span>
-                        </Tooltip>
-                      </span>
-                    </div>
-                  </th>
-                  <th className="px-4 py-2 text-right flex gap-1 justify-end">
-                    <span className="pt-[21px] text-right">Rank</span>
-                    <span>
-                      <Tooltip
-                        content={
-                          <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
-                            <span className="text-sm">
-                              Operator&apos;s rank within a quorum is determined by
-                              their TVL according to the quorum&apos;s strategies
-                            </span>
-                          </div>
-                        }
-                        showArrow
-                        placement="top"
-                        delay={1}
-                      >
-                        <span className="px-2">
-                          <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
-                        </span>
-                      </Tooltip>
-                    </span>
-                  </th>
-                  {props.individualDelegate ===
-                    "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
+          {loading ? (
+            <div className="overflow-x-auto">
+              <table className="w-full bg-midnight-blue">
+                <thead>
+                  <tr className="bg-sky-blue bg-opacity-10">
+                    <th className="px-4 py-7 border-b text-left">
+                      <div className="h-5 bg-gray-400 rounded animate-pulse w-36"></div>
+                    </th>
+                    <th className="px-4 py-3 border-b text-left">
+                      <div className="h-5 bg-gray-400 rounded animate-pulse w-24"></div>
+                    </th>
+                    <th className="px-4 py-3 border-b text-left">
+                      <div className="h-5 bg-gray-400 rounded animate-pulse w-24"></div>
+                    </th>
+                    <th className="px-4 py-3 border-b text-left">
+                      <div className="flex items-center gap-2">
+                        <div className="h-5 bg-gray-400 rounded animate-pulse w-20"></div>
+                        <div className="w-4 h-4 bg-gray-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </th>
+                    <th className="px-4 py-3 border-b text-left">
+                      <div className="flex items-center gap-2">
+                        <div className="h-5 bg-gray-400 rounded animate-pulse w-24"></div>
+                        <div className="w-4 h-4 bg-gray-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </th>
+                    <th className="px-4 py-3 border-b text-left">
+                      <div className="flex items-center gap-2">
+                        <div className="h-5 bg-gray-400 rounded animate-pulse w-24"></div>
+                        <div className="w-4 h-4 bg-gray-400 rounded-full animate-pulse"></div>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...Array(20)].map((_, index) => (
+                    <tr
+                      key={index}
+                      className="border-b border-gray-400 animate-pulse"
+                    >
+                      <td className="px-4 py-2">
+                        <div className="flex items-center">
+                          <div className="h-9 w-9 bg-gray-300 rounded-full animate-pulse mr-3"></div>
+                          <div className="h-5 bg-gray-400 rounded w-40"></div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex items-center">
+                          <div className="h-4 bg-gray-400 rounded w-36"></div>
+                          <div className="ml-2 h-4 w-4 bg-gray-400 rounded"></div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="h-4 bg-gray-400 rounded w-20"></div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="h-4 bg-gray-400 rounded w-28"></div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="h-4 bg-gray-400 rounded w-32"></div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="h-4 bg-gray-400 rounded w-20"></div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="mt-4 w-full overflow-x-auto">
+              <table className="min-w-full bg-midnight-blue overflow-x-auto">
+                <thead>
+                  <tr className="bg-sky-blue bg-opacity-10">
+                    <th className="px-4 py-2 text-left">Operator</th>
+                    <th className="px-4 py-2 text-left">Address</th>
+                    <th className="px-4 py-2 text-right">Restakers</th>
                     <th className="px-4 py-2 text-right">
-                      <div className="flex gap-2 items-center justify-end">
-                        <span className="text-right">Uptime</span>
+                      <div className="flex items-center gap-2 justify-end">
+                        <span className="text-center">TVL</span>
                         <span>
                           <Tooltip
                             content={
                               <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
                                 <span className="text-sm">
-                                  Number of batches processed by the operator in
-                                  selected time
+                                  Total amount of ETH restaked or locked with an
+                                  operator within the EigenLayer protocol
                                 </span>
                               </div>
                             }
@@ -723,45 +702,148 @@ function Operators({ props }: { props: { individualDelegate: string } }) {
                         </span>
                       </div>
                     </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {getPaginatedOperators().map((operator, index) => (
-                  <OperatorRow
-                    key={operator.operator.id}
-                    operator={operator}
-                    router={router}
-                    handleCopy={handleCopy}
-                    rank={`${calculateRank(operator, displayedOperators)}/${
-                      displayedOperators.length
-                    }`}
-                    daSigningRatePeriod={daSigningRatePeriod}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    <th className="px-4 py-2 text-right">
+                      <div className="flex items-center gap-2 justify-end">
+                        <span className="text-right">Opt-in</span>
+                        <span>
+                          <Tooltip
+                            content={
+                              <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                                <span className="text-sm">
+                                  Indicates when an individual operator has
+                                  began participating in the AVS
+                                </span>
+                              </div>
+                            }
+                            showArrow
+                            placement="top"
+                            delay={1}
+                          >
+                            <span className="px-2">
+                              <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                            </span>
+                          </Tooltip>
+                        </span>
+                      </div>
+                    </th>
+                    <th className="px-4 py-2 text-right">
+                      <div className="flex gap-2 items-center justify-end">
+                        <span className="text-right">Status</span>
+                        <span>
+                          <Tooltip
+                            content={
+                              <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                                <span className="text-sm">
+                                  Indicates the operator&apos;s status for this
+                                  particular AVS
+                                </span>
+                              </div>
+                            }
+                            showArrow
+                            placement="top"
+                            delay={1}
+                          >
+                            <span className="px-2">
+                              <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                            </span>
+                          </Tooltip>
+                        </span>
+                      </div>
+                    </th>
+                    <th className="px-4 py-2 text-right">
+                      <div className="flex gap-2 items-center justify-end">
+                        <SortingArrows />
+                        <span className="text-right">Rank</span>
+                        <span>
+                          <Tooltip
+                            content={
+                              <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[22vw]">
+                                <span className="text-sm">
+                                  Operator&apos;s rank within a quorum is
+                                  determined by their TVL according to the
+                                  quorum&apos;s strategies
+                                </span>
+                              </div>
+                            }
+                            showArrow
+                            placement="top"
+                            delay={1}
+                          >
+                            <span className="px-2">
+                              <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                            </span>
+                          </Tooltip>
+                        </span>
+                      </div>
+                    </th>
+                    {props.individualDelegate ===
+                      "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" && (
+                      <th className="px-4 py-2 text-right">
+                        <div className="flex gap-2 items-center justify-end">
+                          <span className="text-right">Uptime</span>
+                          <span>
+                            <Tooltip
+                              content={
+                                <div className="font-poppins p-2 bg-medium-blue text-white rounded-md max-w-[20vw]">
+                                  <span className="text-sm">
+                                    Number of batches processed by an operator
+                                    in selected time
+                                  </span>
+                                </div>
+                              }
+                              showArrow
+                              placement="top"
+                              delay={1}
+                            >
+                              <span className="px-2">
+                                <FaCircleInfo className="cursor-pointer text-[#A7DBF2]" />
+                              </span>
+                            </Tooltip>
+                          </span>
+                        </div>
+                      </th>
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {getPaginatedOperators().map((operator, index) => (
+                    <OperatorRow
+                      key={operator.operator.id}
+                      operator={operator}
+                      router={router}
+                      handleCopy={handleCopy}
+                      rank={`${calculateRank(operator, displayedOperators)}/${
+                        displayedOperators.length
+                      }`}
+                      daSigningRatePeriod={daSigningRatePeriod}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
-          <div className="mt-4 flex justify-center items-center">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
+          {!loading && (
+            <div className="mt-4 flex justify-center items-center">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
-            >
-              Previous
-            </button>
-            <div className="mx-4">{renderPageNumbers()}</div>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
+              >
+                Previous
+              </button>
+              <div className="mx-4">{renderPageNumbers()}</div>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 border-[#A7DBF2] border-1 rounded-md px-4 
               border-b-3 font-medium overflow-hidden relative hover:brightness-150 hover:border-t-3 hover:border-b active:opacity-75 outline-none duration-1000 group"
-            >
-              Next
-            </button>
-          </div>
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <Toaster
