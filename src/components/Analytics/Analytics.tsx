@@ -23,23 +23,23 @@ import {
   PieChartSkeleton,
   DataListSkeleton,
 } from "../Skeletons/PieChartSkeleton";
+import Withdrawals from "./Withdrawals";
+import Airdrop from "./Airdrop";
 
-// Define the type for our data
-type ClaimData = {
-  amount: string;
-  account: string;
-  blockTimestamp: string;
-  transactionHash: string;
-};
+const GET_STRATEGIES = gql`
+  query MyQuery {
+    strategies {
+      tokenSymbol
+      totalShares
+      name
+    }
+  }
+`;
+
 // Define a type for the TVL data
 type TVLData = {
   [key: string]: number;
   "Native ETH": number; // Now required instead of optional
-};
-
-// Props type for our component
-type LeaderboardProps = {
-  data: ClaimData[];
 };
 
 interface Share {
@@ -54,143 +54,6 @@ interface Withdrawal {
   stakerAddress: string;
   shares: Share[];
 }
-
-const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
-  // Sort the data by amount (descending order)
-  const sortedData = [...data].sort((a, b) => {
-    const amountA = BigInt(a.amount);
-    const amountB = BigInt(b.amount);
-    if (amountA < amountB) return 1;
-    if (amountA > amountB) return -1;
-    return 0;
-  });
-
-  const handleCopy = (addr: any) => {
-    copy(addr);
-    toast("Address Copied 🎊");
-  };
-
-  return (
-    <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
-      <h2 className="text-2xl font-bold mb-4 text-white flex items-center">
-        Airdrop Leaderboard 🎁🎊
-      </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-[#2a3955]">
-              <th className="px-4 py-2 text-left">Rank</th>
-              <th className="px-4 py-2 text-left">Account</th>
-              <th className="px-4 py-2 text-right">Amount (ETH)</th>
-              <th className="px-4 py-2 text-right">Claimed</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedData.map((item, index) => (
-              <tr
-                key={item.transactionHash}
-                className="border-b border-[#2a3955] hover:bg-[#1c2d4a] transition-colors"
-              >
-                <td className="px-4 py-2">{index + 1}</td>
-                <td className="px-4 py-2">
-                  <div className="flex items-center">
-                    <a
-                      href={`https://etherscan.io/address/${item.account}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-light-cyan hover:underline"
-                    >
-                      <span>
-                        {`${item.account.slice(0, 6)}...${item.account.slice(
-                          -4
-                        )}`}
-                      </span>
-                    </a>
-                    <span
-                      className="ml-2 cursor-pointer"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleCopy(item.account);
-                      }}
-                      title="Copy"
-                    >
-                      <IoCopy size={16} color="#ffffff" />
-                    </span>
-                  </div>
-                </td>
-                <td className="px-4 py-2 text-right">
-                  {(Number(BigInt(item.amount)) / 1e18).toFixed(2)}
-                </td>
-                <td className="px-4 py-2 text-right">
-                  {formatDistanceToNowStrict(
-                    new Date(parseInt(item.blockTimestamp) * 1000),
-                    { addSuffix: true }
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    // <div className="bg-[#1f2937] text-white p-6 rounded-lg shadow-lg mt-4">
-    //   <div className="h-8 w-64 bg-gray-700 rounded mb-4 animate-pulse"></div>
-    //   <div className="overflow-x-auto animate-pulse">
-    //     <table className="w-full">
-    //       <thead>
-    //         <tr className="border-b border-[#2a3955]">
-    //           <th className="px-4 py-2 text-left">
-    //             <div className="h-4 w-16 bg-gray-700 rounded"></div>
-    //           </th>
-    //           <th className="px-4 py-2 text-left">
-    //             <div className="h-4 w-24 bg-gray-700 rounded"></div>
-    //           </th>
-    //           <th className="px-4 py-2 text-right">
-    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
-    //           </th>
-    //           <th className="px-4 py-2 text-right">
-    //             <div className="h-4 w-20 bg-gray-700 rounded ml-auto"></div>
-    //           </th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {[...Array(10)].map((_, index) => (
-    //           <tr key={index} className="border-b border-[#2a3955]">
-    //             <td className="px-4 py-3">
-    //               <div className="h-[18px] w-4 bg-gray-700 rounded"></div>
-    //             </td>
-    //             <td className="px-4 py-3">
-    //               <div className="flex items-center">
-    //                 <div className="h-[18px] w-[7rem] bg-gray-700 rounded"></div>
-    //                 <div className="h-[18px] w-4 bg-gray-700 rounded ml-2"></div>
-    //               </div>
-    //             </td>
-    //             <td className="px-4 py-3 text-right">
-    //               <div className="h-[18px] w-16 bg-gray-700 rounded ml-auto"></div>
-    //             </td>
-    //             <td className="px-4 py-3 text-right">
-    //               <div className="h-[18px] w-24 bg-gray-700 rounded ml-auto"></div>
-    //             </td>
-    //           </tr>
-    //         ))}
-    //       </tbody>
-    //     </table>
-    //   </div>
-    // </div>
-  );
-};
-
-const GET_DATA = gql`
-  query MyQuery {
-    claimeds(orderBy: amount, orderDirection: desc, first: 10) {
-      amount
-      account
-      blockTimestamp
-      transactionHash
-    }
-  }
-`;
 
 const strategyNames: { [key: string]: string } = {
   "0x93c4b944d05dfe6df7645a86cd2206016c51564d": "stETH",
@@ -231,18 +94,45 @@ function Analytics() {
   const [searchResultsPerPage] = useState(10);
   const [restakeTVL, setRestakeTVL] = useState<TVLData>({ "Native ETH": 0 });
 
-  const { loading, error, data } = useQuery(GET_DATA, {
+  const {
+    loading: strategiesLoading,
+    error: strategiesError,
+    data: strategiesData,
+  } = useQuery(GET_STRATEGIES, {
     context: {
-      subgraph: "airdrop", // Specify which subgraph to use
+      subgraph: "avs", // Specify which subgraph to use
     },
   });
 
   useEffect(() => {
-    if (data) {
-      console.log(data.claimeds);
-      setAirDrop(data.claimeds);
+    if (strategiesData && strategiesData.strategies) {
+      const tvlData: TVLData = strategiesData.strategies.reduce(
+        (acc: TVLData, strategy: any) => {
+          // Skip bEigen strategy
+          if (strategy.tokenSymbol !== "bEIGEN") {
+            const shares = parseFloat(strategy.totalShares) / 1e18; // Convert from Wei to ETH
+            acc[strategy.tokenSymbol] = shares;
+          }
+          return acc;
+        },
+        { "Native ETH": 0 }
+      ); // Initialize with Native ETH
+  
+      setRestakeTVL(tvlData);
+  
+      const totalTVL = Object.values(tvlData).reduce(
+        (sum, value) => sum + value,
+        0
+      );
+      const percentages = Object.entries(tvlData).reduce<
+        Record<string, number>
+      >((acc, [key, value]) => {
+        acc[key] = parseFloat(((value / totalTVL) * 100).toFixed(2));
+        return acc;
+      }, {});
+      setTVLPercentageData(percentages);
     }
-  }, [data]);
+  }, [strategiesData]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -291,10 +181,10 @@ function Analytics() {
           "https://api.eigenexplorer.com/metrics/tvl",
           options
         );
-        const restakeRes = await fetch(
-          "https://api.eigenexplorer.com/metrics/tvl/restaking",
-          options
-        );
+        // const restakeRes = await fetch(
+        //   "https://api.eigenexplorer.com/metrics/tvl/restaking",
+        //   options
+        // );
         const avsOperatorsRes = await fetch("/api/get-avs-operators");
         const metricsRes = await fetch(
           "https://api.eigenexplorer.com/metrics",
@@ -302,7 +192,7 @@ function Analytics() {
         );
 
         const metricsData = await metricsRes.json();
-        const restakeTVL = await restakeRes.json();
+        // const restakeTVL = await restakeRes.json();
         const avsOperators = await avsOperatorsRes.json();
 
         setTotalTVL(metricsData.tvl);
@@ -310,11 +200,11 @@ function Analytics() {
         setTotalAVSs(metricsData.totalAvs);
         setTotalStakers(metricsData.totalStakers);
         setTotalRestaking(metricsData.tvlRestaking);
-        const updatedRestakeTVL: TVLData = {
-          ...restakeTVL.tvlStrategies,
-          "Native ETH": metricsData.tvlBeaconChain,
-        };
-        setRestakeTVL(updatedRestakeTVL);
+        // const updatedRestakeTVL: TVLData = {
+        //   ...restakeTVL.tvlStrategies,
+        //   "Native ETH": metricsData.tvlBeaconChain,
+        // };
+        // setRestakeTVL(updatedRestakeTVL);
         setAVSOperators(avsOperators);
         setIsDataFetched(true); // Set the flag to true after fetching data
         setIsPageLoading(false);
@@ -327,28 +217,28 @@ function Analytics() {
     fetchData();
   }, [skip, take]);
 
-  const fetchWithdrawals = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  // const fetchWithdrawals = async () => {
+  //   const options = {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
 
-    const withdrawlsRes = await fetch(
-      `https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`,
-      options
-    );
-    const withdrawlsData = await withdrawlsRes.json();
-    console.log(withdrawlsData);
-    setWithdrawals(withdrawlsData.data);
-    setTotal(withdrawlsData.meta.total);
-    setIsPageLoading(false);
-  };
+  //   const withdrawlsRes = await fetch(
+  //     `https://api.eigenexplorer.com/withdrawals?skip=${skip}&take=${take}`,
+  //     options
+  //   );
+  //   const withdrawlsData = await withdrawlsRes.json();
+  //   console.log(withdrawlsData);
+  //   setWithdrawals(withdrawlsData.data);
+  //   setTotal(withdrawlsData.meta.total);
+  //   setIsPageLoading(false);
+  // };
 
-  useEffect(() => {
-    fetchWithdrawals();
-  }, [skip, take]);
+  // useEffect(() => {
+  //   fetchWithdrawals();
+  // }, [skip, take]);
 
   const handlePageChange = (page: number) => {
     setSkip((page - 1) * take);
@@ -373,18 +263,14 @@ function Analytics() {
   // .sort((a, b) => b[1] - a[1]);
 
   const filteredData: [string, number, number][] = Object.entries(restakeTVL)
-    .filter(
-      (entry): entry is [string, number] =>
-        typeof entry[1] === "number" && entry[1] !== 0 && entry[0] !== "Eigen"
-    )
-    .map(([key, value]): [string, number, number] => [
-      key,
-      value,
-      tvlPercentageData[key] || 0,
-    ])
+    .filter(([key, value]) => value !== 0 && key !== "Eigen")
+    .map(([key, value]) => [key, value, tvlPercentageData[key] || 0] as [string, number, number])
     .sort((a, b) => b[1] - a[1]);
-  const totalTVLWithNative = totalRestaking + (restakeTVL["Native ETH"] || 0);
 
+  const totalTVLWithNative = Object.values(restakeTVL).reduce(
+    (sum, value) => sum + value,
+    0
+  );
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [operatorsHoveredIndex, setOperatorsHoveredIndex] = useState<
     number | null
@@ -531,7 +417,7 @@ function Analytics() {
       }
     } else {
       setIsSearching(false);
-      fetchWithdrawals();
+      // fetchWithdrawals();
     }
   };
 
@@ -651,18 +537,7 @@ function Analytics() {
       // </div>
     );
   };
-
-  if (loading) return <div className="flex items-center justify-center"></div>;
-  if (error) {
-    console.error("GraphQL Error:", error);
-    return <p>Error: {error.message}</p>;
-  }
-
-  const handleCopy = (addr: any) => {
-    copy(addr);
-    toast("Address Copied 🎊");
-  };
-
+  
   return (
     <div className="p-20 -mt-20">
       {/* <h1 className="text-5xl text-center pb-7">Analytics</h1> */}
@@ -688,7 +563,9 @@ function Analytics() {
             totalStakers={totalStakers}
             totalRestaking={totalRestaking}
           />
-          {airDrop && <Leaderboard data={airDrop} />}
+          {/* {airDrop && <Leaderboard data={airDrop} />} */}
+          {/* Airdrop Leaderboard */}
+          <Airdrop />
 
           <div>
             {isLoading ? (
@@ -711,16 +588,14 @@ function Analytics() {
                 {filteredData.length > 0 ? (
                   <div className="w-full bg-gray-800 rounded-lg shadow-lg overflow-hidden mx-auto px-4">
                     <h1 className="ml-2 mt-6 mb-1 text-2xl font-bold">
-                      TVL Restaking Distribution
+                      TVL Distribution
                     </h1>
                     <div className="p-4">
                       <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold">Total</h2>
                         <div className="text-right">
                           <p className="text-2xl font-bold">
-                            {(
-                              totalRestaking + restakeTVL["Native ETH"]
-                            ).toLocaleString(undefined, {
+                            {totalTVLWithNative.toLocaleString(undefined, {
                               maximumFractionDigits: 2,
                             })}{" "}
                             ETH
@@ -897,7 +772,8 @@ function Analytics() {
           </div>
 
           {/* Withdrawals */}
-          <div className="">
+          <Withdrawals />
+          {/* <div className="">
             <h1 className="ml-3 mt-10 text-2xl font-semibold">
               All Withdrawals
             </h1>
@@ -945,131 +821,68 @@ function Analytics() {
                   </tr>
                 </thead>
                 <tbody>
-                  {isSearching
-                    ? currentSearchResults.map((withdrawal, index) => (
-                        <tr
-                          key={index}
-                          className="bg-gray-800 hover:bg-gray-900 transition-colors"
-                        >
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.createdAtBlock}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                            <div className="flex items-center justify-center">
-                              <span className="text-center">
-                                {withdrawal.stakerAddress.slice(0, 6)}....
-                                {withdrawal.stakerAddress.slice(-3)}
-                              </span>
-                              <span
-                                className="ml-2 cursor-pointer text-center"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  handleCopy(withdrawal.stakerAddress);
-                                }}
-                                title="Copy"
-                              >
-                                <IoCopy size={14} color="#ffffff" />
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.isCompleted ? "Yes" : "No"}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                            <div className="flex items-center justify-center">
-                              <span>
-                                {withdrawal.delegatedTo.slice(0, 6)}....
-                                {withdrawal.delegatedTo.slice(-3)}
-                              </span>
-                              <span
-                                className="ml-2 cursor-pointer"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  handleCopy(withdrawal.delegatedTo);
-                                }}
-                                title="Copy"
-                              >
-                                <IoCopy size={14} color="#ffffff" />
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.shares.map((share, index) => (
-                              <div key={index}>{weiToEth(share.shares)}</div>
-                            ))}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700">
-                            {withdrawal.shares.map((share, index) => (
-                              <div key={index}>
-                                {strategyNames[share.strategyAddress] ||
-                                  share.strategyAddress}
-                              </div>
-                            ))}
-                          </td>
-                        </tr>
-                      ))
-                    : withdrawals.map((withdrawal, index) => (
-                        <tr
-                          key={index}
-                          className="bg-gray-800 hover:bg-gray-900 transition-colors"
-                        >
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.createdAtBlock}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                            <div className="flex items-center justify-center">
-                              <span className="text-center">
-                                {withdrawal.stakerAddress.slice(0, 6)}....
-                                {withdrawal.stakerAddress.slice(-3)}
-                              </span>
-                              <span
-                                className="ml-2 cursor-pointer text-center"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  handleCopy(withdrawal.stakerAddress);
-                                }}
-                                title="Copy"
-                              >
-                                <IoCopy size={14} color="#ffffff" />
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.isCompleted ? "Yes" : "No"}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
-                            <div className="flex items-center justify-center">
-                              <span>
-                                {withdrawal.delegatedTo.slice(0, 6)}....
-                                {withdrawal.delegatedTo.slice(-3)}
-                              </span>
-                              <span
-                                className="ml-2 cursor-pointer"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  handleCopy(withdrawal.delegatedTo);
-                                }}
-                                title="Copy"
-                              >
-                                <IoCopy size={14} color="#ffffff" />
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700 text-sm">
-                            {withdrawal.shares.map((share, index) => (
-                              <div key={index}>{weiToEth(share.shares)}</div>
-                            ))}
-                          </td>
-                          <td className="py-2 px-4 border border-gray-700">
-                            {withdrawal.shares.map((share, index) => (
-                              <div key={index}>
-                                {strategyNames[share.strategyAddress] ||
-                                  share.strategyAddress}
-                              </div>
-                            ))}
-                          </td>
-                        </tr>
-                      ))}
+                  {withdrawals.map((withdrawal, index) => (
+                    <tr
+                      key={index}
+                      className="bg-gray-800 hover:bg-gray-900 transition-colors"
+                    >
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        {withdrawal.createdAtBlock}
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <span className="text-center">
+                            {withdrawal.stakerAddress.slice(0, 6)}....
+                            {withdrawal.stakerAddress.slice(-3)}
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer text-center"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.stakerAddress);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        {withdrawal.isCompleted ? "Yes" : "No"}
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm text-light-cyan">
+                        <div className="flex items-center justify-center">
+                          <span>
+                            {withdrawal.delegatedTo.slice(0, 6)}....
+                            {withdrawal.delegatedTo.slice(-3)}
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleCopy(withdrawal.delegatedTo);
+                            }}
+                            title="Copy"
+                          >
+                            <IoCopy size={14} color="#ffffff" />
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700 text-sm">
+                        {withdrawal.shares.map((share, index) => (
+                          <div key={index}>{weiToEth(share.shares)}</div>
+                        ))}
+                      </td>
+                      <td className="py-2 px-4 border border-gray-700">
+                        {withdrawal.shares.map((share, index) => (
+                          <div key={index}>
+                            {strategyNames[share.strategyAddress] ||
+                              share.strategyAddress}
+                          </div>
+                        ))}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
 
@@ -1156,7 +969,11 @@ function Analytics() {
               )}
             </div>
 
-            {/* <div className="mx-auto py-3 overflow-x-auto animate-pulse">
+            <Withdrawals />
+
+            
+          </div> */}
+          {/* <div className="mx-auto py-3 overflow-x-auto animate-pulse">
               <table className="w-full border-collapse text-center text-white rounded-md">
                 <thead>
                   <tr className="bg-gray-800">
@@ -1228,7 +1045,6 @@ function Analytics() {
                 )}
               </div>
             </div> */}
-          </div>
         </div>
       )}
       <Toaster
