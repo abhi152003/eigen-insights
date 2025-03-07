@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import Image from "next/image";
 import React from "react";
 import logo from "@/assets/images/daos/eigen_logo.png";
 import rocket from "@/assets/images/sidebar/rocket.png";
 import operatorLogo from "@/assets/images/daos/Operator4.jpg";
-// import restakers_logo from "@/assets/images/logos/a_eigenToken2 (3).png";
+import sessionIcn from "@/assets/images/sidebar/office.png";
+import office from "@/assets/images/sidebar/Office hour (1).png";
 import restakers_logo from "@/assets/images/logos/a_restakerFinal.png";
 import avsLogo from "@/assets/images/daos/AVSs3 New.png";
 import styles from "./sidebar.module.css";
@@ -34,7 +35,9 @@ function Sidebar() {
             alt={"Eigen logo"}
             width={40}
             className={`xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${styles.image_hover} cursor-pointer`}
-            onClick={() => window.open("https://www.eigeninsight.xyz/", "_blank")}
+            onClick={() =>
+              window.open("https://www.eigeninsight.xyz/", "_blank")
+            }
           />
 
           <Tooltip
@@ -55,10 +58,54 @@ function Sidebar() {
               />
             </Link>
           </Tooltip>
+          <Tooltip
+            content="Office Hours"
+            placement="right"
+            className="rounded-md bg-opacity-90 bg-light-blue"
+            closeDelay={1}
+          >
+            <Link href={"/office-hours?hours=ongoing"}>
+              <Image
+                priority
+                src={office}
+                alt={"image"}
+                width={40}
+                className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${
+                  pathname.includes(`/office-hours`)
+                    ? "border-white border-2 rounded-full"
+                    : ""
+                } ${styles.image_hover}`}
+              />
+            </Link>
+          </Tooltip>
+
+          <Tooltip
+            content="Sessions"
+            placement="right"
+            className="rounded-md bg-opacity-90 bg-light-blue"
+            closeDelay={1}
+          >
+            <Link href={"/sessions?active=recordedSessions"}>
+              <Image
+                priority
+                src={sessionIcn}
+                alt={"image"}
+                width={40}
+                height={40}
+                className={`cursor-pointer xl:w-11 xl:h-11 2xl:w-12 2xl:h-12 2.5xl:w-14 2.5xl:h-14 ${
+                  pathname.includes(`/sessions`)
+                    ? "border-white border-2 rounded-full"
+                    : ""
+                } ${styles.image_hover}`}
+              />
+            </Link>
+          </Tooltip>
         </div>
 
         <div className="h-fit">
-          <div className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#05223B] rounded-2xl overflow-y-auto ${styles.scrollbar}`}>
+          <div
+            className={`flex flex-col items-center gap-y-4 py-7 h-full bg-[#05223B] rounded-2xl overflow-y-auto ${styles.scrollbar}`}
+          >
             <Tooltip
               content="Operators"
               placement="right"
@@ -66,9 +113,13 @@ function Sidebar() {
               closeDelay={1}
             >
               <Link href="/operators?active=operatorsList">
-                <div className={`flex flex-col items-center rounded-full p-[4px] ${
-                  pathname.includes('/operators') ? "border-white border-[2.5px]" : ""
-                }`}>
+                <div
+                  className={`flex flex-col items-center rounded-full p-[4px] ${
+                    pathname.includes("/operators")
+                      ? "border-white border-[2.5px]"
+                      : ""
+                  }`}
+                >
                   <Image
                     src={operatorLogo}
                     width={80}
@@ -88,9 +139,13 @@ function Sidebar() {
               closeDelay={1}
             >
               <Link href="/avss?active=avsList">
-                <div className={`flex flex-col items-center rounded-full p-[4px] ${
-                  pathname.includes('/avs') ? "border-white border-[2.5px]" : ""
-                }`}>
+                <div
+                  className={`flex flex-col items-center rounded-full p-[4px] ${
+                    pathname.includes("/avs")
+                      ? "border-white border-[2.5px]"
+                      : ""
+                  }`}
+                >
                   <Image
                     src={avsLogo}
                     width={80}
@@ -110,9 +165,13 @@ function Sidebar() {
               closeDelay={1}
             >
               <Link href="/restakers">
-                <div className={`flex flex-col items-center rounded-full p-[4px] ${
-                  pathname.includes('/restakers') ? "border-white border-[2.5px]" : ""
-                }`}>
+                <div
+                  className={`flex flex-col items-center rounded-full p-[4px] ${
+                    pathname.includes("/restakers")
+                      ? "border-white border-[2.5px]"
+                      : ""
+                  }`}
+                >
                   <Image
                     src={restakers_logo}
                     width={80}
@@ -128,18 +187,20 @@ function Sidebar() {
         </div>
 
         <div className="flex flex-col items-center gap-y-4 pt-5">
-          <Tooltip
+          {/* <Tooltip
             content={<div className="capitalize">Git Book</div>}
             placement="right"
             className="rounded-full bg-opacity-90 bg-light-blue"
             closeDelay={1}
           >
             <Link href={""}>
-              <div className={`p-[14px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}>
+              <div
+                className={`p-[14px] cursor-pointer ${styles.image_hover} rounded-full border border-white `}
+              >
                 <SiGitbook className="w-4 h-4" />
               </div>
             </Link>
-          </Tooltip>
+          </Tooltip> */}
 
           {!isConnected ? (
             <Tooltip

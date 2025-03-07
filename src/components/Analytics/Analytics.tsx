@@ -175,7 +175,10 @@ function Analytics() {
     const fetchData = async () => {
       if (isDataFetched) return; // Data has already been fetched, exit the function
 
-      const options = { method: "GET" };
+      const options = { method: 'GET', headers: {
+        'x-api-token': process.env.NEXT_PUBLIC_EIGEN_KEY!,
+        'Content-Type': 'application/json'
+    } };
       try {
         const totalTVLRes = await fetch(
           "https://api.eigenexplorer.com/metrics/tvl",

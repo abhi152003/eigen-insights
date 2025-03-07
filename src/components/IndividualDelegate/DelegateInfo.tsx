@@ -126,7 +126,10 @@ function DelegateInfo({
     if (!hasMore || isDataLoading) return;
 
     setDataLoading(true);
-    const options = { method: "GET" };
+    const options = { method: 'GET', headers: {
+      'x-api-token': process.env.NEXT_PUBLIC_EIGEN_KEY!,
+      'Content-Type': 'application/json'
+  } };
     const avsOperatorsRes = await fetch(
       `https://api.eigenexplorer.com/avs/${props.individualDelegate}/operators?withTvl=true&skip=${currentPage}&take=12`,
       options

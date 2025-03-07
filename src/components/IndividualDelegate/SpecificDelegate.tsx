@@ -530,36 +530,6 @@ function SpecificDelegate({ props }: { props: Type }) {
                 History
               </button>
             )}
-            {props.daoDelegates === "operators" ? (
-              <button
-                className={`border-b-2 py-3 px-2
-                  ${
-                    searchParams.get("active") === "batches"
-                      ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
-                  }`}
-                onClick={() => router.push(path + "?active=batches")}
-              >
-                Batches
-              </button>
-            ) : (
-              ""
-            )}
-            {props.daoDelegates === "avss" && props.individualDelegate === "0x870679e138bcdf293b7ff14dd44b70fc97e12fc0" ? (
-              <button
-                className={`border-b-2 py-3 px-2
-                  ${
-                    searchParams.get("active") === "issues"
-                      ? "border-light-cyan text-light-cyan font-semibold"
-                      : "border-transparent"
-                  }`}
-                onClick={() => router.push(path + "?active=issues")}
-              >
-                Operators With Issues
-              </button>
-            ) : (
-              ""
-            )}
           </div>
 
           <div className="py-6 ps-16">

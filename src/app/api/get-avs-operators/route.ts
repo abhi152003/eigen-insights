@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -15,7 +16,10 @@ export async function GET(req: NextRequest) {
     }
 
     try {
-        const options = { method: 'GET' };
+        const options = { method: 'GET', headers: {
+            'x-api-token': process.env.NEXT_PUBLIC_EIGEN_KEY!,
+            'Content-Type': 'application/json'
+        } };
 
         const avsAddressesRes = (await fetch('https://api.eigenexplorer.com/avs/addresses?take=100', options));
         const avsAddresses = await avsAddressesRes.json();
